@@ -20,9 +20,9 @@ Each paper directory follows the same numbered structure, matching the workflow 
 ```
 
 <paper>/
-  0_core_message.md     # the ONE thing the paper proves (1 sentence + 1 paragraph)
+  0_coremessage.md      # the ONE thing the paper proves (1 sentence + 1 paragraph)
   1_target_journal.md   # ranked target journals + the author's field
-  2_figure.md           # figure flow: each figure + the single message it conveys
+  2_figure_flow.md      # figure flow: each figure + the single message it conveys
   3_skeleton.md         # paragraph skeleton: one sentence = one paragraph's claim
   4_outline.md          # full outline, Intro -> Conclusion
   5_contents/             # the actual drafts
@@ -61,7 +61,7 @@ location and verbatim quote so the author can open the cited paper and read the 
 - Every claim in prose should trace back to a figure, a number in `data/`, or a citation.
 - Match the target journal's structure and tone (`writing_style/<journal>.md`) — section
   order, length, and voice vary by journal.
-- When unsure what the paper is trying to say, re-read `0_core_message.md` before drafting.
+- When unsure what the paper is trying to say, re-read `0_coremessage.md` before drafting.
 
 ## Agents
 
@@ -91,6 +91,6 @@ When the user asks to draw a diagram or explain something visually, make an **HT
   `<paper>/blackboard/<descriptive_name>.html` (e.g. `workflow_overview.html`, not `diagram1.html`).
 - Only read `blackboard/design.md` when a visual is actually requested; otherwise skip it.
 - The blackboard is for **thinking and explaining during writing** — it is NOT the publication
-  figure pipeline. Final paper figures are planned as text in `2_figure.md` and produced by the
+  figure pipeline. Final paper figures are planned as text in `2_figure_flow.md` and produced by the
   author's real tooling (matplotlib/Illustrator → vector). Do not treat a blackboard HTML as a
   finished journal figure.
