@@ -1,7 +1,7 @@
 # Journal info & setup  (workflow step 0)
 
 ## Working title
-<!-- 잠정 제목 한 줄. 최종 제목은 step 6(Abstract+Title)에서 확정한다. -->
+관상동맥 파열위험지표 정의및 민감도 분석
 
 ## Author's field
 Computational biomechanics
@@ -12,7 +12,7 @@ Computational biomechanics
 <!-- step 1에서 1순위 저널의 구조/문체를 writing_style/<journal>.md 에 정리한다. -->
 
 ## (optional) Extra info  — 유저가 원하면 작성
-- Affiliation (소속):
-- Lab (연구실):
-- Advisor (지도교수):
-- Authors (저자):
+- Affiliation (소속): 한국과학기술원
+- Lab (연구실): CBML
+- Advisor (지도교수): 김현진교수님
+- Authors (저자): 김세혁

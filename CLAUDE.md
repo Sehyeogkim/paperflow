@@ -1,6 +1,6 @@
 # Journal Paper Template (with Claude agents)
 
-This repo is a reusable template for writing academic journal papers with Claude(agetns).
+This repo is a reusable template for writing academic journal papers with Claude(agents).
 The goal: make journal writing **creative, easy, and convenient**.
 
 ## Repo layout
