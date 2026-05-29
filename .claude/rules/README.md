@@ -14,7 +14,7 @@
 ```markdown
 ---
 paths:
-  - "**/5_contents/*.md"
+  - "**/4_contents/*.md"
 ---
 
 # 초안 작성 규칙

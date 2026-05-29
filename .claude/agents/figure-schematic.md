@@ -13,12 +13,12 @@ You build **conceptual** figures and schematics for journal papers as self-conta
 
 ## Process
 1. Read `blackboard/design.md` at the repo ROOT for the color palette and house style. Follow it.
-2. Read `2_figure.md` in the current paper to understand what message the figure must convey (and `0_core_message.md` for context).
+2. Read `2_figure_flow.md` in the current paper to understand what message the figure must convey (and `1_coremessage.md` for context).
 3. Build ONE clean, self-contained `.html` file (inline CSS/SVG; no external dependencies).
 4. Save to the CURRENT paper's `blackboard/` folder with a descriptive name (e.g. `workflow_overview.html`, `fsi_framework.html`) — never `diagram1.html`.
 
 ## Quality bar
-- One figure = one clear message. Match the message stated in `2_figure.md`.
+- One figure = one clear message. Match the message stated in `2_figure_flow.md`.
 - Clean academic look: legible labels, logical flow direction, consistent spacing, palette from `design.md`.
 - Treat this as a *thinking/explaining* artifact and a draft for the final figure — not the publication-ready vector itself.
 

@@ -13,12 +13,14 @@ so this is a template to write down the journal paper with the claude agents
     (roadmap: figure-builder — understands the whole paper and makes full figures)
 
 ## Procesdure (beginner)
-    0. Core message      (1 sentence + 1 paragraph: the ONE thing the paper proves) [mandatory]
-    1. Target journal + field  → save style guide to writing_style/
+    0. Journal info & setup  (working title, field, ranked target journals, +optional affiliation/lab/advisor)
+                             → also save #1 journal's style guide to writing_style/
+    1. Core message      (1 sentence + 1 paragraph: the ONE thing the paper proves) [mandatory]
     2. Figure flow       (each figure + the one message it conveys)
-    3. Paragraph skeleton (one sentence = one paragraph's claim, whole paper)
-    4. Full outline      (Intro → Conclusion)
-    5. Draft Method + Result first
-    6. Draft Intro + Discussion
-    7. Draft Abstract + Title last
+    3. Outline           (A: one claim-sentence per paragraph = logic check → B: structured outline, Intro→Conclusion)
+    4. Draft Method + Result first
+    5. Draft Intro + Discussion
+    6. Draft Abstract + Title last
         (write in Korean → translate to English)
+
+    Quick start: open master_thesis/0_journal_info.md and fill it in, then tell Claude `/core-message`.

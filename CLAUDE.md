@@ -20,12 +20,11 @@ Each paper directory follows the same numbered structure, matching the workflow 
 ```
 
 <paper>/
-  0_coremessage.md      # the ONE thing the paper proves (1 sentence + 1 paragraph)
-  1_target_journal.md   # ranked target journals + the author's field
+  0_journal_info.md     # working title, author's field, ranked target journals (+ optional affiliation/lab/advisor)
+  1_coremessage.md      # the ONE thing the paper proves (1 sentence + 1 paragraph)
   2_figure_flow.md      # figure flow: each figure + the single message it conveys
-  3_skeleton.md         # paragraph skeleton: one sentence = one paragraph's claim
-  4_outline.md          # full outline, Intro -> Conclusion
-  5_contents/             # the actual drafts
+  3_outline.md          # (A) skeleton: one claim-sentence per paragraph (logic check) -> (B) structured outline
+  4_contents/           # the actual drafts
     Intro.md
     method.md
     result.md
@@ -40,17 +39,19 @@ The `reference/` store is the bridge to the manuscript: each entry has a stable 
 used both in `references.bib` and in the LaTeX `\cite{key}`, plus the exact source
 location and verbatim quote so the author can open the cited paper and read the line.
 
-## Workflow (run in order, 0 -> 7, from the reference)
+## Workflow (run in order, 0 -> 6, from the reference)
 
-0. **Core message** — 1 sentence + 1 paragraph: the ONE thing the paper proves. [mandatory]
-1. **Target journal + field** — pick ranked journals; fetch/record each journal's
-   structure & tone into `writing_style/<journal>.md`. The #1 journal is the default.
+0. **Journal info & setup** — record the working title, author's field, and ranked target journals
+   (+ optional affiliation/lab/advisor) in `0_journal_info.md`. Then fetch/record the #1 journal's
+   structure & tone into `writing_style/<journal>.md`; the #1 journal is the default style.
+1. **Core message** — 1 sentence + 1 paragraph: the ONE thing the paper proves. [mandatory]
 2. **Figure flow** — list each figure and the single message it conveys (text only, no real figures yet).
-3. **Paragraph skeleton** — one sentence per paragraph, across the whole paper.
-4. **Full outline** — expand the skeleton into a structured outline, Intro -> Conclusion.
-5. **Draft Method + Result first** — these are grounded in what was actually done.
-6. **Draft Intro + Discussion** — written once the Results' story is clear.
-7. **Draft Abstract + Title last.**
+3. **Outline** — two phases in `3_outline.md`: (A) *skeleton* — one claim-sentence per paragraph,
+   read in sequence to catch logic gaps; (B) expand the validated skeleton into a structured
+   outline, Intro -> Conclusion. Don't move on until the skeleton's argument actually flows.
+4. **Draft Method + Result first** — these are grounded in what was actually done.
+5. **Draft Intro + Discussion** — written once the Results' story is clear.
+6. **Draft Abstract + Title last.**
 
 ## House rules
 
@@ -61,7 +62,7 @@ location and verbatim quote so the author can open the cited paper and read the 
 - Every claim in prose should trace back to a figure, a number in `data/`, or a citation.
 - Match the target journal's structure and tone (`writing_style/<journal>.md`) — section
   order, length, and voice vary by journal.
-- When unsure what the paper is trying to say, re-read `0_coremessage.md` before drafting.
+- When unsure what the paper is trying to say, re-read `1_coremessage.md` before drafting.
 
 ## Agents
 
