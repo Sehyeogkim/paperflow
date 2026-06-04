@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Step 2 — VI formulation &amp; selection (panel for workflow figure)</title>
+<style>
+  body{margin:0;background:#ffffff;font-family:'Segoe UI',-apple-system,Arial,sans-serif;padding:24px}
+  .hint{max-width:1040px;margin:0 auto 14px;color:#6b5e54;font-size:13px}
+  .stage{max-width:1040px;margin:0 auto;background:#fff}
+  .title{font:700 19px 'Segoe UI',sans-serif;fill:#1f2d3a}
+  .tab{font:700 13px 'Segoe UI',sans-serif;fill:#fff}
+  .eq{font:600 15px 'Segoe UI',sans-serif;fill:#1f2d3a}
+  .eqs{font:13px 'Segoe UI',sans-serif;fill:#33414f}
+  .cellvi{font:600 11px 'Segoe UI',sans-serif;fill:#5a6b78}
+  .cap{font:italic 12px 'Segoe UI',sans-serif;fill:#5a6b78}
+  .lbl{font:600 12px 'Segoe UI',sans-serif;fill:#33414f}
+  .small{font:11px 'Segoe UI',sans-serif;fill:#5a6b78}
+  .vieq{font:700 15px 'Segoe UI',sans-serif;fill:#7a3d27}
+</style>
+</head>
+<body>
+<p class="hint">Step 2 패널 — 워크플로 figure 가운데 빈 박스에 들어갈 비율(1040×235). 브라우저에서 이 영역을 캡처하거나, SVG를 그대로 export해서 사용.</p>
+<div class="stage">
+<svg id="svg" viewBox="0 0 1040 235" xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+const svg=document.getElementById("svg");
+function el(n,a){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;}
+function add(p,n,a){const e=el(n,a);p.appendChild(e);return e;}
+function txt(x,y,html,cls,anchor){const t=el("text",{x,y,class:cls||"small","text-anchor":anchor||"start"});t.innerHTML=html;svg.appendChild(t);return t;}
+
+/* ---- defs: gradients + shadow ---- */
+const defs=add(svg,"defs",{});
+function lin(id,c1,c2,vert){const g=el("linearGradient",{id,x1:0,y1:0,x2:vert?0:1,y2:vert?1:0});
+  g.appendChild(el("stop",{offset:0,"stop-color":c1}));g.appendChild(el("stop",{offset:1,"stop-color":c2}));defs.appendChild(g);}
+lin("gContainer","#dde6ec","#c6d2db",true);
+lin("gArrow","#cdd5dc","#aeb9c2",true);
+lin("gTabBlue","#5b8fb0","#3f6f8e",true);
+lin("gTabOrange","#f2a93f","#e08e22",true);
+lin("gTabGreen","#7faa6b","#5f8a4d",true);
+lin("gFunnel","#e9eef2","#cfd9e0",true);
+const f=el("filter",{id:"sh",x:"-20%",y:"-20%",width:"140%",height:"160%"});
+f.appendChild(el("feDropShadow",{dx:0,dy:2,stdDeviation:3,"flood-color":"#7a8893","flood-opacity":.5}));defs.appendChild(f);
+
+/* ---- outer container ---- */
+add(svg,"rect",{x:6,y:14,width:1028,height:212,rx:16,fill:"url(#gContainer)",stroke:"#aab6c0","stroke-width":1.5,filter:"url(#sh)"});
+txt(26,40,"Step 2. Vulnerability Index (VI) formulation &amp; selection","title");
+
+/* ---- helpers ---- */
+function card(x,w){ add(svg,"rect",{x,y:76,width:w,height:138,rx:9,fill:"#ffffff",stroke:"#c2ccd4","stroke-width":1.2,filter:"url(#sh)"}); }
+function tab(x,w,fill,label){
+  const h=24,y=52;
+  add(svg,"path",{d:`M${x} ${y} L${x+w} ${y} L${x+w+11} ${y+h/2} L${x+w} ${y+h} L${x} ${y+h} Z`,fill,stroke:"rgba(0,0,0,.08)"});
+  txt(x+w/2,y+h/2+4.5,label,"tab","middle");
+}
+function blockArrow(x1,x2,cy){
+  const pts=`${x1},${cy-8} ${x2-15},${cy-8} ${x2-15},${cy-16} ${x2},${cy} ${x2-15},${cy+16} ${x2-15},${cy+8} ${x1},${cy+8}`;
+  add(svg,"polygon",{points:pts,fill:"url(#gArrow)",stroke:"#9aa6af","stroke-width":1});
+}
+
+/* ===================== CARD 1 : Formulation ===================== */
+card(25,320); tab(25,150,"url(#gTabBlue)","Formulation");
+txt(60,104,'VI = stress / strength',"eq","start");
+// strength relation
+txt(60,127,'strength &#8733; E<tspan baseline-shift="sub" font-size="0.72em">FC</tspan><tspan baseline-shift="super" font-size="0.72em">&#945;</tspan>',"eqs","start");
+txt(232,127,'&#945; &#8712; {0, 0.5, 1.0}',"small","start");
+// 2x3 matrix : rows {PSS, ΔPSS} x cols {0.0,0.5,1.0}
+const cols=[{cx:170,l:'&#945;=0.0'},{cx:240,l:'0.5'},{cx:310,l:'1.0'}];
+const rows=[{cy:166,l:'PSS'},{cy:194,l:'&#916;PSS'}];
+cols.forEach(c=>txt(c.cx,150,c.l,"small","middle"));
+rows.forEach(r=>txt(96,r.cy+4,r.l,"lbl","end"));
+rows.forEach(r=>cols.forEach(c=>{
+  add(svg,"rect",{x:c.cx-28,y:r.cy-11,width:56,height:22,rx:4,fill:"#f4f7f9",stroke:"#c2ccd4"});
+  txt(c.cx,r.cy+4,"VI","cellvi","middle");
+}));
+txt(212,209,'&#8594; 6 candidate indices',"cap","middle");
+
+blockArrow(346,390,145);
+
+/* ===================== CARD 2 : Clinical screening (funnel) ===================== */
+card(394,250); tab(394,160,"url(#gTabOrange)","Clinical screening");
+txt(519,104,'7 high-risk criteria',"lbl","middle");
+// 7 check marks in a row
+for(let i=0;i<7;i++){const cx=425+i*31;
+  add(svg,"path",{d:`M${cx-4} 117 l3 4 l6 -8`,stroke:"#5f8a4d","stroke-width":2,fill:"none","stroke-linecap":"round","stroke-linejoin":"round"});}
+// funnel trapezoid (wide left -> narrow right)
+add(svg,"polygon",{points:"424,132 612,144 612,170 424,182",fill:"url(#gFunnel)",stroke:"#aeb9c2"});
+txt(452,164,'6',"eq","middle");
+add(svg,"path",{d:"M470 160 L585 160",stroke:"#8a96a0","stroke-width":2,fill:"none","marker-end":"url(#mA)"});
+const mk=el("marker",{id:"mA",markerWidth:8,markerHeight:8,refX:6,refY:3,orient:"auto"});
+mk.appendChild(el("path",{d:"M0 0 L6 3 L0 6 Z",fill:"#8a96a0"}));defs.appendChild(mk);
+txt(598,164,'2',"eq","middle");
+txt(519,205,'sign agreement (each criterion &#8594; VI direction)',"cap","middle");
+
+blockArrow(668,712,145);
+
+/* ===================== CARD 3 : Selected VI ===================== */
+card(716,300); tab(716,150,"url(#gTabGreen)","Selected VI");
+function viCard(y,html){
+  add(svg,"rect",{x:732,y,width:268,height:42,rx:7,fill:"#fdeee4",stroke:"#e08e22","stroke-width":1.6});
+  txt(750,y+27,html,"vieq","start");
+}
+viCard(100,'VI<tspan baseline-shift="sub" font-size="0.7em">1</tspan> = &#916;PSS / E<tspan baseline-shift="sub" font-size="0.7em">FC</tspan><tspan baseline-shift="super" font-size="0.7em">0.5</tspan>');
+viCard(150,'VI<tspan baseline-shift="sub" font-size="0.7em">2</tspan> = &#916;PSS / E<tspan baseline-shift="sub" font-size="0.7em">FC</tspan><tspan baseline-shift="super" font-size="0.7em">1.0</tspan>');
+txt(866,209,'final vulnerability indices',"cap","middle");
+</script>
+</body>
+</html>

@@ -7,7 +7,7 @@
 Computational biomechanics
 
 ## Target journals  (순위대로, 1순위 = 기본 스타일)
-석사학위논문 학교 제출용
+Computational in biology and medicine
 
 ## (optional) Extra info  — 유저가 원하면 작성
 - Affiliation (소속): 한국과학기술원

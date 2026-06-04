@@ -17,26 +17,21 @@
 5. 따라서 본 연구는 (선행 검증된) 비용효율 FSI를 활용해 strength 반영 현실적 VI에 대한 세 인자군 전체 공간
    민감도 분석을 수행하여, ΔPSS 기반 지표의 임상 타당성과 재료물성의 지배성을 규명한다.   ← 핵심메시지
 
-[Methods1]
-## cost effective FSI
-6. Before the analysis we need to think about the 
-
-[Methods2]
-## Sensivity anylsis
+[Methods]
 6. 분석은 3단계(데이터생성→VI선정→surrogate 기반 전역 민감도 분석)로 구성된다.
-7. 데이터는 선행 논문에서 검증된 비용효율 맥동 FSI로 생성한다(도구, 인용).
-8. 두 표현형(LAP 3도메인 / CP 4도메인)을 각각 모델링하고, FC 두께는 균일 가정해 단일 스칼라 변수로 변동시킨다.
-9. 입력은 형태·혈류역학·재료 3군으로 1,000-sample 설계공간을 이룬다.
+7. 두 표현형(LAP 3도메인 / CP 4도메인)을 각각 모델링하고, FC 두께는 균일 가정해 단일 스칼라 변수로 변동시킨다.
+8. 입력은 형태·혈류역학·재료 3군으로 1,000-sample 설계공간을 이룬다.
+9. 선행 논문에서 검증된 비용효율 맥동 FSI로 생성한다(도구, 인용).(GOVERENING EQ, BC, computational details)
 10. 출력은 PSS·ΔPSS(구면평균)와 파열위치 지수로 측정한다.
 11. 취약성지수 VI=stress/strength로, stress 2종 × strength 3시나리오 = 6개 후보를 만든다.
-12. 6개를 7개 임상기준의 부호일치로 선별해 VI1=ΔPSS/E_FC^0.5, VI2=ΔPSS/E_FC^1.0을 채택한다.
-13. 최종 VI에 GPR surrogate를 학습하고(LAP 784 / CP 727 유효쌍), 그 위에서 Sobol 1차·전차 지수로
+12. 6개를 7개 임상기준의 부호일치로 선별해 VI 채택한다.
+13. 최종 VI에 GPR surrogate를 학습하고(LAP, CP), 그 위에서 Sobol 1차·전차 지수로
     전역 민감도를 분석한다. (surrogate는 ~1.5만 회 평가를 가능케 하는 인프라이고, GSA가 목적.)
 
 [Results]
 15. 6개 후보의 기준별 부호를 검토하면 2개만 7기준을 전부 만족한다(12의 근거).
 16. 민감도 결과 재료물성이 지배적이며 상위 4인자는 E_vessel·E_FC·수축기압·맥압이다(Material>Hemo>Morpho).
-17. (optional) 파열위치는 원주방향 shoulder-dominant(임상·시뮬 일치)이나, 축방향은 임상 proximal vs 시뮬 distal로 어긋난다.
+17. Rupture location cliniclal vs simulation(axial and circum all fit well.)
 
 [Discussion]
 18. ΔPSS가 PSS보다 강한 예측인자다 → 맥동성(피로)이 중요하다.
@@ -48,8 +43,7 @@
 [Conclusion]
 23. 비용효율 FSI 활용으로 세 인자군 동시 대규모 분석이 가능했고, ΔPSS 임상 타당성·재료물성 지배성을 규명했다.
 
-> ⚠️ 논리 점검 메모: 12(Methods에서 VI 확정)의 근거가 15(Results)에 있어 **앞으로 참조(forward reference)**가
-> 생긴다. 의도된 구조면 OK지만 "Methods에서 결과를 미리 단정"으로 보일 수 있어 Phase B에서 표현을 주의한다.
+
 
 ---
 
@@ -70,25 +64,9 @@ Phase A가 논리적으로 흐르면, 소제목(2.1, 2.2 ...) 구조로 확장�
         (c) First Sobol sensitivity analysis across morphological + hemodynamic + material parameters simultaneously → finding: material is the dominant factor
 
 
-2. chapter2 - Method - Cost effectvie FSI 
+2. Method
 
-    2.1 Cost-effective FSI framework
-
-    2.2 Governing Equations
-
-    2.3 Validaiton models
-        2.3.1 geometries
-        2.3.2 material properties
-        2.3.3 boundary conditions
-
-    2.4 computational details
-
-    2.5 results
-
-
-3. chpater3 - Methods - main sensitivity analysis
-
-    3.1 Dataset Generation                                       [Stage 1]
+    2.1 Dataset Generation                                       [Stage 1]
         Idealized Coronary Artery Model
         - Two plaque phenotypes analyzed separately:
             - LAP (Low Attenuation Plaque): 3 solid domains = vessel wall, fibrous cap (FC), lipid core

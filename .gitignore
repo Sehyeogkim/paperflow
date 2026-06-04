@@ -1,0 +1,9 @@
+# Secrets — never commit
+.env
+*.env
+
+# Large simulation / model data (exceeds GitHub 100MB limit)
+*.vtu
+*.vtk
+*.vtp
+master_thesis/data/paraview_model/*.vtu

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fig 3 — Idealized coronary geometry + morphological parameters (layout sketch)</title>
+<style>
+  :root{
+    --bg:#F0EEE6; --accent:#CC785C; --accent2:#E8D5C4; --border:#D4C5B0;
+    --h:#1A1A1A; --body:#2D2D2D; --muted:#6B5E54;
+    --wall:#E8D5C4; --lumen:#FBFAF6; --cap:#CC785C; --lipid:#D7A93E; --calc:#C9C2B4;
+    --ok:#7A9A6D; --warn:#C25744;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--body);
+       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+       line-height:1.5;padding:32px 24px 64px}
+  .wrap{max-width:1080px;margin:0 auto}
+  h1{color:var(--h);font-size:22px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 24px}
+  .figframe{background:#fff;border:1px solid var(--border);border-radius:10px;
+            padding:22px 22px 14px;box-shadow:0 1px 3px rgba(0,0,0,.05);margin-bottom:22px}
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .panel{border:1px dashed var(--border);border-radius:8px;padding:12px 12px 8px;background:#fffdf9}
+  .panel.full{grid-column:1 / -1}
+  .ptag{display:inline-block;font-weight:700;color:#fff;background:var(--accent);
+        border-radius:5px;padding:1px 8px;font-size:12px;margin-bottom:6px}
+  .pcap{font-size:12px;color:var(--muted);margin:2px 0 8px}
+  svg{display:block;width:100%;height:auto}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px;font-size:12px;color:var(--body)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:13px;height:13px;border-radius:3px;border:1px solid rgba(0,0,0,.25);display:inline-block}
+  .figcap{font-size:12.5px;color:var(--body);margin:14px 2px 2px;border-top:1px solid var(--border);padding-top:10px}
+  .figcap b{color:var(--h)}
+  /* side-by-side: figure + param table */
+  table{border-collapse:collapse;width:100%;font-size:12.5px}
+  th,td{border:1px solid var(--border);padding:5px 8px;text-align:left;vertical-align:top}
+  th{background:var(--accent2);color:var(--h)}
+  td code{background:#E6E0D4;color:#8B4513;padding:0 3px;border-radius:3px;font-size:12px}
+  .note{background:rgba(204,120,92,.10);border-left:3px solid var(--accent);
+        border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;margin-top:8px}
+  .note h3{margin:0 0 6px;font-size:14px;color:var(--h)}
+  .note ul{margin:6px 0 0;padding-left:18px}
+  .twocol{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:start}
+  .anlbl{font:600 12px sans-serif;fill:var(--h)}
+  .anval{font:11px sans-serif;fill:var(--muted)}
+  .lead{stroke:var(--muted);stroke-width:1;fill:none}
+  .domlbl{font:600 11px sans-serif;fill:#5a4d42}
+  @media(max-width:760px){.panels{grid-template-columns:1fr}.twocol{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Fig 3 &mdash; Idealized coronary model: geometry &amp; morphological parameters</h1>
+  <p class="sub">Layout sketch (blackboard, not the final figure). Goal: define <i>where</i> each morphological variable lives geometrically; numeric ranges &rarr; Table&nbsp;1.</p>
+
+  <!-- ================= FIGURE FRAME ================= -->
+  <div class="figframe">
+    <div class="panels">
+
+      <!-- PANEL A : domain composition LAP vs CP -->
+      <div class="panel">
+        <span class="ptag">a</span> &nbsp;<b style="font-size:13px">Domain composition</b>
+        <div class="pcap">LAP (3 solid domains) vs CP (4 solid domains) &mdash; same idealized vessel, phenotype differs by adding calcification.</div>
+        <svg id="svgA" viewBox="0 0 460 250"></svg>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--wall)"></i>Vessel wall</span>
+          <span><i class="sw" style="background:var(--lumen)"></i>Lumen (blood)</span>
+          <span><i class="sw" style="background:var(--cap)"></i>Fibrous cap (FC)</span>
+          <span><i class="sw" style="background:var(--lipid)"></i>Lipid core</span>
+          <span><i class="sw" style="background:var(--calc)"></i>Calcification (CP only)</span>
+        </div>
+      </div>
+
+      <!-- PANEL B : morphological annotation on cross-section -->
+      <div class="panel">
+        <span class="ptag">b</span> &nbsp;<b style="font-size:13px">Cross-section parameters</b>
+        <div class="pcap">Each morphological variable annotated on a transverse section. Symbols map to Table&nbsp;1.</div>
+        <svg id="svgB" viewBox="0 0 300 250"></svg>
+      </div>
+
+      <!-- PANEL C : longitudinal / axial -->
+      <div class="panel full">
+        <span class="ptag">c</span> &nbsp;<b style="font-size:13px">Longitudinal section &mdash; axial parameters &amp; constant-FC assumption</b>
+        <div class="pcap">Lipid pool axial extent + the spatially-uniform FC-thickness assumption (the source of the proximal/distal limitation in Discussion).</div>
+        <svg id="svgC" viewBox="0 0 760 180"></svg>
+      </div>
+
+    </div>
+
+    <div class="figcap">
+      <b>Figure 3.</b> Idealized coronary plaque model and its morphological parameters.
+      <b>(a)</b> Solid-domain composition of the two phenotypes: LAP comprises vessel wall, fibrous cap (FC) and lipid core; CP adds a calcification domain.
+      <b>(b)</b> Definition of the morphological input variables on a transverse cross-section:
+      lumen diameter <i>D</i><sub>lum</sub>, wall thickness <i>t</i><sub>wall</sub>, FC thickness <i>t</i><sub>FC</sub>,
+      lipid arc angle <i>&theta;</i><sub>lipid</sub>, plaque burden, and calcification arc <i>&theta;</i><sub>calc</sub> (CP).
+      <b>(c)</b> Longitudinal section showing lipid-pool axial length <i>L</i><sub>lipid</sub> and the globally-constant FC thickness assumed along the cap.
+      Variable ranges and distributions are listed in Table&nbsp;1.
+    </div>
+  </div>
+
+  <!-- ============ PARAM TABLE + RATIONALE ============ -->
+  <div class="twocol">
+    <div>
+      <table>
+        <tr><th>Symbol</th><th>Parameter</th><th>Where defined (panel)</th><th>Phenotype</th></tr>
+        <tr><td><code>t_FC</code></td><td>Fibrous cap thickness</td><td>b — radial, lumen↔lipid</td><td>both</td></tr>
+        <tr><td><code>&theta;_lipid</code></td><td>Lipid arc angle</td><td>b — angular extent of lipid</td><td>both</td></tr>
+        <tr><td>—</td><td>Plaque burden (lipid vol.)</td><td>b — area ratio / c — length</td><td>both</td></tr>
+        <tr><td><code>&theta;_calc</code></td><td>Calcification arc/volume</td><td>a, b — separate sector</td><td>CP only</td></tr>
+        <tr><td><code>D_lum</code></td><td>Lumen diameter</td><td>b — base geometry</td><td>both</td></tr>
+        <tr><td><code>t_wall</code></td><td>Vessel wall thickness</td><td>b — base geometry</td><td>both</td></tr>
+        <tr><td><code>L_lipid</code></td><td>Lipid pool axial length</td><td>c — longitudinal</td><td>both</td></tr>
+      </table>
+      <p class="sub" style="margin-top:8px">Hemodynamic (<code>P_sys</code>, pulse pressure…) &amp; material (<code>E_vessel</code>, <code>E_FC</code>, <code>E_lipid</code>) variables are <b>not geometric</b> &rarr; Table&nbsp;1 only, not drawn here.</p>
+    </div>
+
+    <div class="note">
+      <h3>Why this layout (your question)</h3>
+      <ul>
+        <li><b>Main text, not appendix.</b> No page limit in a thesis, and these definitions are load-bearing for §3.2 (VI) and the results.</li>
+        <li><b>One figure, multiple panels</b> — not one crowded panel. a = domains, b = cross-section vars, c = axial.</li>
+        <li><b>Geometry on the figure, numbers in Table 1.</b> That split is what keeps it from looking overloaded.</li>
+        <li><b>Modular</b> → if you later submit to a journal with page limits, keep (b) in main text, push (c) to supplementary.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+const pol=(cx,cy,r,deg)=>{const a=deg*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];};
+function el(name,attrs){const e=document.createElementNS(NS,name);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;}
+// annular sector path between rIn..rOut over deg1..deg2 (deg clockwise from +x; screen y-down)
+function sector(cx,cy,rIn,rOut,d1,d2){
+  const large=(Math.abs(d2-d1)>180)?1:0;
+  const [x1,y1]=pol(cx,cy,rOut,d1),[x2,y2]=pol(cx,cy,rOut,d2);
+  const [x3,y3]=pol(cx,cy,rIn,d2),[x4,y4]=pol(cx,cy,rIn,d1);
+  return `M${x1} ${y1} A${rOut} ${rOut} 0 ${large} 1 ${x2} ${y2} L${x3} ${y3} A${rIn} ${rIn} 0 ${large} 0 ${x4} ${y4} Z`;
+}
+function add(svg,name,attrs){const e=el(name,attrs);svg.appendChild(e);return e;}
+function text(svg,x,y,str,cls,anchor){const t=el("text",{x,y,class:cls||"anval","text-anchor":anchor||"start"});t.textContent=str;svg.appendChild(t);return t;}
+
+// ---- cross-section builder ----
+// returns geometry radii used for annotation
+function crossSection(svg,cx,cy,opts={}){
+  const Rwall=70, Rlumen=38, capT=4;            // wall outer, lumen radius, cap thickness
+  const RlipIn=Rlumen+capT, RlipOut=Rwall-6;    // lipid band
+  const lipA=-150, lipB=-30;                     // lipid arc (top), 120°
+  // wall (full annulus look: outer disc minus lumen done by layering)
+  add(svg,"circle",{cx,cy,r:Rwall,fill:"var(--wall)",stroke:"#C7B299","stroke-width":1.5});
+  // lipid core sector
+  add(svg,"path",{d:sector(cx,cy,RlipIn,RlipOut,lipA,lipB),fill:"var(--lipid)",stroke:"#B98E2E","stroke-width":1});
+  // calcification (CP only)
+  if(opts.calc){
+    add(svg,"path",{d:sector(cx,cy,Rlumen+capT,Rwall-10,40,95),fill:"var(--calc)",stroke:"#9C9485","stroke-width":1});
+  }
+  // fibrous cap (thin band over lipid arc)
+  add(svg,"path",{d:sector(cx,cy,Rlumen,RlipIn,lipA-4,lipB+4),fill:"var(--cap)",stroke:"#A85A3F","stroke-width":1});
+  // lumen on top
+  add(svg,"circle",{cx,cy,r:Rlumen,fill:"var(--lumen)",stroke:"#C7B299","stroke-width":1.2});
+  return {Rwall,Rlumen,capT,RlipIn,RlipOut,lipA,lipB};
+}
+
+/* ---------- PANEL A : LAP vs CP ---------- */
+(function(){
+  const svg=document.getElementById("svgA");
+  crossSection(svg,120,120,{calc:false});
+  text(svg,120,222,"LAP — 3 domains","domlbl","middle");
+  crossSection(svg,340,120,{calc:true});
+  text(svg,340,222,"CP — 4 domains","domlbl","middle");
+  // arrow between
+  add(svg,"path",{d:"M205 120 L255 120",stroke:"var(--accent)","stroke-width":2,"marker-end":"url(#arr)",fill:"none"});
+  const defs=add(svg,"defs",{});
+  const m=el("marker",{id:"arr",markerWidth:8,markerHeight:8,refX:6,refY:3,orient:"auto"});
+  m.appendChild(el("path",{d:"M0 0 L6 3 L0 6 Z",fill:"var(--accent)"}));defs.appendChild(m);
+  text(svg,230,112,"+ calc","anval","middle");
+})();
+
+/* ---------- PANEL B : annotated cross-section ---------- */
+(function(){
+  const svg=document.getElementById("svgB");
+  const cx=130,cy=125;
+  const g=crossSection(svg,cx,cy,{calc:false});
+  const lead=(x1,y1,x2,y2)=>add(svg,"path",{d:`M${x1} ${y1} L${x2} ${y2}`,class:"lead"});
+  const dot=(x,y)=>add(svg,"circle",{cx:x,cy:y,r:2,fill:"var(--muted)"});
+
+  // t_FC : radial across cap at top (-90deg)
+  let [px,py]=pol(cx,cy,g.Rlumen+g.capT/2,-90); dot(px,py); lead(px,py,px+0,py-22); lead(px,py-22,px-58,py-22);
+  text(svg,px-60,py-24,"t_FC","anlbl","end"); text(svg,px-60,py-13,"cap thickness","anval","end");
+
+  // theta_lipid : arc angle, draw radii + arc marker
+  const ri=g.RlipOut+9;
+  add(svg,"path",{d:`M${cx} ${cy} L${pol(cx,cy,ri,g.lipA)[0]} ${pol(cx,cy,ri,g.lipA)[1]}`,class:"lead"});
+  add(svg,"path",{d:`M${cx} ${cy} L${pol(cx,cy,ri,g.lipB)[0]} ${pol(cx,cy,ri,g.lipB)[1]}`,class:"lead"});
+  add(svg,"path",{d:`M${pol(cx,cy,28,g.lipA)[0]} ${pol(cx,cy,28,g.lipA)[1]} A28 28 0 0 1 ${pol(cx,cy,28,g.lipB)[0]} ${pol(cx,cy,28,g.lipB)[1]}`,fill:"none",stroke:"var(--accent)","stroke-width":1.4});
+  text(svg,cx,cy-2,"θ_lipid","anlbl","middle");
+
+  // D_lumen : horizontal diameter
+  add(svg,"path",{d:`M${cx-g.Rlumen} ${cy+14} L${cx+g.Rlumen} ${cy+14}`,stroke:"var(--muted)","stroke-width":1,"marker-start":"url(#a2)","marker-end":"url(#a2)"});
+  text(svg,cx,cy+27,"D_lum","anval","middle");
+
+  // t_wall : bottom, radial wall thickness
+  let [wx,wy]=pol(cx,cy,(g.Rwall+g.Rlumen)/2,90); dot(wx,wy); lead(wx,wy,wx+40,wy+18);
+  text(svg,wx+42,wy+22,"t_wall","anlbl","start");
+
+  // lipid core label
+  let [lx,ly]=pol(cx,cy,(g.RlipIn+g.RlipOut)/2,-90);
+  text(svg,lx+44,ly+4,"lipid core","domlbl","start"); lead(lx,ly,lx+42,ly+2);
+  text(svg,lx+44,ly+15,"(plaque burden","anval","start");
+  text(svg,lx+44,ly+25,"= area ratio)","anval","start");
+
+  // markers
+  const defs=add(svg,"defs",{});
+  const mk=el("marker",{id:"a2",markerWidth:7,markerHeight:7,refX:3.5,refY:3.5,orient:"auto"});
+  mk.appendChild(el("path",{d:"M0 3.5 L7 3.5 M3.5 1 L1 3.5 L3.5 6",stroke:"var(--muted)",fill:"none","stroke-width":1}));
+  defs.appendChild(mk);
+})();
+
+/* ---------- PANEL C : longitudinal ---------- */
+(function(){
+  const svg=document.getElementById("svgC");
+  const x0=70,x1=690,yc=90,Rout=46,Rlum=20,capT=5;
+  // vessel wall band (two rails)
+  add(svg,"rect",{x:x0,y:yc-Rout,width:x1-x0,height:Rout-Rlum-capT,fill:"var(--wall)",stroke:"#C7B299"});
+  add(svg,"rect",{x:x0,y:yc+Rlum+capT,width:x1-x0,height:Rout-Rlum-capT,fill:"var(--wall)",stroke:"#C7B299"});
+  // lumen channel
+  add(svg,"rect",{x:x0,y:yc-Rlum,width:x1-x0,height:2*Rlum,fill:"var(--lumen)",stroke:"#C7B299"});
+  // lipid pool (top side) — lens shape over axial extent
+  const la=270,lb=470;
+  add(svg,"path",{d:`M${la} ${yc-Rlum-capT} Q ${(la+lb)/2} ${yc-Rout+4} ${lb} ${yc-Rlum-capT} Z`,fill:"var(--lipid)",stroke:"#B98E2E"});
+  // fibrous cap line (constant thickness)
+  add(svg,"path",{d:`M${la} ${yc-Rlum} L${lb} ${yc-Rlum}`,stroke:"var(--cap)","stroke-width":capT,"stroke-linecap":"round"});
+  // flow arrow
+  add(svg,"path",{d:`M${x0+12} ${yc} L${x1-12} ${yc}`,stroke:"var(--warn)","stroke-width":1.6,"stroke-dasharray":"5 5","marker-end":"url(#fl)"});
+  const defs=add(svg,"defs",{});
+  const fl=el("marker",{id:"fl",markerWidth:9,markerHeight:9,refX:7,refY:3,orient:"auto"});
+  fl.appendChild(el("path",{d:"M0 0 L7 3 L0 6 Z",fill:"var(--warn)"}));defs.appendChild(fl);
+  text(svg,x0+14,yc-5,"flow","anval","start");
+
+  // L_lipid dimension
+  add(svg,"path",{d:`M${la} ${yc-Rout-8} L${lb} ${yc-Rout-8}`,stroke:"var(--muted)","stroke-width":1,"marker-start":"url(#a3)","marker-end":"url(#a3)"});
+  text(svg,(la+lb)/2,yc-Rout-12,"L_lipid (lipid pool axial length)","anlbl","middle");
+  // constant FC callout
+  add(svg,"path",{d:`M${(la+lb)/2} ${yc-Rlum} L${(la+lb)/2+120} ${yc+50}`,class:"lead"});
+  text(svg,(la+lb)/2+124,yc+50,"FC thickness t_FC = const along cap","anlbl","start");
+  text(svg,(la+lb)/2+124,yc+62,"(assumption → proximal/distal","anval","start");
+  text(svg,(la+lb)/2+124,yc+72,"limitation, see Discussion)","anval","start");
+  const mk=el("marker",{id:"a3",markerWidth:7,markerHeight:7,refX:3.5,refY:3.5,orient:"auto"});
+  mk.appendChild(el("path",{d:"M0 3.5 L7 3.5 M3.5 1 L1 3.5 L3.5 6 M3.5 1 L6 3.5 L3.5 6",stroke:"var(--muted)",fill:"none","stroke-width":1}));
+  defs.appendChild(mk);
+  // labels
+  text(svg,x0-4,yc+4,"prox.","anval","end");
+  text(svg,x1+4,yc+4,"dist.","anval","start");
+})();
+</script>
+</body>
+</html>

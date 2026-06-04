@@ -24,7 +24,7 @@ Each paper directory follows the same numbered structure, matching the workflow 
   1_coremessage.md      # the ONE thing the paper proves (1 sentence + 1 paragraph)
   2_figure_flow.md      # figure flow: each figure + the single message it conveys
   3_outline.md          # (A) skeleton: one claim-sentence per paragraph (logic check) -> (B) structured outline
-  4_contents/           # the actual drafts
+  contents/           # the actual drafts
     Intro.md
     method.md
     result.md
@@ -55,14 +55,23 @@ location and verbatim quote so the author can open the cited paper and read the 
 
 ## House rules
 
-- The author drafts in **Korean first, then translates to English.** Preserve meaning and
-  technical nuance over literal translation; keep terminology consistent with `writing_style/`.
+- The author drafts in **Korean first, then translates to English in the SAME file (replace in place).**
+  Drafts live in `4_contents/<section>.md`; write the Korean draft there, then overwrite it with the
+  English once confirmed — English is the final artifact (target journals are English). Preserve meaning
+  and technical nuance over literal translation; keep terminology consistent with `writing_style/`.
 - **Figure-first, result-first.** Never write Intro/Discussion/Abstract before the figures
   and Results story are settled.
 - Every claim in prose should trace back to a figure, a number in `data/`, or a citation.
 - Match the target journal's structure and tone (`writing_style/<journal>.md`) — section
   order, length, and voice vary by journal.
 - When unsure what the paper is trying to say, re-read `1_coremessage.md` before drafting.
+- **Save important project knowledge to `.claude/memory_local/`.** Whenever a significant piece of
+  project information arises or is discussed — a painpoint, a hypothesis, a product/design decision,
+  a research direction, a constraint not derivable from the code — write it as a `.md` file in
+  `.claude/memory_local/` (one fact per file, kebab-case name), then add a one-line pointer to the
+  index in `.claude/memory_local/README.md`. Convert relative dates to absolute. Link related memories
+  with `[[filename]]`. This is project-local memory that persists across sessions; read it to regain
+  context. Do NOT duplicate what the code, git history, or this CLAUDE.md already records.
 
 ## Agents
 

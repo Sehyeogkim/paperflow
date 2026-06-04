@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Method 구조 확인 — 관상동맥 파열위험지표</title>
+<style>
+  :root{
+    --bg:#F0EEE6; --accent:#CC785C; --accent2:#E8D5C4; --border:#D4C5B0;
+    --h:#1A1A1A; --body:#2D2D2D; --muted:#6B5E54;
+    --code-bg:#E6E0D4; --code:#8B4513; --ok:#7A9A6D; --err:#C25744;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    background:var(--bg); color:var(--body);
+    -webkit-font-smoothing:antialiased;
+  }
+  .deck{height:100vh; overflow-y:scroll; scroll-snap-type:y mandatory;}
+  section{
+    min-height:100vh; scroll-snap-align:start; scroll-snap-stop:always;
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    padding:6vh 7vw; position:relative;
+  }
+  .kicker{
+    font-size:.8rem; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--accent); font-weight:700; margin-bottom:1rem;
+  }
+  h1{font-size:2.7rem; line-height:1.25; color:var(--h); font-weight:800; letter-spacing:-.01em;}
+  h2{font-size:2rem; color:var(--h); font-weight:800; margin-bottom:.4rem; letter-spacing:-.01em;}
+  .sub{color:var(--muted); font-size:1.05rem; margin-top:1.2rem; line-height:1.6;}
+  .meta{margin-top:2.4rem; color:var(--muted); font-size:.95rem; line-height:1.9;}
+  .meta b{color:var(--body); font-weight:600;}
+
+  /* progress dots */
+  .dots{position:fixed; right:26px; top:50%; transform:translateY(-50%); z-index:50; display:flex; flex-direction:column; gap:14px;}
+  .dots a{width:10px; height:10px; border-radius:50%; background:var(--border); display:block; transition:.25s;}
+  .dots a:hover{background:var(--accent);}
+  .dots a.active{background:var(--accent); transform:scale(1.35);}
+
+  .hint{position:absolute; bottom:4vh; left:50%; transform:translateX(-50%); color:var(--muted); font-size:.85rem; display:flex; flex-direction:column; align-items:center; gap:.4rem;}
+  .hint .arrow{animation:bob 1.6s infinite; font-size:1.2rem; color:var(--accent);}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(7px);}}
+
+  .wrap{width:100%; max-width:1050px;}
+
+  /* stage pipeline */
+  .pipe{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:1.8rem; position:relative;}
+  .stage{background:#fff; border:1px solid var(--border); border-radius:14px; padding:18px 16px; position:relative; box-shadow:0 1px 0 rgba(0,0,0,.02);}
+  .stage .num{font-size:.72rem; font-weight:800; letter-spacing:.1em; color:var(--accent); text-transform:uppercase;}
+  .stage .t{font-size:1.05rem; font-weight:700; color:var(--h); margin:.35rem 0 .3rem;}
+  .stage .s{font-size:.82rem; color:var(--muted); line-height:1.5;}
+  .stage .sec{font-size:.72rem; color:var(--code); background:var(--code-bg); border-radius:6px; padding:2px 7px; display:inline-block; margin-top:.6rem; font-weight:600;}
+  .stage.core{border-color:var(--accent); box-shadow:0 6px 22px rgba(204,120,92,.18);}
+  .badge{position:absolute; top:-11px; left:14px; font-size:.66rem; font-weight:800; letter-spacing:.06em; padding:3px 9px; border-radius:999px; text-transform:uppercase;}
+  .badge.core{background:var(--accent); color:#fff;}
+  .badge.enabler{background:var(--accent2); color:var(--code);}
+  .arrowR{position:absolute; top:50%; right:-12px; transform:translateY(-50%); color:var(--border); font-size:1.3rem; z-index:2;}
+
+  .scaleband{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:12px;}
+  .band{font-size:.72rem; text-align:center; padding:6px 4px; border-radius:8px; font-weight:700; letter-spacing:.04em;}
+  .band.per{background:rgba(122,154,109,.16); color:#56714b;}
+  .band.pop{background:rgba(204,120,92,.15); color:var(--code);}
+  .bandnote{text-align:center; margin-top:.9rem; color:var(--muted); font-size:.85rem;}
+
+  /* method tree */
+  .tree{display:flex; flex-direction:column; gap:12px; margin-top:1.4rem; width:100%;}
+  .node{background:#fff; border:1px solid var(--border); border-radius:12px; padding:14px 18px;}
+  .node.core{border-left:4px solid var(--accent);}
+  .node.enab{border-left:4px solid var(--accent2);}
+  .node .hd{display:flex; align-items:center; flex-wrap:wrap; gap:10px;}
+  .node .id{font-weight:800; color:var(--h); font-size:1.05rem;}
+  .node .nm{color:var(--body); font-size:1rem; font-weight:600;}
+  .tag{font-size:.68rem; font-weight:800; letter-spacing:.05em; padding:2px 9px; border-radius:999px; text-transform:uppercase;}
+  .tag.stage{background:var(--code-bg); color:var(--code);}
+  .tag.core{background:var(--accent); color:#fff;}
+  .tag.enab{background:var(--accent2); color:var(--code);}
+  .subs{display:flex; flex-wrap:wrap; gap:7px; margin-top:10px;}
+  .sub-chip{font-size:.8rem; color:var(--muted); background:var(--bg); border:1px solid var(--border); border-radius:7px; padding:4px 10px;}
+  .node .note{color:var(--muted); font-size:.82rem; margin-top:6px;}
+
+  /* funnel */
+  .funnel{display:flex; flex-direction:column; gap:10px; margin-top:1.6rem; width:100%; max-width:760px;}
+  .frow{display:flex; align-items:center; gap:16px;}
+  .fbox{background:#fff; border:1px solid var(--border); border-radius:12px; padding:14px 18px; flex:1;}
+  .fbox .ft{font-weight:700; color:var(--h);}
+  .fbox .fs{color:var(--muted); font-size:.85rem; margin-top:3px; line-height:1.5;}
+  .fbox.pop{border-color:var(--accent); background:rgba(204,120,92,.06);}
+  .fbox.final{background:var(--accent); border-color:var(--accent);}
+  .fbox.final .ft,.fbox.final .fs{color:#fff;}
+  .fdown{text-align:center; color:var(--border); font-size:1.4rem; line-height:.6;}
+  .flab{min-width:96px; text-align:right; font-size:.72rem; font-weight:800; letter-spacing:.05em; color:var(--muted); text-transform:uppercase;}
+  code{background:var(--code-bg); color:var(--code); padding:1px 6px; border-radius:5px; font-size:.92em;}
+
+  @media(max-width:780px){
+    .pipe,.scaleband{grid-template-columns:1fr 1fr;}
+    h1{font-size:2rem;} h2{font-size:1.5rem;}
+    .arrowR{display:none;}
+  }
+</style>
+</head>
+<body>
+<nav class="dots">
+  <a href="#s1" class="active"></a><a href="#s2"></a><a href="#s3"></a><a href="#s4"></a>
+</nav>
+
+<div class="deck">
+
+  <!-- 1. Cover -->
+  <section id="s1">
+    <div class="wrap">
+      <div class="kicker">Method 구조 확인 · Ch.2</div>
+      <h1>관상동맥 파열위험지표 정의<br>및 민감도 분석</h1>
+      <p class="sub">아래는 <b>Methods(Ch.2)의 골격</b>입니다 — 4단계 파이프라인으로 구성됩니다.<br>
+      "이 구조가 맞는지" 확인을 부탁드립니다.</p>
+      <div class="meta">
+        <b>저자</b> 김세혁 &nbsp;·&nbsp; <b>지도교수</b> 김현진 교수님<br>
+        <b>소속</b> KAIST · CBML &nbsp;·&nbsp; <b>분야</b> Computational biomechanics<br>
+        <b>투고 목표</b> Computers in Biology and Medicine
+      </div>
+    </div>
+    <div class="hint"><span>스크롤로 넘기기</span><span class="arrow">↓</span></div>
+  </section>
+
+  <!-- 2. Four-stage pipeline -->
+  <section id="s2">
+    <div class="wrap">
+      <div class="kicker">한눈에 · Four-stage framework</div>
+      <h2>분석은 4단계로 구성됩니다</h2>
+      <p class="sub" style="margin-top:.6rem">FSI는 데이터를 만드는 <b>도구(enabler)</b>이고, 핵심 기여는 <b>취약성지수(VI) 정립</b>입니다.</p>
+
+      <div class="pipe">
+        <div class="stage">
+          <span class="badge enabler">Enabler</span>
+          <div class="num">Stage 1</div>
+          <div class="t">Data Generation</div>
+          <div class="s">비용효율 맥동 FSI로 1,000 케이스 시뮬레이션 → PSS, ΔPSS</div>
+          <span class="sec">§2.1 + §2.2</span>
+          <span class="arrowR">→</span>
+        </div>
+        <div class="stage core">
+          <span class="badge core">★ 핵심 기여</span>
+          <div class="num">Stage 2</div>
+          <div class="t">VI Formulation</div>
+          <div class="s">stress/strength 기반 취약성지수 후보 정의 → 7기준 선별</div>
+          <span class="sec">§2.3</span>
+          <span class="arrowR">→</span>
+        </div>
+        <div class="stage">
+          <div class="num">Stage 3</div>
+          <div class="t">GPR Surrogate</div>
+          <div class="s">확정된 VI에 대해 입력→VI 매핑 surrogate 학습</div>
+          <span class="sec">§2.4.1</span>
+          <span class="arrowR">→</span>
+        </div>
+        <div class="stage">
+          <div class="num">Stage 4</div>
+          <div class="t">Sobol SA</div>
+          <div class="s">1차·전차 지수로 인자군 민감도 분해</div>
+          <span class="sec">§2.4.2</span>
+        </div>
+      </div>
+
+      <div class="scaleband">
+        <div class="band per">per-case ×1,000</div>
+        <div class="band pop">per-case → population</div>
+        <div class="band pop">population</div>
+        <div class="band pop">population</div>
+      </div>
+      <p class="bandnote">⟶ per-case에서 population으로의 전환은 <b>Stage 2 (§2.3.4 선별)</b>에서 일어납니다.</p>
+    </div>
+    <div class="hint"><span class="arrow">↓</span></div>
+  </section>
+
+  <!-- 3. Method tree -->
+  <section id="s3">
+    <div class="wrap">
+      <div class="kicker">Ch.2 Methods · 섹션 구조</div>
+      <h2>Methods 섹션 구성</h2>
+
+      <div class="tree">
+        <div class="node enab">
+          <div class="hd">
+            <span class="id">§2.1</span><span class="nm">Cost-Effective Pulsatile FSI Framework</span>
+            <span class="tag enab">Stage-1 enabler</span>
+          </div>
+          <div class="subs">
+            <span class="sub-chip">2.1.1 Framework</span>
+            <span class="sub-chip">2.1.2 Governing equations</span>
+            <span class="sub-chip">2.1.3 Validation</span>
+          </div>
+          <div class="note">선행 검증 논문 [Kim et al., under review]에서 가져온 도구 — governing eq.는 재현성 위해 수록, validation은 요약·인용.</div>
+        </div>
+
+        <div class="node">
+          <div class="hd">
+            <span class="id">§2.2</span><span class="nm">Dataset Generation</span>
+            <span class="tag stage">Stage 1</span>
+          </div>
+          <div class="subs">
+            <span class="sub-chip">2.2.1 Input parameters (+CCTA)</span>
+            <span class="sub-chip">2.2.2 Geometry & meshing</span>
+            <span class="sub-chip">2.2.3 Boundary conditions</span>
+            <span class="sub-chip">2.2.4 Computational details</span>
+            <span class="sub-chip">2.2.5 Output metrics (PSS, ΔPSS)</span>
+          </div>
+          <div class="note">이상화 모델 — LAP/CP 두 표현형, FC 두께 균일 가정.</div>
+        </div>
+
+        <div class="node core">
+          <div class="hd">
+            <span class="id">§2.3</span><span class="nm">Vulnerability Index Formulation</span>
+            <span class="tag stage">Stage 2</span><span class="tag core">★ 핵심 기여</span>
+          </div>
+          <div class="subs">
+            <span class="sub-chip">2.3.1 Fibrous-cap strength surrogate</span>
+            <span class="sub-chip">2.3.2 VI family (6 candidates)</span>
+            <span class="sub-chip">2.3.3 Rupture location index</span>
+            <span class="sub-chip">2.3.4 7기준 선별 → VI1, VI2 확정</span>
+          </div>
+        </div>
+
+        <div class="node">
+          <div class="hd">
+            <span class="id">§2.4</span><span class="nm">Statistical Analysis</span>
+            <span class="tag stage">Stages 3–4</span>
+          </div>
+          <div class="subs">
+            <span class="sub-chip">2.4.1 Surrogate model — GPR</span>
+            <span class="sub-chip">2.4.2 Sobol sensitivity analysis</span>
+          </div>
+          <div class="note">population-level — 확정된 VI1, VI2에 대해서만 수행.</div>
+        </div>
+      </div>
+    </div>
+    <div class="hint"><span class="arrow">↓</span></div>
+  </section>
+
+  <!-- 4. per-case -> population transition -->
+  <section id="s4">
+    <div class="wrap" style="display:flex; flex-direction:column; align-items:center;">
+      <div class="kicker" style="align-self:flex-start">전환 지점 · per-case → population</div>
+      <h2 style="align-self:flex-start">선별은 Methods 안에서 끝납니다</h2>
+      <p class="sub" style="align-self:flex-start; margin-top:.5rem">VI 확정(6→2)은 §2.3.4에서 결정되고, Results §3.1은 기준별 <i>근거(why)</i>만 담습니다.</p>
+
+      <div class="funnel">
+        <div class="frow"><span class="flab">per-case</span>
+          <div class="fbox"><div class="ft">1,000 케이스 × 6 VI 후보</div><div class="fs">표현형별(LAP / CP) 각 1,000 — <code>(input, VI1..VI6)</code></div></div>
+        </div>
+        <div class="fdown">▼</div>
+        <div class="frow"><span class="flab">population</span>
+          <div class="fbox pop"><div class="ft">7기준 부호일치 선별 (6 → 2)</div><div class="fs">1,000 케이스 전체의 상관 부호로 임상 방향 검증 → population-level 결정</div></div>
+        </div>
+        <div class="fdown">▼</div>
+        <div class="frow"><span class="flab">확정</span>
+          <div class="fbox final"><div class="ft">VI1 = ΔPSS / E_FC<sup>0.5</sup>&nbsp;&nbsp;·&nbsp;&nbsp;VI2 = ΔPSS / E_FC<sup>1.0</sup></div><div class="fs">두 지표를 최종 채택 (Methods에서 확정)</div></div>
+        </div>
+        <div class="fdown">▼</div>
+        <div class="frow"><span class="flab">Stage 3–4</span>
+          <div class="fbox"><div class="ft">GPR surrogate → Sobol SA</div><div class="fs">유효쌍 LAP 784 / CP 727 으로 학습 → S₁, S_total 민감도 분해</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const dots=[...document.querySelectorAll('.dots a')];
+  const secs=[...document.querySelectorAll('section')];
+  const deck=document.querySelector('.deck');
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting){
+      const i=secs.indexOf(e.target);
+      dots.forEach(d=>d.classList.remove('active'));
+      if(dots[i])dots[i].classList.add('active');
+    }});
+  },{root:deck,threshold:.6});
+  secs.forEach(s=>io.observe(s));
+</script>
+</body>
+</html>
