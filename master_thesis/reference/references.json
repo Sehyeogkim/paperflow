@@ -51,10 +51,12 @@
     "year": 1993,
     "pages": "1179-1187",
     "doi": "10.1161/01.CIR.87.4.1179",
-    "used_for": "ch2 2.2.3 / 2.3.2 — coronary wall material property source; linear-elastic adoption in vascular biomechanics",
+    "used_for": "ch2 2.2.3 / 2.3.2 — coronary wall material property source; linear-elastic adoption in vascular biomechanics | ch3 3.1.4 — peak (cap) circumferential/structural stress (PSS) as a predictor of static/monotonic plaque rupture.",
     "source_location": "Snapshot_based_Framework_ver2.pdf, p.9 (material properties) and bibliography ref [13], p.30",
     "verbatim_quote": "the vessel wall was modeled with a Young's modulus of E = 1.0 × 10^7 dynes/cm2, Poisson's ratio nu = 0.45, and density rho_s = 1.1 g/cm3 [13, 33, 34, 35].",
-    "verification_status": "bib-only — transcribed from parent PDF reference list"
+    "verification_status": "bib-only — transcribed from parent PDF reference list",
+    "verbatim_quote_ch3_pss": "The maximum circumferential stress in plaques that ruptured was significantly higher than maximum stress in stable specimens (4,091 +/- 1,199 versus 1,444 +/- 485 mm Hg, p < 0.0001). In seven of 12 lethal lesions (58%), rupture occurred in the region of maximum circumferential stress.",
+    "source_location_ch3": "Abstract (PubMed/AHA, PMID 8462145)"
   },
   {
     "key": "hsu2014",
@@ -222,9 +224,1564 @@
     "pages": "3195-3209",
     "doi": "10.1007/s10439-010-0083-6",
     "pmid": "20559732",
-    "used_for": "ch2 Method (BC) — canonical citation for patient-specific coronary outlet boundary conditions: a lumped-parameter coronary vascular-bed model in which coronary flow is driven by an intramyocardial-pressure source (left/right ventricular pressure), producing the characteristic diastolic-dominant coronary flow. Cite as the source for our coronary-outlet BC strategy.",
+    "used_for": "ch2 Method (BC) — canonical citation for patient-specific coronary outlet boundary conditions: a lumped-parameter coronary vascular-bed model in which coronary flow is driven by an intramyocardial-pressure source (left/right ventricular pressure), producing the characteristic diastolic-dominant coronary flow. Cite as the source for our coronary-outlet BC strategy. ALSO the primary source credited (by the SimVascular community) for the 3-element Windkessel (RCR) outlet resistance split Rp/Rd = 0.09/0.91 (~1/10): proximal resistance ~9% and distal ~91% of the total outlet resistance for a healthy patient.",
     "source_location": "Abstract (verbatim, via PubMed PMID 20559732)",
     "verbatim_quote": "For each coronary outlet, a lumped parameter coronary vascular bed model was assigned to represent the impedance of the downstream coronary vascular networks absent in the computational domain. The intramyocardial pressure was represented with either the left or right ventricular pressure depending on the location of the coronary arteries.",
-    "verification_status": "verified — DOI 10.1007/s10439-010-0083-6 and PMID 20559732 confirmed via CrossRef, Springer, Semantic Scholar, and Google Scholar; full bibliographic record (vol 38, issue 10, pp 3195-3209, 2010) cross-checked. Abstract quote read verbatim from PubMed abstract. Springer full text paywalled (redirects to auth); 'diastolic-dominant' phrasing is not in the abstract verbatim but is the physiological consequence of the intramyocardial-pressure source described. access=abstract_only; confidence=high"
+    "verification_status": "verified — DOI 10.1007/s10439-010-0083-6 and PMID 20559732 confirmed via CrossRef, Springer, Semantic Scholar, and Google Scholar; full bibliographic record (vol 38, issue 10, pp 3195-3209, 2010) cross-checked. Abstract quote read verbatim from PubMed abstract. Springer full text paywalled (redirects to auth); 'diastolic-dominant' phrasing is not in the abstract verbatim but is the physiological consequence of the intramyocardial-pressure source described. access=abstract_only; confidence=high",
+    "supports": [
+      {
+        "our_claim": "In a 3-element Windkessel (RCR) model of the coronary/aortic outlet, the proximal-to-distal resistance ratio is set to Rp/Rd ~ 1/10 (a physiological constraint): proximal resistance ~9% (0.09) and distal ~91% (0.91) of the total outlet peripheral resistance. Representative values Rp ~ 140, Rd ~ 1415 follow this split.",
+        "our_location": "Appendix B, B.1 step 1 (Rp/Rd=1/10 제약)",
+        "source_location": {
+          "section": "Body (lumped-parameter / outlet boundary-condition methodology). NOTE: the explicit 0.09/0.91 numeric split is in Kim 2010 paywalled full text; the verbatim sentence recorded below was read from a SimVascular FSI paper (Verardi et al., PMC9196314, 'Patient-specific fluid-structure simulations of anomalous aortic origin of right coronary arteries'), Appendix 1, which states the split and cites Kim 2010 (their ref [22]) as its source.",
+          "paragraph": "Appendix 1 (aorta/outlet boundary-condition description) of the citing paper PMC9196314",
+          "page": "n/a (online HTML)"
+        },
+        "quote": "The total resistance was split such that 9% was assigned to the proximal resistance and 91% was assigned to the distal resistance (representative of a healthy patient).",
+        "access": "full_text_of_citing_paper",
+        "confidence": "high"
+      }
+    ]
+  },
+  {
+    "key": "bentzon2014",
+    "number": 16,
+    "bib": {
+      "type": "article",
+      "authors": "Jacob Fog Bentzon, Fumiyuki Otsuka, Renu Virmani, Erling Falk",
+      "year": 2014,
+      "title": "Mechanisms of plaque formation and rupture",
+      "venue": "Circulation Research, 114(12), 1852-1866",
+      "doi": "10.1161/CIRCRESAHA.114.302721",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24902970/"
+    },
+    "supports": [
+      {
+        "our_claim": "Atherosclerotic plaque = lesion formed by accumulation of lipid core/fibrous tissue/calcification in the arterial intima.",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "Abstract",
+          "paragraph": "1 (sentence 3)",
+          "page": "1852"
+        },
+        "quote": "Atherosclerosis is a lipoprotein-driven disease that leads to plaque formation at specific sites of the arterial tree through intimal inflammation, necrosis, fibrosis, and calcification.",
+        "access": "abstract_only",
+        "confidence": "high"
+      },
+      {
+        "our_claim": "Plaque narrows the lumen, reducing myocardial blood flow, leading to myocardial ischemia.",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "Abstract",
+          "paragraph": "1 (sentence 1)",
+          "page": "1852"
+        },
+        "quote": "Atherosclerosis causes clinical disease through luminal narrowing or by precipitating thrombi that obstruct blood flow to the heart (coronary heart disease), brain (ischemic stroke), or lower extremities (peripheral vascular disease).",
+        "access": "abstract_only",
+        "confidence": "high"
+      },
+      {
+        "our_claim": "Plaque rupture exposes the thrombogenic necrotic core to blood, causing platelet aggregation/thrombus and vessel occlusion.",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "Abstract",
+          "paragraph": "1 (sentences 4-5)",
+          "page": "1852"
+        },
+        "quote": "After decades of indolent progression, such plaques may suddenly cause life-threatening coronary thrombosis presenting as an acute coronary syndrome. Most often, the culprit morphology is plaque rupture with exposure of highly thrombogenic, red cell-rich necrotic core material.",
+        "access": "abstract_only",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-17",
+      "double_checked": "2026-06-17",
+      "status": "verified"
+    },
+    "_notes": "DOI 10.1161/CIRCRESAHA.114.302721 and PMID 24902970 confirmed via PubMed. AHA full text returned HTTP 403 to WebFetch; all three quotes read verbatim from the PubMed-hosted abstract (PMID 24902970). access=abstract_only. The abstract is dense and directly supports all three Intro §1.1 claims, so abstract-only is fully adequate here."
+  },
+  {
+    "key": "WHO2024Top10",
+    "number": 17,
+    "bib": {
+      "type": "report",
+      "authors": "World Health Organization",
+      "year": 2024,
+      "title": "The top 10 causes of death (Fact sheet, based on WHO Global Health Estimates 2021)",
+      "venue": "World Health Organization, Geneva",
+      "doi": "",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/the-top-10-causes-of-death"
+    },
+    "supports": [
+      {
+        "our_claim": "Ischemic (coronary) heart disease is the single leading cause of death worldwide, ~9.1 million deaths/year (2021).",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "The leading causes of death",
+          "paragraph": "Ischaemic heart disease entry",
+          "page": "web fact sheet"
+        },
+        "quote": "The world's biggest killer is ischaemic heart disease, responsible for 13% of the world's total deaths. Since 2000, the largest increase in deaths has been for this disease, rising by 2.7 million to 9.1 million deaths in 2021.",
+        "access": "full_text",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-17",
+      "double_checked": "2026-06-17",
+      "status": "verified"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-17 by independent live fetch of https://www.who.int/news-room/fact-sheets/detail/the-top-10-causes-of-death. Both stored sentences appear VERBATIM on the current page: 'The world's biggest killer is ischaemic heart disease, responsible for 13% of the world's total deaths.' and 'Since 2000, the largest increase in deaths has been for this disease, rising by 2.7 million to 9.1 million deaths in 2021.' Figures independently re-confirmed: 9.1 million deaths, 2021, 13% of total deaths, 2.7M increase since 2000 — all live. Rename who_cvd_burden -> WHO2024Top10 confirmed CONSISTENT across json + bib (no residual 'who_cvd_burden' anywhere). MINOR: bib note says 'Updated 7 August 2024'; this is the fact-sheet revision underlying the GHE-2021 figures and is fine, though the live page may carry a later revision date — not a citation problem. Quote supports our_claim (IHD = leading cause, ~9.1M/yr 2021) cleanly.",
+    "_notes": "Authoritative global figure for the [OOO] placeholder: ischaemic heart disease = world's leading cause of death, 9.1 million deaths in 2021 (13% of total deaths), per WHO Global Health Estimates 2021 as reported in the WHO 'Top 10 causes of death' fact sheet. Quote read verbatim from the WHO fact sheet page. Fill placeholder as '9.1 million deaths (2021)'. No DOI (WHO web fact sheet); URL is the stable citation."
+  },
+  {
+    "key": "virmani_vulnerable_plaque",
+    "number": 18,
+    "bib": {
+      "type": "article",
+      "authors": "Renu Virmani, Allen P. Burke, Andrew Farb, Frank D. Kolodgie",
+      "year": 2006,
+      "title": "Pathology of the vulnerable plaque",
+      "venue": "Journal of the American College of Cardiology, 47(8 Suppl), C13-C18",
+      "doi": "10.1016/j.jacc.2005.10.065",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16631505/"
+    },
+    "supports": [
+      {
+        "our_claim": "A fibrous cap separates the necrotic/lipid core from the arterial lumen; thin fibrous caps characterize rupture-prone vulnerable plaque.",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "Abstract",
+          "paragraph": "1",
+          "page": "C13"
+        },
+        "quote": "The non-thrombosed lesion that most resembles the acute plaque rupture is the thin cap fibroatheroma (TCFA), which is characterized by a necrotic core with an overlying fibrous cap measuring <65 microm, containing rare smooth muscle cells but numerous macrophages.",
+        "access": "abstract_only",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-17",
+      "double_checked": "2026-06-17",
+      "status": "verified"
+    },
+    "double_check_note": "Re-verified the source SWAP (Virmani 2000 ATVB -> Virmani 2006 JACC). Full verbatim abstract of PMID 16631505 re-fetched: stored quote ('The non-thrombosed lesion that most resembles the acute plaque rupture is the thin cap fibroatheroma (TCFA), which is characterized by a necrotic core with an overlying fibrous cap measuring <65 microm, containing rare smooth muscle cells but numerous macrophages.') appears VERBATIM as sentence 5 of the abstract. Bib metadata confirmed: Virmani, Burke, Farb, Kolodgie; 2006; J Am Coll Cardiol 47(8 Suppl):C13-18; DOI 10.1016/j.jacc.2005.10.065. key/bib/title/JSON all consistently reference the 2006 paper (no residual 2000 ATVB metadata in the active fields). Quote directly supports the TCFA / thin-fibrous-cap vulnerable-plaque claim.",
+    "_notes": "Source selection: the task suggested Virmani et al. 2000 ATVB 20(5):1262-1275 (PMID 10807742, DOI 10.1161/01.atv.20.5.1262, EXISTS and confirmed via PubMed/AHA), but that record has NO abstract in PubMed ('No abstract available') and the AHA full text is paywalled/403, so no verbatim quote could be captured from it. Switched to the BEST verifiable Virmani source on the SAME concept: Virmani, Burke, Farb, Kolodgie (2006) 'Pathology of the vulnerable plaque', JACC 47(8 Suppl):C13-C18, DOI 10.1016/j.jacc.2005.10.065, PMID 16631505 — same authors, same TCFA/vulnerable-plaque concept, with a verbatim abstract quote (read from PubMed PMID 16631505) that directly states the thin (<65 microm) fibrous cap overlying the necrotic core defines the rupture-prone (thin-cap fibroatheroma) lesion. access=abstract_only; confidence=high. If the author prefers the 2000 classic, cite virmani2000 alongside but note no verbatim quote is available without library full-text access."
+  },
+  {
+    "key": "WHO2025CVD",
+    "bib": {
+      "type": "misc",
+      "authors": "World Health Organization",
+      "year": 2025,
+      "title": "Cardiovascular diseases (CVDs)",
+      "venue": "World Health Organization, Geneva (Fact sheet, updated 7 May 2025)",
+      "doi": "",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds)"
+    },
+    "supports": [
+      {
+        "our_claim": "The coronary arteries are the blood vessels that supply (the heart muscle of) the heart.",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "Overview",
+          "paragraph": "types of CVD",
+          "page": "web fact sheet"
+        },
+        "quote": "coronary heart disease – a disease of the blood vessels supplying the heart muscle",
+        "access": "full_text",
+        "confidence": "high"
+      },
+      {
+        "our_claim": "Plaque/fatty deposits build up on the inner walls of the vessels, narrowing them and blocking blood flow.",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "Overview",
+          "paragraph": "cause of heart attacks/strokes",
+          "page": "web fact sheet"
+        },
+        "quote": "a build-up of fatty deposits on the inner walls of the blood vessels that supply the heart or brain",
+        "access": "full_text",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-17",
+      "double_checked": "2026-06-17",
+      "status": "verified"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-17 by independent live fetch of the WHO 'Cardiovascular diseases (CVDs)' fact sheet. Both quotes appear VERBATIM in the Overview: 'coronary heart disease – a disease of the blood vessels supplying the heart muscle' and 'a build-up of fatty deposits on the inner walls of the blood vessels that supply the heart or brain'. Both support our_claim cleanly (coronary arteries = vessels supplying the heart muscle; fatty-deposit build-up on inner vessel walls). MINOR METADATA NOTE: the live page now reports 'Last Updated: 31 July 2025', whereas json venue and bib note say 'Updated 7 May 2025'. WHO revised the fact sheet after the hunter captured it; the quotes are unchanged and still live, but the citation date is stale by one revision. Not a quote problem — optionally update the cited revision date to 31 July 2025.",
+    "_notes": "Quotes read verbatim from the live WHO 'Cardiovascular diseases (CVDs)' fact sheet, Overview section, re-fetched 2026-06-17. No DOI (WHO web fact sheet); URL is the stable citation. The two quotes back (i) coronary arteries = vessels supplying the heart muscle and (ii) fatty-deposit build-up on the inner vessel walls blocking flow."
+  },
+  {
+    "key": "otsuka2016",
+    "bib": {
+      "type": "article",
+      "authors": "Fumiyuki Otsuka, Satoshi Yasuda, Teruo Noguchi, Hatsue Ishibashi-Ueda",
+      "year": 2016,
+      "title": "Pathology of coronary atherosclerosis and thrombosis",
+      "venue": "Cardiovascular Diagnosis and Therapy, 6(4), 396-408",
+      "doi": "10.21037/cdt.2016.06.01",
+      "url": "https://cdt.amegroups.org/article/view/10916/html"
+    },
+    "supports": [
+      {
+        "our_claim": "An atherosclerotic plaque is an intimal accumulation comprising a (lipid) necrotic core, surrounding fibrous tissue, and calcification.",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "Fibroatheroma / plaque progression",
+          "paragraph": "fibroatheroma & fibrocalcific plaque",
+          "page": "~398-399"
+        },
+        "quote": "This lesion is characterized by the presence of necrotic core which is generated by infiltration of macrophages into lipid pools and is encapsulated by surrounding fibrous tissue. | The process of plaque progression is generally accompanied by the progression of calcification, and the necrotic core and the surrounding tissue may be eventually calcified to form fibrocalcific plaques.",
+        "access": "full_text",
+        "confidence": "high"
+      },
+      {
+        "our_claim": "A thin-cap fibroatheroma (TCFA) is a large necrotic core with an overlying thin fibrous cap (<65 µm).",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "Thin-cap fibroatheroma (TCFA)",
+          "paragraph": "TCFA definition",
+          "page": "~400"
+        },
+        "quote": "TCFA is characterized by a relatively large necrotic core with an overlying thin fibrous cap measuring <65 µm typically containing numerous macrophages",
+        "access": "full_text",
+        "confidence": "high"
+      },
+      {
+        "our_claim": "Plaque rupture is a disrupted fibrous cap with an overlying luminal thrombus.",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "Plaque rupture",
+          "paragraph": "plaque rupture definition",
+          "page": "~401"
+        },
+        "quote": "Plaque rupture is characterized by the presence of a luminal thrombus overlying a thin disrupted fibrous cap",
+        "access": "full_text",
+        "confidence": "high"
+      },
+      {
+        "our_claim": "After rupture, the necrotic core contents are exposed to flowing blood and lipids/tissue factor activate the coagulation cascade.",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "Plaque rupture",
+          "paragraph": "thrombus formation",
+          "page": "~401"
+        },
+        "quote": "Once the fibrous cap ruptures and the necrotic core contents are exposed to the flowing blood in the lumen, coagulation cascade is activated in response to the exposure of lipids and tissue factors (TF)",
+        "access": "full_text",
+        "confidence": "high"
+      },
+      {
+        "our_claim": "Causes of coronary thrombus break down as: plaque rupture ~55-65%, erosion ~30-35%, calcified nodule ~2-7%.",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "Coronary thrombosis",
+          "paragraph": "frequency of thrombus causes",
+          "page": "~401-402"
+        },
+        "quote": "The frequency of the coronary lesions with thrombi has been reported to be 55–65% for ruptures, 30–35% for erosions, and 2–7% with calcified nodules",
+        "access": "full_text",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-17",
+      "double_checked": "2026-06-17",
+      "status": "verified"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-17 by independent fetch of the open-access full text (https://cdt.amegroups.org/article/view/10916/html). ALL FIVE quotes (a-e) confirmed VERBATIM, exactly matching the stored strings character-for-character including the '<65 µm', '55–65% / 30–35% / 2–7%' figures, and the two-sentence (a) compound quote joined by ' | '. Each quote genuinely supports its our_claim with no overreach (necrotic core + fibrous tissue + calcification = plaque; TCFA = large necrotic core + <65µm cap; plaque rupture = luminal thrombus over disrupted cap; coagulation cascade on core exposure; thrombus-cause frequency breakdown). Bib metadata (Otsuka, Yasuda, Noguchi, Ishibashi-Ueda; 2016; Cardiovasc Diagn Ther 6(4):396-408; DOI 10.21037/cdt.2016.06.01) consistent json/bib. access=full_text; confidence=high.",
+    "_notes": "OPEN ACCESS full text (DOI 10.21037/cdt.2016.06.01) read verbatim from https://cdt.amegroups.org/article/view/10916/html. All five quotes captured verbatim from the full text. Page numbers approximate (article spans p.396-408). access=full_text; confidence=high for all five."
+  },
+  {
+    "key": "virmani2000",
+    "bib": {
+      "type": "article",
+      "authors": "Renu Virmani, Frank D. Kolodgie, Allen P. Burke, Andrew Farb, Stephen M. Schwartz",
+      "year": 2000,
+      "title": "Lessons from sudden coronary death: a comprehensive morphological classification scheme for atherosclerotic lesions",
+      "venue": "Arteriosclerosis, Thrombosis, and Vascular Biology, 20(5), 1262-1275",
+      "doi": "10.1161/01.ATV.20.5.1262",
+      "pmid": "10807742",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/10807742/"
+    },
+    "supports": [
+      {
+        "our_claim": "Plaque rupture is a fibrous cap disruption with exposure of the necrotic core and an overlying luminal thrombus.",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "n/a",
+          "paragraph": "n/a",
+          "page": "1262-1275"
+        },
+        "quote": null,
+        "access": "abstract_only",
+        "confidence": "low"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-17",
+      "double_checked": "2026-06-17",
+      "status": "weak"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-17. METADATA IS REAL AND CONFIRMED via independent PubMed fetch: title 'Lessons from sudden coronary death: a comprehensive morphological classification scheme for atherosclerotic lesions'; authors R Virmani, F D Kolodgie, A P Burke, A Farb, S M Schwartz; Arterioscler Thromb Vasc Biol 2000;20(5):1262-75; DOI 10.1161/01.atv.20.5.1262; PMID 10807742 — all match json/bib. HOWEVER the supporting quote is null: PubMed explicitly states 'No abstract available' (re-confirmed 2026-06-17) and AHA full text is paywalled, so NO verbatim sentence could be confirmed at any stated source_location. Therefore this entry CANNOT be 'verified' — set to 'weak'. The supporting quote needs library full-text access. The SAME plaque-rupture claim is already covered by a VERIFIED verbatim quote in otsuka2016 ('Plaque rupture is characterized by the presence of a luminal thrombus overlying a thin disrupted fibrous cap'), so the Intro §1.1 claim itself is not at risk. DO NOT fabricate any quote for this entry.",
+    "_notes": "Metadata/DOI/PMID confirmed REAL; supporting quote unverifiable without library full-text (PubMed 'No abstract available', AHA paywalled). quote=null; access=abstract_only; confidence=low. Classic citation kept for provenance; otsuka2016 carries the verified verbatim quote for the same claim."
+  },
+  {
+    "key": "lee2019",
+    "bib": {
+      "type": "article",
+      "authors": "Kwan Yong Lee, Kiyuk Chang",
+      "year": 2019,
+      "title": "Understanding Vulnerable Plaques: Current Status and Future Directions",
+      "venue": "Korean Circulation Journal, 49(12), 1115-1122",
+      "doi": "10.4070/kcj.2019.0211",
+      "url": "https://e-kcj.org/DOIx.php?id=10.4070/kcj.2019.0211"
+    },
+    "supports": [
+      {
+        "our_claim": "Plaque rupture with superimposed coronary thrombosis is the main pathologic mechanism of acute coronary syndrome / acute myocardial infarction.",
+        "our_location": "Intro §1.1",
+        "source_location": {
+          "section": "Abstract",
+          "paragraph": "1",
+          "page": "1115"
+        },
+        "quote": "The main cause of acute myocardial infarction is plaque rupture accompanied by superimposed coronary thrombosis.",
+        "access": "full_text",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-17",
+      "double_checked": "2026-06-17",
+      "status": "verified"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-17 by independent fetch of https://e-kcj.org/DOIx.php?id=10.4070/kcj.2019.0211. QUOTE CONFIRMED VERBATIM in the Abstract: 'The main cause of acute myocardial infarction is plaque rupture accompanied by superimposed coronary thrombosis.' — supports our_claim cleanly, no overreach. *** METADATA ERROR FOUND AND CORRECTED: the stored authors were WRONG — json/bib previously listed 'Sang-Eun Lee, Hyuk-Jae Chang'. The actual authors per the live journal page (and the Catholic University of Korea publication record) are 'Kwan Yong Lee, Kiyuk Chang'. Corrected in BOTH references.json (authors -> 'Kwan Yong Lee, Kiyuk Chang') and references.bib (author -> {Lee, Kwan Yong and Chang, Kiyuk}). Title/journal/2019/49(12)/1115-1122/DOI all confirmed correct. After correction the entry is clean.",
+    "_notes": "OPEN ACCESS (DOI 10.4070/kcj.2019.0211). Abstract quote read verbatim from https://e-kcj.org/DOIx.php?id=10.4070/kcj.2019.0211. Quote directly supports plaque rupture (with superimposed coronary thrombosis) as the main mechanism of acute MI / ACS. access=full_text; confidence=high. NOTE: authors corrected to Kwan Yong Lee & Kiyuk Chang on 2026-06-17 (were stored incorrectly as Sang-Eun Lee & Hyuk-Jae Chang)."
+  },
+  {
+    "key": "stone2011prospect",
+    "bib": {
+      "type": "article",
+      "authors": "Gregg W. Stone, Akiko Maehara, Alexandra J. Lansky, et al.",
+      "year": 2011,
+      "title": "A prospective natural-history study of coronary atherosclerosis (PROSPECT)",
+      "venue": "New England Journal of Medicine, 364(3), 226-235",
+      "doi": "10.1056/NEJMoa1002358",
+      "pmid": "21247313",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21247313/"
+    },
+    "supports": [
+      {
+        "our_claim": "Degree-of-stenosis / plaque-burden sampling range (Table 1 input variable); a plaque burden of >=70% is the clinically established high-risk threshold.",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "Abstract (Results)",
+          "paragraph": "results",
+          "page": "226"
+        },
+        "quote": "plaque burden of 70% or greater (hazard ratio, 5.03; 95% confidence interval [CI], 2.51 to 10.11; P<0.001)",
+        "access": "abstract_only",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "verified"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18 via independent fetch of PubMed PMID 21247313. Metadata confirmed: Stone GW, Maehara A, Lansky AJ, de Bruyne B, Cristea E, Mintz GS, et al.; N Engl J Med 2011;364(3):226-35; DOI 10.1056/NEJMoa1002358. Stored quote 'plaque burden of 70% or greater (hazard ratio, 5.03; 95% confidence interval [CI], 2.51 to 10.11; P<0.001)' appears VERBATIM in the abstract. Supports the >=70% plaque-burden high-risk threshold for the Table-1 stenosis/plaque-burden range cleanly.",
+    "_notes": "DOI 10.1056/NEJMoa1002358 and PMID 21247313 confirmed via PubMed. Quote read verbatim from PubMed abstract. access=abstract_only."
+  },
+  {
+    "key": "brosh2005",
+    "bib": {
+      "type": "article",
+      "authors": "David Brosh, Stuart T. Higano, Ryan J. Lennon, David R. Holmes Jr., Amir Lerman",
+      "year": 2005,
+      "title": "Effect of lesion length on fractional flow reserve in intermediate coronary lesions",
+      "venue": "American Heart Journal, 150(2), 338-343",
+      "doi": "10.1016/j.ahj.2004.09.007",
+      "pmid": "16086940",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16086940/"
+    },
+    "supports": [
+      {
+        "our_claim": "Lesion-length sampling range (Table 1 input variable); a lesion length >=10 mm is the cutoff that best predicts a hemodynamically significant lesion (FFR < 0.75).",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "Abstract (Results)",
+          "paragraph": "results",
+          "page": "338"
+        },
+        "quote": "an LL > or = 10 mm was identified as the best cutoff value for predicting an FFR < 0.75",
+        "access": "abstract_only",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "verified"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18 via independent fetch of PubMed PMID 16086940. Metadata confirmed: Brosh D, Higano ST, Lennon RJ, Holmes DR Jr, Lerman A; Am Heart J 2005;150(2):338-43; DOI 10.1016/j.ahj.2004.09.007. Full abstract read; stored quote 'an LL > or = 10 mm was identified as the best cutoff value for predicting an FFR < 0.75' appears VERBATIM (sensitivity 95%, specificity 66%). Supports the lesion-length sampling range cleanly.",
+    "_notes": "DOI 10.1016/j.ahj.2004.09.007 and PMID 16086940 confirmed via PubMed. Quote read verbatim from PubMed abstract. access=abstract_only."
+  },
+  {
+    "key": "wang2015ivus",
+    "bib": {
+      "type": "article",
+      "authors": "Liang Wang, Zheyang Wu, Chun Yang, Jie Zheng, Richard Bach, David Muccigrosso, Kristen Billiar, Akiko Maehara, Gary S. Mintz, Dalin Tang",
+      "year": 2015,
+      "title": "IVUS-based FSI models for human coronary plaque progression study: components, correlation and predictive analysis",
+      "venue": "Annals of Biomedical Engineering, 43(1), 107-121",
+      "doi": "10.1007/s10439-014-1118-1",
+      "pmid": "25245219",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25245219/"
+    },
+    "supports": [
+      {
+        "our_claim": "Lumen axial skewness / lesion eccentricity-geometry sampling range (Table 1 input variable).",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "n/a",
+          "paragraph": "n/a",
+          "page": "107-121"
+        },
+        "quote": null,
+        "access": "metadata_only",
+        "confidence": "low"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "weak"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18. Metadata CONFIRMED via PMC4289077 full text: Wang L, Wu Z, Yang C, et al.; Ann Biomed Eng 2015;43(1):107-121; DOI 10.1007/s10439-014-1118-1. CLAIM-SUPPORT IS WEAK: the open-access full text does NOT report lumen eccentricity, axial skewness, lumen asymmetry, or any non-circular lumen-shape metric. The geometric/morphological quantities it reports are wall thickness, cap thickness, lipid (necrotic-core) depth, plaque burden, plaque/lumen/vessel area; lumen contours are sampled as 4 quarters x 25 evenly-spaced nodes (assumes near-concentric anatomy). Therefore this paper does NOT genuinely justify a 'lumen axial skewness' / eccentricity sampling range. quote=null kept (none fabricated). RECOMMEND: replace with a source that actually quantifies lumen eccentricity/asymmetry, or reframe the Table-1 variable to a geometry metric this paper does report.",
+    "_notes": "DOI 10.1007/s10439-014-1118-1 and PMID 25245219 confirmed via PubMed; open-access full text at PMC4289077 was accessible but contains NO lumen-axial-skewness / lesion-eccentricity geometric value to quote (geometry is reported as radial wall/cap thickness and lipid depth, not the requested eccentricity metric). quote=null; access=metadata_only; no quote fabricated. ACTION: double-checker or author should locate the specific eccentricity/skewness figure in the full-text tables if needed."
+  },
+  {
+    "key": "schoenhagen2000",
+    "bib": {
+      "type": "article",
+      "authors": "Paul Schoenhagen, Khaled M. Ziada, Samir R. Kapadia, Tim D. Crowe, Steven E. Nissen, E. Murat Tuzcu",
+      "year": 2000,
+      "title": "Extent and direction of arterial remodeling in stable versus unstable coronary syndromes: an intravascular ultrasound study",
+      "venue": "Circulation, 101(6), 598-603",
+      "doi": "10.1161/01.CIR.101.6.598",
+      "pmid": "10673250",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/10673250/"
+    },
+    "supports": [
+      {
+        "our_claim": "Positive (outward) remodeling index sampling range (Table 1 input variable); positive remodeling is defined as a remodeling ratio (RR) >1.05.",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "Abstract (Methods/Results)",
+          "paragraph": "methods",
+          "page": "598"
+        },
+        "quote": "Positive remodeling was defined as an RR >1.05 and negative remodeling as an RR <0.95.",
+        "access": "abstract_only",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "verified"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18 via independent fetch of PubMed PMID 10673250. Metadata confirmed: Schoenhagen P, Ziada KM, Kapadia SR, Crowe TD, Nissen SE, Tuzcu EM; Circulation 2000;101(6):598-603; DOI 10.1161/01.CIR.101.6.598. Stored quote 'Positive remodeling was defined as an RR >1.05 and negative remodeling as an RR <0.95.' appears VERBATIM in the abstract; abstract also reports mean RR 1.06+/-0.2 (unstable) vs 0.94+/-0.2 (stable), P=0.008. Supports the positive-remodeling-index range cleanly.",
+    "_notes": "DOI 10.1161/01.CIR.101.6.598 and PMID 10673250 confirmed via PubMed. Quote read verbatim from PubMed abstract; abstract also reports mean RR 1.06+/-0.2 (unstable) versus 0.94+/-0.2 (stable), P=0.008. access=abstract_only."
+  },
+  {
+    "key": "xing2017",
+    "bib": {
+      "type": "article",
+      "authors": "Lei Xing, Takumi Higuma, Zhao Wang, et al.",
+      "year": 2017,
+      "title": "Clinical significance of lipid-rich plaque detected by optical coherence tomography: a 4-year follow-up study",
+      "venue": "Journal of the American College of Cardiology, 69(20), 2502-2513",
+      "doi": "10.1016/j.jacc.2017.03.556",
+      "pmid": "28521888",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28521888/"
+    },
+    "supports": [
+      {
+        "our_claim": "Lipid arc angle sampling range (Table 1 input variable); culprit/high-risk lesions exhibit wider maximal lipid arcs.",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "Abstract (Results)",
+          "paragraph": "results",
+          "page": "2502"
+        },
+        "quote": "wider maximal lipid arcs (p = 0.023)",
+        "access": "abstract_only",
+        "confidence": "medium"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "weak"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18 via independent fetch of PubMed PMID 28521888. Metadata CONFIRMED: Xing L, Higuma T, Wang Z, et al.; J Am Coll Cardiol 2017;69(20):2502-2513; DOI 10.1016/j.jacc.2017.03.556. Stored quote 'wider maximal lipid arcs (p = 0.023)' appears VERBATIM in the abstract Results. CLAIM-SUPPORT IS WEAK/QUALITATIVE: the abstract does NOT define lipid-rich plaque with any numeric lipid-arc degree cutoff (no '>90 degrees' or any threshold) — full abstract re-read confirms there is no arc-angle definition here. The quote only establishes that higher-risk lesions have qualitatively 'wider maximal lipid arcs'; it does NOT supply a numeric lipid-arc-angle SAMPLING RANGE. NOTE: the '>90 degrees' definition the hunter looked for is actually tanaka2009's TCFA definition, NOT this paper's. RECOMMEND: for a numeric lipid-arc range, rely on tanaka2009/mintz1995-type arc figures; keep xing2017 only as qualitative support that wider lipid arc = higher risk.",
+    "_notes": "DOI 10.1016/j.jacc.2017.03.556 and PMID 28521888 confirmed via PubMed. The accessible abstract contains NO numeric lipid-arc degree threshold; only 'wider maximal lipid arcs (p = 0.023)' could be read verbatim. confidence=medium. The >90-degree definition belongs to tanaka2009, not this paper."
+  },
+  {
+    "key": "tanaka2009",
+    "bib": {
+      "type": "article",
+      "authors": "Atsushi Tanaka, Toshio Imanishi, Hironori Kitabata, et al.",
+      "year": 2009,
+      "title": "Lipid-rich plaque and myocardial perfusion after successful stenting in patients with non-ST-segment elevation acute coronary syndrome: an optical coherence tomography study",
+      "venue": "European Heart Journal, 30(11), 1348-1355",
+      "doi": "10.1093/eurheartj/ehp122",
+      "pmid": "19383736",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19383736/"
+    },
+    "supports": [
+      {
+        "our_claim": "Lipid length ratio sampling range (Table 1 input variable); lipid-rich plaque defined by extent of lipid content (lipid arc >90 degrees, thin cap <70 microm).",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "Abstract (Methods)",
+          "paragraph": "methods",
+          "page": "1348"
+        },
+        "quote": "Thin-cap fibroatheroma (TCFA) was defined as a plaque presenting lipid content for >90 degrees, and with thinnest part of the fibrous cap measuring <70 microm.",
+        "access": "abstract_only",
+        "confidence": "medium"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "weak"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18 via independent fetch of PubMed PMID 19383736. Metadata CONFIRMED: Tanaka A, Imanishi T, Kitabata H, et al.; Eur Heart J 2009;30(11):1348-55; DOI 10.1093/eurheartj/ehp122. Stored quote 'Thin-cap fibroatheroma (TCFA) was defined as a plaque presenting lipid content for >90 degrees, and with thinnest part of the fibrous cap measuring <70 microm.' appears VERBATIM in the abstract. CLAIM-SUPPORT IS WEAK (metric mismatch): the our_claim is a 'lipid LENGTH ratio' sampling range, but this paper quantifies lipid ARC (degrees), not any lipid-length ratio — the abstract has NO lipid-length-ratio value (it discusses 'size of the lipid arc' and no-reflow). The verbatim quote backs a lipid-ARC threshold (>90 deg), an ADJACENT metric, not the length ratio the Table-1 variable names. RECOMMEND: either reframe the Table-1 variable to 'lipid arc' (which this quote supports), or find a source that actually reports a lipid-length / lipid-length-ratio figure.",
+    "_notes": "DOI 10.1093/eurheartj/ehp122 and PMID 19383736 confirmed via PubMed. The abstract reports lipid *arc* (>90 degrees), NOT a 'lipid length ratio'; quote captures the available lipid-extent (arc) numeric. confidence=medium; metric mismatch with the named Table-1 variable."
+  },
+  {
+    "key": "mintz1995",
+    "bib": {
+      "type": "article",
+      "authors": "Gary S. Mintz, Jeffrey J. Popma, Augusto D. Pichard, Kenneth M. Kent, Lowell F. Satler, Ya Chien Chuang, Christopher J. Ditrano, Martin B. Leon",
+      "year": 1995,
+      "title": "Patterns of calcification in coronary artery disease: a statistical analysis of intravascular ultrasound and coronary angiography in 1155 lesions",
+      "venue": "Circulation, 91(7), 1959-1965",
+      "doi": "10.1161/01.CIR.91.7.1959",
+      "pmid": "7895353",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/7895353/"
+    },
+    "supports": [
+      {
+        "our_claim": "Calcified fraction sampling range (Table 1 input variable); extent of lesion calcium measured by IVUS (mean arc ~115 degrees, mean length ~3.5 mm).",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "Abstract (Results)",
+          "paragraph": "results",
+          "page": "1959"
+        },
+        "quote": "The mean arc of lesion calcium measured 115 +/- 110 degrees... the mean length measured 3.5 +/- 3.7 mm.",
+        "access": "abstract_only",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "verified"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18 via independent fetch of PubMed PMID 7895353. Metadata confirmed: Mintz GS, Popma JJ, Pichard AD, Kent KM, Satler LF, Chuang YC, Ditrano CJ, Leon MB; Circulation 1995;91(7):1959-65; DOI 10.1161/01.CIR.91.7.1959. Stored quote appears VERBATIM ('The mean arc of lesion calcium measured 115 +/- 110 degrees; the mean length measured 3.5 +/- 3.7 mm.') — note the source joins the two clauses with ';' rather than '...', but the numeric values (115+/-110 deg arc, 3.5+/-3.7 mm length) match exactly. Supports the calcified-fraction/extent Table-1 range cleanly.",
+    "_notes": "DOI 10.1161/01.CIR.91.7.1959 and PMID 7895353 confirmed via PubMed. Quote read verbatim from PubMed abstract; full abstract also reports IVUS-detected calcium in 841/1155 (73%) vs angiography 440/1155 (38%). access=abstract_only."
+  },
+  {
+    "key": "whelton2018",
+    "bib": {
+      "type": "article",
+      "authors": "Paul K. Whelton, Robert M. Carey, Wilbert S. Aronow, et al.",
+      "year": 2018,
+      "title": "2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults",
+      "venue": "Hypertension, 71(6), e13-e115",
+      "doi": "10.1161/HYP.0000000000000066",
+      "pmid": "29133356",
+      "url": "https://www.ahajournals.org/doi/10.1161/HYP.0000000000000066"
+    },
+    "supports": [
+      {
+        "our_claim": "Systolic pressure sampling range (Table 1 input variable); BP categories define normal <120, elevated 120-129, stage 1 130-139, stage 2 >=140 mm Hg systolic.",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "Table 6 (Categories of BP in Adults)",
+          "paragraph": "table",
+          "page": "e22 (approx.)"
+        },
+        "quote": "Normal <120 mm Hg and <80 mm Hg; Elevated 120-129 mm Hg and <80 mm Hg; Hypertension Stage 1 130-139 mm Hg or 80-89 mm Hg; Stage 2 >=140 mm Hg or >=90 mm Hg.",
+        "access": "full_text",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "verified"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18. Metadata confirmed: Whelton PK, Carey RM, Aronow WS, et al.; Hypertension 2018;71(6):e13-e115; DOI 10.1161/HYP.0000000000000066; PMID 29133356. BP-category content independently confirmed: Normal <120/<80; Elevated 120-129/<80; Stage 1 130-139 or 80-89; Stage 2 >=140 or >=90 mm Hg — matches the stored quote exactly. Supports the systolic-pressure Table-1 sampling range cleanly. (Stored quote wording is a faithful paraphrase of the table cells; numeric thresholds verbatim-correct.)",
+    "_notes": "DOI 10.1161/HYP.0000000000000066 confirmed via AHA Journals (full guideline). PMID 29133356 (full guideline; executive-summary version is PMID 29133354). Quote extracted from the official guideline Table 6 'Categories of BP in Adults'. access=full_text."
+  },
+  {
+    "key": "franklin1999",
+    "bib": {
+      "type": "article",
+      "authors": "Stanley S. Franklin, Shehzad A. Khan, Nathan D. Wong, Martin G. Larson, Daniel Levy",
+      "year": 1999,
+      "title": "Is pulse pressure useful in predicting risk for coronary heart disease? The Framingham Heart Study",
+      "venue": "Circulation, 100(4), 354-360",
+      "doi": "10.1161/01.CIR.100.4.354",
+      "pmid": "10421594",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/10421594/"
+    },
+    "supports": [
+      {
+        "our_claim": "Pulse pressure sampling range (Table 1 input variable); at SBP >=120 mm Hg, higher pulse pressure (lower DBP for a given SBP) is an important component of CHD risk.",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "Abstract (Results)",
+          "paragraph": "results",
+          "page": "354"
+        },
+        "quote": "In the middle-aged and elderly, CHD risk increased with lower DBP at any level of SBP>=120 mm Hg, suggesting that higher PP was an important component of risk.",
+        "access": "abstract_only",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "verified"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18. Metadata confirmed via CrossRef (DOI 10.1161/01.CIR.100.4.354): Franklin SS, Khan SA, Wong ND, Larson MG, Levy D; Circulation 1999;100(4):354-360 (pages 354-360 confirmed; a search snippet's '353-360' is incorrect). Existence and authorship re-confirmed via CrossRef + ResearchGate + Framingham bibliography. NOTE: PubMed PMID 10421594 returned a reCAPTCHA on direct fetch this session, so the stored verbatim quote ('In the middle-aged and elderly, CHD risk increased with lower DBP at any level of SBP>=120 mm Hg, suggesting that higher PP was an important component of risk.') was NOT re-read character-for-character today; it is the hunter's PubMed-abstract quote and is the well-documented conclusion of this Framingham paper, so confidence remains high. Supports the pulse-pressure Table-1 sampling range cleanly.",
+    "_notes": "DOI 10.1161/01.CIR.100.4.354 and PMID 10421594 confirmed; pages 354-360 confirmed via CrossRef. Quote is the hunter's PubMed abstract quote (SBP HR 1.22 [1.15-1.30], DBP HR 0.86 [0.75-0.98] when jointly modeled); not re-read verbatim today due to PubMed reCAPTCHA. access=abstract_only."
+  },
+  {
+    "key": "sankaran2016",
+    "bib": {
+      "type": "article",
+      "authors": "Sethuraman Sankaran, Hyun Jin Kim, Gilwoo Choi, Charles A. Taylor",
+      "year": 2016,
+      "title": "Uncertainty quantification in coronary blood flow simulations: impact of geometry, boundary conditions and blood viscosity",
+      "venue": "Journal of Biomechanics, 49(12), 2540-2547",
+      "doi": "10.1016/j.jbiomech.2016.01.002",
+      "pmid": "26803339",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26803339/"
+    },
+    "supports": [
+      {
+        "our_claim": "Diastolic decay ratio tau / coronary boundary-condition parameter sampling range (Table 1 input variable); boundary resistance is among the dominant uncertain inputs for coronary hemodynamics.",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "Abstract",
+          "paragraph": "results",
+          "page": "2540"
+        },
+        "quote": "We show that uncertainty in minimum lumen diameter (MLD) has the largest impact on hemodynamic simulations, followed by boundary resistance, viscosity and lesion length.",
+        "access": "abstract_only",
+        "confidence": "medium"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "weak"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18 via independent fetch of the Europe PMC core record (EXT_ID:26803339). Metadata CONFIRMED: Sankaran S, Kim HJ, Choi G, Taylor CA; J Biomech 2016;49(12):2540-2547; DOI 10.1016/j.jbiomech.2016.01.002. Stored quote 'We show that uncertainty in minimum lumen diameter (MLD) has the largest impact on hemodynamic simulations, followed by boundary resistance, viscosity and lesion length.' appears VERBATIM in the abstract. CLAIM-SUPPORT IS WEAK (metric mismatch): the our_claim names a 'diastolic decay ratio tau' coronary-BC parameter, but this paper is an FFR_CT uncertainty-quantification study over geometry (MLD), boundary RESISTANCE, viscosity, and lesion length — full abstract re-read confirms it does NOT mention a diastolic decay ratio or any time constant tau. It supports that 'boundary resistance' is a dominant uncertain coronary-BC input (adjacent justification), but does NOT quantify a tau range. RECOMMEND: cite this only as support that boundary resistance matters; for a tau range, use a Windkessel/coronary-LPM source (e.g. the elastance/Windkessel refs already in the store) that defines tau = R2*C.",
+    "_notes": "DOI 10.1016/j.jbiomech.2016.01.002 and PMID 26803339 confirmed. Paper does NOT report a 'diastolic decay ratio' / time constant tau; quote concerns the MLD/boundary-resistance/viscosity/lesion-length sensitivity ranking. confidence=medium; metric mismatch with the named tau variable."
+  },
+  {
+    "key": "holzapfel2005",
+    "bib": {
+      "type": "article",
+      "authors": "Gerhard A. Holzapfel, Gerhard Sommer, Christian T. Gasser, Peter Regitnig",
+      "year": 2005,
+      "title": "Determination of layer-specific mechanical properties of human coronary arteries with nonatherosclerotic intimal thickening and related constitutive modeling",
+      "venue": "American Journal of Physiology-Heart and Circulatory Physiology, 289(5), H2048-H2058",
+      "doi": "10.1152/ajpheart.00934.2004",
+      "pmid": "16006541",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16006541/"
+    },
+    "supports": [
+      {
+        "our_claim": "Vessel-wall (intact wall) elastic modulus sampling range (Table 1 input variable); layer-specific stiffness with intima the stiffest layer.",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "Abstract (Results)",
+          "paragraph": "results",
+          "page": "H2048"
+        },
+        "quote": "The intima is the stiffest layer over the whole deformation domain, whereas the media in the longitudinal direction is the softest.",
+        "access": "abstract_only",
+        "confidence": "medium"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "weak"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18 via independent fetch of PubMed PMID 16006541. Metadata CONFIRMED: Holzapfel GA, Sommer G, Gasser CT, Regitnig P; Am J Physiol Heart Circ Physiol 2005;289(5):H2048-58; DOI 10.1152/ajpheart.00934.2004. Stored quote 'The intima is the stiffest layer over the whole deformation domain, whereas the media in the longitudinal direction is the softest.' appears VERBATIM in the abstract. CLAIM-SUPPORT IS WEAK (qualitative only): the our_claim is a vessel-wall ELASTIC-MODULUS sampling RANGE, but the abstract provides only a qualitative layer-stiffness ORDERING plus ultimate tensile stresses (e.g. adventitia 1430+/-604 kPa circ., 1300+/-692 kPa long.) — NO numeric Young's/elastic modulus value for any layer is in the abstract (per-layer moduli live in the paywalled full-text tables). The verbatim quote does not by itself supply a numeric modulus range. RECOMMEND: author with full-text access should pull the per-layer modulus numbers from the full-text tables to actually back the Table-1 range; no value fabricated.",
+    "_notes": "DOI 10.1152/ajpheart.00934.2004 and PMID 16006541 confirmed (page range H2048-H2058 matches). Abstract gives qualitative layer-stiffness ordering + ultimate tensile stresses, not a numeric elastic modulus; per-layer numeric moduli are in the paywalled full text. confidence=medium. No numeric value fabricated."
+  },
+  {
+    "key": "loree1994static",
+    "bib": {
+      "type": "article",
+      "authors": "Howard M. Loree, Alan J. Grodzinsky, Susan Y. Park, Lorna J. Gibson, Richard T. Lee",
+      "year": 1994,
+      "title": "Static circumferential tangential modulus of human atherosclerotic tissue",
+      "venue": "Journal of Biomechanics, 27(2), 195-204",
+      "doi": "10.1016/0021-9290(94)90209-7",
+      "pmid": "8132688",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/8132688/"
+    },
+    "supports": [
+      {
+        "our_claim": "Fibrous-cap elastic modulus sampling range (Table 1 input variable); tangential moduli of cellular, hypocellular, and calcified fibrous tissue ~0.9-2.3 MPa.",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "Abstract (Results)",
+          "paragraph": "results",
+          "page": "195"
+        },
+        "quote": "the tangential moduli of cellular, hypocellular, and calcified specimens were 927 +/- 468 kPa, 2312 +/- 2180 kPa, and 1466 +/- 1284 kPa, respectively",
+        "access": "abstract_only",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "verified"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18 via independent fetch of PubMed PMID 8132688. Metadata confirmed: Loree HM, Grodzinsky AJ, Park SY, Gibson LJ, Lee RT; J Biomech 1994;27(2):195-204; DOI 10.1016/0021-9290(94)90209-7. Full abstract read; stored quote 'the tangential moduli of cellular, hypocellular, and calcified specimens were 927 +/- 468 kPa, 2312 +/- 2180 kPa, and 1466 +/- 1284 kPa, respectively' appears VERBATIM (measured at a physiologic 25 kPa circumferential tensile stress). Supports the fibrous-cap modulus Table-1 range cleanly with absolute numeric moduli.",
+    "_notes": "DOI 10.1016/0021-9290(94)90209-7 and PMID 8132688 confirmed via PubMed. Quote read verbatim from PubMed abstract (moduli reported at a physiologic circumferential tensile stress of 25 kPa). access=abstract_only."
+  },
+  {
+    "key": "loree1994lipid",
+    "bib": {
+      "type": "article",
+      "authors": "Howard M. Loree, Brian J. Tobias, Lorna J. Gibson, Roger D. Kamm, Donald M. Small, Richard T. Lee",
+      "year": 1994,
+      "title": "Mechanical properties of model atherosclerotic lesion lipid pools",
+      "venue": "Arteriosclerosis and Thrombosis, 14(2), 230-234",
+      "doi": "10.1161/01.ATV.14.2.230",
+      "pmid": "8305413",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/8305413/"
+    },
+    "supports": [
+      {
+        "our_claim": "Lipid-core elastic modulus sampling range (Table 1 input variable); lipid-pool stiffness scales with cholesterol-crystal content.",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "Abstract (Results)",
+          "paragraph": "results",
+          "page": "230"
+        },
+        "quote": "from 0% to 50% increased the stiffness by 4.5 times at 1 Hz",
+        "access": "abstract_only",
+        "confidence": "medium"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "weak"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18 via independent fetch of PubMed PMID 8305413. Metadata CONFIRMED: Loree HM, Tobias BJ, Gibson LJ, Kamm RD, Small DM, Lee RT; Arterioscler Thromb 1994;14(2):230-4; DOI 10.1161/01.ATV.14.2.230. (Stored bib venue 'Arteriosclerosis and Thrombosis' = the journal's then-name 'Arterioscler Thromb' — correct.) Stored quote 'from 0% to 50% increased the stiffness by 4.5 times at 1 Hz' appears VERBATIM in the abstract. CLAIM-SUPPORT IS WEAK (relative not absolute): the our_claim is a lipid-core ELASTIC-MODULUS sampling RANGE, but the quote is a relative stiffness MULTIPLIER (4.5x increase as cholesterol monohydrate goes 0->50%), reported as a dynamic SHEAR (storage) modulus, NOT an absolute Young's-modulus value. The abstract gives no absolute lipid-core E. So this backs the QUALITATIVE point (lipid-pool stiffness scales with composition) but not a numeric modulus range. RECOMMEND: pull the absolute lipid-pool modulus from the full-text tables, or cite a source giving an absolute lipid-core E; no value fabricated.",
+    "_notes": "DOI 10.1161/01.ATV.14.2.230 and PMID 8305413 confirmed via PubMed. Abstract reports lipid-pool stiffness scaling with cholesterol-monohydrate concentration (0%->50% -> 4.5x stiffer at 1 Hz, a dynamic shear-modulus multiplier) rather than an absolute modulus. confidence=medium; relative not absolute. No single-value modulus fabricated."
+  },
+  {
+    "key": "ebenstein2009",
+    "bib": {
+      "type": "article",
+      "authors": "Donna M. Ebenstein, Dezba Coughlin, Joanna Chapman, Chengpei Li, Lisa A. Pruitt",
+      "year": 2009,
+      "title": "Nanomechanical properties of calcification, fibrous tissue, and hematoma from atherosclerotic plaques",
+      "venue": "Journal of Biomedical Materials Research Part A, 91(4), 1028-1037",
+      "doi": "10.1002/jbm.a.32321",
+      "pmid": "19107789",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19107789/"
+    },
+    "supports": [
+      {
+        "our_claim": "Calcification elastic modulus sampling range (Table 1 input variable).",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "n/a",
+          "paragraph": "n/a",
+          "page": "1028-1037"
+        },
+        "quote": null,
+        "access": "metadata_only",
+        "confidence": "low"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "weak"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18 via independent fetch of the Europe PMC core record (EXT_ID:19107789). Metadata CONFIRMED: Ebenstein DM, Coughlin D, Chapman J, Li C, Pruitt LA; J Biomed Mater Res Part A 2009;91(4):1028-1037; DOI 10.1002/jbm.a.32321. RELEVANCE CONFIRMED: the paper genuinely uses nanoindentation to measure the mechanical properties of plaque calcification/fibrous tissue/hematoma, and the abstract explicitly states prior computational-model modulus values 'greatly underestimate the stiffness of the fully calcified tissue' — so it is an on-topic, appropriate source for a calcification-modulus range. WEAK ONLY because quote remains NULL: the abstract gives NO numeric GPa/MPa calcification modulus (numeric values are in the paywalled full-text tables), so no verbatim figure backing the specific range could be confirmed. quote=null kept; no value fabricated. RECOMMEND: author with library full-text access add the verbatim numeric calcification-modulus value from the tables to upgrade to verified.",
+    "_notes": "DOI 10.1002/jbm.a.32321 and PMID 19107789 confirmed via PubMed/Europe PMC. Abstract contains NO numeric GPa/MPa calcification-modulus value (only the qualitative statement that calcification stiffness is greatly underestimated by prior models); numeric values live in the paywalled full-text tables. quote=null; access=metadata_only; no value fabricated."
+  },
+  {
+    "key": "yonetsu2011",
+    "bib": {
+      "type": "article",
+      "authors": "Taishi Yonetsu, Tsunekazu Kakuta, Tetsumin Lee, et al.",
+      "year": 2011,
+      "title": "In vivo critical fibrous cap thickness for rupture-prone coronary plaques assessed by optical coherence tomography",
+      "venue": "European Heart Journal, 32(10), 1251-1259",
+      "doi": "10.1093/eurheartj/ehq518",
+      "pmid": "21273202",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21273202/"
+    },
+    "supports": [
+      {
+        "our_claim": "Fixed fibrous-cap thickness t_FC = 100 microm (Table 1); in vivo critical/rupture-prone cap thickness is <80 microm (thinnest) / <188 microm (most representative), bracketing the 100 microm value used.",
+        "our_location": "Ch3 Table 1 (input-variable sampling range)",
+        "source_location": {
+          "section": "Abstract (Results)",
+          "paragraph": "results",
+          "page": "1251"
+        },
+        "quote": "In vivo critical cap thicknesses were <80 microm for the thinnest and <188 microm for most representative fibrous cap thickness.",
+        "access": "abstract_only",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-18",
+      "double_checked": "2026-06-18",
+      "status": "verified"
+    },
+    "double_check_note": "RE-VERIFIED FROM SCRATCH 2026-06-18 via independent fetch of PubMed PMID 21273202. Metadata confirmed: Yonetsu T, Kakuta T, Lee T, et al.; Eur Heart J 2011;32(10):1251-9; DOI 10.1093/eurheartj/ehq518. Full abstract read; stored quote 'In vivo critical cap thicknesses were <80 microm for the thinnest and <188 microm for most representative fibrous cap thickness.' appears VERBATIM (Conclusion); abstract also gives best cutoffs <67 microm (thinnest) and <151 microm (most representative). The fixed t_FC=100 microm used in Table 1 sits between the thinnest (<80) and most-representative (<188) critical thicknesses, so the citation cleanly brackets/justifies the chosen value.",
+    "_notes": "DOI 10.1093/eurheartj/ehq518 and PMID 21273202 confirmed via PubMed. Quote read verbatim from PubMed abstract; abstract also reports best cutoff for predicting rupture as <67 microm. The 100 microm fixed value used in Table 1 sits between the thinnest (<80) and most-representative (<188) critical thicknesses. access=abstract_only."
+  },
+  {
+    "key": "lu2021highrisk",
+    "type": "article",
+    "title": "Coronary Computed Tomography Angiography Assessment of High-Risk Plaques in Predicting Acute Coronary Syndrome",
+    "authors": "G. Lu, W. Ye, J. Ou, X. Li, Z. Tan, T. Li, H. Liu",
+    "journal": "Frontiers in Cardiovascular Medicine",
+    "volume": "8",
+    "pages": "743538",
+    "year": 2021,
+    "doi": "10.3389/fcvm.2021.743538",
+    "pmid": "34646874",
+    "url": "https://www.frontiersin.org/articles/10.3389/fcvm.2021.743538/full",
+    "used_for": "ch3 3.1 — LAP and CP are the high-risk plaque phenotypes most frequently reported on CCTA (defines LAP as mean attenuation <30 HU and spotty calcification as CCTA high-risk features).",
+    "source_location": "Background subsections 'Low Attenuation' and 'Spotty Calcification' (full text)",
+    "verbatim_quote": "Low-attenuation plaques refer to those with the lowest CT attenuation value and the most easily ruptured lipid composition (a lipid-rich necrotic core), which is defined as mean attenuation <30 Hounsfield units (HU) of at least three regions of interest (ROIs) in general. | In CCTA, spotty calcification is generally manifested as calcification in plaques with a density of more than 130 HU and a diameter of <3 mm surrounded by non-calcified components.",
+    "verification_status": "verified — full_text via Frontiers; both quotes confirmed verbatim; confidence=high"
+  },
+  {
+    "key": "williams2020lap",
+    "type": "article",
+    "title": "Low-Attenuation Noncalcified Plaque on Coronary Computed Tomography Angiography Predicts Myocardial Infarction: Results From the Multicenter SCOT-HEART Trial",
+    "authors": "M. C. Williams, J. Kwiecinski, M. Doris, P. McElhinney, M. S. D'Souza, S. Cadet, P. D. Adamson, A. J. Moss, S. Alam, A. Hunter, A. S. V. Shah, N. L. Mills, T. Pawade, C. Wang, D. S. Berman, D. Dey, D. E. Newby, P. J. Slomka",
+    "journal": "Circulation",
+    "volume": "141",
+    "number": "18",
+    "pages": "1452-1462",
+    "year": 2020,
+    "doi": "10.1161/CIRCULATIONAHA.119.044720",
+    "pmid": "32174130",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32174130/",
+    "used_for": "ch3 3.1 — clinical-prognostic anchor: low-attenuation plaque burden on CCTA is the strongest CCTA plaque predictor of myocardial infarction (supports LAP as a key high-risk CCTA phenotype).",
+    "source_location": "Abstract — Results (PubMed PMID 32174130)",
+    "verbatim_quote": "Low-attenuation plaque burden was the strongest predictor of myocardial infarction (adjusted hazard ratio, 1.60 [per doubling]; P=0.014), independent of cardiovascular risk score, coronary artery calcium score, or coronary artery area stenosis.",
+    "verification_status": "verified — DOI/PMID confirmed; verbatim corrected by double-checker against PubMed abstract; confidence=high"
+  },
+  {
+    "key": "dodge1992lumen",
+    "type": "article",
+    "title": "Lumen diameter of normal human coronary arteries. Influence of age, sex, anatomic variation, and left ventricular hypertrophy or dilation",
+    "authors": "J. T. Dodge Jr., B. G. Brown, E. L. Bolson, H. T. Dodge",
+    "journal": "Circulation",
+    "volume": "86",
+    "number": "1",
+    "pages": "232-246",
+    "year": 1992,
+    "doi": "10.1161/01.CIR.86.1.232",
+    "pmid": "1535570",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/1535570/",
+    "used_for": "ch3 3.1 — reference coronary lumen radius r_ref=0.1 cm (lumen diameter ~2 mm). Matches the distal-LAD end of the normal range; basis for the cylindrical-segment lumen radius.",
+    "source_location": "Abstract (PubMed PMID 1535570)",
+    "verbatim_quote": "the left main artery measured 4.5 +/- 0.5 mm, the proximal left anterior descending coronary artery (LAD) 3.7 +/- 0.4 mm, and the distal LAD 1.9 +/- 0.4 mm.",
+    "verification_status": "verified — values confirmed; verbatim running sentence corrected by double-checker; r_ref=0.1cm (D~1.9mm) matches distal LAD; confidence=high"
+  },
+  {
+    "key": "chen2016coronarywall",
+    "type": "article",
+    "title": "Microstructure-Based Biomechanics of Coronary Arteries in Health and Disease",
+    "authors": "H. Chen, G. S. Kassab",
+    "journal": "Journal of Biomechanics",
+    "volume": "49",
+    "number": "12",
+    "pages": "2548-2559",
+    "year": 2016,
+    "doi": "10.1016/j.jbiomech.2016.03.023",
+    "pmid": "27086118",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5028318/",
+    "used_for": "ch3 3.1 — order-of-magnitude basis for coronary wall thickness t_wall=0.02 cm (0.2 mm), used as a thin-wall idealization (lower bound of the tabulated 0.20-0.83 mm range).",
+    "source_location": "Section 2.1 / Table 2 (wall thickness vs age, data from Ozolanta et al. 1998), full text via PMC5028318",
+    "verbatim_quote": "Wall thickness (mm) ranges from 0.20 +/- 0.03 mm in the youngest age group (0-1 yr) to 0.83 +/- 0.31 mm in the oldest age group (60-80 yr).",
+    "verification_status": "weak — CAVEAT: 0.20 mm is the neonatal (0-1 yr) value; adult mean is larger (up to ~0.83 mm). No accessible source gives an adult coronary wall ~0.2 mm verbatim. Treat t_wall=0.02 cm as a thin-wall idealization / young-healthy lower bound. confidence=medium"
+  },
+  {
+    "key": "kume2005octimt",
+    "type": "article",
+    "title": "Assessment of coronary intima-media thickness by optical coherence tomography: comparison with intravascular ultrasound",
+    "authors": "T. Kume, T. Akasaka, T. Kawamoto, N. Watanabe, E. Toyota, Y. Neishi, R. Sukmawan, Y. Sadahira, K. Yoshida",
+    "journal": "Circulation Journal",
+    "volume": "69",
+    "number": "8",
+    "pages": "903-907",
+    "year": 2005,
+    "doi": "10.1253/circj.69.903",
+    "pmid": "16041157",
+    "url": "https://www.jstage.jst.go.jp/article/circj/69/8/69_8_903/_article",
+    "used_for": "ch3 3.1 — fibrous-cap thickness cannot be resolved by CCTA and requires invasive intravascular imaging (OCT). Establishes OCT axial resolution ~10-20 um (~10x finer than IVUS), the basis for OCT-only cap measurement.",
+    "source_location": "Abstract — Background (full text via J-STAGE)",
+    "verbatim_quote": "Optical coherence tomography (OCT) is a new imaging method. With a resolution of approximately 10-20 [micrometers], which is approximately 10-fold higher than that of intravascular ultrasound (IVUS).",
+    "verification_status": "verified — full_text via J-STAGE; supports OCT micron-scale resolution premise. NOTE: pair with lu2021highrisk/williams2020lap for the 'CCTA cannot resolve the cap' half of the claim. confidence=high"
+  },
+  {
+    "key": "milzi2021oct",
+    "type": "article",
+    "title": "Coronary plaque composition influences biomechanical stress and predicts plaque rupture in a morpho-mechanic OCT analysis",
+    "authors": "A. Milzi, E. D. Lemma, R. Dettori, K. Burgmaier, N. Marx, S. Reith, M. Burgmaier",
+    "journal": "eLife",
+    "volume": "10",
+    "pages": "e64020",
+    "year": 2021,
+    "doi": "10.7554/eLife.64020",
+    "pmid": "33988503",
+    "url": "https://elifesciences.org/articles/64020",
+    "used_for": "ch3 3.1.1 — justifies modeling coronary tissue as linear-elastic over the cardiac cycle AND the small-deformation assumption (cyclic displacement ~10% of vessel dimension, below the >20-30% onset of hyperelastic behavior).",
+    "source_location": "Appendix 1 / Supplementary Results 'Validation of the finite-element analysis model' (full text, eLife e64020)",
+    "verbatim_quote": "Due to this average displacement of approximately 10% of the original dimensions of the considered vessel (4 mm), we assumed the linear elasticity of the vessel wall for further analysis, as previous publication showed a hyperelastic behavior starting from much larger deformations (>20-30%).",
+    "verification_status": "verified — full_text via eLife; single sentence supports both linear-elastic and small-strain assumptions. NOTE: states 'linear elastic' but not 'isotropic' verbatim (pair with loree1992). confidence=high"
+  },
+  {
+    "key": "loree1992",
+    "type": "article",
+    "title": "Effects of fibrous cap thickness on peak circumferential stress in model atherosclerotic vessels",
+    "authors": "H. M. Loree, R. D. Kamm, R. G. Stringfellow, R. T. Lee",
+    "journal": "Circulation Research",
+    "volume": "71",
+    "number": "4",
+    "pages": "850-858",
+    "year": 1992,
+    "doi": "10.1161/01.RES.71.4.850",
+    "pmid": "1516158",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/1516158/",
+    "used_for": "ch3 3.1.1 — canonical precedent for modeling plaque components as homogeneous, isotropic, linear-elastic materials in finite-element stress analysis (complements milzi2021oct for the 'isotropic' qualifier).",
+    "source_location": "Abstract (PubMed PMID 1516158); isotropic linear-elastic statement in paywalled Methods",
+    "verbatim_quote": "Reducing the fibrous cap thickness dramatically increases peak circumferential stress in the plaque, whereas increasing the stenosis severity actually decreases peak stress.",
+    "verification_status": "verified-metadata — DOI/PMID confirmed; abstract quote verbatim; the explicit 'isotropic linear-elastic' Methods sentence is paywalled (not read verbatim). access=abstract_only; confidence=medium"
+  },
+  {
+    "key": "mckay1979lhs",
+    "type": "article",
+    "title": "A Comparison of Three Methods for Selecting Values of Input Variables in the Analysis of Output from a Computer Code",
+    "authors": "M. D. McKay, R. J. Beckman, W. J. Conover",
+    "journal": "Technometrics",
+    "volume": "21",
+    "number": "2",
+    "pages": "239-245",
+    "year": 1979,
+    "doi": "10.2307/1268522",
+    "url": "https://doi.org/10.2307/1268522",
+    "used_for": "ch3 3.1.1 — canonical reference for Latin Hypercube Sampling (LHS) as a variance-reducing alternative to simple random sampling for selecting input-variable values.",
+    "source_location": "Abstract (verbatim via U.S. DOE OSTI record osti.gov/biblio/5236110)",
+    "verbatim_quote": "Two types of sampling plans are examined as alternatives to simple random sampling in Monte Carlo studies. These plans are shown to be improvements over simple random sampling with respect to variance for a class of estimators that includes the sample mean and the empirical distribution function.",
+    "verification_status": "verified — DOI 10.2307/1268522 (JSTOR; alt 10.1080/00401706.1979.10489755); abstract verbatim from OSTI. Paper that introduced LHS. confidence=high"
+  },
+  {
+    "key": "sobol1993",
+    "type": "article",
+    "title": "Sensitivity estimates for nonlinear mathematical models",
+    "authors": "I. M. Sobol'",
+    "journal": "Mathematical Modelling and Computational Experiments",
+    "volume": "1",
+    "number": "4",
+    "pages": "407-414",
+    "year": 1993,
+    "doi": null,
+    "url": "https://scholar.google.com/scholar_lookup?title=Sensitivity+estimates+for+nonlinear+mathematical+models&author=I.+M.+Sobol&publication_year=1993&journal=Math.+Model.+Comput.+Exp.&volume=1&pages=407-414",
+    "used_for": "ch3 3.1.1 / 3.3.2 — original foundational reference introducing Sobol' variance-based global sensitivity indices.",
+    "source_location": "Bibliographic record (English translation of Sobol' 1990, Matem. Modelirovanie 2(1):112-118)",
+    "verbatim_quote": "Sensitivity estimates for nonlinear mathematical models",
+    "verification_status": "verified-metadata — no DOI (untranslated-journal); no public verbatim abstract for this exact translation. Cite alongside sobol2001 (DOI-verified). confidence=medium"
+  },
+  {
+    "key": "sobol2001",
+    "type": "article",
+    "title": "Global sensitivity indices for nonlinear mathematical models and their Monte Carlo estimates",
+    "authors": "I. M. Sobol'",
+    "journal": "Mathematics and Computers in Simulation",
+    "volume": "55",
+    "number": "1-3",
+    "pages": "271-280",
+    "year": 2001,
+    "doi": "10.1016/S0378-4754(00)00270-6",
+    "url": "https://doi.org/10.1016/S0378-4754(00)00270-6",
+    "used_for": "ch3 3.3.2 — DOI-verified canonical reference for Sobol' variance-based global sensitivity indices (first-order + total-effect) and their Monte Carlo estimation.",
+    "source_location": "Abstract (DOI 10.1016/S0378-4754(00)00270-6)",
+    "verbatim_quote": "Global sensitivity indices for rather complex mathematical models can be efficiently computed by Monte Carlo (or quasi-Monte Carlo) methods. These indices are used for estimating the influence of individual variables or groups of variables on the model output.",
+    "verification_status": "verified — DOI confirmed; abstract verbatim. confidence=high"
+  },
+  {
+    "key": "saltelli2002",
+    "type": "article",
+    "title": "Making best use of model evaluations to compute sensitivity indices",
+    "authors": "A. Saltelli",
+    "journal": "Computer Physics Communications",
+    "volume": "145",
+    "number": "2",
+    "pages": "280-297",
+    "year": 2002,
+    "doi": "10.1016/S0010-4655(02)00280-1",
+    "url": "https://doi.org/10.1016/S0010-4655(02)00280-1",
+    "used_for": "ch3 3.1.1 — efficient estimator scheme for the full set of first-order plus total-order Sobol' indices (the Saltelli sampling used to estimate the indices).",
+    "source_location": "Abstract (Semantic Scholar Graph API + author OA copy HAL hal-03679350)",
+    "verbatim_quote": "We further introduce a new strategy for the computation of the full sets of first plus total order sensitivity indices that is about 50% cheaper in terms of model evaluations with respect to previously published works.",
+    "verification_status": "verified — DOI confirmed; abstract verbatim. confidence=high"
+  },
+  {
+    "key": "geuzaine2009gmsh",
+    "type": "article",
+    "title": "Gmsh: A 3-D finite element mesh generator with built-in pre- and post-processing facilities",
+    "authors": "C. Geuzaine, J.-F. Remacle",
+    "journal": "International Journal for Numerical Methods in Engineering",
+    "volume": "79",
+    "number": "11",
+    "pages": "1309-1331",
+    "year": 2009,
+    "doi": "10.1002/nme.2579",
+    "url": "https://doi.org/10.1002/nme.2579",
+    "used_for": "ch3 3.1.2 — citation for the Gmsh open-source finite-element mesh generator used to discretize the solid domains.",
+    "source_location": "Abstract (Crossref JATS)",
+    "verbatim_quote": "Gmsh is an open-source 3-D finite element grid generator with a build-in CAD engine and post-processor. Its design goal is to provide a fast, light and user-friendly meshing tool with parametric input and advanced visualization capabilities.",
+    "verification_status": "verified — DOI confirmed; abstract verbatim (publisher typo 'build-in' reproduced). confidence=high"
+  },
+  {
+    "key": "beall2004meshsim",
+    "type": "article",
+    "title": "A comparison of techniques for geometry access related to mesh generation",
+    "authors": "M. W. Beall, J. Walsh, M. S. Shephard",
+    "journal": "Engineering with Computers",
+    "volume": "20",
+    "number": "3",
+    "pages": "210-221",
+    "year": 2004,
+    "doi": "10.1007/s00366-004-0289-z",
+    "url": "https://doi.org/10.1007/s00366-004-0289-z",
+    "used_for": "ch3 3.1.2 — peer-reviewed source for the Simmetrix/MeshSim CAD-coupled mesh-generation technology (authors are Simmetrix principals); used to discretize the fluid domain.",
+    "source_location": "Bibliographic record (Crossref; no abstract indexed)",
+    "verbatim_quote": "A comparison of techniques for geometry access related to mesh generation",
+    "verification_status": "verified-metadata — DOI resolves (Crossref + Semantic Scholar) to THIS 2004 journal title (not the 2003 IMR proceeding 'Accessing CAD geometry...'). No abstract in Crossref. Pair with simmetrix_meshsim software URL. confidence=medium"
+  },
+  {
+    "key": "simmetrix_meshsim",
+    "type": "software",
+    "title": "MeshSim Automatic Mesh Generation",
+    "authors": "Simmetrix Inc.",
+    "year": 2024,
+    "publisher": "Simmetrix Inc., Clifton Park, NY, USA",
+    "url": "https://www.simmetrix.com/products/MeshSim/main.html",
+    "used_for": "ch3 3.1.2 — direct software citation for the Simmetrix MeshSim mesh-generation tool (fluid-domain meshing).",
+    "source_location": "Vendor product page",
+    "verbatim_quote": "MeshSim Automatic Mesh Generation",
+    "verification_status": "software_citation_url_only — no canonical journal paper; prefer beall2004meshsim as the primary citation, this URL as supplement."
+  },
+  {
+    "key": "rasmussen2006gpml",
+    "type": "book",
+    "title": "Gaussian Processes for Machine Learning",
+    "authors": "C. E. Rasmussen, C. K. I. Williams",
+    "publisher": "The MIT Press, Cambridge, MA, USA",
+    "year": 2006,
+    "isbn": "026218253X",
+    "url": "https://gaussianprocess.org/gpml/chapters/RW5.pdf",
+    "used_for": "ch3 3.3.1 — canonical reference for GP regression and the squared-exponential covariance with Automatic Relevance Determination (ARD), i.e. a separate length-scale per input dimension.",
+    "source_location": "Chapter 5 (Model Selection and Adaptation of Hyperparameters), Section 5.1, p.106 (official free PDF)",
+    "verbatim_quote": "Such a covariance function implements automatic relevance determination (ARD) [Neal, 1996], since the inverse of the length-scale determines how relevant an input is: if the length-scale has a very large value, the covariance will become almost independent of that input, effectively removing it from the inference.",
+    "verification_status": "verified — full_text; ARD sentence verbatim at p.106 §5.1. confidence=high"
+  },
+  {
+    "key": "corti2022",
+    "type": "article",
+    "title": "The effect of plaque morphology, material composition and microcalcifications on the risk of cap rupture: A structural analysis of vulnerable atherosclerotic plaques",
+    "authors": "A. Corti, A. De Paolis, P. Grossman, P. A. Dinh, E. Aikawa, S. Weinbaum, L. Cardoso",
+    "journal": "Frontiers in Cardiovascular Medicine",
+    "volume": "9",
+    "pages": "1019917",
+    "year": 2022,
+    "doi": "10.3389/fcvm.2022.1019917",
+    "url": "https://www.frontiersin.org/articles/10.3389/fcvm.2022.1019917/full",
+    "used_for": "ch3 3.1.4 — precedent for spatially averaging peak cap stress over a small highest-stress region (vs single element/node) to reduce stress noise; AND ch3 3.2 — defining a rupture vulnerability index as VI = stress/strength (peak cap stress / ultimate tensile strength).",
+    "source_location": "Results — definition of peak cap stress (PCS) / vulnerability index (full text via Frontiers)",
+    "verbatim_quote": "the PCS is the average cap stress obtained considering 30 mesh elements in the region of highest principal stresses in the cap, and the ultimate tensile stress is the threshold stress for rupture (545 kPa)",
+    "verification_status": "verified — DOI/author-list confirmed; both uses supported by this sentence (averaging over 30 highest-stress elements ~ our r=0.01cm spherical average; VI = PCS / ultimate tensile stress). NOTE: r=0.01cm sphere is our own implementation; Corti uses 30 elements. confidence=high"
+  },
+  {
+    "key": "versluis2006",
+    "type": "article",
+    "title": "Fatigue and plaque rupture in myocardial infarction",
+    "authors": "A. Versluis, A. J. Bank, W. H. Douglas",
+    "journal": "Journal of Biomechanics",
+    "volume": "39",
+    "number": "2",
+    "pages": "339-347",
+    "year": 2006,
+    "doi": "10.1016/j.jbiomech.2004.10.041",
+    "pmid": "16321636",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/16321636/",
+    "used_for": "ch3 3.1.4 — establishes pulsatile/cyclic pressure loading as the driver of plaque fatigue rupture; basis for using the pulsatile amplitude dPSS = max(sigma_sys - sigma_dia) as the representative stress metric for fatigue failure.",
+    "source_location": "Abstract (PubMed PMID 16321636)",
+    "verbatim_quote": "In this study rupture was not approached as an acute syndrome, but rather as the culmination of a chronic injury or fatigue process. ... Plaque fatigue crack growth per pressure pulse was estimated using an adapted Paris-relation. ... Cracks extended radially and grew at a rate that was highly dependent on both mean and pulse pressure and on lipid stiffness.",
+    "verification_status": "verified — DOI/PMID confirmed; verbatim corrected/strengthened by double-checker from PubMed abstract. confidence=high"
+  },
+  {
+    "key": "boresi2003",
+    "type": "book",
+    "title": "Advanced Mechanics of Materials, 6th ed.",
+    "authors": "A. P. Boresi, R. J. Schmidt",
+    "publisher": "John Wiley & Sons",
+    "year": 2003,
+    "isbn": "9780471438816",
+    "url": "https://web.mst.edu/jthomas/classes/2211/lessons/failure/theories/index.html",
+    "used_for": "ch3 3.2.1 — canonical text defining the classical failure theories by their stress measure: maximum principal stress (Rankine, alpha=0), total strain energy (Beltrami, alpha=0.5), maximum principal strain (Saint-Venant, alpha=1).",
+    "source_location": "Chapter on Failure Criteria; eponym definitions cross-confirmed verbatim from accessible Missouri S&T / Penn State lecture notes",
+    "verbatim_quote": "[Maximum Principal Stress / Rankine] the theory is based on a limiting normal stress. | [Maximum Principal Strain / Saint-Venant] the theory is based on the assumption that inelastic behavior or failure is governed by a specified maximum normal strain. | [Total Strain Energy / Beltrami-Haigh] the theory predicts failure or inelastic action at a point when the strain energy per unit volume exceeds a specified limit.",
+    "verification_status": "weak — book bibliographic details verified (Wiley, ISBN 9780471438816); interior page NOT opened. Three-theory definitions cross-confirmed verbatim from Missouri S&T lecture notes. Alternative canonical text: Timoshenko, Strength of Materials Part II. confidence=medium"
+  },
+  {
+    "key": "guess2017thinwall",
+    "type": "article",
+    "title": "Fluid-structure interaction modelling and stabilisation of a patient-specific arteriovenous access fistula",
+    "authors": "W. P. Guess, B. D. Reddy, A. McBride, B. Spottiswoode, J. Downs, T. Franz",
+    "journal": "arXiv preprint",
+    "volume": "arXiv:1704.07753",
+    "year": 2017,
+    "doi": "10.48550/arXiv.1704.07753",
+    "url": "https://arxiv.org/abs/1704.07753",
+    "used_for": "ch3 3.1 — thin-wall idealization: vessel wall thickness set to 1/10 of the lumen diameter (= lumen radius / 5), the modeling convention justifying t_wall = 0.02 cm for r_ref = 0.1 cm (D_lumen = 0.2 cm).",
+    "source_location": "Section 4.2.1 'Geometry and mesh setup'",
+    "verbatim_quote": "The arterial thickness is set to 1/10th of the lumen diameter, the approximate ratio according to [56].",
+    "verification_status": "verified — explicit ratio quote (h/D = 0.10 = r/5). CAVEAT: arXiv preprint (not peer-reviewed journal) and an arteriovenous-fistula FSI model (not coronary); the wall-thickness=1/10-diameter convention itself is stated verbatim. The preprint attributes the ratio to its own ref [56] (a stronger primary source could be traced). confidence=medium"
+  },
+  {
+    "key": "meza2018lcafsi",
+    "type": "article",
+    "title": "A Fluid-Structure Interaction Model of the Left Coronary Artery",
+    "authors": "D. Meza, D. A. Rubenstein, W. Yin",
+    "journal": "Journal of Biomechanical Engineering",
+    "volume": "140",
+    "number": "12",
+    "pages": "121006",
+    "year": 2018,
+    "doi": "10.1115/1.4040776",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11063795/",
+    "used_for": "ch3 3.1 — coronary (left coronary artery) FSI precedent for adopting a single uniform wall thickness on an idealized/segment vessel; supports modeling the coronary wall as a uniform-thickness layer.",
+    "source_location": "Methods — geometry (LAD inlet/outlet diameters and wall thickness)",
+    "verbatim_quote": "the diameter of LAD at the inlet was 3.82 mm, and that at the outlet was 1.59 mm. ... the thickness of the arterial wall was 0.25 mm.",
+    "verification_status": "verified — coronary LCA FSI; uniform wall thickness 0.25 mm. NOTE: ratio not stated explicitly (0.25 mm / D ~ 0.065-0.16, brackets 0.1); use as a coronary uniform-wall precedent, not as the explicit ratio source. confidence=medium"
+  },
+  {
+    "key": "fung1993biomechanics",
+    "type": "book",
+    "title": "Biomechanics: Mechanical Properties of Living Tissues, 2nd ed.",
+    "authors": "Y. C. Fung",
+    "publisher": "Springer-Verlag, New York",
+    "year": 1993,
+    "doi": "10.1007/978-1-4757-2257-4",
+    "isbn": "978-1-4757-2259-8",
+    "url": "https://link.springer.com/chapter/10.1007/978-1-4757-2257-4_8",
+    "used_for": "ch3 3.1 — canonical reference for the thin-walled vessel (Laplace-law) assumption in vascular biomechanics; basis for idealizing the coronary segment as a thin-walled cylindrical tube (thin-wall assumption).",
+    "source_location": "Chapter 8 (Mechanical Properties and Active Remodeling of Blood Vessels)",
+    "verbatim_quote": "[canonical citation; Ch.8 develops Laplace's law / thin-walled tube stress for blood vessels. Interior text paywalled — verbatim thin-wall/Laplace statement quoted from caro2012mechanics.]",
+    "verification_status": "verified-metadata — DOI 10.1007/978-1-4757-2257-4, ISBN 978-1-4757-2259-8 confirmed. Interior paywalled; pair with caro2012mechanics for the accessible verbatim Laplace/thin-wall sentence. confidence=high (canonical text)"
+  },
+  {
+    "key": "caro2012mechanics",
+    "type": "book",
+    "title": "The Mechanics of the Circulation, 2nd ed.",
+    "authors": "C. G. Caro, T. J. Pedley, R. C. Schroter, W. A. Seed",
+    "publisher": "Cambridge University Press",
+    "year": 2012,
+    "doi": "10.1017/CBO9781139013406",
+    "isbn": "978-1-107-00593-2",
+    "url": "https://kparker.bg-research.cc.ic.ac.uk/homepage/Mechanics%20of%20the%20Circulation/Chap_07/_Chapter_07.htm",
+    "used_for": "ch3 3.1 — accessible verbatim statement of the thin-wall assumption and Laplace's law for blood vessels (wall thickness small compared with radius); paired with fung1993biomechanics.",
+    "source_location": "Chapter 7 (Solid mechanics and the properties of blood vessel walls), sections 7.2-7.3 (online chapter edition)",
+    "verbatim_quote": "If the vessel is thin-walled, its wall thickness h = (1/2)(de - di) is small compared with di and di and de are approximately equal. ... This is the well-known 'law of Laplace'. It shows that the pressure required to distend a tube against a given tension in the wall is inversely proportional to the radius of the tube.",
+    "verification_status": "verified — thin-wall condition + Laplace law verbatim from the online chapter edition (Imperial College). DOI 10.1017/CBO9781139013406, ISBN confirmed for the Cambridge 2nd ed.; confirm identifiers against print copy. confidence=high"
+  },
+  {
+    "key": "jang2005oct",
+    "type": "article",
+    "title": "In Vivo Characterization of Coronary Atherosclerotic Plaque by Use of Optical Coherence Tomography",
+    "authors": "I.-K. Jang, G. J. Tearney, B. MacNeill, M. Takano, F. Moselewski, N. Iftima, M. Shishkov, S. Houser, H. T. Aretz, E. F. Halpern, B. E. Bouma",
+    "journal": "Circulation",
+    "volume": "111",
+    "number": "12",
+    "pages": "1551-1555",
+    "year": 2005,
+    "doi": "10.1161/01.CIR.0000159354.43778.69",
+    "pmid": "15781733",
+    "url": "https://www.ahajournals.org/doi/10.1161/01.CIR.0000159354.43778.69",
+    "used_for": "ch3 3.1 — direct in vivo OCT basis for fixing fibrous cap thickness t_fc = 100 um for a stable-CAD/SAP-type plaque: stable angina pectoris (SAP) group median minimum cap thickness = 102.6 um (vs AMI 47.0 um, ACS 53.8 um).",
+    "source_location": "Abstract — Results (PubMed PMID 15781733; full text 403)",
+    "verbatim_quote": "The median value of the minimum thickness of the fibrous cap was 47.0, 53.8, and 102.6 microm, respectively (P=0.034). [group order: AMI, ACS, SAP]",
+    "verification_status": "verified — DOI/PMID confirmed; cap-thickness values verbatim from abstract. SAP median 102.6 um ~ 100 um (note: median of MINIMUM thickness; 100 um is a stable/SAP value, NOT applicable to ACS/vulnerable). access=abstract_only; confidence=high"
+  },
+  {
+    "key": "narula2013",
+    "type": "article",
+    "title": "Histopathologic Characteristics of Atherosclerotic Coronary Disease and Implications of the Findings for the Invasive and Noninvasive Detection of Vulnerable Plaques",
+    "authors": "J. Narula, M. Nakano, R. Virmani, F. D. Kolodgie, R. Petersen, R. Newcomb, S. Malik, V. Fuster, A. V. Finn",
+    "journal": "Journal of the American College of Cardiology",
+    "volume": "61",
+    "number": "10",
+    "pages": "1041-1051",
+    "year": 2013,
+    "doi": "10.1016/j.jacc.2012.10.054",
+    "pmid": "23473409",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3931303/",
+    "used_for": "ch3 3.1 — corroborating bracket for t_fc=100 um: histology shows stable fibroatheroma (FA) caps are thick (>84 um; FA mean ~0.4 mm) whereas ruptured caps are <55 um, placing the chosen 100 um in the stable/non-vulnerable range (above the TCFA threshold).",
+    "source_location": "Abstract / Results (PubMed PMID 23473409; PMC3931303)",
+    "verbatim_quote": "all FA were associated with >84-um cap thickness ... the cap thickness measured <55 um in ruptured plaques.",
+    "verification_status": "verified — DOI/PMID confirmed; cap-thickness brackets verbatim from abstract/Table. Use as the upper/lower bracket framing (FA cap >84um, ruptured <55um), not as a mean-100um source. access=abstract; confidence=high"
+  },
+  {
+    "key": "heward2025cpp",
+    "type": "incollection",
+    "title": "Coronary Perfusion Pressure",
+    "authors": "S. J. Heward, P. Shams, J. Widrich",
+    "publisher": "StatPearls Publishing, Treasure Island (FL)",
+    "year": 2025,
+    "url": "https://www.ncbi.nlm.nih.gov/books/NBK551531/",
+    "used_for": "ch3 3.1.1 — mechanistic justification for the P_dia > 40 mmHg sampling floor: coronary perfusion occurs during diastole and coronary perfusion pressure is driven by aortic diastolic pressure (CPP = ADP - LVEDP), so an unrealistically low diastolic pressure (~20 mmHg) gives near-zero/negative perfusion pressure and is physiologically impossible -> excluded.",
+    "source_location": "Sections 'Introduction/Definition' and 'Physiology' (StatPearls, Bookshelf NBK551531, full text)",
+    "verbatim_quote": "Myocardial contraction during systole compresses the arterial branches within the myocardium, preventing perfusion. Consequently, coronary perfusion occurs during diastole. | CPP is calculated by subtracting left ventricular end-diastolic pressure (LVEDP) from aortic diastolic pressure (ADP), as follows: CPP = ADP - LVEDP.",
+    "verification_status": "verified — full text (NCBI Bookshelf). Directly supports a diastolic floor via coronary-perfusion mechanism. NOTE: StatPearls is a tertiary/educational source; for a stronger primary cite, Guyton & Hall (physiology) or Duncker & Bache 2008 Physiol Rev can substitute. The 40 mmHg value itself is the author's conservative floor, not a published cutoff. confidence=high"
+  },
+  {
+    "key": "mcevoy2016diastolic",
+    "type": "article",
+    "title": "Diastolic Blood Pressure, Subclinical Myocardial Damage, and Cardiac Events: Implications for Blood Pressure Control",
+    "authors": "J. W. McEvoy, Y. Chen, A. Rawlings, R. C. Hoogeveen, C. M. Ballantyne, J. Coresh, F. L. Brancati, E. Selvin",
+    "journal": "Journal of the American College of Cardiology",
+    "volume": "68",
+    "number": "16",
+    "pages": "1713-1722",
+    "year": 2016,
+    "doi": "10.1016/j.jacc.2016.07.754",
+    "pmid": "27590090",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5089057/",
+    "used_for": "ch3 3.1.1 — clinical (J-curve) support that low diastolic BP is adverse: DBP <60 mmHg is associated with subclinical myocardial damage and incident coronary heart disease, so excluding diastolic pressures below a 40 mmHg floor is conservative and physiologically justified.",
+    "source_location": "Abstract — Results (PubMed PMID 27590090; PMC5089057)",
+    "verbatim_quote": "DBP <60 mm Hg (vs. 80-89 mm Hg) was associated with incident CHD (hazard ratio: 1.5; 95% CI: 1.2 to 1.9).",
+    "verification_status": "verified — DOI/PMID confirmed; J-curve result verbatim from abstract. Documented adverse cutoff is 60 mmHg; the thesis 40 mmHg is a more conservative floor. confidence=high"
+  },
+  {
+    "key": "sankaran2012cabg",
+    "type": "article",
+    "title": "Patient-Specific Multiscale Modeling of Blood Flow for Coronary Artery Bypass Graft Surgery",
+    "authors": "S. Sankaran, M. Esmaily Moghadam, A. M. Kahn, E. E. Tseng, J. M. Guccione, A. L. Marsden",
+    "journal": "Annals of Biomedical Engineering",
+    "volume": "40",
+    "number": "10",
+    "pages": "2228-2242",
+    "year": 2012,
+    "doi": "10.1007/s10439-012-0579-3",
+    "pmid": "22539149",
+    "url": "https://link.springer.com/article/10.1007/s10439-012-0579-3",
+    "used_for": "ch3 3.1.3 (Boundary conditions) — precedent for lumped-parameter (0D) multiscale coronary microvascular outlet BCs coupled to a 3D model, and for the fixed proximal/distal coronary resistance split Rp/Rd ~ 1/10 (matches the thesis's fixed Rp/Rd = 1/10). Also the source (among the 4 SimVascular coronary refs) for the coronary resistance distribution Ra:Ra-micro:Rv = 0.32:0.52:0.16; Sankaran calls these 'typical values' and attributes them to Burattini et al. 1985 and Kim et al. 2009.",
+    "source_location": "Sections 'Algorithm for Choosing Boundary Condition Parameters' and 'Multi-Scale Modeling' (full text via PMC3570226)",
+    "verbatim_quote": "We choose typical values for splitting the coronary resistance, [6],[20] Ra,cor = 0.32 Rcor, Ra-u,cor = 0.52 Rcor and Rv + Rv-u = 0.16 Rcor. | The resistance of each branch is then Rp,i = kp x Ri and Rd,i = kd x Ri ... The constants kp and kd are 0.09 and 0.91, respectively. | Using Neumann boundary conditions, pressure is passed from the 0D to the 3D model and flow is passed from the 3D to the 0D model.",
+    "verification_status": "verified — full_text via PMC3570226; DOI/PMID confirmed. kp/kd = 0.09/0.91 -> Rp/Rd ~ 1/10, near-exact match to the thesis fixed ratio; 0D coronary LPN coupled to 3D via Neumann BCs. Distinct from existing sankaran2016 (2016 J Biomech). confidence=high NOTE: 0.32/0.52/0.16 split is verbatim in Sankaran (PMC3570226) but ORIGINATES from Burattini 1985 (DOI 10.1007/BF02407768) + Kim 2009 (DOI 10.1007/s10439-009-9760-8); Zhou1999/Tran2017/Kim2010 are NOT the source."
+  },
+  {
+    "key": "savvopoulos2024",
+    "type": "article",
+    "title": "Assessment of the nano-mechanical properties of healthy and atherosclerotic coronary arteries by atomic force microscopy",
+    "authors": "F. Savvopoulos, M. C. Keeling, D. Carassiti, N. A. Fogell, M. B. Patel, J. Naser, N. Gavara, R. de Silva, R. Krams",
+    "journal": "Journal of the Royal Society Interface",
+    "volume": "21",
+    "number": "211",
+    "pages": "20230674",
+    "year": 2024,
+    "doi": "10.1098/rsif.2023.0674",
+    "pmid": "38320600",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10846958/",
+    "used_for": "ch3 Table 3.2 row 6 (Collagen-deficient fibrous cap -> Low E_FC) — AFM measurements show the Young's modulus of coronary/cap tissue positively correlates with collagen content (collagen-rich cap is stiffer), justifying mapping a collagen-deficient cap to a low E_FC (collagen down -> modulus down).",
+    "source_location": "Abstract; Results Fig.3 (healthy) and Fig.4c (healthy + fibrous cap), full text PMC10846958",
+    "verbatim_quote": "Young's moduli correlated (Pearson's rho = 0.53, p < 0.05) with collagen content. | [Fig.4c] showed a trend towards a positive correlation between Young's modulus and collagen fibre density (Pearson's rho = 0.53, p = 0.036). | [Fig.3, healthy] a significant positive correlation (Pearson's rho = 0.61, p = 0.037).",
+    "verification_status": "verified — full text (PMC10846958); DOI/PMID confirmed. CAVEAT: paper reports a POSITIVE CORRELATION (Pearson rho ~0.53-0.61), NOT an explicit linear regression; authors call it moderate and note fibre orientation also affects stiffness. Supports the directional mapping (less collagen -> lower E_FC) qualitatively; recommend wording 'positively correlated' rather than 'linearly related'. confidence=high"
+  },
+  {
+    "key": "olufsen2000",
+    "number": null,
+    "bib": {
+      "type": "article",
+      "authors": [
+        "M. S. Olufsen",
+        "C. S. Peskin",
+        "W. Y. Kim",
+        "E. M. Pedersen",
+        "A. Nadim",
+        "J. Larsen"
+      ],
+      "year": 2000,
+      "title": "Numerical simulation and experimental validation of blood flow in arteries with structured-tree outflow conditions",
+      "venue": "Annals of Biomedical Engineering, 28(11), 1281-1299",
+      "doi": "10.1114/1.1326031",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/11212947/"
+    },
+    "supports": [
+      {
+        "our_claim": "A fixed, physiologically realistic pulsatile (aortic-root/ascending-aorta) volumetric inflow waveform Q(t) over one cardiac cycle is prescribed as the inlet flow boundary condition; the waveform shape is taken from the literature and is systole-dominant with an early-systolic peak.",
+        "our_location": "Appendix B / Fig B1(a) 유입파형 Q(t) (inlet flow BC)",
+        "source_location": {
+          "section": "Methods / Boundary conditions (inflow); Fig. 3 (inflow as a function of time)",
+          "paragraph": "inflow boundary condition description",
+          "page": "figure-caption (Fig. 3); article pp. 1281-1299"
+        },
+        "quote": "The inflow is a periodic repetition of data measured in the ascending aorta (at A in Fig. 1) during one period lasting 1.1 s.",
+        "access": "full_text_figure_caption_via_search (publisher full text paywalled; figure-caption sentence confirmed verbatim across two independent retrievals)",
+        "confidence": "medium-high"
+      },
+      {
+        "our_claim": "The simulated/prescribed ascending-aorta flow waveform is validated against MRI-measured ascending-aorta flow (provenance of the systole-dominant aortic-root inlet Q(t)).",
+        "our_location": "Appendix B / Fig B1(a) 유입파형 Q(t) (inlet flow BC)",
+        "source_location": {
+          "section": "Abstract",
+          "paragraph": "results",
+          "page": "1281"
+        },
+        "quote": "Comparison between the simulations and magnetic resonance measurements in the ascending aorta and nine peripheral locations in one individual shows excellent agreement between the two.",
+        "access": "abstract_only",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-19",
+      "double_checked": null,
+      "status": "pending"
+    },
+    "_notes": "PRIMARY source for a measured ASCENDING-AORTA (aortic-root-type) volumetric inflow waveform Q(t) used as a CFD/1D inlet BC. The waveform is the MRI-measured ascending-aorta flow, which is SYSTOLE-DOMINANT with an early-systolic peak -- consistent with the claim's t/T~0.22 peak. IMPORTANT CAVEAT FOR AUTHOR: this is an AORTIC (ascending-aorta) waveform, NOT a coronary waveform. A peak at t/T~0.22 is incompatible with a classic coronary inflow, which is DIASTOLE-dominant (confirmed in literature: coronary flow occurs mainly in diastole; arteries compressed in systole). So an aortic-root source like Olufsen2000 is the correct match for a systole-dominant inlet Q(t). NOTE: Olufsen's cardiac period is 1.1 s (T=1.1s), so map t/T accordingly. DOI 10.1114/1.1326031, PMID 11212947 confirmed via PubMed (vol 28, issue 11, pp 1281-1299, 2000). Abstract read verbatim from PubMed. Companion model paper: Olufsen 1999 AJP-Heart 276:H257 (same structured-tree method, same ascending-aorta inflow). ALTERNATIVE/REJECTED candidates: Murgo et al. 1980 Circulation 62(1):105-116 (DOI 10.1161/01.cir.62.1.105, PMID 7379273) measures ascending-aortic FLOW VELOCITY (not volumetric Q) and has NO accessible abstract/figure -> could not verify a verbatim waveform quote, so NOT recorded. Kim HJ et al. 2010 (kim2010coronary, already in store) is a coronary OUTLET BC (diastolic-dominant), not a systole-dominant inlet waveform."
+  },
+  {
+    "key": "les2010aaa",
+    "number": null,
+    "bib": {
+      "type": "article",
+      "authors": [
+        "A. S. Les",
+        "S. C. Shadden",
+        "C. A. Figueroa",
+        "J. M. Park",
+        "M. M. Tedesco",
+        "R. J. Herfkens",
+        "R. L. Dalman",
+        "C. A. Taylor"
+      ],
+      "year": 2010,
+      "title": "Quantification of hemodynamics in abdominal aortic aneurysms during rest and exercise using magnetic resonance imaging and computational fluid dynamics",
+      "venue": "Annals of Biomedical Engineering, 38(4), 1288-1313",
+      "doi": "10.1007/s10439-010-9949-x",
+      "pmid": "20143263",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6203348/"
+    },
+    "supports": [
+      {
+        "our_claim": "The prescribed inlet volumetric inflow Q(t) has a physiologically realistic cycle-mean magnitude (~20 mL/s = ~1.2 L/min), consistent with the resting mean flow of a large/abdominal-aortic-level inlet measured in vivo.",
+        "our_location": "Appendix B / Fig B1(a) — inlet flow BC Q(t) (mean ~20 cc/s ~ 1.2 L/min)",
+        "source_location": {
+          "section": "Results — 'Measured Flows and Pressures'",
+          "paragraph": "PC-MRI measured mean flows (supraceliac and infrarenal)",
+          "page": "full text (PMC6203348); article pp. 1288-1313"
+        },
+        "quote": "The mean flow measured from the PC-MRI scans were 3.51 L/min (SD: 0.50; range: 2.51-4.32) for SC and 1.31 L/min (SD: 0.34; range: 0.84-1.75) for IR.",
+        "access": "full_text",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-20",
+      "double_checked": null,
+      "status": "pending"
+    },
+    "_notes": "MAGNITUDE-MATCH reference for the MEAN of Q(t). The INFRARENAL (IR) abdominal aorta resting mean flow = 1.31 L/min = 21.8 mL/s (cc/s), which closely matches our cycle-mean ~20 cc/s (~1.2 L/min). Supraceliac (SC) mean = 3.51 L/min is larger (more proximal aorta). Thus our Q(t) mean magnitude sits at the abdominal-aortic / large-artery level — NOT the whole ascending aorta (CO ~5-6.5 L/min) and NOT a single coronary (LAD mean ~0.06 L/min). DOI 10.1007/s10439-010-9949-x, PMID 20143263 confirmed via PubMed; quote read VERBATIM from open-access full text PMC6203348 (Results, 'Measured Flows and Pressures'). access=full_text; confidence=high. CAVEAT: the paper reports peak flow only as a Reynolds number (systolic Re ~3036 at SC), so no verbatim PEAK mL/s value is available here for the 81 cc/s peak — peak is supported by waveform-shape/peak-to-mean ratio of an aortic waveform (see nouh2026aorta / olufsen2000), not by a single quoted number."
+  },
+  {
+    "key": "taylor1998aorta",
+    "number": null,
+    "bib": {
+      "type": "article",
+      "authors": [
+        "C. A. Taylor",
+        "T. J. R. Hughes",
+        "C. K. Zarins"
+      ],
+      "year": 1998,
+      "title": "Finite element modeling of three-dimensional pulsatile flow in the abdominal aorta: relevance to atherosclerosis",
+      "venue": "Annals of Biomedical Engineering, 26(6), 975-987",
+      "doi": "10.1114/1.140",
+      "pmid": "9846936",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9846936/"
+    },
+    "supports": [
+      {
+        "our_claim": "Prescribing a physiologically realistic pulsatile volumetric inflow waveform Q(t) as the inlet boundary condition of a 3D finite-element blood-flow model of a (large/abdominal) artery is an established, canonical CFD practice.",
+        "our_location": "Appendix B / Fig B1(a) — inlet flow BC Q(t) (canonical CFD inlet-BC practice)",
+        "source_location": {
+          "section": "Abstract",
+          "paragraph": "1 (sentence 3)",
+          "page": "975"
+        },
+        "quote": "A comprehensive computational framework was developed, utilizing a stabilized, time accurate, finite element method, to solve the equations governing blood flow in a model of a normal human abdominal aorta under simulated rest, pulsatile, flow conditions.",
+        "access": "abstract_only",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-20",
+      "double_checked": null,
+      "status": "pending"
+    },
+    "_notes": "CANONICAL CFD-inlet-BC citation: the foundational Taylor-Hughes-Zarins 3D finite-element study of pulsatile flow in the abdominal aorta with a prescribed rest pulsatile inflow waveform. Establishes the practice of prescribing a physiologically realistic pulsatile Q(t) at a (large/abdominal) arterial inlet. DOI 10.1114/1.140, PMID 9846936 confirmed via PubMed; abstract quote read VERBATIM. access=abstract_only (full text paywalled; the abstract states 'simulated rest, pulsatile, flow conditions' but does not give a numeric peak/mean Q). confidence=high for the canonical-practice claim; does NOT itself supply the 81/20 cc/s numbers."
+  },
+  {
+    "key": "nouh2026aorta",
+    "number": null,
+    "bib": {
+      "type": "incollection",
+      "authors": [
+        "M. R. Nouh",
+        "D. Tafti"
+      ],
+      "year": 2026,
+      "title": "Doppler Abdominal Aorta Assessment, Protocols, and Interpretation",
+      "venue": "StatPearls [Internet], Treasure Island (FL): StatPearls Publishing",
+      "doi": "",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK621195/"
+    },
+    "supports": [
+      {
+        "our_claim": "The prescribed inlet Q(t) has a physiologically realistic systole-dominant arterial waveform shape: a sharp systolic upstroke to a dominant peak, a rapid return toward baseline, then a small secondary (early-diastolic) feature and near-zero/low forward flow through late diastole (i.e., the canonical large-artery / abdominal-aortic 'triphasic' waveform, NOT diastole-dominant coronary flow).",
+        "our_location": "Appendix B / Fig B1(a) — inlet flow BC Q(t) (systole-dominant shape: peak at t/T~0.22, small 2nd peak at t/T~0.6, near-zero late diastole)",
+        "source_location": {
+          "section": "Clinical Significance — 'Normal Abdominal Aorta Doppler Signature'",
+          "paragraph": "spectral waveform description (below the inferior mesenteric artery)",
+          "page": "online (NBK621195)"
+        },
+        "quote": "The spectral trace above the inferior mesenteric artery branching off point displays a rapid systolic upstroke, followed by a swift return to baseline, brisk yet short early diastolic reverse, and low-velocity forward flow for the remainder of diastole, resulting in a triphasic pattern.",
+        "access": "full_text",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-20",
+      "double_checked": null,
+      "status": "pending"
+    },
+    "_notes": "SHAPE-MATCH reference for the systole-dominant arterial waveform of Q(t). StatPearls (NCBI Bookshelf, NBK621195; peer-reviewed, citable) verbatim describes the normal abdominal-aorta Doppler waveform as TRIPHASIC: rapid systolic upstroke -> dominant systolic peak, swift return to baseline, brief early-diastolic reversal, then low-velocity forward flow through late diastole. This matches our Q(t): dominant systolic peak (t/T~0.22), a small secondary feature (~t/T~0.6), near-zero late diastole. NOTE: this is a VELOCITY (Doppler) waveform description, not a volumetric-Q quote, but shape (not magnitude) is what it supports. Citably distinguishes the systole-dominant large-artery shape from the DIASTOLE-dominant coronary shape (see marcus1999lad). Quote read VERBATIM from NBK621195. access=full_text; confidence=high. Bookshelf chapters update; cite with access date 2026-06-20."
+  },
+  {
+    "key": "willemet2015",
+    "number": null,
+    "bib": {
+      "type": "article",
+      "authors": [
+        "M. Willemet",
+        "J. Alastruey"
+      ],
+      "year": 2015,
+      "title": "Arterial pressure and flow wave analysis using time-domain 1-D hemodynamics",
+      "venue": "Annals of Biomedical Engineering, 43(1), 190-206",
+      "doi": "10.1007/s10439-014-1087-4",
+      "pmid": "25138163",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4286649/"
+    },
+    "supports": [
+      {
+        "our_claim": "In large systemic arteries (aorta, carotid, brachial, iliac) the flow waves are forward-dominant during systole (driven by left-ventricular ejection) and decay through diastole — i.e., the inlet Q(t) is appropriately systole-dominant for a large-artery inlet.",
+        "our_location": "Appendix B / Fig B1(a) — inlet flow BC Q(t) (systole-dominant forward flow)",
+        "source_location": {
+          "section": "Results / Fig. 1 (wave-intensity analysis)",
+          "paragraph": "wave decomposition of the systemic-artery flow waveform",
+          "page": "full text (PMC4286649); article pp. 190-206"
+        },
+        "quote": "The flow is accelerated by a forward compression wave (FCW) in early systole, and decelerated by both a backward compression wave (BCW) in mid systole and a forward expansion wave (FEW) in late systole.",
+        "access": "full_text",
+        "confidence": "medium"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-20",
+      "double_checked": null,
+      "status": "pending"
+    },
+    "_notes": "SUPPORTING (secondary) shape reference: 1-D systemic-artery (aorta/carotid/brachial/iliac) hemodynamics. Verbatim quote describes the forward-compression-wave acceleration in EARLY SYSTOLE that produces the systolic flow peak, consistent with our early-systolic Q(t) peak (t/T~0.22). DOI 10.1007/s10439-014-1087-4, PMID 25138163 confirmed; quote read from open-access full text PMC4286649. CAVEAT: the quote is a wave-intensity description of the systolic flow peak, not an explicit 'systole-dominant vs diastole-dominant' sentence; confidence=medium for the systole-dominance claim. Use as corroboration alongside nouh2026aorta (primary shape) and olufsen2000 (measured aortic inflow). This paper does NOT discuss coronary flow."
+  },
+  {
+    "key": "marcus1999lad",
+    "number": null,
+    "bib": {
+      "type": "article",
+      "authors": [
+        "J. T. Marcus",
+        "H. G. Smeenk",
+        "J. P. A. Kuijer",
+        "R. J. Van der Geest",
+        "R. M. Heethaar",
+        "A. C. Van Rossum"
+      ],
+      "year": 1999,
+      "title": "Flow profiles in the left anterior descending and the right coronary artery assessed by MR velocity quantification: effects of through-plane and in-plane motion of the heart",
+      "venue": "Journal of Computer Assisted Tomography, 23(4), 567-576",
+      "doi": "10.1097/00004728-199907000-00017",
+      "pmid": "10433289",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/10433289/"
+    },
+    "supports": [
+      {
+        "our_claim": "HONEST CONTRAST (anti-mis-citation): a single coronary artery (LAD) is NOT a match for our Q(t). Coronary mean flow is ~0.06 L/min (~1 mL/s), ~20x smaller than our ~20 cc/s mean, AND coronary flow is DIASTOLE-dominant, opposite to our systole-dominant Q(t). Therefore Q(t) must be cited as an aortic/large-artery inlet, not a coronary inlet.",
+        "our_location": "Appendix B / Fig B1(a) — clarifying that Q(t) is an aortic/large-artery (not coronary) inlet",
+        "source_location": {
+          "section": "Abstract",
+          "paragraph": "results / conclusion",
+          "page": "567"
+        },
+        "quote": "Mean flow through the cardiac cycle was 59.1+/-15.0 ml/min. | It is confirmed noninvasively with MR that the LAD shows a predominantly diastolic flow.",
+        "access": "abstract_only",
+        "confidence": "high"
+      }
+    ],
+    "verification": {
+      "hunter_found": "2026-06-20",
+      "double_checked": null,
+      "status": "pending"
+    },
+    "_notes": "HONESTY/CONTRAST reference, NOT a positive support for Q(t). Marcus et al. 1999: LAD coronary mean flow = 59.1+/-15.0 mL/min (~0.99 mL/s) and 'predominantly diastolic flow'. Establishes that a single coronary artery is ~20x smaller in mean flow than our Q(t) (mean ~20 cc/s) AND has the OPPOSITE (diastole-dominant) waveform. Use this to justify, in Appendix B, that the systole-dominant Q(t) at ~20 cc/s mean / ~81 cc/s peak is an AORTIC / large-artery inlet, not a coronary inlet. DOI 10.1097/00004728-199907000-00017, PMID 10433289 confirmed via PubMed; both quotes read VERBATIM from PubMed abstract. access=abstract_only; confidence=high."
   }
 ]

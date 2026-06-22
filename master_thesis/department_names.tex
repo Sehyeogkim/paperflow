@@ -1,0 +1,726 @@
+\newcommand{\department}[3]{%
+    \ifthenelse{\equal{#1}{PH}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{물리학과}
+        \renewcommand{\@childDeptNameEng}{Department of Physics}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Physics}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{MAS}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{수리과학과}
+        \renewcommand{\@childDeptNameEng}{Department of Mathematical Sciences}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Mathematical Sciences}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{CH}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{화학과}
+        \renewcommand{\@childDeptNameEng}{Department of Chemistry}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Chemistry}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{NST}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{나노과학기술대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Nanoscience and Technology}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Nanoscience and Technology}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{QU}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{양자대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Quantum Science and Technology}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Quantum Science and Technology}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{BS}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{생명과학과}
+        \renewcommand{\@childDeptNameEng}{Department of Biological Sciences}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Biological Sciences}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{MSE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{의과학대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Medical Science and Engineering}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Medical Science and Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{BCS}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{뇌인지과학과}
+        \renewcommand{\@childDeptNameEng}{Department of Brain and Cognitive Sciences}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Brain and Cognitive Sciences}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{EB}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{공학생물학대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Engineering Biology}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Engineering Biology}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{SR}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{줄기세포및재생생물학대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Stem Cell and Regenerative Biology}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Stem Cell and Regenerative Biology}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{CE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{건설및환경공학과}
+        \renewcommand{\@childDeptNameEng}{Department of Civil and Environmental Engineering}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Civil and Environmental Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{ME}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{기계공학과}
+        \renewcommand{\@childDeptNameEng}{Department of Mechanical Engineering}
+        \renewcommand{\@parentDeptNameKor}{기계항공공학부}
+        \renewcommand{\@parentDeptNameEng}{School of Mechanical and Aerospace Engineering}
+        \renewcommand{\@parentAcademNameEng}{Mechanical and Aerospace Engineering}
+        \renewcommand{\@childAcademNameEng}{Mechanical Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{OSE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{해양시스템대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Ocean Systems Engineering}
+        \renewcommand{\@parentDeptNameKor}{기계항공공학부}
+        \renewcommand{\@parentDeptNameEng}{School of Mechanical and Aerospace Engineering}
+        \renewcommand{\@parentAcademNameEng}{Mechanical and Aerospace Engineering}
+        \renewcommand{\@childAcademNameEng}{Ocean Systems Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{AE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{항공우주공학과}
+        \renewcommand{\@childDeptNameEng}{Department of Aerospace Engineering}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Aerospace Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{BIS}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{바이오및뇌공학과}
+        \renewcommand{\@childDeptNameEng}{Department of Bio and Brain Engineering}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Bio and Brain Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{BCE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{뇌인지공학프로그램}
+        \renewcommand{\@childDeptNameEng}{Program of Brain and Cognitive Engineering}
+        \renewcommand{\@parentDeptNameKor}{바이오및뇌공학과}
+        \renewcommand{\@parentDeptNameEng}{Department of Bio and Brain Engineering}
+        \renewcommand{\@parentAcademNameEng}{Bio and Brain Engineering}
+        \renewcommand{\@childAcademNameEng}{Brain and Cognitive Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{ID}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{산업디자인학과}
+        \renewcommand{\@childDeptNameEng}{Department of Industrial Design}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Industrial Design}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{CBE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{생명화학공학과}
+        \renewcommand{\@childDeptNameEng}{Department of Chemical and Biomolecular Engineering}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Chemical and Biomolecular Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{MS}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{신소재공학과}
+        \renewcommand{\@childDeptNameEng}{Department of Materials Science and Engineering}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Materials Science and Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{EE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{전기및전자공학부}
+        \renewcommand{\@childDeptNameEng}{School of Electrical Engineering}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Electrical Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{GSST}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{반도체공학대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Semiconductor Technology}
+        \renewcommand{\@parentDeptNameKor}{전기및전자공학부}
+        \renewcommand{\@parentDeptNameEng}{School of Electrical Engineering}
+        \renewcommand{\@parentAcademNameEng}{Electrical Engineering}
+        \renewcommand{\@childAcademNameEng}{Semiconductor Technology}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{AIS}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{인공지능반도체대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of AI Semiconductor}
+        \renewcommand{\@parentDeptNameKor}{전기및전자공학부}
+        \renewcommand{\@parentDeptNameEng}{School of Electrical Engineering}
+        \renewcommand{\@parentAcademNameEng}{Electrical Engineering}
+        \renewcommand{\@childAcademNameEng}{AI Semiconductor}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{SSE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{반도체시스템공학과}
+        \renewcommand{\@childDeptNameEng}{Department of Semiconductor System Engineering}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Semiconductor System Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{CS}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{전산학부}
+        \renewcommand{\@childDeptNameEng}{School of Computing}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Computing}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{IS}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{정보보호대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Information Security}
+        \renewcommand{\@parentDeptNameKor}{전산학부}
+        \renewcommand{\@parentDeptNameEng}{School of Computing}
+        \renewcommand{\@parentAcademNameEng}{Computing}
+        \renewcommand{\@childAcademNameEng}{Information Security}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{SEP}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{소프트웨어대학원프로그램}
+        \renewcommand{\@childDeptNameEng}{Software Graduate Program}
+        \renewcommand{\@parentDeptNameKor}{전산학부}
+        \renewcommand{\@parentDeptNameEng}{School of Computing}
+        \renewcommand{\@parentAcademNameEng}{Computing}
+        \renewcommand{\@childAcademNameEng}{Software}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{ICE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{정보통신공학과}
+        \renewcommand{\@childDeptNameEng}{Department of Information and Communications Engineering}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Information and Communications Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{DMP}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{디지털미디어프로그램}
+        \renewcommand{\@childDeptNameEng}{Digital Media Program }
+        \renewcommand{\@parentDeptNameKor}{정보통신공학과}
+        \renewcommand{\@parentDeptNameEng}{Department of Information and Communications Engineering}
+        \renewcommand{\@parentAcademNameEng}{Information and Communications Engineering}
+        \renewcommand{\@childAcademNameEng}{Digital Media}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{IE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{산업 및 시스템 공학과}
+        \renewcommand{\@childDeptNameEng}{Department of Industrial and Systems Engineering}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Industrial and Systems Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{DS}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{데이터사이언스대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Data Science}
+        \renewcommand{\@parentDeptNameKor}{산업 및 시스템 공학과}
+        \renewcommand{\@parentDeptNameEng}{Department of Industrial and Systems Engineering}
+        \renewcommand{\@parentAcademNameEng}{Industrial and Systems Engineering}
+        \renewcommand{\@childAcademNameEng}{Data Science}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{NQE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{원자력 및 양자공학과}
+        \renewcommand{\@childDeptNameEng}{Department of Nuclear and Quantum Engineering}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Nuclear and Quantum Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{MO}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{조천식모빌리티대학원}
+        \renewcommand{\@childDeptNameEng}{Cho Chun Shik Graduate School of Mobility}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Mobility}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{AI}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{김재철AI대학원}
+        \renewcommand{\@childDeptNameEng}{Kim Jaechul Graduate School of AI}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{AI}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{PSE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{고분자학 학제전공}
+        \renewcommand{\@childDeptNameEng}{Polymer Science and Engineering Program}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Polymer Science and Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{SPE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{우주탐사공학 학제전공}
+        \renewcommand{\@childDeptNameEng}{Space Exploration Engineering Program}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Space Exploration Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{ENV}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{환경・에너지공학 학제전공}
+        \renewcommand{\@childDeptNameEng}{Environmental and Energy Technology Program}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Environmental and Energy Technology}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{RE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{로봇공학 학제전공}
+        \renewcommand{\@childDeptNameEng}{Robotics Program}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Robotics}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{PD}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{미래자동차 학제전공}
+        \renewcommand{\@childDeptNameEng}{Division of Future Vehicle}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Future Vehicle}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{STE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{반도체 학제전공}
+        \renewcommand{\@childDeptNameEng}{Semiconductor Technology Educational Program}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Semiconductor Technology}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{TE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{정보통신공학 학제전공}
+        \renewcommand{\@childDeptNameEng}{Telecommunication Engineering Program}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Telecommunication Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{GGS}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{녹색성장지속가능대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Green Growth and Sustainability}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Green Growth and Sustainability}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{MV}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{메타버스대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Metaverse}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Metaverse}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{HSS}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{디지털인문사회과학부}
+        \renewcommand{\@childDeptNameEng}{School of Digital Humanities and Computational Social Sciences}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Digital Humanities and Computational Social Sciences}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{GCT}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{문화기술대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Culture Technology}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Culture Technology}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{STP}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{과학기술정책대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Science and Technology Policy}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Science and Technology Policy}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{GFS}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{문술미래전략대학원}
+        \renewcommand{\@childDeptNameEng}{Moon Soul Graduate School of Future Strategy}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Future Strategy}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{IP}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{지식재산대학원프로그램}
+        \renewcommand{\@childDeptNameEng}{Master’s Program in Intellectual Property}
+        \renewcommand{\@parentDeptNameKor}{문술미래전략대학원}
+        \renewcommand{\@parentDeptNameEng}{Moon Soul Graduate School of Future Strategy}
+        \renewcommand{\@parentAcademNameEng}{Future Strategy}
+        \renewcommand{\@childAcademNameEng}{Intellectual Property}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{SJ}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{과학저널리즘대학원프로그램}
+        \renewcommand{\@childDeptNameEng}{Master’s Program in Science Journalism}
+        \renewcommand{\@parentDeptNameKor}{문술미래전략대학원}
+        \renewcommand{\@parentDeptNameEng}{Moon Soul Graduate School of Future Strategy}
+        \renewcommand{\@parentAcademNameEng}{Future Strategy}
+        \renewcommand{\@childAcademNameEng}{Science Journalism}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{FS}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{미래전략대학원프로그램}
+        \renewcommand{\@childDeptNameEng}{Master’s Program in Future Strategy}
+        \renewcommand{\@parentDeptNameKor}{문술미래전략대학원}
+        \renewcommand{\@parentDeptNameEng}{Moon Soul Graduate School of Future Strategy}
+        \renewcommand{\@parentAcademNameEng}{Future Strategy}
+        \renewcommand{\@childAcademNameEng}{Future Strategy}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{BTM}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{기술경영학부}
+        \renewcommand{\@childDeptNameEng}{School of Business and Technology Management}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Business and Technology Management}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{IT}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{기술경영학부 (IT경영학)}
+        \renewcommand{\@childDeptNameEng}{School of Business and Technology Management (IT Business)}
+        \renewcommand{\@parentDeptNameKor}{기술경영학부}
+        \renewcommand{\@parentDeptNameEng}{School of Business and Technology Management}
+        \renewcommand{\@parentAcademNameEng}{Business and Technology Management}
+        \renewcommand{\@childAcademNameEng}{IT Business}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{GDI}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{글로벌디지털혁신대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Global Digital Innovation}
+        \renewcommand{\@parentDeptNameKor}{기술경영학부}
+        \renewcommand{\@parentDeptNameEng}{School of Business and Technology Management}
+        \renewcommand{\@parentAcademNameEng}{Business and Technology Management}
+        \renewcommand{\@childAcademNameEng}{Global Digital Innovation}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{ITM}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{기술경영전문대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Innovation and Technology Management}
+        \renewcommand{\@parentDeptNameKor}{기술경영학부}
+        \renewcommand{\@parentDeptNameEng}{School of Business and Technology Management}
+        \renewcommand{\@parentAcademNameEng}{Business and Technology Management}
+        \renewcommand{\@childAcademNameEng}{Innovation and Technology Management}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{BIM}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{바이오혁신경영전문대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Bio Innovation Management}
+        \renewcommand{\@parentDeptNameKor}{기술경영학부}
+        \renewcommand{\@parentDeptNameEng}{School of Business and Technology Management}
+        \renewcommand{\@parentAcademNameEng}{Business and Technology Management}
+        \renewcommand{\@childAcademNameEng}{Bio Innovation Management}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{MT}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{경영공학부}
+        \renewcommand{\@childDeptNameEng}{School of Management Engineering}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Management Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{FIN}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{금융MBA}
+        \renewcommand{\@childDeptNameEng}{Finance MBA}
+        \renewcommand{\@parentDeptNameKor}{금융전문대학원}
+        \renewcommand{\@parentDeptNameEng}{Graduate School of Finance}
+        \renewcommand{\@parentAcademNameEng}{Finance}
+        \renewcommand{\@childAcademNameEng}{Finance MBA}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{FE}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{금융공학프로그램}
+        \renewcommand{\@childDeptNameEng}{Financial Engineering Program}
+        \renewcommand{\@parentDeptNameKor}{금융전문대학원}
+        \renewcommand{\@parentDeptNameEng}{Graduate School of Finance}
+        \renewcommand{\@parentAcademNameEng}{Finance}
+        \renewcommand{\@childAcademNameEng}{Financial Engineering}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{DF}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{디지털금융MBA}
+        \renewcommand{\@childDeptNameEng}{Digital Finance MBA}
+        \renewcommand{\@parentDeptNameKor}{금융전문대학원}
+        \renewcommand{\@parentDeptNameEng}{Graduate School of Finance}
+        \renewcommand{\@parentAcademNameEng}{Finance}
+        \renewcommand{\@childAcademNameEng}{Digital Finance MBA}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{FEM}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{금융이그제큐티브MBA}
+        \renewcommand{\@childDeptNameEng}{Finance Executive MBA}
+        \renewcommand{\@parentDeptNameKor}{금융전문대학원}
+        \renewcommand{\@parentDeptNameEng}{Graduate School of Finance}
+        \renewcommand{\@parentAcademNameEng}{Finance}
+        \renewcommand{\@childAcademNameEng}{Finance Executive MBA}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{EM}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{이그제큐티브MBA}
+        \renewcommand{\@childDeptNameEng}{Executive MBA}
+        \renewcommand{\@parentDeptNameKor}{KAIST경영전문대학원}
+        \renewcommand{\@parentDeptNameEng}{KAIST Graduate School of Business}
+        \renewcommand{\@parentAcademNameEng}{Business}
+        \renewcommand{\@childAcademNameEng}{Executive MBA}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{PM}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{프로페셔널MBA}
+        \renewcommand{\@childDeptNameEng}{Professional MBA}
+        \renewcommand{\@parentDeptNameKor}{KAIST경영전문대학원}
+        \renewcommand{\@parentDeptNameEng}{KAIST Graduate School of Business}
+        \renewcommand{\@parentAcademNameEng}{Business}
+        \renewcommand{\@childAcademNameEng}{Professional MBA}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{TM}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{테크노경영MBA}
+        \renewcommand{\@childDeptNameEng}{Techno-MBA}
+        \renewcommand{\@parentDeptNameKor}{KAIST경영전문대학원}
+        \renewcommand{\@parentDeptNameEng}{KAIST Graduate School of Business}
+        \renewcommand{\@parentAcademNameEng}{Business}
+        \renewcommand{\@childAcademNameEng}{Techno-MBA}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{SM}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{사회적기업가MBA}
+        \renewcommand{\@childDeptNameEng}{Social Entrepreneurship MBA }
+        \renewcommand{\@parentDeptNameKor}{KAIST경영전문대학원}
+        \renewcommand{\@parentDeptNameEng}{KAIST Graduate School of Business}
+        \renewcommand{\@parentAcademNameEng}{Business}
+        \renewcommand{\@childAcademNameEng}{Social Entrepreneurship MBA}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{IMM}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{정보미디어MBA}
+        \renewcommand{\@childDeptNameEng}{Information and Media MBA}
+        \renewcommand{\@parentDeptNameKor}{KAIST경영전문대학원}
+        \renewcommand{\@parentDeptNameEng}{KAIST Graduate School of Business}
+        \renewcommand{\@parentAcademNameEng}{Business}
+        \renewcommand{\@childAcademNameEng}{Information and Media MBA}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{IM}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{정보경영프로그램}
+        \renewcommand{\@childDeptNameEng}{Information Management Program}
+        \renewcommand{\@parentDeptNameKor}{KAIST경영전문대학원}
+        \renewcommand{\@parentDeptNameEng}{KAIST Graduate School of Business}
+        \renewcommand{\@parentAcademNameEng}{Business}
+        \renewcommand{\@childAcademNameEng}{Information Management}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{GBP}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{녹색경영정책프로그램}
+        \renewcommand{\@childDeptNameEng}{Green Business and Policy Program}
+        \renewcommand{\@parentDeptNameKor}{KAIST경영전문대학원}
+        \renewcommand{\@parentDeptNameEng}{KAIST Graduate School of Business}
+        \renewcommand{\@parentAcademNameEng}{Business}
+        \renewcommand{\@childAcademNameEng}{Green Business and Policy}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{KM}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{카이스트MBA}
+        \renewcommand{\@childDeptNameEng}{KAIST MBA}
+        \renewcommand{\@parentDeptNameKor}{KAIST경영전문대학원}
+        \renewcommand{\@parentDeptNameEng}{KAIST Graduate School of Business}
+        \renewcommand{\@parentAcademNameEng}{Business}
+        \renewcommand{\@childAcademNameEng}{KAIST MBA}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{IMP}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{임팩트MBA}
+        \renewcommand{\@childDeptNameEng}{Impact MBA}
+        \renewcommand{\@parentDeptNameKor}{KAIST경영전문대학원}
+        \renewcommand{\@parentDeptNameEng}{KAIST Graduate School of Business}
+        \renewcommand{\@parentAcademNameEng}{Business}
+        \renewcommand{\@childAcademNameEng}{Impact MBA}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+    \ifthenelse{\equal{#1}{SST}}
+        {\renewcommand{\@degreeCode}{\@degreePrefix #1}
+        \renewcommand{\@childDeptNameKor}{안보과학기술대학원}
+        \renewcommand{\@childDeptNameEng}{Graduate School of Advanced Security Science and Technology}
+        \renewcommand{\@parentDeptNameKor}{}
+        \renewcommand{\@parentDeptNameEng}{}
+        \renewcommand{\@parentAcademNameEng}{}
+        \renewcommand{\@childAcademNameEng}{Advanced Security Science and Technology}
+        \renewcommand{\@degreeField}{#2}
+        \renewcommand{\@degreeversion}{#3}}{}
+
+    \renewcommand{\@affFullNameKor}{% 학과/전공 한글이름
+        \ifthenelse{\equal{\@parentDeptNameKor}{}}
+        {\@childDeptNameKor}{%
+            \ifthenelse{\equal{\@degreeversion}{a}}{\@parentDeptNameKor}{}%
+            \ifthenelse{\equal{\@degreeversion}{b}}{\@parentDeptNameKor \ (\@childDeptNameKor)}{}%
+            \ifthenelse{\equal{\@degreeversion}{c}}{\@childDeptNameKor}{}}
+    }
+    \renewcommand{\@affFullNameEng}{% 학과/전공 영문이름
+        \ifthenelse{\equal{\@parentDeptNameEng}{}}
+        {\@childDeptNameEng}{%
+            \ifthenelse{\equal{\@degreeversion}{a}}{\@parentDeptNameEng}{}%
+            \ifthenelse{\equal{\@degreeversion}{b}}{\@parentDeptNameEng \ (\@childDeptNameEng)}{}%
+            \ifthenelse{\equal{\@degreeversion}{c}}{\@childDeptNameEng}{}}
+    }
+    \renewcommand{\@appFullAcademName}{% 학문 승인서용 영문이름
+        \ifthenelse{\equal{\@parentAcademNameEng}{}}
+        {\@childAcademNameEng}{%
+            \ifthenelse{\equal{\@degreeversion}{a}}{\@parentAcademNameEng}{}%
+            \ifthenelse{\equal{\@degreeversion}{b}}{\@parentAcademNameEng \ (\@childAcademNameEng)}{}%
+            \ifthenelse{\equal{\@degreeversion}{c}}{\@childAcademNameEng}{}}
+    }
+    \renewcommand{\@degreeName}{% 학위 영문이름
+        \ifthenelse{\boolean{@isDoctor}}
+        {Doctor of Philosophy} {% 박사는 모두 Ph.D.
+            \ifthenelse{\equal{\@degreeField}{science}}
+            {Master of Science}{}% 이학석사는 M.S.
+            \ifthenelse{\equal{\@degreeField}{engineering}}
+            {Master of Science}{}% 공학석사는 M.S.
+            \ifthenelse{\equal{\@degreeField}{business}}
+            {Master of Business Administration}{}% 경영학석사는 M.B.A.
+        }
+    }
+}
+\@onlypreamble{\department}

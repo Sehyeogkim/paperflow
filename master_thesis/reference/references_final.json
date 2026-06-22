@@ -1,0 +1,356 @@
+% =========================================================
+% Introduction bibliography: Sections 1.1--1.4
+% Updated: 2026-06-17
+% Scope: all citation keys currently used or planned in Notion reference notes
+% =========================================================
+
+% ---------------------------------------------------------
+% 1.1 Plaque rupture
+% ---------------------------------------------------------
+
+@article{bentzon2014,
+  title={Mechanisms of Plaque Formation and Rupture},
+  author={Bentzon, Jacob Fog and Otsuka, Fumiyuki and Virmani, Renu and Falk, Erling},
+  journal={Circulation Research},
+  volume={114},
+  number={12},
+  pages={1852--1866},
+  year={2014},
+  doi={10.1161/CIRCRESAHA.114.302721}
+}
+
+@article{otsuka2016,
+  title={Pathology of Coronary Atherosclerosis and Thrombosis},
+  author={Otsuka, Fumiyuki and Yasuda, Satoshi and Noguchi, Teruo and Ishibashi-Ueda, Hatsue},
+  journal={Cardiovascular Diagnosis and Therapy},
+  volume={6},
+  number={4},
+  pages={396--408},
+  year={2016},
+  doi={10.21037/cdt.2016.06.01}
+}
+
+@article{virmani2000,
+  title={Lessons from Sudden Coronary Death: A Comprehensive Morphological Classification Scheme for Atherosclerotic Lesions},
+  author={Virmani, Renu and Kolodgie, Frank D. and Burke, Allen P. and Farb, Andrew and Schwartz, Stephen M.},
+  journal={Arteriosclerosis, Thrombosis, and Vascular Biology},
+  volume={20},
+  number={5},
+  pages={1262--1275},
+  year={2000},
+  doi={10.1161/01.ATV.20.5.1262}
+}
+
+@misc{WHO2024Top10,
+  title={The Top 10 Causes of Death},
+  author={{World Health Organization}},
+  year={2024},
+  note={Updated 7 August 2024; accessed 17 June 2026},
+  url={https://www.who.int/news-room/fact-sheets/detail/the-top-10-causes-of-death}
+}
+
+% Supplemental review currently present in the old latex-form page.
+@article{lee2019,
+  title={Understanding Vulnerable Plaques: Current Status and Future Directions},
+  author={Lee, Sang-Eun and Chang, Hyuk-Jae},
+  journal={Korean Circulation Journal},
+  volume={49},
+  number={12},
+  pages={1115--1122},
+  year={2019},
+  doi={10.4070/kcj.2019.0211}
+}
+
+% ---------------------------------------------------------
+% 1.2 Causes: clinical, biomechanical, and fatigue viewpoints
+% ---------------------------------------------------------
+
+@article{virmani2006,
+  title={Pathology of the Vulnerable Plaque},
+  author={Virmani, Renu and Burke, Allen P. and Farb, Andrew and Kolodgie, Frank D.},
+  journal={Journal of the American College of Cardiology},
+  volume={47},
+  number={8 Suppl},
+  pages={C13--C18},
+  year={2006},
+  doi={10.1016/j.jacc.2005.10.065}
+}
+
+@article{lee2019_emerald,
+  title={Identification of High-Risk Plaques Destined to Cause Acute Coronary Syndrome Using Coronary Computed Tomographic Angiography and Computational Fluid Dynamics},
+  author={Lee, Jong-Min and Choi, Gaurav and Koo, Bon-Kwon and others},
+  journal={JACC: Cardiovascular Imaging},
+  volume={12},
+  number={6},
+  pages={1032--1043},
+  year={2019},
+  doi={10.1016/j.jcmg.2018.01.023}
+}
+
+@article{yang2021hemodynamics,
+  title={Coronary Computed Tomography Angiography-Derived Local Hemodynamic Parameters in the Identification of Culprit Lesions of Acute Coronary Syndrome},
+  author={Yang, Seung-Jung and others},
+  journal={Frontiers in Cardiovascular Medicine},
+  volume={8},
+  pages={713835},
+  year={2021},
+  doi={10.3389/fcvm.2021.713835},
+  note={TODO: verify full author list against .bib}
+}
+
+@article{choi2015_aps,
+  title={Axial Plaque Stress and Plaque Vulnerability in Coronary Artery Disease},
+  author={Choi, Gaurav and others},
+  journal={JACC: Cardiovascular Imaging},
+  year={2015},
+  doi={10.1016/j.jcmg.2015.04.024},
+  note={TODO: verify exact title, volume, issue, and pages against publisher record}
+}
+
+@article{brown2016,
+  title={Biomechanical Stress in Coronary Atherosclerosis: Emerging Insights from Computational Modelling},
+  author={Brown, Andrew J. and Teng, Zhongzhao and Evans, Paul C. and Gillard, Jonathan H. and Samady, Habib and Bennett, Martin R.},
+  journal={Nature Reviews Cardiology},
+  volume={13},
+  pages={210--220},
+  year={2016},
+  doi={10.1038/nrcardio.2015.203}
+}
+
+@article{gu_pss_review,
+  title={Biomechanical Stress in Atherosclerotic Plaque Rupture},
+  author={Gu, Shuang and others},
+  journal={Frontiers in Cardiovascular Medicine},
+  volume={9},
+  pages={875413},
+  year={2022},
+  doi={10.3389/fcvm.2022.875413},
+  note={TODO: verify exact title and full author list against publisher record}
+}
+
+@article{bank_fatigue_hypothesis,
+  title={Atherosclerotic Plaque Rupture: A Fatigue Process?},
+  author={Bank, Alan J. and Versluis, Antheunis and Dodge, Stefan M. and Douglas, William H.},
+  journal={Medical Hypotheses},
+  volume={55},
+  number={6},
+  pages={480--484},
+  year={2000},
+  doi={10.1054/mehy.2000.1096}
+}
+
+@article{versluis_paris_fatigue,
+  title={Fatigue and Plaque Rupture in Myocardial Infarction},
+  author={Versluis, Antheunis and Bank, Alan J. and Douglas, William H.},
+  journal={Journal of Biomechanics},
+  volume={39},
+  number={2},
+  pages={339--347},
+  year={2006},
+  doi={10.1016/j.jbiomech.2004.11.012}
+}
+
+% Alias retained because the manuscript/reference note also uses the key 'fatigue'.
+@article{fatigue,
+  title={Atherosclerotic Plaque Rupture: A Fatigue Process?},
+  author={Bank, Alan J. and Versluis, Antheunis and Dodge, Stefan M. and Douglas, William H.},
+  journal={Medical Hypotheses},
+  volume={55},
+  number={6},
+  pages={480--484},
+  year={2000},
+  doi={10.1054/mehy.2000.1096}
+}
+
+@article{corti_vi,
+  title={Biomechanics-Based Vulnerability Index for Atherosclerotic Plaque Stability Assessment},
+  author={Corti, Andrea and others},
+  journal={Frontiers in Cardiovascular Medicine},
+  volume={9},
+  pages={1019917},
+  year={2022},
+  doi={10.3389/fcvm.2022.1019917},
+  note={TODO: verify exact title and full author list against publisher record}
+}
+
+% ---------------------------------------------------------
+% 1.3 Vulnerability Index
+% ---------------------------------------------------------
+
+@article{teng_pss,
+  title={Coronary Plaque Structural Stress Is Associated With Plaque Composition and Subtype and Higher in Acute Coronary Syndrome: The BEACON I Study},
+  author={Teng, Zhongzhao and others},
+  journal={Circulation: Cardiovascular Imaging},
+  volume={7},
+  number={3},
+  pages={461--470},
+  year={2014},
+  doi={10.1161/CIRCIMAGING.113.001526},
+  note={TODO: verify DOI against .bib if your key 'teng_pss' points to a different Teng PSS paper}
+}
+
+@article{huang_pss,
+  title={The Impact of Calcification on the Biomechanical Stability of Atherosclerotic Plaques},
+  author={Huang, H. and Virmani, R. and Younis, H. and Burke, A. P. and Kamm, R. D. and Lee, R. T.},
+  journal={Circulation},
+  volume={103},
+  number={8},
+  pages={1051--1056},
+  year={2001},
+  doi={10.1161/01.CIR.103.8.1051}
+}
+
+@article{savvopoulos_collagen_modulus,
+  title={Collagen Content and Mechanical Properties of Fibrous Cap Tissue in Atherosclerotic Plaques},
+  author={Savvopoulos, Savvas and others},
+  year={0000},
+  note={TODO: exact reference not uniquely verified. Keep key because it is used for collagen content/modulus--dependent fibrous cap strength. Replace title/year/journal/DOI after checking .bib or original PDF.}
+}
+
+@article{chai_indentation,
+  title={Local Axial Compressive Mechanical Properties of Human Carotid Atherosclerotic Plaques: Characterisation by Indentation Test and Inverse Finite Element Analysis},
+  author={Chai, Chee K. and Akyildiz, Ali C. and Speelman, Laura and others},
+  journal={Journal of Biomechanics},
+  year={2013},
+  doi={10.1016/j.jbiomech.2013.03.017},
+  note={TODO: verify volume, issue, and pages against PubMed record}
+}
+
+@article{costopoulos_vh_ivus,
+  title={Increased Plaque Structural Stress Is Associated With Coronary Plaque Rupture in Patients With Acute Coronary Syndrome},
+  author={Costopoulos, Charis and others},
+  journal={JACC: Cardiovascular Imaging},
+  year={2017},
+  note={TODO: verify exact title, volume, pages, and DOI. This key is intended for the VH-IVUS plaque structural stress study currently cited as costopoulos_vh_ivus.}
+}
+
+@article{cvi2026,
+  title={Cap Vulnerability Index for Coronary Plaque Rupture Risk Assessment},
+  author={Unknown},
+  journal={Frontiers in Cardiovascular Medicine},
+  year={2026},
+  doi={10.3389/fcvm.2026.1766059},
+  note={Supplemental candidate citation from Notion note. TODO: verify full metadata before final submission.}
+}
+
+% ---------------------------------------------------------
+% 1.4 Limitations of prior studies
+% ---------------------------------------------------------
+
+@book{saltelli2008,
+  title={Global Sensitivity Analysis: The Primer},
+  author={Saltelli, Andrea and Ratto, Marco and Andres, Terry and Campolongo, Francesca and Cariboni, Jessica and Gatelli, Debora and Saisana, Michaela and Tarantola, Stefano},
+  publisher={John Wiley \& Sons},
+  year={2008},
+  doi={10.1002/9780470725184}
+}
+
+@article{sobol2001,
+  title={Global Sensitivity Indices for Nonlinear Mathematical Models and Their Monte Carlo Estimates},
+  author={Sobol, Ilya M.},
+  journal={Mathematics and Computers in Simulation},
+  volume={55},
+  number={1--3},
+  pages={271--280},
+  year={2001},
+  doi={10.1016/S0378-4754(00)00270-6}
+}
+
+@article{cilla2015,
+  title={Sensitivity Analysis of Atherosclerotic Plaque Morphology on Plaque Stress and Rupture Risk},
+  author={Cilla, M. and others},
+  year={2015},
+  note={TODO: exact metadata not yet verified. Keep key for morphology-only computational sensitivity/parametric study.}
+}
+
+@article{costopoulos2017,
+  title={Increased Plaque Structural Stress Is Associated With Coronary Plaque Rupture in Patients With Acute Coronary Syndrome},
+  author={Costopoulos, Charis and others},
+  journal={JACC: Cardiovascular Imaging},
+  year={2017},
+  note={TODO: verify exact title, volume, pages, and DOI. Same study may overlap with costopoulos_vh_ivus.}
+}
+
+@article{teng2014,
+  title={Coronary Plaque Structural Stress Is Associated With Plaque Composition and Subtype and Higher in Acute Coronary Syndrome: The BEACON I Study},
+  author={Teng, Zhongzhao and others},
+  journal={Circulation: Cardiovascular Imaging},
+  volume={7},
+  number={3},
+  pages={461--470},
+  year={2014},
+  doi={10.1161/CIRCIMAGING.113.001526},
+  note={Alias entry for 1.4 citation key; same paper as teng_pss if your .tex uses both keys.}
+}
+
+@article{milzi2021,
+  title={Coronary Plaque Morphology, Composition, and Stress-Based Vulnerability Assessment},
+  author={Milzi, Alessandra and others},
+  year={2021},
+  note={TODO: exact metadata not yet verified. Keep key for morphology + composition computational/clinical plaque vulnerability study.}
+}
+
+@article{polzer2019,
+  title={Influence of Plaque Geometry and Material Properties on Atherosclerotic Plaque Stress},
+  author={Polzer, Stanislav and others},
+  year={2019},
+  note={TODO: exact metadata not yet verified. Keep key for morphology + material-property study.}
+}
+
+@article{teng2019,
+  title={Influence of Plaque Component Material Properties on Plaque Structural Stress and Vulnerability Assessment},
+  author={Teng, Zhongzhao and others},
+  year={2019},
+  note={TODO: exact metadata not yet verified. Keep key for morphology + material-property study.}
+}
+
+@article{zhao2024,
+  title={Fluid--Structure Interaction Analysis of Coronary Plaque Rupture and Rupture-Related Mechanical Conditions},
+  author={Zhao, Xia and others},
+  year={2024},
+  note={TODO: exact metadata not yet verified. Keep key for small-scale FSI plaque rupture/rupture-risk study.}
+}
+
+@article{wang2021_multipatient,
+  title={Multi-Patient Study for Coronary Vulnerable Plaque Model Comparisons: 2D/3D and Fluid--Structure Interaction Simulations},
+  author={Wang, Qingyu and Tang, Dalin and Wang, Liang and Maehara, Akiko and Molony, David and Samady, Habib and Zheng, Jie and Mintz, Gary S. and Stone, Gregg W. and Giddens, Don P.},
+  journal={Biomechanics and Modeling in Mechanobiology},
+  volume={20},
+  pages={1383--1397},
+  year={2021},
+  doi={10.1007/s10237-021-01450-8}
+}
+
+@article{lissoni2025_coronary_methods,
+  title={Computational Methods Used to Investigate Atherosclerosis Progression in Coronary Arteries: Structural FEA, CFD or FSI},
+  author={Lissoni, Martina and others},
+  year={2025},
+  note={TODO: verify journal, volume, pages, DOI, and full author list against publisher record. URL from Notion reference note.},
+  url={https://re.public.polimi.it/retrieve/6b07a684-50bf-4542-a2af-fd77fee4f902/2025%20LISSONI%20-%20Computational%20methods%20used%20to%20investigate%20coronary%20arteries.pdf}
+}
+
+% ---------------------------------------------------------
+% In-text citation map used in current Introduction draft
+% ---------------------------------------------------------
+% 1.1 Plaque rupture:
+%   \cite{bentzon2014, otsuka2016, virmani2000, WHO2024Top10}
+%
+% 1.2 Causes:
+%   \cite{bentzon2014, virmani2006}
+%   \cite{lee2019_emerald, yang2021hemodynamics}
+%   \cite{choi2015_aps, brown2016, gu_pss_review}
+%   \cite{bank_fatigue_hypothesis, versluis_paris_fatigue, corti_vi}
+%
+% 1.3 Vulnerability Index:
+%   \cite{teng_pss, huang_pss}
+%   \cite{bank_fatigue_hypothesis, versluis_paris_fatigue}
+%   \cite{fatigue, costopoulos_vh_ivus}
+%   \cite{corti_vi, savvopoulos_collagen_modulus, chai_indentation}
+%
+% 1.4 Limitations of prior studies:
+%   \cite{lee2019_emerald, saltelli2008}
+%   \cite{cilla2015}
+%   \cite{costopoulos2017, teng2014, milzi2021}
+%   \cite{polzer2019, teng2019}
+%   \cite{zhao2024, sobol2001}
+%   \cite{wang2021_multipatient, lissoni2025_coronary_methods}
