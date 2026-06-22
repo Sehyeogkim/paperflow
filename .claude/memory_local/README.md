@@ -26,3 +26,5 @@
   — 저널式: 확립 모델은 cite+값표+코드공개, Appendix엔 비표준 수식만. BC canonical refs 4개 키 포함.
 - [민감도 결과: 위치 + 핵심 수치](sensitivity-results-location-and-findings.md)
   — ws2 Sobol csv 위치(+로컬 사본), 재료물성 지배·지배인자(E_vessel/E_FC/P_sys)·PP는 작음, CP 14-input nuance, 미해결(R²·유효N·파열위치).
+- [.tex을 Notion에서 재생성 (2026-06-19)](thesis-tex-rebuilt-from-notion-2026-06-19.md)
+  — 20244152_sehyeog_0619.tex 전체를 Notion 본문으로 교체·컴파일(48p). figure_page 매핑은 순서 가정(검증 필요), A2/B1 figure 없음, references.bib 67→103 확장 + 별칭키 정규화, VERIFY stub 키 목록.

@@ -20,7 +20,7 @@ Fig 3에 보이듯이, 비용효율 FSI를 이용해 두 가지 플라크 표현
 
 기본(고정) 형상은 원통형 관상동맥 분절로, 길이 $10$ cm, 내강 반경 $r_\text{ref}=0.1$ cm, 벽 두께 $t_\text{wall}=0.02$ cm로 고정하였다.
 
-형태학적 입력 변수는 비침습적이고 범용성이 높은 관상동맥 CT 혈관조영(CCTA)에서 도출하는 것을 전제로 하여, 향후 임상 적용으로의 확장이 용이하도록 설계하였다. 다만 섬유막 두께는 CCTA로 분해되지 않고 OCT 등 침습 영상으로만 측정 가능하므로, 공간적으로 균일하다고 가정하여 단일 스칼라로 환원하고 모든 샘플에서 $t_\text{FC}=100\ \mu\text{m}$로 고정하였다. 이 값은 파열 취약 플라크의 in vivo OCT 측정과 부합한다 [12, 13]. 이로써 침습 영상이 필요한 유일한 형태 변수를 제거하여, 전체 입력공간을 CCTA만으로 구성할 수 있는 단독 워크플로우와의 정합성을 유지한다.
+형태학적 입력 변수는 비침습적이고 범용성이 높은 관상동맥 CT 혈관조영(CCTA)에서 도출하는 것을 전제로 하여, 향후 임상 적용으로의 확장이 용이하도록 설계하였다. 다만 섬유막 두께는 CCTA로 분해되지 않고 OCT 등 침습 영상으로만 측정 가능하므로, 공간적으로 균일하다고 가정하여 단일 스칼라로 환원하고 모든 샘플에서 $t_\text{FC}=100\ \mu\text{m}$로 고정하였다. 이 값은 파열 취약 플라크의 in vivo OCT 측정과 부합한다 \cite{yonetsu2011, virmani2000}. 이로써 침습 영상이 필요한 유일한 형태 변수를 제거하여, 전체 입력공간을 CCTA만으로 구성할 수 있는 단독 워크플로우와의 정합성을 유지한다.
 
 (Fig 3 — Idealized coronary model geometry + morphological parameters: (a) LAP 3-domain vs CP 4-domain, (b) 형태 변수 annotation. 형상 기호 $r_\text{ref}$, $t_\text{wall}$, $t_\text{FC}$를 함께 표기.)
 
@@ -47,20 +47,20 @@ Fig 3에 보이듯이, 비용효율 FSI를 이용해 두 가지 플라크 표현
 
 | Group | Variable | Symbol | Unit | Range [min, max] | Ref |
 |---|---|---|---|---|---|
-| Morphological | Degree of stenosis | $DS$ | % | [25, 75] | [15] |
-| | Lesion length | $L_\text{lesion}$ | cm | [1.0, 3.0] | [16] |
-| | Lumen axial skewness | $\gamma_z$ | – | [−0.5, 0.5] | [17] |
-| | Positive remodeling index | $PI$ | – | [0.9, 1.2] | [18] |
-| | Lipid arc angle | $\theta_\text{lipid}$ | ° | [120, 270] | [19] |
-| | Lipid length ratio | $r_\text{lipid}$ | – | [0.5, 0.8] | [20] |
-| | Calcified fraction (CP) | $f_\text{calc}$ | – | [0.10, 0.80] | [21] |
-| Hemodynamic | Systolic pressure | $P_\text{sys}$ | mmHg | [100, 170] | [22] |
-| | Pulse pressure | $\Delta P$ | mmHg | [35, 80] | [23] |
-| | Decay ratio | $\tau$ | – | [0.01, 0.50] | [24, 25] |
-| Material | Vessel-wall modulus | $E_\text{vessel}$ | dyn/cm² | [1×10⁶, 1.4×10⁷] | [26] |
-| | Fibrous-cap modulus | $E_\text{FC}$ | dyn/cm² | [4×10⁶, 2.3×10⁷] | [27] |
-| | Lipid-core modulus | $E_\text{lipid}$ | dyn/cm² | [1×10⁴, 1×10⁶] | [28] |
-| | Calcification modulus (CP) | $E_\text{calc}$ | dyn/cm² | [7×10⁹, 2.5×10¹¹] | [29] |
+| Morphological | Degree of stenosis | $DS$ | % | [25, 75] | \cite{stone2011prospect} |
+| | Lesion length | $L_\text{lesion}$ | cm | [1.0, 3.0] | \cite{brosh2005} |
+| | Lumen axial skewness | $\gamma_z$ | – | [−0.5, 0.5] | \cite{wang2015ivus} |
+| | Positive remodeling index | $PI$ | – | [0.9, 1.2] | \cite{schoenhagen2000} |
+| | Lipid arc angle | $\theta_\text{lipid}$ | ° | [120, 270] | \cite{xing2017} |
+| | Lipid length ratio | $r_\text{lipid}$ | – | [0.5, 0.8] | \cite{tanaka2009} |
+| | Calcified fraction (CP) | $f_\text{calc}$ | – | [0.10, 0.80] | \cite{mintz1995} |
+| Hemodynamic | Systolic pressure | $P_\text{sys}$ | mmHg | [100, 170] | \cite{whelton2018} |
+| | Pulse pressure | $\Delta P$ | mmHg | [35, 80] | \cite{franklin1999} |
+| | Decay ratio | $\tau$ | – | [0.01, 0.50] | \cite{kim2010coronary, sankaran2016} |
+| Material | Vessel-wall modulus | $E_\text{vessel}$ | dyn/cm² | [1×10⁶, 1.4×10⁷] | \cite{holzapfel2005} |
+| | Fibrous-cap modulus | $E_\text{FC}$ | dyn/cm² | [4×10⁶, 2.3×10⁷] | \cite{loree1994static} |
+| | Lipid-core modulus | $E_\text{lipid}$ | dyn/cm² | [1×10⁴, 1×10⁶] | \cite{loree1994lipid} |
+| | Calcification modulus (CP) | $E_\text{calc}$ | dyn/cm² | [7×10⁹, 2.5×10¹¹] | \cite{ebenstein2009} |
 
 *LHS 제약: $P_\text{dia}=P_\text{sys}-\Delta P>40$ mmHg.*
 
