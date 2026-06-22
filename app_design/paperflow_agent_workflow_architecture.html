@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PaperFlow 에이전트 워크플로우 아키텍처</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --panel: #ffffff;
+      --ink: #172033;
+      --muted: #5d687c;
+      --line: #d9dfeb;
+      --blue: #2563eb;
+      --blue-soft: #e8f0ff;
+      --green: #15803d;
+      --green-soft: #e9f8ee;
+      --amber: #b45309;
+      --amber-soft: #fff4df;
+      --red: #b91c1c;
+      --red-soft: #fdecec;
+      --violet: #6d28d9;
+      --violet-soft: #f0e9ff;
+      --slate: #334155;
+      --slate-soft: #edf1f7;
+      --shadow: 0 10px 28px rgba(23, 32, 51, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    main {
+      width: min(1440px, calc(100vw - 48px));
+      margin: 0 auto;
+      padding: 32px 0 48px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    .title h1 {
+      font-size: 28px;
+      letter-spacing: 0;
+      line-height: 1.2;
+    }
+
+    .title p {
+      margin-top: 8px;
+      color: var(--muted);
+      max-width: 900px;
+      font-size: 15px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--slate);
+      font-size: 12px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .status-card {
+      min-width: 300px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .status-card h2 {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .status-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .section {
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .section > h2 {
+      font-size: 18px;
+      margin-bottom: 14px;
+    }
+
+    .architecture {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .lane {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcff;
+      overflow: hidden;
+    }
+
+    .lane header {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--slate-soft);
+      font-weight: 750;
+      font-size: 14px;
+    }
+
+    .lane-body {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .node {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-left-width: 5px;
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .node h3 {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .node p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .node .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 7px;
+      border-radius: 6px;
+      background: var(--slate-soft);
+      color: var(--slate);
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .blue { border-left-color: var(--blue); }
+    .green { border-left-color: var(--green); }
+    .amber { border-left-color: var(--amber); }
+    .red { border-left-color: var(--red); }
+    .violet { border-left-color: var(--violet); }
+    .slate { border-left-color: var(--slate); }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(180px, 1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .stage {
+      position: relative;
+      min-height: 170px;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcff;
+    }
+
+    .stage::after {
+      content: "";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      width: 12px;
+      border-top: 2px solid var(--line);
+    }
+
+    .stage:nth-child(5n)::after,
+    .stage:last-child::after {
+      display: none;
+    }
+
+    .stage h3 {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: #fff;
+      font-size: 12px;
+      flex: none;
+    }
+
+    .stage p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stage ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .parallel {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .parallel-group {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcff;
+    }
+
+    .parallel-group h3 {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .parallel-group p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .matrix {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .matrix th,
+    .matrix td {
+      padding: 10px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .matrix th {
+      background: var(--slate-soft);
+      color: var(--ink);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .matrix td {
+      color: var(--muted);
+      background: #fff;
+    }
+
+    .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .decision {
+      min-height: 150px;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fbfcff;
+    }
+
+    .decision h3 {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .decision p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .soft-blue { background: var(--blue-soft); }
+    .soft-green { background: var(--green-soft); }
+    .soft-amber { background: var(--amber-soft); }
+    .soft-red { background: var(--red-soft); }
+    .soft-violet { background: var(--violet-soft); }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    code {
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: var(--slate-soft);
+      color: #111827;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.94em;
+    }
+
+    .note {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #f2d49b;
+      background: #fff8e9;
+      color: #6f4c13;
+      font-size: 13px;
+    }
+
+    @media (max-width: 1180px) {
+      main { width: min(100vw - 28px, 960px); }
+      .topbar, .architecture, .parallel, .decision-grid, .io-grid { grid-template-columns: 1fr; display: grid; }
+      .flow-grid { grid-template-columns: 1fr 1fr; }
+      .stage::after { display: none; }
+      .status-card { min-width: 0; }
+    }
+
+    @media (max-width: 720px) {
+      main { width: calc(100vw - 20px); padding-top: 18px; }
+      .flow-grid { grid-template-columns: 1fr; }
+      .title h1 { font-size: 23px; }
+      .section { padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="topbar">
+      <div class="title">
+        <h1>PaperFlow 에이전트 워크플로우 아키텍처</h1>
+        <p>
+          목적은 <strong>사용자 입력 3개</strong>만으로 근거 추적이 가능한 논문 패키지를 생성하는 것이다.
+          각 단계는 에이전트가 무작위로 움직이는 구조가 아니라, 의존성이 명시된 결정적 워크플로우 안에서 LLM/API 작업을 병렬 실행한다.
+        </p>
+        <div class="badge-row">
+          <span class="badge">입력: 저널 정보 + 핵심 메시지 + 아웃라인</span>
+          <span class="badge">핵심: Manuscript Compiler</span>
+          <span class="badge">독립 작업은 병렬</span>
+          <span class="badge">근거 의존 작업은 순차</span>
+        </div>
+      </div>
+      <aside class="status-card">
+        <h2>합의 후보안 v0.1</h2>
+        <ul>
+          <li>Figure 기획과 실제 렌더링은 분리한다.</li>
+          <li>인용 요구사항은 작성 전에 계획하고, 인용 검증은 작성 후에 수행한다.</li>
+          <li>누락 정보 탐지는 프롬프트만이 아니라 스키마 기반으로 수행한다.</li>
+          <li>최종 산출물은 완성 가능성/리스크 기준으로 분류한다.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <section class="section">
+      <h2>1. 시스템 경계</h2>
+      <div class="io-grid">
+        <div class="node blue">
+          <h3>사용자 입력 계약</h3>
+          <p>
+            MVP는 필수 입력을 아래 세 파일로 제한한다.
+            <code>0_journal_info.md</code>, <code>1_coremessage.md</code>, <code>3_outline.md</code>.
+            추가 데이터와 reference는 나중에 붙일 수 있지만, 파이프라인은 이 세 파일만으로 시작 가능해야 한다.
+          </p>
+          <div class="meta">
+            <span class="tag">필수 입력</span>
+            <span class="tag">낮은 진입장벽</span>
+          </div>
+        </div>
+        <div class="node violet">
+          <h3>Manuscript Compiler</h3>
+          <p>
+            원본 파일을 <code>project_state.json</code>, claim graph, citation requirement,
+            figure architecture, paragraph contract, 원고 초안, audit report로 변환한다.
+          </p>
+          <div class="meta">
+            <span class="tag">단일 기준 상태</span>
+            <span class="tag">캐시 가능</span>
+          </div>
+        </div>
+        <div class="node green">
+          <h3>최종 패키지</h3>
+          <p>
+            논문 초안, 검증된 reference, figure spec/script/prompt, reviewer report,
+            그리고 네 가지 완성 상태 중 하나를 생성한다.
+          </p>
+          <div class="meta">
+            <span class="tag">제출 가능 또는 차단</span>
+            <span class="tag">근거 추적 가능</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>2. 전체 워크플로우</h2>
+      <div class="flow-grid">
+        <article class="stage">
+          <h3><span class="num">0</span>입력 수집</h3>
+          <p>세 입력 파일을 읽고, 메타데이터를 정규화한 뒤 run manifest와 초기 project state를 만든다.</p>
+          <ul>
+            <li>단순 파싱에는 LLM을 쓰지 않는다.</li>
+            <li>캐시 키 생성을 위해 입력 hash를 만든다.</li>
+          </ul>
+        </article>
+        <article class="stage">
+          <h3><span class="num">1</span>진단</h3>
+          <p>저널 제약, 연구 유형, requirement pack을 추출/선택한다.</p>
+          <ul>
+            <li>우선 biomechanics/CFD pack부터 시작한다.</li>
+            <li>저널 guideline은 캐시한다.</li>
+          </ul>
+        </article>
+        <article class="stage">
+          <h3><span class="num">2</span>병렬 탐색</h3>
+          <p>원고 작성 전에 독립적인 탐색 작업들을 병렬로 실행한다.</p>
+          <ul>
+            <li>선행연구 후보 탐색</li>
+            <li>누락 정보 스캔</li>
+            <li>초기 citation role 정의</li>
+          </ul>
+        </article>
+        <article class="stage">
+          <h3><span class="num">3</span>Gate A</h3>
+          <p>Fan-in 단계: 원고 생성을 진행할지, 질문이 필요한지, 중단해야 하는지 결정한다.</p>
+          <ul>
+            <li>blocking 질문과 recommended 질문을 분리한다.</li>
+            <li>method/data를 절대 지어내지 않는다.</li>
+          </ul>
+        </article>
+        <article class="stage">
+          <h3><span class="num">4</span>논문 구조 설계</h3>
+          <p>claim graph, figure architecture, section contract, citation request ID를 만든다.</p>
+          <ul>
+            <li>claim-evidence-figure-citation map 생성</li>
+            <li>본문 작성 전에 paragraph contract 생성</li>
+          </ul>
+        </article>
+        <article class="stage">
+          <h3><span class="num">5</span>핵심 본문 작성</h3>
+          <p>contract와 사용 가능한 근거를 바탕으로 Methods, Results, Discussion을 작성한다.</p>
+          <ul>
+            <li>섹션 간 의존성은 순차 처리한다.</li>
+            <li>모르는 사실은 계속 flag로 남긴다.</li>
+          </ul>
+        </article>
+        <article class="stage">
+          <h3><span class="num">6</span>논리 검증</h3>
+          <p>초안에서 claim을 다시 추출하고 contract, 근거, 섹션 의존성과 비교한다.</p>
+          <ul>
+            <li>문제가 있는 부분만 국소 수정한다.</li>
+            <li>기본값은 전체 재작성 금지.</li>
+          </ul>
+        </article>
+        <article class="stage">
+          <h3><span class="num">7</span>외곽 섹션 작성</h3>
+          <p>핵심 claim과 결과가 안정된 뒤 Introduction, Conclusion, Abstract를 작성한다.</p>
+          <ul>
+            <li>Introduction의 과잉 약속을 막는다.</li>
+            <li>확정된 contribution graph를 사용한다.</li>
+          </ul>
+        </article>
+        <article class="stage">
+          <h3><span class="num">8</span>병렬 산출물 생성</h3>
+          <p>입력이 안정된 뒤 reference 검증과 figure asset/spec 생성을 병렬로 수행한다.</p>
+          <ul>
+            <li>Citation verifier 실행</li>
+            <li>Figure script/prompt 생성</li>
+          </ul>
+        </article>
+        <article class="stage">
+          <h3><span class="num">9</span>최종 감사</h3>
+          <p>reviewer mode, 저널 형식 검토, 일관성 검사, 완성 상태 분류를 수행한다.</p>
+          <ul>
+            <li>제출 가능성 label 부여</li>
+            <li>자동 해결 불가능한 gap은 action item으로 남김</li>
+          </ul>
+        </article>
+      </div>
+      <div class="note">
+        핵심 결정: Stage 2와 Stage 8이 주요 병렬 구간이다. Stage 4-7은 안정된 claim, figure, 결과 해석에 의존하므로 대부분 순차 처리한다.
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>3. 병렬 작업과 순차 작업</h2>
+      <div class="parallel">
+        <div class="parallel-group">
+          <h3>병렬 구간 A: 작성 전 탐색</h3>
+          <p>아래 작업들은 세 입력 파일에만 의존하므로 동시에 실행할 수 있다.</p>
+          <div class="node blue">
+            <h3>선행연구 탐색</h3>
+            <p>OpenAlex/Semantic Scholar/PubMed 후보 논문과 Crossref DOI metadata를 수집한다.</p>
+          </div>
+          <div class="node amber">
+            <h3>누락 정보 탐지</h3>
+            <p>requirement pack과 사용자 입력을 비교하고 질문을 blocking/recommended/optional로 분류한다.</p>
+          </div>
+          <div class="node violet">
+            <h3>Citation 역할 계획</h3>
+            <p>본문 작성 전에 <code>CITREQ-*</code> record를 생성한다.</p>
+          </div>
+        </div>
+        <div class="parallel-group">
+          <h3>순차 핵심: Manuscript Compiler</h3>
+          <p>아래 단계들은 앞 단계 결과에 의존하므로 무작정 병렬화하면 안 된다.</p>
+          <div class="node slate">
+            <h3>Claim Graph</h3>
+            <p>core message, outline, 누락 정보 상태, 초기 선행연구 맥락이 필요하다.</p>
+          </div>
+          <div class="node slate">
+            <h3>Section Contract</h3>
+            <p>claim graph와 figure architecture가 먼저 필요하다.</p>
+          </div>
+          <div class="node slate">
+            <h3>핵심 본문 초안</h3>
+            <p>Methods는 Results에서 쓰는 것을 정의해야 하고, Discussion은 Results를 넘어서면 안 된다.</p>
+          </div>
+        </div>
+        <div class="parallel-group">
+          <h3>병렬 구간 B: 작성 후 산출물 생성</h3>
+          <p>claim과 figure plan이 안정되면 비용이 큰 산출물 생성 작업을 병렬로 실행한다.</p>
+          <div class="node green">
+            <h3>Reference 확정</h3>
+            <p><code>CITREQ-*</code>를 검증된 논문과 BibTeX entry로 치환한다.</p>
+          </div>
+          <div class="node green">
+            <h3>Figure 생성</h3>
+            <p>Python plot, schematic, image prompt, caption, source manifest를 생성한다.</p>
+          </div>
+          <div class="node red">
+            <h3>Reviewer 세부 모드</h3>
+            <p>Methods, evidence, statistics, domain science, journal compliance, language를 분리 검토한다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>4. 의존성 매트릭스</h2>
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>단계</th>
+            <th>필요한 입력</th>
+            <th>병렬 가능 작업</th>
+            <th>생성물</th>
+            <th>Gate / 실패 모드</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>입력 수집</strong></td>
+            <td>세 개의 markdown 파일</td>
+            <td>없음; 첫 단계</td>
+            <td><code>project_state.json</code>, <code>run_manifest.json</code></td>
+            <td>필수 파일 누락</td>
+          </tr>
+          <tr>
+            <td><strong>저널 + 연구 유형 진단</strong></td>
+            <td>journal info, core message, outline</td>
+            <td>기본 metadata 추출</td>
+            <td>연구 유형, requirement pack, 저널 제약</td>
+            <td>지원하지 않는 연구 유형 경고</td>
+          </tr>
+          <tr>
+            <td><strong>선행연구 탐색</strong></td>
+            <td>연구 유형, keyword, 핵심 claim</td>
+            <td>누락 정보 탐지, citation role planning</td>
+            <td>후보 논문 record, DOI metadata, evidence card</td>
+            <td>신뢰 가능한 출처 없음</td>
+          </tr>
+          <tr>
+            <td><strong>누락 정보 엔진</strong></td>
+            <td>requirement pack + 사용자 입력</td>
+            <td>선행연구 탐색</td>
+            <td>최소 질문, 완성 리스크</td>
+            <td><code>MISSING_CRITICAL_INFORMATION</code></td>
+          </tr>
+          <tr>
+            <td><strong>Claim Graph</strong></td>
+            <td>core message, outline, 알려진 근거, 누락 정보 상태</td>
+            <td>주요 병렬 없음; 중앙 fan-in</td>
+            <td>claim, evidence link, 허용 가능한 limitation</td>
+            <td>제공 데이터로 뒷받침되지 않는 claim</td>
+          </tr>
+          <tr>
+            <td><strong>Figure Architecture</strong></td>
+            <td>claim graph + 저널 제약</td>
+            <td>citation requirement refinement</td>
+            <td>figure 목록, panel message, 필요 데이터</td>
+            <td>필수 데이터 없음</td>
+          </tr>
+          <tr>
+            <td><strong>원고 작성</strong></td>
+            <td>section contract, claim graph, figure plan</td>
+            <td>의존성이 명확한 경우에만 section-local 작성 가능</td>
+            <td>citation placeholder가 포함된 원고 섹션</td>
+            <td>contract 위반</td>
+          </tr>
+          <tr>
+            <td><strong>산출물 생성 + 리뷰</strong></td>
+            <td>안정된 초안과 figure/citation request</td>
+            <td>reference resolution, figure production, reviewer submode</td>
+            <td>최종 패키지와 action item</td>
+            <td><code>EXPERT_REVIEW_REQUIRED</code> or <code>INSUFFICIENT_EVIDENCE</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>5. 핵심 데이터 객체</h2>
+      <div class="architecture">
+        <div class="lane">
+          <header>핵심 상태 파일</header>
+          <div class="lane-body">
+            <div class="node violet">
+              <h3><code>project_state.json</code></h3>
+              <p>단일 기준 상태 파일. 사용자 입력 요약, 연구 유형, 제약, claim, 누락 정보, evidence card, figure spec, draft 상태를 담는다.</p>
+            </div>
+            <div class="node blue">
+              <h3><code>claim_graph.json</code></h3>
+              <p>claim ID, 섹션 의존성, 필요한 근거, 허용 범위, 주장 금지 목록, 연결된 figure와 citation을 담는다.</p>
+            </div>
+            <div class="node amber">
+              <h3><code>questions.md</code></h3>
+              <p>blocking, recommended, optional 질문을 분리한다. 사용자는 완성 가능성에 실제 영향을 주는 질문부터 본다.</p>
+            </div>
+            <div class="node green">
+              <h3><code>run_manifest.json</code></h3>
+              <p>입력 hash, model call, token usage, cache hit, 생성 파일, 재현성 metadata를 기록한다.</p>
+            </div>
+          </div>
+        </div>
+        <div class="lane">
+          <header>생성된 원고 산출물</header>
+          <div class="lane-body">
+            <div class="node slate">
+              <h3><code>section_contracts/*.json</code></h3>
+              <p>문단 단위 contract. 목적, claim ID, evidence ID, citation role, 문단 전환, 금지 claim을 정의한다.</p>
+            </div>
+            <div class="node slate">
+              <h3><code>draft/*.md</code></h3>
+              <p>Methods, Results, Discussion, Introduction, Conclusion, Abstract. 해결되지 않은 <code>CITREQ-*</code> marker는 유지한다.</p>
+            </div>
+            <div class="node green">
+              <h3><code>references.bib</code> + <code>evidence_registry.json</code></h3>
+              <p>검증된 metadata, DOI, source level, support confidence, claim-reference mapping을 담는다.</p>
+            </div>
+            <div class="node blue">
+              <h3><code>figures/figure_specs.json</code></h3>
+              <p>panel message, 필요 데이터, plotting script, schematic prompt, caption, production status를 담는다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>6. 완성 상태 Gate</h2>
+      <div class="decision-grid">
+        <div class="decision soft-green">
+          <h3>SUBMISSION_READY_DRAFT</h3>
+          <p>핵심 method 정보, result claim, figure plan, reference가 모두 추적 가능하다. 사람의 문장 polish는 남을 수 있다.</p>
+        </div>
+        <div class="decision soft-blue">
+          <h3>EXPERT_REVIEW_REQUIRED</h3>
+          <p>초안은 논리적으로 연결되어 있지만, 가정/해석/reviewer risk 판단에는 전문가 검토가 필요하다.</p>
+        </div>
+        <div class="decision soft-amber">
+          <h3>MISSING_CRITICAL_INFORMATION</h3>
+          <p>필수 데이터, method, validation, result가 없어 방어 가능한 원고를 작성할 수 없다.</p>
+        </div>
+        <div class="decision soft-red">
+          <h3>INSUFFICIENT_EVIDENCE</h3>
+          <p>제공 정보나 검증된 문헌으로 claim을 뒷받침할 수 없다. 시스템은 근거를 지어내면 안 된다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>7. 모델 라우팅</h2>
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>작업 유형</th>
+            <th>기본 전략</th>
+            <th>상위 모델 전환 조건</th>
+            <th>비고</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>파싱, hashing, DOI metadata 정규화</td>
+            <td>LLM 사용 안 함</td>
+            <td>없음</td>
+            <td>결정적 코드와 API response를 사용한다.</td>
+          </tr>
+          <tr>
+            <td>keyword 추출, query 생성, 단순 분류</td>
+            <td>빠르고 저렴한 모델</td>
+            <td>낮은 confidence 또는 schema failure</td>
+            <td>batch 병렬 처리에 적합하다.</td>
+          </tr>
+          <tr>
+            <td>누락 정보 탐지와 claim graph</td>
+            <td>강한 reasoning model</td>
+            <td>항상 high-stakes</td>
+            <td>hallucination risk를 통제하는 핵심 단계다.</td>
+          </tr>
+          <tr>
+            <td>section 작성</td>
+            <td>중간급 writer model</td>
+            <td>contract violation 또는 약한 논리</td>
+            <td>전체 project dump가 아니라 section-local context를 사용한다.</td>
+          </tr>
+          <tr>
+            <td>reviewer/audit</td>
+            <td>강한 reasoning model</td>
+            <td>항상 high-stakes</td>
+            <td>methods, evidence, statistics, journal, language 검토를 분리한다.</td>
+          </tr>
+          <tr>
+            <td>figure production</td>
+            <td>데이터 plot은 Python, schematic은 image model</td>
+            <td>렌더링 결과가 spec과 다를 때</td>
+            <td>figure planning은 rendering보다 먼저 수행한다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>8. 추가 논의 포인트</h2>
+      <div class="decision-grid">
+        <div class="decision">
+          <h3>D1. 첫 PoC 범위</h3>
+          <p>추천: 전체 작성 전에 ingest → missing-info → claim/figure architecture부터 구현한다.</p>
+        </div>
+        <div class="decision">
+          <h3>D2. Requirement Pack 범위</h3>
+          <p>추천: computational biomechanics/CFD/FSI에 먼저 제한하고, 이후 일반화한다.</p>
+        </div>
+        <div class="decision">
+          <h3>D3. Figure Engine 시점</h3>
+          <p>추천: MVP v1에서는 figure architecture를 설계하고, 실제 image generation은 데모 필요성에 따라 v1.5로 미룬다.</p>
+        </div>
+        <div class="decision">
+          <h3>D4. 사용자 질문 UX</h3>
+          <p>추천: 먼저 blocking 질문만 묻고, recommended/optional 질문은 펼쳐볼 수 있는 report로 제공한다.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
