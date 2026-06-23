@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>paperpal — Manuscript Compiler</title>
+<style>
+  :root {
+    --bg: #F0EEE6; --accent: #CC785C; --accent-2: #E8D5C4; --border: #D4C5B0;
+    --ink: #1A1A1A; --body: #2D2D2D; --muted: #6B5E54; --code-bg: #E6E0D4; --code-ink: #8B4513;
+    --ok: #7A9A6D; --err: #C25744; --surface: #F7F5EF; --highlight: rgba(204,120,92,.15);
+    --data: #5B7A8C; --data-bg: #E6EDF0;
+    --radius: 14px; --radius-sm: 9px; --rail-w: 246px; --aside-w: 296px;
+    --shadow: 0 1px 0 rgba(26,26,26,.04), 0 8px 26px -18px rgba(60,40,30,.55);
+    --ease: cubic-bezier(0.16,1,0.3,1);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Pretendard", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--body); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  h1,h2,h3,h4 { color: var(--ink); font-weight: 650; letter-spacing: -.01em; margin: 0; }
+  .serif { font-family: "Iowan Old Style","Palatino Linotype",Georgia,serif; }
+
+  .topbar { display: flex; align-items: center; gap: 14px; padding: 14px 26px; background: linear-gradient(180deg,#F4F1E9,#EFECE2); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 20; }
+  .logo { font-family: "Iowan Old Style",Georgia,serif; font-size: 1.32rem; font-weight: 700; color: var(--ink); letter-spacing: -.02em; }
+  .logo .dot { color: var(--accent); }
+  .tag { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .14em; }
+  .spacer { flex: 1; }
+  .providers { font-size: .73rem; color: var(--code-ink); background: var(--code-bg); border: 1px solid var(--border); padding: 5px 11px; border-radius: 999px; font-weight: 600; }
+  .providers.warn { background: var(--accent-2); color: var(--err); }
+
+  .shell { display: grid; grid-template-columns: var(--rail-w) 1fr var(--aside-w); height: calc(100vh - 61px); }
+  .rail { border-right: 1px solid var(--border); padding: 18px 14px; background: #EFECE2; overflow-y: auto; display: flex; flex-direction: column; }
+  .aside { border-left: 1px solid var(--border); padding: 18px 14px; background: #EFECE2; overflow-y: auto; }
+  .rail-title, .aside-title { font-size: .7rem; text-transform: uppercase; letter-spacing: .15em; color: var(--muted); font-weight: 700; margin: 4px 6px 12px; }
+
+  /* left nav (clickable items only) */
+  .navfile { display: flex; align-items: center; gap: 9px; width: 100%; text-align: left; font: inherit; padding: 10px 11px; margin: 2px 0; border-radius: var(--radius-sm); cursor: pointer; color: var(--body); background: transparent; border: 1px solid transparent; transition: background .16s var(--ease), border-color .16s; }
+  .navfile:hover { background: var(--highlight); }
+  .navfile.active { background: var(--surface); border-color: var(--border); box-shadow: var(--shadow); }
+  .navfile .di { flex: none; width: 18px; text-align: center; font-size: .9rem; }
+  .navfile .fn { font-size: .87rem; color: var(--ink); font-weight: 600; }
+  .navfile .dot { margin-left: auto; width: 9px; height: 9px; border-radius: 50%; background: var(--border); flex: none; }
+  .navfile .dot.filled { background: var(--ok); }
+  .createBtn { margin-top: 14px; width: 100%; border: none; background: var(--accent); color: #fff; font: inherit; font-size: .9rem; font-weight: 700; padding: 12px; border-radius: var(--radius-sm); cursor: pointer; box-shadow: var(--shadow); transition: transform .15s var(--ease), opacity .2s; }
+  .createBtn:hover:not(:disabled) { transform: translateY(-1px); }
+  .createBtn:disabled { opacity: .4; cursor: not-allowed; }
+  .railspace { flex: 1; }
+  .openexist { margin-top: 12px; border-top: 1px dashed var(--border); padding-top: 12px; }
+  .openexist label { font-size: .64rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; }
+  .openexist input { width: 100%; margin-top: 6px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); font: inherit; font-size: .76rem; color: var(--ink); padding: 7px 9px; }
+  .openexist input:focus { outline: none; border-color: var(--accent); }
+  .openexist button { margin-top: 7px; width: 100%; border: 1px solid var(--border); background: var(--surface); color: var(--body); font: inherit; font-size: .76rem; padding: 7px; border-radius: 7px; cursor: pointer; }
+
+  .work { display: flex; flex-direction: column; min-width: 0; }
+  .canvas { flex: 1; overflow-y: auto; padding: 24px 34px; display: flex; flex-direction: column; }
+  .crumb { font-size: .74rem; color: var(--muted); margin-bottom: 6px; }
+  .canvas h2.title { font-size: 1.5rem; margin-bottom: 4px; }
+  .ehint { color: var(--muted); font-size: .86rem; line-height: 1.6; margin: 6px 0 14px; }
+  .editor { flex: 1; width: 100%; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); font-family: ui-monospace, Menlo, monospace; font-size: .86rem; color: var(--ink); padding: 16px 18px; line-height: 1.65; resize: none; box-shadow: var(--shadow); }
+  .editor.one { flex: none; height: 46px; font-family: inherit; font-size: .95rem; }
+  .editor:focus { outline: none; border-color: var(--accent); }
+  .editor::placeholder { color: var(--muted); opacity: .55; }
+  .savednote { font-size: .72rem; color: var(--ok); margin-top: 8px; height: 14px; }
+  /* journal info structured sub-form */
+  .subform { display: flex; flex-direction: column; gap: 1px; }
+  .sflabel { font-size: .7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin: 13px 2px 5px; }
+  .sflabel .req { color: var(--err); } .sflabel .opt { color: var(--muted); font-weight: 600; font-size: .6rem; text-transform: none; letter-spacing: 0; }
+  .sfinput { width: 100%; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); font: inherit; font-size: .9rem; color: var(--ink); padding: 9px 12px; resize: vertical; line-height: 1.5; }
+  .sfinput:focus { outline: none; border-color: var(--accent); }
+  .sfinput::placeholder { color: var(--muted); opacity: .55; }
+  .nrow { display: flex; gap: 7px; align-items: center; margin-bottom: 6px; }
+  .nrow .nnum { flex: none; font-family: ui-monospace, Menlo, monospace; font-size: .72rem; font-weight: 700; color: var(--accent); min-width: 20px; }
+  .nrow .rmbtn { flex: none; width: 28px; height: 28px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); border-radius: 7px; cursor: pointer; font-size: .8rem; }
+  .nrow .rmbtn:hover { color: var(--err); border-color: var(--err); }
+  .addbtn { margin: 2px 0 4px; border: 1px dashed var(--accent); background: var(--highlight); color: var(--accent); font: inherit; font-size: .8rem; font-weight: 700; padding: 7px 12px; border-radius: 8px; cursor: pointer; }
+  .addbtn:hover { background: var(--accent); color: #fff; }
+  /* outline: fixed sections + subsection cards */
+  .osec { margin: 16px 0 4px; }
+  .osec-h { display: flex; align-items: center; gap: 8px; font-size: .92rem; font-weight: 700; color: var(--ink); padding: 8px 10px; background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+  .osec-h .fixed { margin-left: auto; font-size: .56rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+  .osec-h .reqd { font-size: .56rem; font-weight: 700; color: var(--err); }
+  .osub { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 11px; margin: 7px 0 7px 14px; box-shadow: var(--shadow); }
+  .osub-top { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; }
+  .osub-top .onum { font-family: ui-monospace, Menlo, monospace; font-size: .68rem; font-weight: 700; color: var(--accent); flex: none; min-width: 28px; }
+  .osub-top input { flex: 1; border: 1px solid var(--border); border-radius: 7px; background: var(--bg); font: inherit; font-size: .86rem; font-weight: 600; color: var(--ink); padding: 6px 9px; }
+  .osub-top input:focus { outline: none; border-color: var(--accent); }
+  .obtn { flex: none; width: 26px; height: 26px; border: 1px solid var(--border); background: var(--bg); color: var(--muted); border-radius: 6px; cursor: pointer; font-size: .72rem; line-height: 1; }
+  .obtn:hover { color: var(--accent); border-color: var(--accent); } .obtn.rm:hover { color: var(--err); border-color: var(--err); }
+  .obtn:disabled { opacity: .3; cursor: not-allowed; }
+  .osub textarea { width: 100%; border: 1px solid var(--border); border-radius: 7px; background: var(--bg); font: inherit; font-size: .84rem; color: var(--ink); padding: 8px 10px; resize: vertical; min-height: 46px; line-height: 1.55; }
+  .osub textarea:focus { outline: none; border-color: var(--accent); }
+  .osub textarea::placeholder, .osub-top input::placeholder { color: var(--muted); opacity: .55; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 14px; box-shadow: var(--shadow); }
+  .card h3 { font-size: .98rem; margin-bottom: 10px; display: flex; align-items: center; gap: 9px; }
+  .badge { font-size: .62rem; text-transform: uppercase; letter-spacing: .1em; background: var(--highlight); color: var(--accent); padding: 3px 8px; border-radius: 6px; font-weight: 700; }
+  .badge.ok { background: #EAF0E6; color: #4f6a44; } .badge.warn { background: var(--accent-2); color: var(--err); }
+  .muted { color: var(--muted); font-size: .86rem; line-height: 1.6; }
+  .toks { display: flex; gap: 18px; flex-wrap: wrap; font-size: .82rem; margin-top: 8px; }
+  .toks b { color: var(--ink); }
+  .log { background: #2a2620; color: #e7dcc8; border-radius: var(--radius-sm); padding: 12px 14px; font-family: ui-monospace,Menlo,monospace; font-size: .74rem; line-height: 1.7; max-height: 220px; overflow-y: auto; white-space: pre-wrap; }
+
+  /* question dock (center bottom) */
+  .chatdock { border-top: 1px solid var(--border); background: linear-gradient(180deg,#F4F1E9,#EFECE2); padding: 14px 26px 18px; max-height: 46vh; overflow-y: auto; }
+  .dock-title { font-size: .68rem; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); font-weight: 800; margin-bottom: 4px; display: flex; align-items: center; gap: 7px; }
+  .dock-hint { font-size: .72rem; color: var(--muted); margin-bottom: 12px; }
+  .q { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 11px 13px; margin-bottom: 9px; }
+  .q .qq { font-size: .86rem; color: var(--ink); font-weight: 600; margin-bottom: 7px; display: flex; gap: 8px; align-items: baseline; }
+  .q .risk { font-size: .56rem; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: var(--code-bg); color: var(--code-ink); text-transform: uppercase; }
+  .q .risk.high { background: var(--accent-2); color: var(--err); }
+  .q textarea { width: 100%; border: 1px solid var(--border); border-radius: 7px; background: var(--bg); font: inherit; font-size: .85rem; color: var(--ink); padding: 8px 10px; resize: vertical; min-height: 38px; line-height: 1.5; }
+  .q textarea:focus { outline: none; border-color: var(--accent); }
+  .q textarea::placeholder { color: var(--muted); opacity: .65; font-style: italic; }
+  .composer-bar { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+  .send { border: none; background: var(--accent); color: #fff; font: inherit; font-size: .86rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); cursor: pointer; box-shadow: var(--shadow); }
+  .send:disabled { opacity: .45; cursor: not-allowed; }
+
+  /* workflow tree (right) */
+  .steps { position: relative; margin: 0; padding: 0; list-style: none; }
+  .steps::before { content: ""; position: absolute; left: 19px; top: 16px; bottom: 16px; width: 2px; background: var(--border); }
+  .step { position: relative; display: flex; gap: 12px; align-items: flex-start; padding: 9px 10px; margin-bottom: 2px; border-radius: var(--radius-sm); border: 1px solid transparent; transition: background .2s var(--ease); }
+  .step.active { background: var(--surface); border-color: var(--border); box-shadow: var(--shadow); }
+  .step.locked { opacity: .55; }
+  .node { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: .72rem; font-weight: 700; background: var(--surface); border: 2px solid var(--border); color: var(--muted); z-index: 1; }
+  .step.done .node { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .step.active .node { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 0 4px var(--highlight); animation: pulse 1.2s infinite; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 4px var(--highlight); } 50% { box-shadow: 0 0 0 7px rgba(204,120,92,.08); } }
+  .step.locked .node { background: var(--accent-2); }
+  .step .meta { display: flex; flex-direction: column; gap: 1px; padding-top: 1px; }
+  .step .k { font-size: .62rem; color: var(--muted); letter-spacing: .04em; }
+  .step .t { font-size: .85rem; color: var(--ink); font-weight: 600; }
+  .step .s { font-size: .68rem; color: var(--muted); }
+  .step.active .s { color: var(--accent); font-weight: 600; }
+  .step.done .s { color: var(--ok); }
+  /* step 0 sub-checklist */
+  .subs { list-style: none; margin: 6px 0 10px 30px; padding: 0; }
+  .subs li { display: flex; align-items: center; gap: 8px; font-size: .76rem; color: var(--muted); padding: 3px 0; }
+  .subs li .sdot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex: none; }
+  .subs li.on { color: var(--ink); } .subs li.on .sdot { background: var(--ok); }
+
+  /* ===== dashboard ===== */
+  #dashboard { display: none; padding: 30px 40px 50px; max-width: 1180px; margin: 0 auto; }
+  body.dash #dashboard { display: block; }
+  body.dash #workspace { display: none; }
+  .dash-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+  .dash-head h1 { font-size: 1.7rem; } .dash-head .sub { color: var(--muted); font-size: .9rem; }
+  .dash-sub { color: var(--muted); font-size: .92rem; margin-bottom: 22px; }
+  .newbtn { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; background: var(--accent); color: #fff; border: none; border-radius: 999px; padding: 9px 18px; font: inherit; font-size: .84rem; font-weight: 700; cursor: pointer; box-shadow: var(--shadow); }
+  .newbtn:hover { transform: translateY(-1px); }
+  .pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 18px; }
+  .pcard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); cursor: pointer; transition: transform .2s var(--ease), border-color .2s; position: relative; overflow: hidden; }
+  .pcard:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .pcard .ptop { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 4px; }
+  .pcard .pic { flex: none; width: 34px; height: 34px; border-radius: 9px; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: .82rem; font-weight: 700; }
+  .pcard h3.pt { font-size: 1.0rem; line-height: 1.35; }
+  .pcard .pmeta { font-size: .76rem; color: var(--muted); margin-top: 2px; }
+  .pcard .ptag { margin-left: auto; flex: none; font-size: .6rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+  .ptag.done { background: #EAF0E6; color: #4f6a44; } .ptag.active { background: var(--highlight); color: var(--accent); } .ptag.new { background: var(--code-bg); color: var(--code-ink); }
+  .prog { margin: 16px 0 12px; }
+  .prog .pl { display: flex; justify-content: space-between; align-items: baseline; font-size: .76rem; margin-bottom: 6px; }
+  .prog .pl .pct { font-weight: 700; color: var(--ink); font-size: .92rem; }
+  .prog .pl .stp { color: var(--muted); }
+  .bar { height: 8px; border-radius: 999px; background: var(--code-bg); overflow: hidden; }
+  .bar > span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), #d98e6f); }
+  .pfoot { display: flex; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid var(--border); font-size: .76rem; }
+  .ddl { font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+  .ddl.soon { background: #f6e3dd; color: var(--err); } .ddl.mid { background: var(--code-bg); color: var(--code-ink); } .ddl.far { background: #EAF0E6; color: #4f6a44; } .ddl.none { background: var(--code-bg); color: var(--muted); }
+  .newcard { border: 2px dashed var(--border); background: transparent; border-radius: var(--radius); display: grid; place-items: center; min-height: 200px; cursor: pointer; color: var(--muted); text-align: center; }
+  .newcard:hover { border-color: var(--accent); color: var(--accent); }
+  .newcard .plus { font-size: 1.8rem; }
+  /* new-project modal */
+  .modal { position: fixed; inset: 0; background: rgba(26,20,16,.4); display: none; place-items: center; z-index: 60; }
+  .modal.show { display: grid; }
+  .modal .box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; width: 380px; box-shadow: 0 20px 60px -20px rgba(0,0,0,.5); }
+  .modal h3 { margin-bottom: 14px; }
+  .modal label { display: block; font-size: .72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin: 12px 2px 5px; }
+  .modal input { width: 100%; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); font: inherit; font-size: .9rem; padding: 9px 12px; }
+  .modal input:focus { outline: none; border-color: var(--accent); }
+  .modal .mrow { display: flex; gap: 10px; margin-top: 18px; }
+  .modal .mrow button { flex: 1; border-radius: 8px; padding: 10px; font: inherit; font-weight: 700; cursor: pointer; border: 1px solid var(--border); }
+  .modal .mrow .ok { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .backbtn { background: var(--surface); border: 1px solid var(--border); color: var(--body); font: inherit; font-size: .78rem; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
+  .backbtn:hover { border-color: var(--accent); color: var(--accent); }
+  .wtitle { font-size: .86rem; font-weight: 700; color: var(--ink); }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="logo">paper<span class="dot">·</span>pal</span>
+    <span class="tag">Manuscript Compiler</span>
+    <button class="backbtn" id="backBtn" style="display:none">← 프로젝트 목록</button>
+    <span class="wtitle" id="wtitle" style="display:none"></span>
+    <span class="spacer"></span>
+    <span id="providers" class="providers warn">키 확인 안 됨</span>
+  </div>
+
+  <!-- DASHBOARD (landing) -->
+  <div id="dashboard">
+    <div class="dash-head">
+      <h1 class="serif">프로젝트</h1>
+      <span class="sub">진행 중인 논문</span>
+      <button class="newbtn" id="newBtn">＋ 새 프로젝트</button>
+    </div>
+    <div class="dash-sub">카드를 클릭하면 작업 화면이 열립니다. 진행률·마감일이 함께 표시돼요.</div>
+    <div class="pgrid" id="pgrid"></div>
+  </div>
+
+  <!-- new project modal -->
+  <div class="modal" id="newModal">
+    <div class="box">
+      <h3 class="serif">새 프로젝트</h3>
+      <label>프로젝트 이름</label>
+      <input type="text" id="np_name" placeholder="coronary_plaque_2026">
+      <label>마감일 (선택)</label>
+      <input type="date" id="np_deadline">
+      <div class="mrow"><button id="np_cancel">취소</button><button class="ok" id="np_create">만들기</button></div>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div id="workspace">
+  <div class="shell">
+    <!-- LEFT: clickable nav only -->
+    <nav class="rail">
+      <div class="rail-title">입력 항목</div>
+      <div id="nav"></div>
+      <button class="createBtn" id="createBtn" disabled>＋ Create Journal</button>
+      <div class="railspace"></div>
+      <div class="openexist">
+        <label>기존 프로젝트 열기</label>
+        <input type="text" id="pdir" placeholder="…/projects/master_thesis">
+        <button id="openBtn">이 project_dir로 진행</button>
+      </div>
+    </nav>
+
+    <!-- CENTER: editor / status / questions -->
+    <div class="work">
+      <div class="canvas" id="canvas"></div>
+      <div class="chatdock" id="dock" style="display:none">
+        <div class="dock-title">❓ 추가 정보가 필요해요</div>
+        <div class="dock-hint">각 칸의 회색 예시처럼 답해주세요. 빈 칸은 건너뛰어도 됩니다.</div>
+        <div id="questions"></div>
+        <div class="composer-bar">
+          <button class="send" id="answerBtn">답변 제출 → 생성 시작</button>
+          <span class="muted" id="answerNote"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: workflow tree -->
+    <aside class="aside">
+      <div class="aside-title">Workflow</div>
+      <ul class="steps" id="steps"></ul>
+    </aside>
+  </div>
+  </div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let projectDir = null;
+let stepIndex = {};
+
+const FIELDS = [
+  {key:"journal", label:"journal info", icon:"🎯", composite:true,
+   hint:"받을 정보가 정해져 있어 칸을 나눴습니다. <b>*</b>=필수. Target journal에 가이드라인 URL을 넣으면 글자수·figure 제한을 자동으로 긁어옵니다."},
+  {key:"core", label:"core message", icon:"💡", coreform:true,
+   hint:"이 논문이 증명하는 것. <b>One paragraph</b>와 <b>Novelty(기여)</b>가 필수 — Novelty는 claim graph의 핵심 주장이 됩니다. <b>＋</b>로 여러 개 추가하세요."},
+  {key:"outline", label:"outline", icon:"🗂️", outlineform:true,
+   hint:"섹션은 고정. 각 섹션에 <b>＋</b>로 소제목을 추가하고, 그 안에 <b>어떤 논리로 무엇을 전달할지</b> 적어주세요 (한 줄에 하나의 논리 권장). <b>Method·Result</b>가 필수."},
+];
+const inputs = {journal:"", core:"", outline:""};
+let current = null;
+let diskMode = false;  // existing project with on-disk inputs but no saved UI state
+
+// journal info is structured (fixed fields we always need)
+const JSUB = [
+  {k:"field",         label:"Author's field",        req:true,  type:"input", ph:"Computational biomechanics"},
+  {k:"target",        label:"Target journal(s)",     req:true,  type:"list", reorder:true,  ph:"Journal of Biomechanics — https://www.example.com/author-guidelines"},
+  {k:"title",         label:"Paper title",           req:false, type:"input", ph:"관상동맥 플라크 파열 위험지표 정의 및 민감도 분석 (비우면 마지막에 AI가 제안)"},
+  {k:"authors",       label:"Authors (저자 순서대로)",  req:false, type:"list", reorder:true,  ph:"Jeff Kim"},
+  {k:"corresponding", label:"Corresponding author(s)", req:false, type:"list", reorder:false, ph:"Advisor Name"},
+  {k:"affiliation",   label:"Affiliation (소속)",     req:false, type:"input", ph:"KAIST, Dept. of Mechanical Engineering"},
+];
+const JF = {field:"", title:"", affiliation:"", target:[""], authors:[""], corresponding:[""]};
+
+// core message is structured (paragraph + variable-length novelty list + optionals)
+const CM = {paragraph:"", sentence:"", keywords:[""], outscope:""};
+let novelty = [""];
+const NOVELTY_PH = ["ΔPSS가 정적 PSS보다 파열 위험을 더 잘 설명한다",
+                    "파열 위험지표에 강도 정규화가 필요하다",
+                    "고체 도메인 물성치가 파열 위험에 가장 민감하다"];
+
+// outline = fixed sections, each with variable subsections {heading, intent}
+const SECTIONS = [
+  {key:"introduction", label:"Introduction", req:false},
+  {key:"method",       label:"Method",       req:true},
+  {key:"result",       label:"Result",       req:true},
+  {key:"discussion",   label:"Discussion",   req:false},
+  {key:"conclusion",   label:"Conclusion",   req:false},
+];
+const outlineData = {introduction:[], method:[], result:[], discussion:[], conclusion:[]};
+const SECTION_PH = {
+  introduction: "예) 관상동맥 질환 부담 → 파열이 핵심 → 기존 지표의 한계 → 우리 접근",
+  method: "예) FSI 프레임워크 구성과 검증 방법을 절차 순서로",
+  result: "예) Sobol 민감도 결과: 물성치 > 혈류역학 > 형태 (Fig 3로 제시)",
+  discussion: "예) 결과의 의미·한계, 선행연구와의 비교",
+  conclusion: "예) 핵심 기여 요약 + 임상적 함의(과대주장 금지)",
+};
+function secHasContent(secKey) {
+  return outlineData[secKey].some(s => s.heading.trim() || s.intent.trim());
+}
+function assembleOutlineMd() {
+  const a = [], b = ["## Phase B (structure)"];
+  let n = 0;
+  for (const sec of SECTIONS) {
+    const subs = outlineData[sec.key].filter(s => s.heading.trim() || s.intent.trim());
+    if (!subs.length) continue;
+    a.push(`[${sec.label}]`);
+    b.push(`### ${sec.label}`);
+    subs.forEach((s, i) => {
+      const head = s.heading.trim() || `${sec.label} ${i + 1}`;
+      b.push(`- ${head}`);
+      const lines = s.intent.split("\n").map(x => x.trim()).filter(Boolean);
+      if (lines.length) { lines.forEach(ln => { n++; a.push(`${n}. ${ln}`); b.push(`    · ${ln}`); }); }
+      else { n++; a.push(`${n}. ${head}`); }
+    });
+    a.push("");
+  }
+  return a.join("\n") + "\n" + b.join("\n");
+}
+
+function isFilled(key) {
+  if (key === "journal") return !!(JF.field.trim() && JF.target.some(t => t.trim()));  // title optional
+  if (key === "core") return !!(CM.paragraph.trim() && novelty.some(n => n.trim()));
+  if (key === "outline") return secHasContent("method") && secHasContent("result");  // A안: Method+Result
+  return !!inputs[key].trim();
+}
+function assembleCoreMd() {
+  const lines = ["## One paragraph", CM.paragraph, "", "## Novelty"];
+  novelty.filter(n => n.trim()).forEach(n => lines.push(`- ${n.trim()}`));
+  lines.push("");
+  if (CM.sentence.trim()) lines.push("## One sentence", CM.sentence.trim(), "");
+  const kw = CM.keywords.filter(k => k.trim()).map(k => k.trim());
+  if (kw.length) lines.push("## Keywords", kw.join(", "), "");
+  if (CM.outscope.trim()) lines.push("## Out of scope", CM.outscope.trim(), "");
+  return lines.join("\n");
+}
+function assembleJournalMd() {
+  const lines = ["## Author's field", JF.field, "", "## Target journals"];
+  JF.target.filter(t => t.trim()).forEach((t, i) => lines.push(`${i + 1}. ${t.trim()}`));  // ranked
+  lines.push("");
+  if (JF.title.trim()) lines.push("## Paper title", JF.title.trim(), "");
+  const extra = [];
+  const auth = JF.authors.filter(a => a.trim()).map(a => a.trim());
+  if (auth.length) extra.push(`- authors: ${auth.join("; ")}`);  // author order preserved
+  const corr = JF.corresponding.filter(c => c.trim()).map(c => c.trim());
+  if (corr.length) extra.push(`- corresponding author: ${corr.join("; ")}`);
+  if (JF.affiliation.trim()) extra.push(`- affiliation: ${JF.affiliation.trim()}`);
+  if (extra.length) { lines.push("## Extra info"); lines.push(...extra); }
+  return lines.join("\n");
+}
+
+async function postJSON(url, body) {
+  const r = await fetch(url, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+function setProviders(list) {
+  const el = $("providers");
+  if (list && list.length) { el.textContent = "providers: " + list.join(", "); el.classList.remove("warn"); }
+  else { el.textContent = "⚠ API 키 없음 (engine/.env)"; el.classList.add("warn"); }
+}
+
+// ---------- left nav ----------
+function renderNav() {
+  const nav = $("nav"); nav.innerHTML = "";
+  FIELDS.forEach(f => {
+    const b = document.createElement("button");
+    b.className = "navfile" + (current === f.key ? " active" : "");
+    b.innerHTML = `<span class="di">${f.icon}</span><span class="fn">${f.label}</span>
+      <span class="dot ${isFilled(f.key) ? 'filled' : ''}"></span>`;
+    b.onclick = () => openField(f.key);
+    nav.appendChild(b);
+  });
+}
+
+// ---------- center editor ----------
+function openField(key) {
+  current = key;
+  const f = FIELDS.find(x => x.key === key);
+
+  if (f.composite) {  // journal info — structured sub-form
+    let html = `<div class="crumb">입력 / ${f.label}</div>
+      <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div><div class="subform">`;
+    for (const s of JSUB) {
+      const tag = s.req ? '<span class="req">*</span>' : '<span class="opt">선택</span>';
+      html += `<label class="sflabel">${s.label} ${tag}</label>`;
+      html += s.type === "list"
+        ? `<div id="jl_${s.k}"></div><button class="addbtn" data-jadd="${s.k}">＋ 추가</button>`
+        : `<input type="text" class="sfinput" data-jk="${s.k}">`;
+    }
+    html += `</div><div class="savednote" id="savednote"></div>`;
+    $("canvas").innerHTML = html;
+    document.querySelectorAll("[data-jk]").forEach(el => {  // single fields
+      const k = el.dataset.jk;
+      el.value = JF[k];
+      el.placeholder = "예) " + JSUB.find(s => s.k === k).ph;
+      el.oninput = () => { JF[k] = el.value; renderNav(); refreshStep0(); note(); };
+    });
+    JSUB.filter(s => s.type === "list").forEach(s => {  // list fields
+      renderList($("jl_" + s.k), JF[s.k], () => "예) " + s.ph, s.reorder);
+    });
+    document.querySelectorAll("[data-jadd]").forEach(btn => {
+      const k = btn.dataset.jadd, s = JSUB.find(x => x.k === k);
+      btn.onclick = () => { JF[k].push(""); renderList($("jl_" + k), JF[k], () => "예) " + s.ph, s.reorder); };
+    });
+    renderNav();
+    return;
+  }
+
+  if (f.coreform) {  // core message — paragraph + variable novelty list + optionals
+    $("canvas").innerHTML = `<div class="crumb">입력 / ${f.label}</div>
+      <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div><div class="subform">
+      <label class="sflabel">One paragraph <span class="req">*</span></label>
+      <textarea class="sfinput" id="cm_paragraph" rows="4"></textarea>
+      <label class="sflabel">Novelty <span class="req">*</span> <span class="opt">기여/새로움 — claim graph의 핵심 주장</span></label>
+      <div id="noveltyList"></div>
+      <button class="addbtn" id="addNovelty">＋ novelty 추가</button>
+      <label class="sflabel">One sentence <span class="opt">선택 · 비우면 paragraph에서 자동</span></label>
+      <input type="text" class="sfinput" id="cm_sentence">
+      <label class="sflabel">Keywords <span class="opt">선택 · 선행연구 검색 강화</span></label>
+      <div id="cm_keywords_list"></div>
+      <button class="addbtn" id="addKeyword">＋ keyword 추가</button>
+      <label class="sflabel">Out of scope <span class="opt">선택 · 이 논문이 주장하지 않는 것</span></label>
+      <textarea class="sfinput" id="cm_outscope" rows="2"></textarea>
+      </div><div class="savednote" id="savednote"></div>`;
+    const bindCM = (id, k, ph) => {
+      const el = $(id); el.value = CM[k]; el.placeholder = ph;
+      el.oninput = () => { CM[k] = el.value; renderNav(); refreshStep0(); $("savednote").textContent = "✓ 자동 저장됨"; };
+    };
+    bindCM("cm_paragraph", "paragraph", "이 논문의 핵심을 한 문단으로…");
+    bindCM("cm_sentence", "sentence", "예) 플라크 파열 위험은 ΔPSS로 더 잘 설명된다");
+    bindCM("cm_outscope", "outscope", "예) 임상 예측·인과는 주장하지 않음");
+    renderNoveltyRows();
+    $("addNovelty").onclick = () => { novelty.push(""); renderNoveltyRows(); };
+    renderList($("cm_keywords_list"), CM.keywords, () => "예) plaque rupture", false);
+    $("addKeyword").onclick = () => { CM.keywords.push(""); renderList($("cm_keywords_list"), CM.keywords, () => "예) plaque rupture", false); };
+    renderNav();
+    return;
+  }
+
+  if (f.outlineform) {  // fixed sections + variable subsections
+    let html = `<div class="crumb">입력 / ${f.label}</div>
+      <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div><div class="subform">`;
+    for (const sec of SECTIONS) {
+      const req = sec.req ? '<span class="reqd">필수</span>' : '';
+      html += `<div class="osec"><div class="osec-h">${sec.label} ${req}<span class="fixed">고정 섹션</span></div>
+        <div id="osubs_${sec.key}"></div>
+        <button class="addbtn" data-add="${sec.key}">＋ 소제목 추가</button></div>`;
+    }
+    html += `</div><div class="savednote" id="savednote"></div>`;
+    $("canvas").innerHTML = html;
+    SECTIONS.forEach(sec => renderSectionSubs(sec.key));
+    document.querySelectorAll("[data-add]").forEach(btn => {
+      btn.onclick = () => { outlineData[btn.dataset.add].push({heading:"", intent:""}); renderSectionSubs(btn.dataset.add); renderNav(); refreshStep0(); };
+    });
+    renderNav();
+    return;
+  }
+
+  $("canvas").innerHTML = `
+    <div class="crumb">입력 / ${f.label}</div>
+    <h2 class="title serif">${f.label}</h2>
+    <div class="ehint">${f.hint}</div>
+    <${f.multiline ? "textarea" : "input type='text'"} class="editor ${f.multiline?'':'one'}" id="editorInput"></${f.multiline?'textarea':'input'}>
+    <div class="savednote" id="savednote"></div>`;
+  const ed = $("editorInput");
+  ed.value = inputs[key];
+  ed.placeholder = f.tmpl;
+  ed.oninput = () => { inputs[key] = ed.value; renderNav(); refreshStep0(); $("savednote").textContent = "✓ 자동 저장됨"; };
+  ed.focus();
+  renderNav();
+}
+
+function renderSectionSubs(secKey) {
+  const box = $("osubs_" + secKey); if (!box) return;
+  const list = outlineData[secKey];
+  box.innerHTML = "";
+  list.forEach((s, i) => {
+    const card = document.createElement("div"); card.className = "osub";
+    const top = document.createElement("div"); top.className = "osub-top";
+    const num = document.createElement("span"); num.className = "onum"; num.textContent = `${i + 1}.`;
+    const head = document.createElement("input");
+    head.type = "text"; head.value = s.heading; head.placeholder = "소제목 (예: 2.1 Cost-effective FSI)";
+    head.oninput = () => { s.heading = head.value; renderNav(); refreshStep0(); note(); };
+    const up = mkBtn("▲", "위로", i === 0, () => { [list[i-1], list[i]] = [list[i], list[i-1]]; renderSectionSubs(secKey); });
+    const dn = mkBtn("▼", "아래로", i === list.length - 1, () => { [list[i+1], list[i]] = [list[i], list[i+1]]; renderSectionSubs(secKey); });
+    const rm = mkBtn("✕", "삭제", false, () => { list.splice(i, 1); renderSectionSubs(secKey); renderNav(); refreshStep0(); }, true);
+    top.append(num, head, up, dn, rm);
+    const intent = document.createElement("textarea");
+    intent.value = s.intent; intent.placeholder = SECTION_PH[secKey] + "  (한 줄에 하나의 논리)";
+    intent.oninput = () => { s.intent = intent.value; renderNav(); refreshStep0(); note(); };
+    card.append(top, intent);
+    box.appendChild(card);
+  });
+}
+function mkBtn(label, title, disabled, onclick, isRm) {
+  const b = document.createElement("button");
+  b.className = "obtn" + (isRm ? " rm" : ""); b.textContent = label; b.title = title;
+  b.disabled = !!disabled; b.onclick = onclick;
+  return b;
+}
+function note() { const el = $("savednote"); if (el) el.textContent = "✓ 자동 저장됨"; }
+
+// reusable +row list: ordered (▲▼) when reorder=true, removable (✕) when >1 item
+function renderList(box, arr, getPh, reorder) {
+  if (!box) return;
+  box.innerHTML = "";
+  arr.forEach((val, i) => {
+    const row = document.createElement("div"); row.className = "nrow";
+    const num = document.createElement("span"); num.className = "nnum"; num.textContent = (i + 1) + ".";
+    const inp = document.createElement("input");
+    inp.type = "text"; inp.className = "sfinput"; inp.value = val; inp.placeholder = getPh(i);
+    inp.oninput = () => { arr[i] = inp.value; renderNav(); refreshStep0(); note(); };
+    row.append(num, inp);
+    if (reorder) {
+      row.append(
+        mkBtn("▲", "위로", i === 0, () => { [arr[i-1], arr[i]] = [arr[i], arr[i-1]]; renderList(box, arr, getPh, reorder); }),
+        mkBtn("▼", "아래로", i === arr.length - 1, () => { [arr[i+1], arr[i]] = [arr[i], arr[i+1]]; renderList(box, arr, getPh, reorder); }),
+      );
+    }
+    if (arr.length > 1) {
+      row.append(mkBtn("✕", "삭제", false, () => { arr.splice(i, 1); renderList(box, arr, getPh, reorder); renderNav(); refreshStep0(); }, true));
+    }
+    box.appendChild(row);
+  });
+}
+
+function renderNoveltyRows() {
+  const box = $("noveltyList"); if (!box) return;
+  box.innerHTML = "";
+  novelty.forEach((val, i) => {
+    const row = document.createElement("div"); row.className = "nrow";
+    const num = document.createElement("span"); num.className = "nnum"; num.textContent = (i+1) + ".";
+    const inp = document.createElement("input");
+    inp.type = "text"; inp.className = "sfinput"; inp.value = val;
+    inp.placeholder = "예) " + (NOVELTY_PH[i] || `novelty ${i+1}`);
+    inp.oninput = () => { novelty[i] = inp.value; renderNav(); refreshStep0(); $("savednote").textContent = "✓ 자동 저장됨"; };
+    row.appendChild(num); row.appendChild(inp);
+    if (novelty.length > 1) {
+      const rm = document.createElement("button"); rm.className = "rmbtn"; rm.textContent = "✕";
+      rm.title = "삭제";
+      rm.onclick = () => { novelty.splice(i, 1); renderNoveltyRows(); renderNav(); refreshStep0(); };
+      row.appendChild(rm);
+    }
+    box.appendChild(row);
+  });
+}
+
+// ---------- right tree: STEP 0 (inputs) ----------
+function renderStep0() {
+  const ul = $("steps");
+  ul.innerHTML = `
+    <li class="step" id="s0">
+      <span class="node">0</span>
+      <span class="meta"><span class="k">STEP 0</span>
+      <span class="t">입력 수집</span><span class="s" id="s0s">0 / 4 작성됨</span></span>
+    </li>
+    <ul class="subs" id="s0subs"></ul>`;
+  refreshStep0();
+}
+function refreshStep0() {
+  const subs = $("s0subs"); if (!subs) return;
+  subs.innerHTML = "";
+  let done = 0;
+  FIELDS.forEach(f => {
+    const filled = isFilled(f.key);
+    if (filled) done++;
+    const li = document.createElement("li");
+    li.className = filled ? "on" : "";
+    li.innerHTML = `<span class="sdot"></span>${f.label}`;
+    subs.appendChild(li);
+  });
+  $("s0s").textContent = `${done} / ${FIELDS.length} 작성됨`;
+  const allCore = isFilled("journal") && isFilled("core") && isFilled("outline");
+  const s0 = $("s0");
+  if (done === FIELDS.length) { s0.className = "step done"; s0.querySelector(".node").textContent = "✓"; }
+  else { s0.className = "step active"; s0.querySelector(".node").textContent = "0"; }
+  $("createBtn").disabled = diskMode ? false : !allCore;  // journal+core+outline required
+}
+
+// ---------- save inputs + diagnose ----------
+$("createBtn").onclick = async () => {
+  $("createBtn").disabled = true;
+  try {
+    if (!diskMode) {
+      await postJSON("/api/projects/save", {
+        project_dir: projectDir,
+        journal_info_md: assembleJournalMd(), coremessage_md: assembleCoreMd(),
+        outline_md: assembleOutlineMd(), ui_state: uiState(),
+      });
+    }
+    await runDiagnose();
+  } catch (e) { showStatus("오류", "오류", String(e), "warn"); $("createBtn").disabled = false; }
+};
+$("openBtn").onclick = () => {
+  const pdir = $("pdir").value.trim(); if (!pdir) return;
+  openExisting(pdir, pdir.split("/").pop());
+};
+
+async function runDiagnose() {
+  showStatus("진단 중…", "진단", "누락 정보를 찾고 있습니다. (ingest + requirement)");
+  markStep0Done();
+  const diag = await postJSON("/api/projects/diagnose", {project_dir: projectDir});
+  renderQuestions(diag);
+}
+function markStep0Done() {
+  const s0 = $("s0"); if (s0) { s0.className = "step done"; s0.querySelector(".node").textContent = "✓"; s0.querySelector(".s").textContent = "완료"; }
+}
+function showStatus(badge, crumb, msg, kind) {
+  $("canvas").innerHTML = `<div class="crumb">${crumb}</div>
+    <div class="card"><h3>${crumb} <span class="badge ${kind||''}">${badge}</span></h3>
+    <p class="muted">${msg}</p></div>`;
+}
+
+// ---------- questions ----------
+function renderQuestions(diag) {
+  showStatus(diag.classification || "진단 완료", "진단 완료",
+    `분류: <b>${diag.classification||'-'}</b> · 확보된 항목 ${(diag.present||[]).length}개. ${diag.notes||''}`);
+  const wrap = $("questions"); wrap.innerHTML = "";
+  if (!diag.questions || !diag.questions.length) {
+    wrap.innerHTML = `<p class="muted">추가 질문이 없습니다. 바로 생성할 수 있어요.</p>`;
+  } else {
+    for (const q of diag.questions) {
+      const risk = q.reviewer_risk === "high" ? "risk high" : "risk";
+      const div = document.createElement("div"); div.className = "q";
+      div.innerHTML = `<div class="qq"><span>${q.question}</span><span class="${risk}">${q.reviewer_risk||''}</span></div>`;
+      const ta = document.createElement("textarea");
+      ta.placeholder = q.example ? ("예) " + q.example) : "여기에 답변…";
+      ta.dataset.field = q.field; div.appendChild(ta); wrap.appendChild(div);
+    }
+  }
+  $("dock").style.display = "block";
+}
+$("answerBtn").onclick = async () => {
+  $("answerBtn").disabled = true;
+  try {
+    const answers = {};
+    document.querySelectorAll("#questions textarea").forEach(ta => { const v = ta.value.trim(); if (v) answers[ta.dataset.field] = v; });
+    await postJSON("/api/projects/answers", {project_dir: projectDir, answers});
+    $("answerNote").textContent = `${Object.keys(answers).length}개 저장됨 · 생성 시작`;
+    $("dock").style.display = "none";
+    await startGenerate();
+  } catch (e) { $("answerNote").textContent = "오류: " + e; }
+  finally { $("answerBtn").disabled = false; }
+};
+
+// ---------- generate + live tree (STEP 0 stays done on top) ----------
+function renderPipeline(steps) {
+  const ul = $("steps");
+  ul.innerHTML = `<li class="step done"><span class="node">✓</span>
+    <span class="meta"><span class="k">STEP 0</span><span class="t">입력 수집</span><span class="s">완료</span></span></li>`;
+  stepIndex = {};
+  steps.forEach((s, i) => {
+    const li = document.createElement("li");
+    li.className = "step locked";
+    li.innerHTML = `<span class="node">${i+1}</span><span class="meta">
+      <span class="k">STEP ${i+1}</span><span class="t">${s.label}</span><span class="s">대기</span></span>`;
+    ul.appendChild(li); stepIndex[s.id] = li;
+  });
+}
+function setStepActive(stepId, label) {
+  let passed = true;
+  for (const [id, li] of Object.entries(stepIndex)) {
+    if (id === stepId) { li.className = "step active"; li.querySelector(".s").textContent = label || "진행 중…"; passed = false; }
+    else if (passed && !li.classList.contains("done")) {
+      li.className = "step done"; li.querySelector(".node").textContent = "✓"; li.querySelector(".s").textContent = "완료";
+    }
+  }
+}
+function markAllDone() {
+  for (const li of Object.values(stepIndex)) { li.className = "step done"; li.querySelector(".node").textContent = "✓"; li.querySelector(".s").textContent = "완료"; }
+}
+let logLines = [];
+function logLine(s) { logLines.push(s); if (logLines.length>200) logLines.shift(); const el=$("logbox"); if (el){ el.textContent=logLines.join("\n"); el.scrollTop=el.scrollHeight; } }
+
+async function startGenerate() {
+  logLines = [];
+  $("canvas").innerHTML = `<div class="crumb">생성</div>
+    <div class="card"><h3>논문 생성 중… <span class="badge">running</span></h3>
+    <p class="muted">우측 workflow tree에서 현재 단계를 확인하세요.</p>
+    <div class="log" id="logbox"></div></div>`;
+  const res = await postJSON("/api/projects/generate", {project_dir: projectDir});
+  renderPipeline(res.steps);
+  const es = new EventSource(`/api/projects/generate/${res.job_id}/stream`);
+  es.onmessage = (ev) => {
+    const m = JSON.parse(ev.data);
+    if (m.type === "progress") { if (m.step_id && stepIndex[m.step_id]) setStepActive(m.step_id, m.label); logLine(m.raw || m.label); }
+    else if (m.type === "done") {
+      markAllDone(); es.close();
+      $("canvas").innerHTML = `<div class="crumb">완료</div>
+        <div class="card"><h3>생성 완료 <span class="badge ok">done</span></h3>
+        <p class="muted">분류: <b>${m.classification||'-'}</b> · 산출물 → <code>${m.out_dir}</code></p>
+        <div class="toks"><span>input <b>${m.input_tokens.toLocaleString()}</b></span>
+        <span>output <b>${m.output_tokens.toLocaleString()}</b></span>
+        <span>cached <b>${m.cached_tokens.toLocaleString()}</b> (${Math.round(m.cache_hit_rate*100)}%)</span></div></div>
+        <div class="card"><h3>실행 로그</h3><div class="log">${logLines.join("\n")}</div></div>`;
+    } else if (m.type === "error") { es.close(); showStatus("실패", "오류", m.error, "warn"); }
+  };
+  es.onerror = () => es.close();
+}
+
+// ---------- structured UI state (lossless reopen) ----------
+function uiState() { return {JF, CM, novelty, outlineData}; }
+function resetState() {
+  Object.assign(JF, {field:"", title:"", affiliation:"", target:[""], authors:[""], corresponding:[""]});
+  Object.assign(CM, {paragraph:"", sentence:"", outscope:""}); CM.keywords = [""];
+  novelty = [""];
+  SECTIONS.forEach(s => outlineData[s.key] = []);
+}
+function restoreState(st) {
+  if (!st) { resetState(); return; }
+  Object.assign(JF, st.JF || {});
+  ["target", "authors", "corresponding"].forEach(k => { if (!Array.isArray(JF[k]) || !JF[k].length) JF[k] = [""]; });
+  Object.assign(CM, st.CM || {});
+  if (!Array.isArray(CM.keywords) || !CM.keywords.length) CM.keywords = [""];
+  novelty = (st.novelty && st.novelty.length) ? st.novelty : [""];
+  SECTIONS.forEach(s => { outlineData[s.key] = Array.isArray((st.outlineData||{})[s.key]) ? st.outlineData[s.key] : []; });
+}
+
+// ---------- dashboard ----------
+function ddlInfo(deadline) {
+  if (!deadline) return {cls:"none", label:"마감 미정"};
+  const days = Math.ceil((new Date(deadline) - new Date()) / 86400000);
+  const cls = days <= 14 ? "soon" : days <= 45 ? "mid" : "far";
+  return {cls, label: days >= 0 ? `D-${days}` : `D+${-days}`};
+}
+function statusLabel(s) { return s === "done" ? "완료" : s === "active" ? "작업 중" : "신규"; }
+
+async function loadProjects() {
+  const r = await (await fetch("/api/projects/list")).json();
+  setProviders(r.providers);
+  const g = $("pgrid"); g.innerHTML = "";
+  (r.projects || []).forEach(p => {
+    const card = document.createElement("div"); card.className = "pcard";
+    const dd = ddlInfo(p.deadline);
+    card.innerHTML = `<div class="ptop"><span class="pic">${(p.title || p.name || 'P').trim()[0] || 'P'}</span>
+        <div><h3 class="pt serif">${p.title || p.name}</h3><div class="pmeta">${p.field || p.name}</div></div>
+        <span class="ptag ${p.status}">${statusLabel(p.status)}</span></div>
+      <div class="prog"><div class="pl"><span class="pct">${p.progress}%</span><span class="stp">${p.step}</span></div>
+      <div class="bar"><span style="width:${p.progress}%"></span></div></div>
+      <div class="pfoot"><span class="ddl ${dd.cls}">${dd.label}</span><span class="nx">${p.name}</span></div>`;
+    card.onclick = () => openExisting(p.project_dir, p.title || p.name);
+    g.appendChild(card);
+  });
+  const nc = document.createElement("div"); nc.className = "newcard";
+  nc.innerHTML = `<div><div class="plus">＋</div><div>새 프로젝트</div></div>`;
+  nc.onclick = openNewModal;
+  g.appendChild(nc);
+}
+function showDashboard() {
+  document.body.classList.add("dash");
+  $("backBtn").style.display = "none"; $("wtitle").style.display = "none";
+  loadProjects();
+}
+function enterWorkspace(dir, title) {
+  projectDir = dir;
+  document.body.classList.remove("dash");
+  $("backBtn").style.display = ""; $("wtitle").style.display = "";
+  $("wtitle").textContent = title || dir.split("/").pop();
+  $("dock").style.display = "none";
+  renderNav(); renderStep0(); openField("journal");
+  if (diskMode) {
+    $("createBtn").disabled = false; $("createBtn").textContent = "진단 시작 (저장된 입력)";
+    showStatus("기존 입력", "기존 프로젝트", "이 프로젝트는 저장된 입력 파일이 있어요. 폼은 비어 보여도 디스크 입력으로 진단/생성합니다.");
+  } else {
+    $("createBtn").textContent = "＋ Create Journal";
+  }
+}
+async function openExisting(dir, title) {
+  const r = await (await fetch("/api/projects/state?project_dir=" + encodeURIComponent(dir))).json();
+  diskMode = !r.ui_state;
+  restoreState(r.ui_state);
+  enterWorkspace(dir, title);
+}
+function openNewModal() { $("np_name").value = ""; $("np_deadline").value = ""; $("newModal").classList.add("show"); }
+$("newBtn").onclick = openNewModal;
+$("np_cancel").onclick = () => $("newModal").classList.remove("show");
+$("np_create").onclick = async () => {
+  const name = $("np_name").value.trim(); if (!name) return;
+  const today = new Date().toISOString().slice(0, 10);
+  const r = await postJSON("/api/projects/create", {name, deadline: $("np_deadline").value, created: today});
+  $("newModal").classList.remove("show");
+  diskMode = false; resetState();
+  enterWorkspace(r.project_dir, name);
+};
+$("backBtn").onclick = showDashboard;
+
+// ---------- init ----------
+showDashboard();
+</script>
+</body>
+</html>

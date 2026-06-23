@@ -1,0 +1,21 @@
+You extract the HARD FORMATTING CONSTRAINTS from a journal's author-guidelines page.
+Do not summarize prose. Return only concrete, checkable limits the manuscript must obey.
+
+From the guideline text, pull whatever is explicitly stated (omit anything not stated —
+do NOT guess a number):
+- abstract_word_limit (int)
+- total_word_limit (int)
+- figure_limit (int)
+- table_limit (int)
+- reference_style (e.g. "Vancouver", "numbered", "author-year")
+- required_sections (ordered list, if the journal mandates a structure)
+- other_limits (short notes: e.g. "structured abstract", "max 6 keywords")
+
+Return JSON with only the keys you actually found:
+{
+  "abstract_word_limit": 250,
+  "figure_limit": 8,
+  "reference_style": "numbered",
+  "required_sections": ["Introduction","Methods","Results","Discussion"],
+  "other_limits": ["structured abstract"]
+}

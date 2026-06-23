@@ -1,0 +1,56 @@
+You build the TYPED CLAIM GRAPH for a research paper. Do NOT write prose. Extract the
+logical argument structure as typed nodes + typed edges.
+
+A figure is NOT a sub-claim. A figure/table is an ARTIFACT that DISPLAYS evidence. Keep
+these separate: "is this claim supported?" (logic) vs "show it as figure or table?" (design).
+
+You are given the core message (the ONE thing the paper proves + supporting findings), the
+outline skeleton (one claim-sentence per paragraph, with [Section] labels), the data files,
+existing/found references, and any author answers/style.
+
+Work in THREE steps (chain of thought), then output the merged graph:
+
+STEP 1 — Main claims. Extract the paper's 2–4 MAIN claims (the novelty/contributions).
+  Each is a `claim` node with role="contribution" (or "problem"/"gap" for framing claims).
+
+STEP 2 — Subclaims. Decompose each main claim into the subclaims that must hold for it to
+  stand. Each subclaim is a `claim` node with `parent_id` = its main claim's id. Keep the
+  hierarchy shallow (1–2 levels); do not over-fragment.
+
+STEP 3 — Evidence, artifacts, support. For each (sub)claim, attach:
+  - `evidence` node(s): the actual result/number/analysis that backs it. Set `provenance`
+    to where it comes from: a data file path, "[DATA_NEEDED]" if absent, or "user_statement".
+  - `artifact` node(s): how that evidence is DISPLAYED — set kind="artifact" and
+    `represented_as` = "figure" | "table" | "text". Give figures/tables ids like "F3"/"T2".
+  - `method` node(s) for how evidence was produced; `warrant` node(s) for background
+    principles that license evidence->claim; `source` node(s) for references (id = cite key).
+  - edges: evidence `supports` claim; artifact `visualizes` evidence; evidence
+    `derived_from` method; warrant `qualifies` an edge's claim; use `contradicts` only for
+    explicit alternative explanations.
+
+Rules:
+- Every node has a section: introduction|method|result|discussion|conclusion|abstract.
+- Keep claim text close to the author's outline wording. Do NOT introduce claims absent
+  from the inputs. NEVER invent evidence, numbers, or citations — mark gaps as provenance
+  "[DATA_NEEDED]".
+- Results must trace to methods and to data (via evidence + edges).
+
+Return JSON (ids must be unique and referenced consistently in edges):
+{
+  "main_contribution": "one sentence",
+  "nodes": [
+    {"id":"C1","kind":"claim","text":"...","role":"contribution","section":"result","parent_id":null},
+    {"id":"C1.1","kind":"claim","text":"...","section":"result","parent_id":"C1"},
+    {"id":"E1","kind":"evidence","text":"...","section":"result","provenance":"data/sobol/sobol_ind_VI1.csv"},
+    {"id":"F3","kind":"artifact","text":"sensitivity bar chart","section":"result","represented_as":"figure"},
+    {"id":"M1","kind":"method","text":"Sobol sensitivity analysis on 6 VI candidates","section":"method"},
+    {"id":"W1","kind":"warrant","text":"cyclic load amplitude relates to fatigue damage","section":"discussion"},
+    {"id":"R12","kind":"source","text":"prior fatigue–rupture study","section":"introduction","provenance":"smith2019fatigue"}
+  ],
+  "edges": [
+    {"src":"E1","dst":"C1.1","rel":"supports"},
+    {"src":"F3","dst":"E1","rel":"visualizes"},
+    {"src":"E1","dst":"M1","rel":"derived_from"},
+    {"src":"R12","dst":"W1","rel":"supports"}
+  ]
+}

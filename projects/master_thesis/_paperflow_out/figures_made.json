@@ -1,0 +1,16 @@
+[
+  {
+    "fig": "4",
+    "caption": "예측된 파열 위치의 원주/축 분포 지도",
+    "prompt": "White background, clean vector-like schematic, thin consistent fonts, no watermark, no photorealism. Layout with two panels: Panel A (left, main) — unwrapped cylindrical map: x-axis \"Axial position (mm)\" from 0 to L with tick marks, y-axis \"Circumferential angle (°)\" 0–360, rectangular heatmap grid showing predicted rupture frequency as muted sequential palette (blue→orange→red), thin black axis lines, small arrow above x-axis \"Flow →\". Panel B (right, inset) — circular cross-section of artery at representative axial slice showing circumferential hotspots with angle ticks and lumen/adventitia labels. Thin arrows link hotspot on Panel A to Panel B. Right-side vertical colorbar labeled \"Predicted rupture frequency\". Schematic illustration — not real plotted data.",
+    "file": "fig4.png",
+    "bytes": 891958
+  },
+  {
+    "fig": "6",
+    "caption": "축방향 파열위치 비교지도",
+    "prompt": "White background, clean vector-like schematic for a Nature-style scientific figure with three horizontal panels comparing axial rupture-location maps along a coronary artery (results derived from a 1,000-sample parametric pulsatile FSI study). Panel A (left): a straight normalized artery axis (0.0–1.0) shown as a thin horizontal tube, vertical heatstrip overlay (muted teal→warm coral) indicating ΔPSS-based rupture density, ticks at 0.0,0.25,0.5,0.75,1.0 and label \"Axial position (proximal → distal)\". Panel B (center): identical layout showing rupture density for varied material stiffness (muted blues→orange). Panel C (right): overlaid semi-transparent thin density curves (two colors) along axis plus a small adjacent bar with mean ± SD. Add a slim vertical colorbar labeled \"Rupture frequency\", thin black arrows pointing to peak locations, concise panel labels (A,B,C) and short captions beneath each. Consistent muted palette, thin clean labels, vector lines, no photorealism, no watermark, minimal clutter. Schematic illustration — not real plotted data.",
+    "file": "fig6.png",
+    "bytes": 796963
+  }
+]

@@ -1,0 +1,87 @@
+{
+  "study_type": "computational_biomechanics",
+  "classification": "MISSING_CRITICAL_INFORMATION",
+  "present": [
+    "research_objective",
+    "sample_definition",
+    "outcome_metric",
+    "boundary_conditions",
+    "material_properties (parameters present)",
+    "sensitivity_method (Sobol outputs present)",
+    "validation (stated as prior-validated tool; references listed)",
+    "input_parameters_file"
+  ],
+  "missing": [
+    {
+      "field": "governing_equations",
+      "why_it_matters": "Reproducibility of an FSI study requires the precise PDEs and assumptions (incompressible/compressible, Newtonian/non-Newtonian fluid, solid constitutive law, FSI coupling conditions, inertial terms, linearization) and time-discretization used to compute PSS and ΔPSS.",
+      "reviewer_risk": "high",
+      "question": "Please provide the full governing equations used for the fluid and solid domains and the FSI coupling conditions (including any assumptions: incompressible or compressible, Newtonian or non-Newtonian blood model, form of solid constitutive law, any damping/viscoelastic terms), and state the time-discretization and spatial weak form (or strong form) used in the solver.",
+      "priority": 3.0
+    },
+    {
+      "field": "geometry_definition",
+      "why_it_matters": "Methods and results depend on exact geometry: baseline vessel dimensions, lesion geometry mapping from input parameters (how DOS, lesion_length, lipid_length_ratio, arc angles map to CAD), and locations of domains (FC, lipid, calcification). Without these a reader cannot reproduce the models or judge morphological sampling.",
+      "reviewer_risk": "high",
+      "question": "Provide a precise geometry specification (baseline vessel radius/length, coordinate system), the CAD parameterization rules that map each input parameter (e.g., DOS, lesion_length, lipid arc, skewness parameters) to geometric features, and an example geometry (or script) for LAP and CP baseline cases.",
+      "priority": 3.0
+    },
+    {
+      "field": "numerical_solver",
+      "why_it_matters": "The coupling algorithm (monolithic vs partitioned), software and versions, solvers for linear/nonlinear systems, preconditioners and parallelization details affect numerical stability, runtime and results; reviewers need this for reproducibility and to assess numerical bias.",
+      "reviewer_risk": "high",
+      "question": "State the numerical implementation: software/package used (and version), FSI coupling scheme (monolithic or partitioned; explicit/implicit coupling), time-integration scheme, linear/nonlinear solvers and tolerances, element types, and whether any model-order-reduction (ROM) or acceleration from prior work was used.",
+      "priority": 3.0
+    },
+    {
+      "field": "convergence_criteria",
+      "why_it_matters": "Convergence tolerances and stopping criteria for the fluid, solid and coupled solves (residual tolerances, max iterations, coupling iteration criteria) are necessary to ensure credible solutions and to interpret reported sensitivities and surrogate training.",
+      "reviewer_risk": "high",
+      "question": "Provide the numerical convergence criteria used (residual norms, tolerances for fluid/solid solves, FSI coupling convergence thresholds, maximum iterations per time step) and any monitoring metrics used to declare a converged cycle.",
+      "priority": 3.0
+    },
+    {
+      "field": "mesh_independence",
+      "why_it_matters": "Peak stress metrics (PSS) are mesh-sensitive; a mesh-refinement study demonstrating convergence of PSS/ΔPSS and rupture-location index is required to support any peak-stress-based conclusions.",
+      "reviewer_risk": "high",
+      "question": "Please provide mesh-independence results: element types, mesh sizes (global and local near the fibrous cap), at least three refinement levels, and how PSS, ΔPSS and rupture-location index change with mesh (quantitative convergence or chosen mesh error bounds).",
+      "priority": 3.0
+    },
+    {
+      "field": "timestep_independence",
+      "why_it_matters": "Pulsatile FSI and ΔPSS (stress amplitude) depend on temporal resolution and number of cycles simulated; without timestep convergence the ΔPSS-based conclusions are not robust.",
+      "reviewer_risk": "high",
+      "question": "Provide timestep-sensitivity tests: time-step sizes tested, number of cardiac cycles simulated to reach periodic state, criterion for periodicity, and quantitative convergence of PSS/ΔPSS with timestep.",
+      "priority": 3.0
+    },
+    {
+      "field": "statistical_analysis",
+      "why_it_matters": "Large-sample claims (1,000 samples) and selection of final VI require clarity on sampling strategy, train/test splits for the surrogate, surrogate performance metrics (R2, RMSE), uncertainty quantification and statistical tests used when comparing groups (LAP vs CP).",
+      "reviewer_risk": "medium",
+      "question": "Specify the sampling method used to generate the 1,000-sample design (Sobol sequence, LHS, Monte Carlo, parameter distributions), how samples were split for surrogate training/validation/testing, and report surrogate performance metrics (R2, RMSE, MAE) and any statistical tests or confidence intervals used for group comparisons.",
+      "priority": 2.0
+    },
+    {
+      "field": "sensitivity_method_details",
+      "why_it_matters": "Sobol index outputs exist, but reviewers will need the implementation details: Saltelli scheme or other, number of model evaluations (or surrogate-based approach), whether bootstrapping was used to estimate confidence intervals, and mapping from input parameter names to indices.",
+      "reviewer_risk": "medium",
+      "question": "Provide the Sobol computation details: algorithm variant (Saltelli, Jansen, etc.), total number of samples used to compute indices, whether the Sobol indices were computed on raw model outputs or via GPR surrogate (and how surrogate uncertainty was propagated), and any uncertainty estimates for S1/ST (e.g., bootstrap CIs).",
+      "priority": 2.0
+    },
+    {
+      "field": "material_properties (completeness)",
+      "why_it_matters": "Input.csv contains E_vessel, E_fc, E_lipid, E_cal but reproducing mechanical response requires constitutive model specification (linear elastic vs nonlinear), Poisson's ratios, densities, and the distribution/range used for each parameter in sampling.",
+      "reviewer_risk": "medium",
+      "question": "State the full material model for each domain (constitutive law, Poisson's ratio, density), and give the sampling distributions or ranges used for E_vessel, E_FC, E_lipid, E_cal across the 1,000 samples (min/max/nominal and distribution type). Also justify the linear-elastic assumption and the choice of α exponents for strength scaling.",
+      "priority": 2.0
+    },
+    {
+      "field": "validation (detail)",
+      "why_it_matters": "Stating the FSI method is validated in prior work is acceptable but reviewers will expect a concise summary of that validation (benchmarks, errors, experimental comparisons) and an argument that the prior validation covers the parameter/geometry ranges used here.",
+      "reviewer_risk": "medium",
+      "question": "Provide a brief summary of the prior validation (reference, models/tests, metrics and error levels) and state explicitly that the prior validation covers the present geometry and parameter ranges or justify any gaps.",
+      "priority": 2.0
+    }
+  ],
+  "notes": "You have provided core inputs (input.csv, BCs, Sobol outputs and surrogate training counts) and a clear experimental plan, but critical numerical-method details (governing equations, solver/coupling, mesh/time-step convergence) and reproducible geometry/mesh specifications are missing and must be supplied before a defensible Methods+Results section can be written."
+}

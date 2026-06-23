@@ -1,0 +1,769 @@
+{
+  "method": {
+    "section": "method",
+    "paragraphs": [
+      {
+        "paragraph_id": "M-01",
+        "section": "method",
+        "heading": "2.1 Cost-effective FSI framework",
+        "purpose": "State the overall FSI framework used in this study and cite that the specific cost-effective pulsatile FSI tool was validated previously and is used here as a tool.",
+        "claim_ids": [
+          "C-07",
+          "C-05"
+        ],
+        "supports": [
+          "data/cost_effective_FSI_BC/bc.md"
+        ],
+        "must_not_claim": [
+          "that the FSI method is newly proposed or newly validated in this work (validation is prior work)",
+          "any analysis findings or sensitivity results"
+        ],
+        "transition_from": "",
+        "transition_to": "M-02"
+      },
+      {
+        "paragraph_id": "M-02",
+        "section": "method",
+        "heading": "2.2 Governing Equations",
+        "purpose": "Specify the governing equations, constitutive assumptions and major modeling simplifications used in the FSI simulations (fluid model, solid mechanics model, coupling approach, linear elasticity assumption where used).",
+        "claim_ids": [
+          "C-11"
+        ],
+        "supports": [
+          "data/cost_effective_FSI_BC/bc.md",
+          "data/input_parameter/elastance.dat"
+        ],
+        "must_not_claim": [
+          "any empirical results or conclusions drawn from simulations",
+          "that nonlinear material behavior was modeled if not implemented"
+        ],
+        "transition_from": "M-01",
+        "transition_to": "M-03"
+      },
+      {
+        "paragraph_id": "M-03",
+        "section": "method",
+        "heading": "2.3.1 Geometries",
+        "purpose": "Describe the idealized coronary artery geometries and plaque phenotype definitions used for dataset generation, including the two phenotype types (LAP and CP) and the solid-domain decomposition.",
+        "claim_ids": [
+          "C-08"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "that the geometries capture all patient-specific anatomic variability",
+          "validation or performance results"
+        ],
+        "transition_from": "M-02",
+        "transition_to": "M-04"
+      },
+      {
+        "paragraph_id": "M-04",
+        "section": "method",
+        "heading": "2.3.2 Material properties",
+        "purpose": "List the material parameters and assumptions (E_vessel, E_FC, E_lipid, E_cal), their role as input parameters, and the linear elastic assumption used to map material to strength (E_FC^α).",
+        "claim_ids": [
+          "C-08",
+          "C-11"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "data/input_parameter/elastance.dat"
+        ],
+        "must_not_claim": [
+          "that the linear-elastic assumption is universally valid for plaque tissues",
+          "any sensitivity or dominance findings"
+        ],
+        "transition_from": "M-03",
+        "transition_to": "M-05"
+      },
+      {
+        "paragraph_id": "M-05",
+        "section": "method",
+        "heading": "2.3.3 Boundary conditions",
+        "purpose": "Describe the imposed boundary conditions for the pulsatile simulations (inflow waveform, elastance/windkessel BCs or other outlet conditions) and point to the files documenting the BC implementation.",
+        "claim_ids": [
+          "C-07"
+        ],
+        "supports": [
+          "data/cost_effective_FSI_BC/bc.md",
+          "data/input_parameter/inflow.dat",
+          "data/input_parameter/elastance.dat"
+        ],
+        "must_not_claim": [
+          "that these BCs represent all clinical hemodynamic conditions",
+          "any results derived from the simulations"
+        ],
+        "transition_from": "M-04",
+        "transition_to": "M-06"
+      },
+      {
+        "paragraph_id": "M-06",
+        "section": "method",
+        "heading": "2.4 Computational details",
+        "purpose": "State numerical details for the simulations: meshing approach, solver/FSI coupling settings, sampling strategy overview (1,000-sample parametric design), and notes on computational cost-efficiency (tool reference only).",
+        "claim_ids": [
+          "C-09",
+          "C-07",
+          "C-06"
+        ],
+        "supports": [
+          "data/cost_effective_FSI_BC/bc.md",
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "performance benchmarks that are not documented in the cited prior validation",
+          "any analysis findings or sensitivity results"
+        ],
+        "transition_from": "M-05",
+        "transition_to": "M-07"
+      },
+      {
+        "paragraph_id": "M-07",
+        "section": "method",
+        "heading": "2.5 Results (validation summary)",
+        "purpose": "Summarize, by citation only, the validation evidence for the cost-effective FSI approach used (point reader to prior validation material); do not present novel validation data here.",
+        "claim_ids": [
+          "C-07"
+        ],
+        "supports": [
+          "data/cost_effective_FSI_BC/bc.md"
+        ],
+        "must_not_claim": [
+          "that this study performed new validation experiments",
+          "any new performance metrics beyond the cited validation"
+        ],
+        "transition_from": "M-06",
+        "transition_to": "M-08"
+      },
+      {
+        "paragraph_id": "M-08",
+        "section": "method",
+        "heading": "3.1 Dataset Generation",
+        "purpose": "Introduce the dataset generation stage (Stage 1): overview of the idealized coronary model, separate treatment of two plaque phenotypes, and the uniform-FC-thickness modeling choice with justification for treating FC thickness as a scalar input.",
+        "claim_ids": [
+          "C-08",
+          "C-09"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "that the idealized models capture all patient-specific features",
+          "analysis outcomes"
+        ],
+        "transition_from": "M-07",
+        "transition_to": "M-09"
+      },
+      {
+        "paragraph_id": "M-09",
+        "section": "method",
+        "heading": "3.1.1 Input Parameters",
+        "purpose": "Define the input parameter groups (morphological, hemodynamic, material), list representative parameters (as in input.csv), and state the 1,000-sample parametric design used to span the three-factor space.",
+        "claim_ids": [
+          "C-09"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "that the sampling fully exhausts clinical variability",
+          "any sensitivity or dominance conclusions"
+        ],
+        "transition_from": "M-08",
+        "transition_to": "M-10"
+      },
+      {
+        "paragraph_id": "M-10",
+        "section": "method",
+        "heading": "3.1.2 Geometry construction and meshing",
+        "purpose": "Describe how the idealized geometries are constructed and meshed for each plaque phenotype and how FC thickness is implemented as a global scalar parameter in mesh/model.",
+        "claim_ids": [
+          "C-08"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "that meshing choices do not affect any later results (no sensitivity claims here)",
+          "any validation of geometry realism beyond the stated idealization"
+        ],
+        "transition_from": "M-09",
+        "transition_to": "M-11"
+      },
+      {
+        "paragraph_id": "M-11",
+        "section": "method",
+        "heading": "3.1.3 Boundary conditions",
+        "purpose": "Specify the boundary condition implementation used for the dataset generation (inflow/outflow prescriptions, pulsatile waveforms, pressure settings) and reference BC files used to generate the simulation data.",
+        "claim_ids": [
+          "C-07"
+        ],
+        "supports": [
+          "data/cost_effective_FSI_BC/bc.md",
+          "data/input_parameter/inflow.dat",
+          "data/input_parameter/elastance.dat"
+        ],
+        "must_not_claim": [
+          "that the selected BCs represent all clinical hemodynamic states",
+          "any analysis results"
+        ],
+        "transition_from": "M-10",
+        "transition_to": "M-12"
+      },
+      {
+        "paragraph_id": "M-12",
+        "section": "method",
+        "heading": "3.1.4 Computational details",
+        "purpose": "Provide practical computational settings for the dataset runs (number of cardiac cycles simulated, convergence criteria, parallelization strategy) and note the total planned sample count (1,000) for the dataset.",
+        "claim_ids": [
+          "C-09",
+          "C-06"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "data/cost_effective_FSI_BC/bc.md"
+        ],
+        "must_not_claim": [
+          "detailed performance numbers not contained in cited tool documentation",
+          "analysis findings"
+        ],
+        "transition_from": "M-11",
+        "transition_to": "M-13"
+      },
+      {
+        "paragraph_id": "M-13",
+        "section": "method",
+        "heading": "3.1.5 Output Parameters",
+        "purpose": "Define the simulation outputs recorded for each sample: PSS (peak systolic plaque structure stress), ΔPSS (stress amplitude), sphere-averaged spatial reduction method, and the rupture-location index extraction procedure.",
+        "claim_ids": [
+          "C-10",
+          "C-11"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "any performance or predictive claims about these outputs",
+          "that these outputs are exhaustive of clinically relevant metrics"
+        ],
+        "transition_from": "M-12",
+        "transition_to": "M-14"
+      },
+      {
+        "paragraph_id": "M-14",
+        "section": "method",
+        "heading": "3.2 Vulnerability Index Formulation",
+        "purpose": "Introduce Stage 2: present the conceptual form VI = stress / strength and list the stress and strength choices to be combined into candidate VIs.",
+        "claim_ids": [
+          "C-11"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "that any candidate VI is already proven superior (results belong in Results section)"
+        ],
+        "transition_from": "M-13",
+        "transition_to": "M-15"
+      },
+      {
+        "paragraph_id": "M-15",
+        "section": "method",
+        "heading": "3.2.1 Strength metrics",
+        "purpose": "Describe the three strength scenarios under the linear-elastic assumption (strength ∝ E_FC^α with α ∈ {0.0, 0.5, 1.0}) and justify this parametrization as a parsimonious representation for screening.",
+        "claim_ids": [
+          "C-11"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "data/input_parameter/elastance.dat"
+        ],
+        "must_not_claim": [
+          "that the chosen α set captures full material nonlinearity",
+          "any claims on which α is empirically correct (results later)"
+        ],
+        "transition_from": "M-14",
+        "transition_to": "M-16"
+      },
+      {
+        "paragraph_id": "M-16",
+        "section": "method",
+        "heading": "3.2.2 Vulnerability Index (VI) definition",
+        "purpose": "Define the six candidate VIs formed by combining stress metrics (PSS, ΔPSS) with the three strength exponents, explicitly stating VI = Stress / E_FC^α and enumerating the six combinations.",
+        "claim_ids": [
+          "C-11"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "that any of the candidates is validated as clinically best (that is in Results)"
+        ],
+        "transition_from": "M-15",
+        "transition_to": "M-17"
+      },
+      {
+        "paragraph_id": "M-17",
+        "section": "method",
+        "heading": "3.2.3 Rupture-location index",
+        "purpose": "Specify how rupture-location index is computed (node-wise evaluation over fibrous-cap nodes; argmax of chosen stress field) and how it will be used in subsequent screening.",
+        "claim_ids": [
+          "C-11",
+          "C-10"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "that node-wise strength variation was modeled (strength is node-wise constant by assumption)",
+          "any outcomes from using the index"
+        ],
+        "transition_from": "M-16",
+        "transition_to": "M-18"
+      },
+      {
+        "paragraph_id": "M-18",
+        "section": "method",
+        "heading": "3.2.4 Seven-criterion screening and metric selection",
+        "purpose": "Describe the seven-criterion clinical sign-based screening procedure applied to the six candidate VIs (sign-agreement test between input risk features and VI correlations) and state that this screening is used to select the final VI candidates (methodological decision).",
+        "claim_ids": [
+          "C-12"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "analytic results about which candidates pass (detailed pass/fail evidence belongs in Results)",
+          "clinical superiority beyond the described screening rubric"
+        ],
+        "transition_from": "M-17",
+        "transition_to": "M-19"
+      },
+      {
+        "paragraph_id": "M-19",
+        "section": "method",
+        "heading": "3.2.5 Surrogate modeling and Sobol sensitivity analysis",
+        "purpose": "Describe Stage 3: training Gaussian Process Regression surrogates for the finalized VIs (report training pair counts used for LAP and CP), and state that Sobol first-order and total-effect indices will be computed on the trained surrogates to obtain global sensitivity measures.",
+        "claim_ids": [
+          "C-13"
+        ],
+        "supports": [
+          "data/sobol/sobol_grp_LAP_VI1.csv",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_grp_CP_VI1.csv",
+          "data/sobol/sobol_grp_CP_VI2.csv",
+          "data/sobol/sobol_ind_LAP_VI1.csv",
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "data/sobol/sobol_ind_CP_VI1.csv",
+          "data/sobol/sobol_ind_CP_VI2.csv",
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "the sensitivity analysis results themselves (these belong in Results)",
+          "that the surrogate perfectly reproduces simulation outputs without error"
+        ],
+        "transition_from": "M-18",
+        "transition_to": ""
+      }
+    ]
+  },
+  "result": {
+    "section": "result",
+    "paragraphs": [
+      {
+        "paragraph_id": "R-01",
+        "section": "result",
+        "heading": "",
+        "purpose": "Report the outcome of the 6-candidate VI screening against the seven clinical high-risk criteria and state which candidate(s) passed all criteria.",
+        "claim_ids": [
+          "C-15"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "data/sobol/sobol_grp_LAP_VI1.csv",
+          "data/sobol/sobol_grp_CP_VI1.csv"
+        ],
+        "must_not_claim": [
+          "that the screening constitutes prospective clinical validation",
+          "that candidates failing the sign-test are definitively invalid in all clinical contexts",
+          "any numerical performance metrics (e.g., sensitivity/specificity) not present in the referenced files"
+        ],
+        "transition_from": "",
+        "transition_to": "R-02"
+      },
+      {
+        "paragraph_id": "R-02",
+        "section": "result",
+        "heading": "",
+        "purpose": "Present the global sensitivity (Sobol) analysis results for the finalized VIs, identifying the dominant factor group and listing the top-ranked parameters by first-order and total-effect indices.",
+        "claim_ids": [
+          "C-16"
+        ],
+        "supports": [
+          "data/sobol/sobol_ind_LAP_VI1.csv",
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "data/sobol/sobol_ind_CP_VI1.csv",
+          "data/sobol/sobol_ind_CP_VI2.csv",
+          "data/sobol/sobol_grp_LAP_VI1.csv",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_grp_CP_VI1.csv",
+          "data/sobol/sobol_grp_CP_VI2.csv"
+        ],
+        "must_not_claim": [
+          "causal relationships between parameters and rupture beyond what variance-based sensitivity quantifies",
+          "that Sobol indices alone establish clinical utility or predictive accuracy",
+          "that ranking is identical across all patient-specific geometries not represented in the design space"
+        ],
+        "transition_from": "R-01",
+        "transition_to": "R-03"
+      },
+      {
+        "paragraph_id": "R-03",
+        "section": "result",
+        "heading": "",
+        "purpose": "Describe the spatial distribution of predicted rupture locations from simulations (circumferential vs axial patterns) and compare the circumferential agreement with clinical observations while noting the axial mismatch.",
+        "claim_ids": [
+          "C-17"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "Fig 4"
+        ],
+        "must_not_claim": [
+          "that the observed axial mismatch definitively invalidates the simulation framework",
+          "that circumferential agreement implies full clinical equivalence without further validation"
+        ],
+        "transition_from": "R-02",
+        "transition_to": "R-04"
+      },
+      {
+        "paragraph_id": "R-04",
+        "section": "result",
+        "heading": "",
+        "purpose": "Compare the performance/importance of ΔPSS-based metrics versus PSS-based metrics in predicting vulnerability, showing that ΔPSS-based VI(s) have stronger association/importance.",
+        "claim_ids": [
+          "C-18"
+        ],
+        "supports": [
+          "data/sobol/sobol_ind_LAP_VI1.csv",
+          "data/sobol/sobol_ind_CP_VI1.csv",
+          "data/sobol/sobol_grp_LAP_VI1.csv"
+        ],
+        "must_not_claim": [
+          "that ΔPSS is a proven clinical predictor in prospective patient cohorts (unless such data are cited elsewhere)",
+          "that monotonic stress (PSS) is irrelevant in all contexts"
+        ],
+        "transition_from": "R-03",
+        "transition_to": "R-05"
+      },
+      {
+        "paragraph_id": "R-05",
+        "section": "result",
+        "heading": "",
+        "purpose": "Report how inclusion of strength normalization (E_FC^α) and variation of α affects sensitivity results, and show that α>0 increases the apparent importance of material properties.",
+        "claim_ids": [
+          "C-19"
+        ],
+        "supports": [
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "data/sobol/sobol_ind_CP_VI2.csv"
+        ],
+        "must_not_claim": [
+          "that a single α value is universally optimal for all plaque types or clinical settings",
+          "that the observed dependence fully characterizes material failure mechanisms beyond the linear-elastic assumption used"
+        ],
+        "transition_from": "R-04",
+        "transition_to": "R-06"
+      },
+      {
+        "paragraph_id": "R-06",
+        "section": "result",
+        "heading": "",
+        "purpose": "Synthesize the sensitivity findings to state the implication that material properties dominate over hemodynamic and morphological factors (material>hemo>morpho) and note the top four controlling inputs.",
+        "claim_ids": [
+          "C-20",
+          "C-16"
+        ],
+        "supports": [
+          "data/sobol/sobol_grp_LAP_VI1.csv",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_grp_CP_VI1.csv",
+          "data/sobol/sobol_grp_CP_VI2.csv",
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "that imaging-based morphological metrics are always less useful clinically in every context",
+          "that the sensitivity ordering replaces clinical judgment or prospective validation"
+        ],
+        "transition_from": "R-05",
+        "transition_to": "R-07"
+      },
+      {
+        "paragraph_id": "R-07",
+        "section": "result",
+        "heading": "",
+        "purpose": "Explain the observed axial mismatch between simulated and clinical rupture locations and attribute it to the modelling assumption of spatially uniform fibrous-cap thickness (and other modelling idealizations) supported by input/assumption files.",
+        "claim_ids": [
+          "C-21"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "data/cost_effective_FSI_BC/bc.md",
+          "Fig 6"
+        ],
+        "must_not_claim": [
+          "that this single modelling limitation accounts for all discrepancies in every case",
+          "that correcting only FC-thickness heterogeneity will necessarily fully reconcile simulation-clinic differences without further testing"
+        ],
+        "transition_from": "R-06",
+        "transition_to": "R-08"
+      },
+      {
+        "paragraph_id": "R-08",
+        "section": "result",
+        "heading": "",
+        "purpose": "List the principal study limitations that affect result interpretation (uniform FC thickness, idealized geometry, linear elasticity) and tie them to how they constrain applicability of the present results.",
+        "claim_ids": [
+          "C-22"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "data/cost_effective_FSI_BC/bc.md"
+        ],
+        "must_not_claim": [
+          "that these limitations render the findings unusable or without any translational value",
+          "that other unlisted limitations do not exist"
+        ],
+        "transition_from": "R-07",
+        "transition_to": ""
+      }
+    ]
+  },
+  "introduction": {
+    "section": "introduction",
+    "paragraphs": [
+      {
+        "paragraph_id": "I-01",
+        "section": "introduction",
+        "heading": "Motivation",
+        "purpose": "State the clinical and public-health importance of coronary atherosclerotic plaque rupture as the leading cause of acute coronary syndromes and its contribution to global cardiovascular mortality burden.",
+        "claim_ids": [
+          "C-01"
+        ],
+        "supports": [],
+        "must_not_claim": [
+          "Any novel empirical result from this study (no results should be asserted here).",
+          "Specific numerical epidemiologic estimates unless cited (do not invent prevalence/mortality numbers)."
+        ],
+        "transition_from": "",
+        "transition_to": "I-02"
+      },
+      {
+        "paragraph_id": "I-02",
+        "section": "introduction",
+        "heading": "Factors governing rupture",
+        "purpose": "Describe the three broad factor categories that jointly determine plaque rupture risk: morphological, hemodynamic, and material (strength) factors.",
+        "claim_ids": [
+          "C-02"
+        ],
+        "supports": [],
+        "must_not_claim": [
+          "That any single category is the dominant factor (do not assert dominance here).",
+          "Empirical results from this study."
+        ],
+        "transition_from": "I-01",
+        "transition_to": "I-03"
+      },
+      {
+        "paragraph_id": "I-03",
+        "section": "introduction",
+        "heading": "Limitations of prior computational studies",
+        "purpose": "Summarize limitations of existing computational work: many prior risk indices are stress-only, many studies use steady or simplified analyses, or small sample sizes and thus have not simultaneously explored morphology, hemodynamics and material under pulsatile FSI.",
+        "claim_ids": [
+          "C-03"
+        ],
+        "supports": [],
+        "must_not_claim": [
+          "That every prior study has all these limitations (avoid overgeneralization).",
+          "Any results or validations from the present study."
+        ],
+        "transition_from": "I-02",
+        "transition_to": "I-04"
+      },
+      {
+        "paragraph_id": "I-04",
+        "section": "introduction",
+        "heading": "Clinical implication of factor dominance",
+        "purpose": "Explain why knowing which factor-group controls rupture risk matters for clinical measurement and prioritization (e.g., if material dominates, stiffness characterization should be prioritized over morphology imaging).",
+        "claim_ids": [
+          "C-04"
+        ],
+        "supports": [],
+        "must_not_claim": [
+          "Specific clinical policy recommendations or quantified cost–benefit statements.",
+          "Empirical evidence from this study presented as fact (this paragraph gives the implication rationale only)."
+        ],
+        "transition_from": "I-03",
+        "transition_to": "I-05"
+      },
+      {
+        "paragraph_id": "I-05",
+        "section": "introduction",
+        "heading": "Study aim and approach",
+        "purpose": "State the study aim: to leverage a previously validated cost‑effective pulsatile FSI tool to perform a large-scale (≈1,000-sample) parametric analysis that jointly spans morphology, hemodynamics and material (strength) and thereby enable VI definitions that include strength.",
+        "claim_ids": [
+          "C-05",
+          "C-07"
+        ],
+        "supports": [
+          "data/cost_effective_FSI_BC/bc.md"
+        ],
+        "must_not_claim": [
+          "That the cost‑effective FSI method is newly validated here (it is prior work; only cite/use it).",
+          "Any downstream analytical results (do not state sensitivity or VI selections here)."
+        ],
+        "transition_from": "I-04",
+        "transition_to": "I-06"
+      },
+      {
+        "paragraph_id": "I-06",
+        "section": "introduction",
+        "heading": "Key findings (preview)",
+        "purpose": "Briefly preview the principal findings of the study: screening retained two ΔPSS‑based VI candidates, ΔPSS (stress amplitude, fatigue perspective) is more clinically appropriate than peak systolic PSS, and global Sobol sensitivity shows material properties dominate (top drivers: E_vessel, E_FC, SBP, PP).",
+        "claim_ids": [
+          "C-15",
+          "C-18",
+          "C-16",
+          "C-23"
+        ],
+        "supports": [
+          "data/sobol/sobol_grp_LAP_VI1.csv",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_grp_CP_VI1.csv",
+          "data/sobol/sobol_grp_CP_VI2.csv",
+          "data/sobol/sobol_ind_LAP_VI1.csv",
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "data/sobol/sobol_ind_CP_VI1.csv",
+          "data/sobol/sobol_ind_CP_VI2.csv",
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "Detailed quantitative results (no specific numerical Sobol indices or p-values here).",
+          "Causal claims beyond associations identified by sensitivity analysis.",
+          "That methodological validation or proof-of-concept for the FSI method is performed in this study (it is reused)."
+        ],
+        "transition_from": "I-05",
+        "transition_to": ""
+      }
+    ]
+  },
+  "conclusion": {
+    "section": "conclusion",
+    "paragraphs": [
+      {
+        "paragraph_id": "C-01",
+        "section": "conclusion",
+        "heading": "",
+        "purpose": "Summarize the study aim, the computational approach used (tool citation only), the scale of the parametric study, and the two principal findings (ΔPSS-based VI clinical appropriateness; material-property dominance).",
+        "claim_ids": [
+          "C-23",
+          "C-18",
+          "C-16",
+          "C-15"
+        ],
+        "supports": [
+          "data/cost_effective_FSI_BC/bc.md",
+          "data/sobol/sobol_grp_LAP_VI1.csv",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_grp_CP_VI1.csv",
+          "data/sobol/sobol_grp_CP_VI2.csv",
+          "data/sobol/sobol_ind_LAP_VI1.csv",
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "data/sobol/sobol_ind_CP_VI1.csv",
+          "data/sobol/sobol_ind_CP_VI2.csv",
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "That the cost-effective FSI method is newly proposed or validated here (the method is cited/used only).",
+          "That findings constitute definitive clinical practice guidance or proven causal relationships beyond sensitivity/statistical evidence.",
+          "That the 1,000-sample analysis eliminates all uncertainty or is fully generalizable to all patient anatomies without qualification."
+        ],
+        "transition_from": "",
+        "transition_to": "C-02"
+      },
+      {
+        "paragraph_id": "C-02",
+        "section": "conclusion",
+        "heading": "",
+        "purpose": "State the translational implications: because material properties dominate, prioritize measuring vessel/FC stiffness for clinical risk stratification and explain how ΔPSS emphasizes the need for pulsatile (fatigue) assessment.",
+        "claim_ids": [
+          "C-20",
+          "C-04",
+          "C-18"
+        ],
+        "supports": [
+          "data/sobol/sobol_ind_LAP_VI1.csv",
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "data/sobol/sobol_ind_CP_VI1.csv",
+          "data/sobol/sobol_ind_CP_VI2.csv",
+          "data/sobol/sobol_grp_LAP_VI1.csv",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_grp_CP_VI1.csv",
+          "data/sobol/sobol_grp_CP_VI2.csv",
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "That a specific imaging modality (e.g., OCT) is proven to improve outcomes here (only that stiffness characterization may offer higher information value).",
+          "That material dominance implies morphology or hemodynamics can be ignored in all clinical contexts."
+        ],
+        "transition_from": "C-01",
+        "transition_to": "C-03"
+      },
+      {
+        "paragraph_id": "C-03",
+        "section": "conclusion",
+        "heading": "",
+        "purpose": "Acknowledge modeling limitations and explain the observed simulation–clinical discrepancy in axial rupture location in terms of model assumptions (uniform FC thickness, idealized geometry, linear elasticity).",
+        "claim_ids": [
+          "C-21",
+          "C-22",
+          "C-08"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "data/cost_effective_FSI_BC/bc.md"
+        ],
+        "must_not_claim": [
+          "That these limitations completely invalidate the main sensitivity results.",
+          "That the specific magnitude of the axial-location discrepancy in clinical populations is fully characterized by these simulations."
+        ],
+        "transition_from": "C-02",
+        "transition_to": "C-04"
+      },
+      {
+        "paragraph_id": "C-04",
+        "section": "conclusion",
+        "heading": "",
+        "purpose": "Provide concise recommendations for next steps (research/validation): incorporate spatially varying FC thickness, patient-specific geometries, nonlinear material models, and clinical stiffness measurement studies; close with a final take-home statement reaffirming the study's contribution.",
+        "claim_ids": [
+          "C-19",
+          "C-23"
+        ],
+        "supports": [
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "data/sobol/sobol_ind_CP_VI2.csv",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_grp_CP_VI2.csv"
+        ],
+        "must_not_claim": [
+          "That the recommended next steps will certainly resolve all sources of uncertainty or guarantee clinical impact without further validation.",
+          "That the present work provides definitive patient-level predictive tools ready for clinical deployment."
+        ],
+        "transition_from": "C-03",
+        "transition_to": ""
+      }
+    ]
+  }
+}

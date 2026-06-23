@@ -1,0 +1,310 @@
+{
+  "main_contribution": "선행 연구에서 검증한 비용효율적 맥동성 FSI를 활용해 1,000-sample 규모의 파라메트릭 분석을 수행함으로써, 피로 관점 지표(ΔPSS 기반)가 관상동맥 플라크 파열 위험을 임상적으로 더 타당하게 설명하며 재료물성이 그 지배 인자임을 규명한다.",
+  "claims": [
+    {
+      "id": "C-01",
+      "text": "관상동맥 플라크 파열은 급성 관상동맥 증후군(ACS)의 주된 원인이고 전 세계 심혈관 사망 부담이 크다.",
+      "section": "introduction",
+      "supported_by": [
+        "outline:1"
+      ],
+      "citation_roles": [
+        "prior finding",
+        "epidemiology"
+      ]
+    },
+    {
+      "id": "C-02",
+      "text": "플라크 파열 위험은 형태학적(morphology), 혈류역학(hemodynamics), 재료성(strength/material) 세 인자군의 복합 작용에 의해 결정된다.",
+      "section": "introduction",
+      "supported_by": [
+        "outline:2"
+      ],
+      "citation_roles": [
+        "prior finding",
+        "clinical evidence"
+      ]
+    },
+    {
+      "id": "C-03",
+      "text": "기존의 많은 파열위험지표는 응력(stress)만으로 정의되어 환자별로 다른 strength(재료물성)를 무시한다.",
+      "section": "introduction",
+      "supported_by": [
+        "outline:3"
+      ],
+      "citation_roles": [
+        "prior finding",
+        "method precedent"
+      ]
+    },
+    {
+      "id": "C-04",
+      "text": "어떤 인자군이 파열 위험을 지배하는지 알면 임상에서 측정·위험층화의 우선순위를 정할 수 있다(예: 재료 지배 시 형태 측정보다 재료 특성화 우선).",
+      "section": "introduction",
+      "supported_by": [
+        "outline:4"
+      ],
+      "citation_roles": [
+        "clinical implication"
+      ]
+    },
+    {
+      "id": "C-05",
+      "text": "본 연구는 선행에서 검증된 비용효율 맥동 FSI를 활용하여 재료(strength)를 반영하는 현실적 취약성지수(VI)를 대상으로 형태·혈류역학·재료의 세 인자군 전체 공간을 1,000-sample 규모로 동시 분석한다.",
+      "section": "introduction",
+      "supported_by": [
+        "outline:5",
+        "data/cost_effective_FSI_BC/bc.md"
+      ],
+      "citation_roles": [
+        "method precedent",
+        "novelty"
+      ]
+    },
+    {
+      "id": "C-06",
+      "text": "전체 분석 파이프라인은 3단계로 구성된다: 데이터 생성(Data generation) → VI 후보 선정(VI selection) → GPR 대리모형 기반의 전역 민감도 분석(Sobol).",
+      "section": "method",
+      "supported_by": [
+        "outline:6"
+      ],
+      "citation_roles": [
+        "method description"
+      ]
+    },
+    {
+      "id": "C-07",
+      "text": "시뮬레이션 데이터는 선행 논문에서 검증된 비용효율 맥동 FSI 기법을 도구로 사용하여 생성한다(도구는 본 연구에서 활용된 외부 검증된 방법임).",
+      "section": "method",
+      "supported_by": [
+        "outline:7",
+        "data/cost_effective_FSI_BC/bc.md"
+      ],
+      "citation_roles": [
+        "method precedent"
+      ]
+    },
+    {
+      "id": "C-08",
+      "text": "두 플라크 표현형을 별도로 모델링한다: LAP(3 solid domain: vessel wall, fibrous cap, lipid core)과 CP(4 domain: vessel wall, fibrous cap, lipid core, calcification); 섬유모(FC) 두께는 공간적으로 균일하다고 가정하여 하나의 스칼라 입력변수로 취급한다.",
+      "section": "method",
+      "supported_by": [
+        "outline:8",
+        "data/input_parameter/input.csv"
+      ],
+      "citation_roles": [
+        "modeling assumption",
+        "geometry definition"
+      ]
+    },
+    {
+      "id": "C-09",
+      "text": "입력 설계공간은 형태(morphological), 혈류역학(hemodynamic), 재료(material) 세 군으로 구성되며 총 1,000-sample 규모의 파라메트릭 설계를 사용한다.",
+      "section": "method",
+      "supported_by": [
+        "outline:9",
+        "data/input_parameter/input.csv"
+      ],
+      "citation_roles": [
+        "experimental design"
+      ]
+    },
+    {
+      "id": "C-10",
+      "text": "출력(관측변수)은 PSS(peak systolic plaque structure stress), ΔPSS(시스템 차이에 의한 stress 진폭, 구면평균으로 공간축소) 및 파열위치 지수(rupture-location index)로 정의한다.",
+      "section": "method",
+      "supported_by": [
+        "outline:10"
+      ],
+      "citation_roles": [
+        "output definition",
+        "measurement method"
+      ]
+    },
+    {
+      "id": "C-11",
+      "text": "취약성지수(VI)는 VI = stress / strength로 정의하고, stress 관점 2종(PSS, ΔPSS)과 strength의 3 시나리오(선형탄성 가정 하에서 E_FC^α, α={0.0,0.5,1.0})를 조합하여 총 6개의 VI 후보를 만든다.",
+      "section": "method",
+      "supported_by": [
+        "outline:11"
+      ],
+      "citation_roles": [
+        "method definition",
+        "mechanical assumption"
+      ]
+    },
+    {
+      "id": "C-12",
+      "text": "6개 VI 후보를 임상적으로 확립된 7개 고위험 플라크 특징에 대해 각 입력-지표의 상관 부호(sign) 일치를 기준으로 선별하여, 최종적으로 VI1=ΔPSS / E_FC^0.5 및 VI2=ΔPSS / E_FC^1.0을 채택한다.",
+      "section": "method",
+      "supported_by": [
+        "outline:12"
+      ],
+      "citation_roles": [
+        "screening criterion",
+        "clinical-rubric application"
+      ]
+    },
+    {
+      "id": "C-13",
+      "text": "최종 VI들에 대해 Gaussian Process Regression(GPR) 대리모형을 학습(유효쌍: LAP 784, CP 727)하고, 대리모형 위에서 Sobol 1차 및 총효과(ST) 지수를 계산하여 전역 민감도 분석을 수행한다.",
+      "section": "method",
+      "supported_by": [
+        "outline:13",
+        "data/sobol/sobol_grp_LAP_VI1.csv",
+        "data/sobol/sobol_grp_LAP_VI2.csv",
+        "data/sobol/sobol_grp_CP_VI1.csv",
+        "data/sobol/sobol_grp_CP_VI2.csv",
+        "data/sobol/sobol_ind_LAP_VI1.csv",
+        "data/sobol/sobol_ind_LAP_VI2.csv",
+        "data/sobol/sobol_ind_CP_VI1.csv",
+        "data/sobol/sobol_ind_CP_VI2.csv",
+        "data/input_parameter/input.csv"
+      ],
+      "citation_roles": [
+        "surrogate modeling",
+        "sensitivity analysis",
+        "statistical method"
+      ]
+    },
+    {
+      "id": "C-15",
+      "text": "6개 VI 후보의 7개 임상기준 부호 검토 결과, 2개(VI1, VI2)만이 7기준을 모두 만족한다.",
+      "section": "result",
+      "supported_by": [
+        "method:C-12",
+        "outline:15"
+      ],
+      "citation_roles": [
+        "analysis result",
+        "screening evidence"
+      ]
+    },
+    {
+      "id": "C-16",
+      "text": "전역 민감도 분석(Sobol) 결과에서 재료물성(material)이 지배적 요인으로 확인되었고, 상위 4개 결정 인자는 E_vessel, E_FC, 수축기 혈압(SBP), 맥압(PP) 순으로 나타났다(재료>혈류역학>형태).",
+      "section": "result",
+      "supported_by": [
+        "method:C-13",
+        "data/sobol/sobol_ind_LAP_VI1.csv",
+        "data/sobol/sobol_ind_LAP_VI2.csv",
+        "data/sobol/sobol_ind_CP_VI1.csv",
+        "data/sobol/sobol_ind_CP_VI2.csv",
+        "data/sobol/sobol_grp_LAP_VI1.csv",
+        "data/sobol/sobol_grp_LAP_VI2.csv",
+        "data/sobol/sobol_grp_CP_VI1.csv",
+        "data/sobol/sobol_grp_CP_VI2.csv",
+        "data/input_parameter/input.csv"
+      ],
+      "citation_roles": [
+        "sensitivity analysis",
+        "statistical evidence"
+      ]
+    },
+    {
+      "id": "C-17",
+      "text": "파열위치는 원주방향으로는 shoulder-dominant로 시뮬레이션 결과와 임상 관찰이 일치하였으나, 축방향 위치는 임상에서 보고된 proximal 우세와는 달리 시뮬레이션에서는 distal로 치우치는 불일치가 관찰되었다.",
+      "section": "result",
+      "supported_by": [
+        "method:C-10",
+        "outline:17"
+      ],
+      "citation_roles": [
+        "simulation result",
+        "comparison to clinical finding"
+      ]
+    },
+    {
+      "id": "C-18",
+      "text": "ΔPSS(응력 진폭, 피로 관점)가 PSS(최대응력, 단조하중)보다 파열 취약성 예측에서 더 강한 인자이며, 이는 맥동성(피로) 해석의 중요성을 시사한다.",
+      "section": "result",
+      "supported_by": [
+        "method:C-11",
+        "method:C-12",
+        "method:C-13",
+        "data/sobol/sobol_ind_LAP_VI1.csv",
+        "data/sobol/sobol_ind_CP_VI1.csv"
+      ],
+      "citation_roles": [
+        "interpretation",
+        "clinical implication",
+        "method comparison"
+      ]
+    },
+    {
+      "id": "C-19",
+      "text": "strength를 정규화(denominator)로 포함하는 것이 필요하며, 정규화 지수의 지수 α(예: E_FC^α)는 α 값에 따라 민감도 결과가 변하고 α>0인 경우 재료 영향이 더 명확해진다.",
+      "section": "result",
+      "supported_by": [
+        "method:C-11",
+        "method:C-13",
+        "data/sobol/sobol_ind_LAP_VI2.csv",
+        "data/sobol/sobol_ind_CP_VI2.csv"
+      ],
+      "citation_roles": [
+        "theoretical implication",
+        "sensitivity analysis"
+      ]
+    },
+    {
+      "id": "C-20",
+      "text": "재료>혈류역학>형태 순의 지배성은 임상 위험층화 정책에 함의를 가지며, 형태 기반의 영상정보보다 OCT 등으로부터의 탄성·강성 특성화가 더 높은 정보가치를 가질 수 있다.",
+      "section": "result",
+      "supported_by": [
+        "method:C-13",
+        "result:C-16",
+        "outline:20"
+      ],
+      "citation_roles": [
+        "clinical implication",
+        "translation"
+      ]
+    },
+    {
+      "id": "C-21",
+      "text": "축방향 파열위치의 시뮬레이션-임상 불일치는 FC 두께를 공간적으로 균일하다고 가정한 모델링 한계로 설명할 수 있다.",
+      "section": "result",
+      "supported_by": [
+        "method:C-08",
+        "result:C-17",
+        "outline:21"
+      ],
+      "citation_roles": [
+        "modeling limitation",
+        "explanatory"
+      ]
+    },
+    {
+      "id": "C-22",
+      "text": "본 연구의 주요 한계는 FC 두께의 균일 가정, 이상화된 기하학(idealized geometry) 사용, 재료의 선형탄성 가정 등이다.",
+      "section": "result",
+      "supported_by": [
+        "outline:22",
+        "method:C-08"
+      ],
+      "citation_roles": [
+        "limitation"
+      ]
+    },
+    {
+      "id": "C-23",
+      "text": "결론적으로, 선행 검증된 비용효율 맥동 FSI를 활용해 세 인자군을 동시에 대규모로 분석함으로써 ΔPSS 기반 취약성지수의 임상적 타당성과 재료물성의 지배성을 규명하였다.",
+      "section": "conclusion",
+      "supported_by": [
+        "method:C-07",
+        "method:C-13",
+        "result:C-15",
+        "result:C-16",
+        "result:C-18",
+        "data/sobol/sobol_grp_LAP_VI1.csv",
+        "data/sobol/sobol_grp_LAP_VI2.csv",
+        "data/sobol/sobol_grp_CP_VI1.csv",
+        "data/sobol/sobol_grp_CP_VI2.csv"
+      ],
+      "citation_roles": [
+        "main contribution",
+        "evidence synthesis"
+      ]
+    }
+  ]
+}

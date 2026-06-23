@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>paperflow — writing-workflow app (mockup)</title>
+<style>
+  :root {
+    --bg: #F0EEE6; --accent: #CC785C; --accent-2: #E8D5C4; --border: #D4C5B0;
+    --ink: #1A1A1A; --body: #2D2D2D; --muted: #6B5E54; --code-bg: #E6E0D4; --code-ink: #8B4513;
+    --ok: #7A9A6D; --err: #C25744; --surface: #F7F5EF; --highlight: rgba(204, 120, 92, 0.15);
+    --data: #5B7A8C; --data-bg: #E6EDF0;
+    --radius: 14px; --radius-sm: 9px; --rail-w: 258px; --aside-w: 258px;
+    --shadow: 0 1px 0 rgba(26,26,26,.04), 0 8px 26px -18px rgba(60,40,30,.55);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Pretendard", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--body); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, h4 { color: var(--ink); font-weight: 650; letter-spacing: -0.01em; margin: 0; }
+  .serif { font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif; }
+
+  .topbar { display: flex; align-items: center; gap: 18px; padding: 14px 26px; background: linear-gradient(180deg, #F4F1E9, #EFECE2); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 20; }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand .logo { font-family: "Iowan Old Style", Georgia, serif; font-size: 1.32rem; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+  .brand .logo .dot { color: var(--accent); }
+  .brand .tag { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .14em; }
+  .paper-pill { margin-left: 6px; display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px 6px 10px; box-shadow: var(--shadow); }
+  .paper-pill .ic { width: 22px; height: 22px; border-radius: 6px; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: .7rem; font-weight: 700; }
+  .paper-pill b { color: var(--ink); font-weight: 600; font-size: .86rem; }
+  .paper-pill span { color: var(--muted); font-size: .76rem; }
+  .topbar .spacer { flex: 1; }
+  .journal-badge { font-size: .73rem; color: var(--code-ink); background: var(--code-bg); border: 1px solid var(--border); padding: 5px 11px; border-radius: 999px; font-weight: 600; }
+  .avatar { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, var(--accent-2), var(--accent)); border: 1px solid var(--border); }
+
+  .shell { display: grid; grid-template-columns: var(--rail-w) 1fr var(--aside-w); height: calc(100vh - 61px); }
+  .rail { border-right: 1px solid var(--border); padding: 18px 14px; background: #EFECE2; overflow-y: auto; }
+  .aside { border-left: 1px solid var(--border); padding: 18px 14px; background: #EFECE2; overflow-y: auto; }
+  .rail-title, .aside-title { font-size: .7rem; text-transform: uppercase; letter-spacing: .15em; color: var(--muted); font-weight: 700; margin: 4px 6px 14px; }
+
+  .folder { margin-bottom: 12px; }
+  .folder > .fhead { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: var(--radius-sm); font-size: .82rem; font-weight: 700; color: var(--ink); }
+  .folder > .fhead .fi { font-size: .9rem; }
+  .folder > .fhead .cnt { margin-left: auto; font-size: .62rem; color: var(--muted); font-weight: 700; background: var(--surface); border: 1px solid var(--border); padding: 1px 7px; border-radius: 999px; }
+  .folder.star > .fhead { color: var(--data); }
+  .folder.star > .fhead .cnt { color: var(--data); border-color: #b9cdd6; background: var(--data-bg); }
+  .file { display: flex; align-items: center; gap: 9px; width: 100%; text-align: left; font: inherit; padding: 7px 9px 7px 22px; margin: 1px 0; border-radius: var(--radius-sm); cursor: pointer; color: var(--body); background: transparent; border: 1px solid transparent; transition: background .16s var(--ease), border-color .16s var(--ease); }
+  .file:hover { background: var(--highlight); }
+  .file.active { background: var(--surface); border-color: var(--border); box-shadow: var(--shadow); }
+  .file .di { flex: none; font-size: .82rem; width: 16px; text-align: center; }
+  .file .fn { font-size: .84rem; color: var(--ink); }
+  .file .st { margin-left: auto; font-size: .58rem; font-weight: 700; padding: 1px 6px; border-radius: 999px; }
+  .st.draft { background: var(--code-bg); color: var(--code-ink); }
+  .st.lock  { background: var(--accent-2); color: var(--muted); }
+  .st.done  { background: #EAF0E6; color: #4f6a44; }
+  .st.key   { background: var(--highlight); color: var(--accent); }
+  .file.sec { padding-left: 22px; }
+  .file.full { border-top: 1px dashed var(--border); border-radius: 0 0 var(--radius-sm) var(--radius-sm); margin-top: 4px; padding-top: 9px; }
+  .file.full .fn { font-weight: 700; }
+  .subhead { font-size: .6rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 700; margin: 8px 6px 4px 22px; }
+  .rail-note { margin: 10px 8px 0; font-size: .7rem; color: var(--muted); line-height: 1.5; border-top: 1px dashed var(--border); padding-top: 12px; }
+  .rail-note b { color: var(--accent); } .rail-note .d { color: var(--data); font-weight: 700; }
+
+  .work { display: flex; flex-direction: column; min-width: 0; }
+  .canvas { flex: 1; overflow-y: auto; padding: 28px 36px 30px; }
+  .crumb { font-size: .74rem; color: var(--muted); margin-bottom: 6px; letter-spacing: .03em; }
+  .canvas h2.title { font-size: 1.6rem; margin-bottom: 4px; }
+  .canvas .sub { color: var(--muted); font-size: .9rem; margin-bottom: 22px; }
+  .panel { display: none; animation: fade .3s var(--ease); }
+  .panel.show { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 15px; box-shadow: var(--shadow); }
+  .card h3 { font-size: .98rem; margin-bottom: 11px; display: flex; align-items: center; gap: 9px; }
+  .card h3 .badge { font-size: .62rem; text-transform: uppercase; letter-spacing: .1em; background: var(--highlight); color: var(--accent); padding: 3px 8px; border-radius: 6px; font-weight: 700; }
+  .kv { display: grid; grid-template-columns: 132px 1fr; gap: 9px 16px; font-size: .9rem; }
+  .kv dt { color: var(--muted); } .kv dd { margin: 0; color: var(--body); }
+  .lead { font-size: 1rem; line-height: 1.7; color: var(--ink); font-weight: 500; }
+  .para { font-size: .92rem; line-height: 1.85; color: var(--body); }
+  .mark { background: var(--highlight); padding: 0 3px; border-radius: 4px; }
+  .chip { display: inline-flex; align-items: center; gap: 4px; font-size: .68rem; font-weight: 600; padding: 1px 7px; border-radius: 999px; margin: 0 1px; border: 1px solid var(--border); white-space: nowrap; }
+  .chip.fig { background: #EAF0E6; color: #4f6a44; border-color: #cdddc2; }
+  .chip.data { background: var(--data-bg); color: var(--data); border-color: #b9cdd6; }
+  .chip.cite { background: var(--accent-2); color: #8a4a35; border-color: #d9bda9; }
+
+  /* pinned core message */
+  .pin { background: linear-gradient(0deg, var(--highlight), var(--highlight)), var(--surface); border: 1px solid var(--accent); border-left: 5px solid var(--accent); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 16px; }
+  .pin .pl { font-size: .64rem; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); font-weight: 800; display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+
+  /* outline tree */
+  .otree { list-style: none; margin: 0; padding: 0; }
+  .otree .og { font-size: .76rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 700; margin: 16px 2px 8px; }
+  .oi { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; font: inherit; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 13px; margin-bottom: 7px; cursor: pointer; transition: border-color .16s var(--ease), transform .16s var(--ease); }
+  .oi:hover { border-color: var(--accent); transform: translateX(2px); }
+  .oi .onum { flex: none; font-family: ui-monospace, Menlo, monospace; font-size: .72rem; font-weight: 700; color: var(--accent); min-width: 30px; }
+  .oi .ot { font-size: .88rem; color: var(--ink); } .oi .oc { font-size: .76rem; color: var(--muted); }
+  .oi .arrow { margin-left: auto; color: var(--muted); font-size: .8rem; }
+
+  /* data grounding card */
+  .ground { background: var(--data-bg); border: 1px solid #b9cdd6; border-left: 5px solid var(--data); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 15px; }
+  .ground .gl { font-size: .64rem; text-transform: uppercase; letter-spacing: .1em; color: var(--data); font-weight: 800; display: flex; align-items: center; gap: 6px; margin-bottom: 9px; }
+  .gtrace { display: flex; align-items: center; gap: 8px; font-size: .84rem; padding: 7px 0; border-top: 1px dashed #b9cdd6; }
+  .gtrace:first-of-type { border-top: none; }
+  .gtrace .claim { color: var(--ink); } .gtrace .src { font-family: ui-monospace, Menlo, monospace; font-size: .72rem; color: var(--data); }
+  .gbadge { margin-left: auto; flex: none; font-size: .62rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+  .gbadge.ok { background: #EAF0E6; color: #4f6a44; } .gbadge.todo { background: var(--accent-2); color: var(--err); }
+
+  table.reftable { width: 100%; border-collapse: collapse; font-size: .8rem; background: var(--surface); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+  .reftable th { background: var(--code-bg); color: var(--code-ink); text-align: left; padding: 9px 11px; font-size: .66rem; text-transform: uppercase; letter-spacing: .06em; }
+  .reftable td { padding: 10px 11px; border-top: 1px solid var(--border); vertical-align: top; line-height: 1.4; }
+  .reftable td.k { font-family: ui-monospace, Menlo, monospace; color: var(--code-ink); font-weight: 700; white-space: nowrap; }
+  .reftable.data th { background: var(--data-bg); color: var(--data); }
+  .reftable.data td.k { color: var(--data); }
+  .lvl, .cstat { font-size: .62rem; font-weight: 700; padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
+  .lvl.s { background: #EAF0E6; color: #4f6a44; } .lvl.m { background: var(--code-bg); color: var(--code-ink); } .lvl.w { background: var(--accent-2); color: var(--err); }
+  .cstat.v2 { background: #EAF0E6; color: #4f6a44; } .cstat.v1 { background: #EDE7DA; color: var(--code-ink); } .cstat.need { background: var(--accent-2); color: var(--err); }
+  .codeblock { background: #2a2620; color: #e7dcc8; border-radius: var(--radius-sm); padding: 14px 16px; font-family: ui-monospace, Menlo, monospace; font-size: .76rem; line-height: 1.6; overflow-x: auto; white-space: pre; }
+
+  .figcard { display: flex; gap: 14px; align-items: flex-start; padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 10px; background: var(--surface); }
+  .figcard .thumb { flex: none; width: 88px; height: 64px; border-radius: 7px; background: repeating-linear-gradient(45deg, #ece5d8, #ece5d8 8px, #e3d8c5 8px, #e3d8c5 16px); border: 1px solid var(--border); display: grid; place-items: center; color: var(--muted); font-size: .66rem; font-weight: 700; text-align: center; }
+  .figcard .fmeta b { color: var(--ink); }
+  .figcard .fmeta .lbl { color: var(--accent); font-weight: 600; font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; }
+  .figcard .fmeta .desc { font-size: .85rem; line-height: 1.55; margin-top: 4px; }
+
+  .gate { text-align: center; padding: 54px 30px; border: 2px dashed var(--border); border-radius: var(--radius); background: repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(212,197,176,.12) 12px, rgba(212,197,176,.12) 24px); }
+  .gate .lock { font-size: 2.2rem; }
+  .gate h3 { font-size: 1.1rem; margin: 12px 0 8px; }
+  .gate p { color: var(--muted); font-size: .88rem; max-width: 440px; margin: 0 auto; line-height: 1.7; }
+
+  .chatdock { border-top: 1px solid var(--border); background: linear-gradient(180deg, #F4F1E9, #EFECE2); padding: 12px 26px 16px; }
+  .mentionbar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; align-items: center; }
+  .mentionbar .ml { font-size: .66rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-weight: 700; margin-right: 2px; }
+  .mtag { font-size: .7rem; font-weight: 600; color: var(--code-ink); background: var(--surface); border: 1px solid var(--border); padding: 3px 9px; border-radius: 999px; cursor: pointer; transition: border-color .15s var(--ease), background .15s var(--ease); }
+  .mtag:hover { border-color: var(--accent); background: var(--highlight); color: var(--accent); }
+  .mtag.dataA { color: var(--data); } .mtag.dataA:hover { border-color: var(--data); background: var(--data-bg); }
+  .mtag .at { color: var(--accent); font-weight: 800; } .mtag.dataA .at { color: var(--data); }
+  .composer { display: flex; align-items: flex-end; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; box-shadow: var(--shadow); }
+  .composer:focus-within { border-color: var(--accent); }
+  .composer textarea { flex: 1; border: none; background: transparent; resize: none; font: inherit; font-size: .9rem; color: var(--ink); line-height: 1.5; max-height: 120px; outline: none; }
+  .composer .send { flex: none; width: 36px; height: 36px; border-radius: 9px; border: none; background: var(--accent); color: #fff; font-size: 1rem; cursor: pointer; display: grid; place-items: center; transition: transform .15s var(--ease); }
+  .composer .send:hover { transform: translateY(-1px); }
+  .chathint { font-size: .68rem; color: var(--muted); margin: 8px 2px 0; }
+  .chathint code { background: var(--code-bg); color: var(--code-ink); padding: 1px 6px; border-radius: 5px; }
+
+  .steps { position: relative; margin: 0; padding: 0; list-style: none; }
+  .steps::before { content: ""; position: absolute; left: 19px; top: 16px; bottom: 16px; width: 2px; background: var(--border); }
+  .step { position: relative; display: flex; gap: 12px; align-items: flex-start; padding: 10px 10px; margin-bottom: 3px; border-radius: var(--radius-sm); cursor: pointer; transition: background .2s var(--ease); border: 1px solid transparent; }
+  .step:hover:not(.locked) { background: var(--highlight); }
+  .step.active { background: var(--surface); border-color: var(--border); box-shadow: var(--shadow); }
+  .step.locked { cursor: not-allowed; opacity: .58; }
+  .node { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: .72rem; font-weight: 700; background: var(--surface); border: 2px solid var(--border); color: var(--muted); z-index: 1; }
+  .step.done .node { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .step.active .node { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 0 4px var(--highlight); }
+  .step.locked .node { background: var(--accent-2); }
+  .step .meta { display: flex; flex-direction: column; gap: 1px; padding-top: 1px; }
+  .step .k { font-size: .64rem; color: var(--muted); letter-spacing: .04em; }
+  .step .t { font-size: .86rem; color: var(--ink); font-weight: 600; }
+  .step .s { font-size: .68rem; }
+  .step.done .s { color: var(--ok); } .step.active .s { color: var(--accent); font-weight: 600; } .step.locked .s { color: var(--muted); }
+  .aside-note { margin: 16px 8px 0; font-size: .7rem; color: var(--muted); line-height: 1.5; border-top: 1px dashed var(--border); padding-top: 12px; }
+  .aside-note b { color: var(--accent); }
+
+  .toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--ink); color: #F4F1E9; padding: 11px 20px; border-radius: 999px; font-size: .82rem; box-shadow: 0 12px 34px -10px rgba(0,0,0,.5); opacity: 0; pointer-events: none; transition: opacity .25s var(--ease), transform .25s var(--ease); z-index: 50; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast b { color: var(--accent-2); }
+  .mock-banner { text-align: center; font-size: .72rem; color: var(--muted); padding: 7px; background: var(--code-bg); border-bottom: 1px solid var(--border); letter-spacing: .04em; }
+  .mock-banner b { color: var(--data); }
+
+  /* ---------- Mode toggle (Agent ⇄ Copilot) ---------- */
+  .modetoggle { display: flex; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 3px; gap: 2px; box-shadow: var(--shadow); }
+  .modetoggle button { border: none; background: transparent; font: inherit; font-size: .76rem; font-weight: 600; color: var(--muted); padding: 5px 13px; border-radius: 999px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background .15s var(--ease), color .15s var(--ease); }
+  .modetoggle button.on { color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .modetoggle .m-agent.on { background: var(--accent); }
+  .modetoggle .m-cop.on { background: var(--data); }
+  .modehint { font-size: .68rem; color: var(--muted); margin-left: 4px; max-width: 168px; line-height: 1.35; }
+
+  /* ---------- Agent-mode banner (canvas top, only in agent mode) ---------- */
+  .agentbanner { display: none; background: linear-gradient(0deg, var(--highlight), var(--highlight)), var(--surface); border: 1px solid var(--accent); border-left: 5px solid var(--accent); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 18px; }
+  body.agentmode .agentbanner { display: block; }
+  body.agentmode .chatdock .mentionbar { opacity: .4; pointer-events: none; }
+  .agentbanner .ab-h { font-size: .66rem; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); font-weight: 800; display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+  .agentbanner .ab-d { font-size: .9rem; line-height: 1.6; color: var(--ink); }
+  .agentbanner .ab-steps { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+  .agentbanner .ab-step { font-size: .72rem; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 4px 11px; color: var(--body); }
+  .agentbanner .ab-step b { color: var(--accent); }
+  .ab-cta { margin-top: 4px; border: none; background: var(--accent); color: #fff; font: inherit; font-size: .86rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); cursor: pointer; box-shadow: var(--shadow); transition: transform .15s var(--ease); }
+  .ab-cta:hover { transform: translateY(-1px); }
+  .ab-note { font-size: .72rem; color: var(--muted); margin-top: 9px; }
+  /* writing step shows "free order" badge */
+  .step .free { font-size: .56rem; font-weight: 700; background: var(--data-bg); color: var(--data); padding: 1px 6px; border-radius: 999px; margin-left: 5px; }
+</style>
+</head>
+<body>
+  <div class="mock-banner">● 정적 목업 — 상단 <b>Agent ⇄ Copilot 모드 토글</b> · workflow: Outline → Figure flow → Writing(자유순서) → Review · <b>가설: Agent 모드(먼저 만들고 수정)를 유저가 선호</b></div>
+
+  <header class="topbar">
+    <div class="brand"><span class="logo">paper<span class="dot">·</span>flow</span><span class="tag">writing workspace</span></div>
+    <div class="paper-pill"><span class="ic">石</span><b>관상동맥 파열위험지표 정의 및 민감도 분석</b><span>· master_thesis</span></div>
+    <div class="modetoggle" id="modetoggle">
+      <button class="m-agent on" data-mode="agent">⚡ Agent</button>
+      <button class="m-cop" data-mode="copilot">✍ Copilot</button>
+    </div>
+    <span class="modehint" id="modehint">아웃라인+data만 주면 에이전트가 전부 작성</span>
+    <div class="spacer"></div>
+    <span class="journal-badge">KAIST · 석사학위논문</span>
+    <div class="avatar" title="김세혁"></div>
+  </header>
+
+  <div class="shell">
+    <!-- ============ FILE TREE (LEFT) ============ -->
+    <nav class="rail" aria-label="File structure">
+      <div class="rail-title">Files · master_thesis</div>
+
+      <div class="folder">
+        <div class="fhead"><span class="fi">📂</span> main <span class="cnt">설정 + 본문</span></div>
+        <button class="file" data-file="journal_info"><span class="di">🎯</span><span class="fn">journal_info</span><span class="st key">+ core</span></button>
+        <button class="file" data-file="structure"><span class="di">🧭</span><span class="fn">structure</span><span class="st done">outline</span></button>
+        <div class="subhead">본문 섹션</div>
+        <button class="file sec" data-file="abstract"><span class="di">📄</span><span class="fn">Abstract</span><span class="st lock">lock</span></button>
+        <button class="file sec" data-file="intro"><span class="di">📄</span><span class="fn">Intro</span><span class="st lock">lock</span></button>
+        <button class="file sec active" data-file="method"><span class="di">📄</span><span class="fn">Method</span><span class="st draft">draft</span></button>
+        <button class="file sec" data-file="result"><span class="di">📄</span><span class="fn">Result</span><span class="st draft">draft</span></button>
+        <button class="file sec" data-file="discussion"><span class="di">📄</span><span class="fn">Discussion</span><span class="st lock">lock</span></button>
+        <button class="file sec" data-file="conclusion"><span class="di">📄</span><span class="fn">Conclusion</span><span class="st lock">lock</span></button>
+        <button class="file full" data-file="full"><span class="di">📑</span><span class="fn">Full.md</span><span class="st draft">합본</span></button>
+      </div>
+
+      <div class="folder">
+        <div class="fhead"><span class="fi">📂</span> reference</div>
+        <button class="file" data-file="refjson"><span class="di">🗂️</span><span class="fn">references.json</span></button>
+        <button class="file" data-file="refbib"><span class="di">📚</span><span class="fn">references.bib</span></button>
+      </div>
+
+      <div class="folder">
+        <div class="fhead"><span class="fi">📂</span> figure</div>
+        <button class="file" data-file="fig6"><span class="di">🖼️</span><span class="fn">fig6_geometry.png</span></button>
+        <button class="file" data-file="fig7"><span class="di">🖼️</span><span class="fn">fig7_sensitivity.png</span></button>
+        <button class="file" data-file="fig_meta"><span class="di">🗒️</span><span class="fn">figures.md</span></button>
+      </div>
+
+      <div class="folder star">
+        <div class="fhead"><span class="fi">📂</span> data <span class="cnt">★ 차별점</span></div>
+        <button class="file" data-file="data_sobol"><span class="di">📊</span><span class="fn">sobol_indices.csv</span></button>
+        <button class="file" data-file="data_geom"><span class="di">📐</span><span class="fn">geometry_params.csv</span></button>
+        <button class="file" data-file="data_notes"><span class="di">🗒️</span><span class="fn">raw_notes.md</span></button>
+      </div>
+
+      <p class="rail-note"><b>main/</b> journal_info(+core) · structure(outline) · 본문 6 + Full. <b>reference/</b> json·bib. <b>figure/</b> png·meta. <span class="d">data/</span> 글 쓰며 대조하는 raw 데이터 — 우리만의 grounding 소스.</p>
+    </nav>
+
+    <!-- ============ WORK (CENTER) ============ -->
+    <div class="work">
+      <main class="canvas">
+        <!-- Agent-mode banner (only visible in Agent mode) -->
+        <div class="agentbanner">
+          <div class="ab-h">⚡ Agent mode · 먼저 만들고, 그다음 수정</div>
+          <div class="ab-d">아웃라인 + (섹션별 한 줄 메모) + <b>data/</b>만 주면 — 에이전트가 <b>전 섹션을 자동 작성</b>하고, figure도 gpt-image / nanobanana로 <b>바로 생성</b>합니다. 결과를 Copilot 모드로 다듬으세요.</div>
+          <div class="ab-steps">
+            <span class="ab-step"><b>1</b> 아웃라인 확정</span>
+            <span class="ab-step"><b>2</b> figure flow 메시지</span>
+            <span class="ab-step"><b>3</b> ▶ 전체 자동 생성(글+figure)</span>
+            <span class="ab-step"><b>4</b> review + 수정</span>
+          </div>
+          <button class="ab-cta" onclick="toast('데모: 아웃라인+data로 전 섹션 초안 + figure 자동 생성 시작','run')">▶ 전체 초안 + figure 생성</button>
+          <p class="ab-note">↳ 모든 주장은 여전히 data/figure/citation으로 추적(grounding)되고, 생성 후 Copilot 모드에서 문단별로 수정 가능.</p>
+        </div>
+
+        <!-- journal_info (+ core message) -->
+        <section class="panel" data-panel="journal_info">
+          <div class="crumb">main / journal_info.md · <span class="chip cite">STEP 0–1</span></div>
+          <h2 class="title serif">Journal info</h2>
+          <p class="sub">제출 대상·저자·스타일 + 이 논문이 증명하는 단 하나(core message). 흔들리면 여기로 돌아온다.</p>
+          <div class="pin">
+            <div class="pl">📌 Core message · 앵커</div>
+            <p class="lead">선행 연구에서 검증한 비용효율적 맥동성 FSI를 활용해 1,000-sample 파라메트릭 분석을 수행함으로써,
+            <span class="mark">피로 관점 지표(ΔPSS 기반)</span>가 관상동맥 플라크 파열 위험을 임상적으로 더 타당하게 설명하며
+            <span class="mark">재료물성이 그 지배 인자</span>임을 규명한다.</p>
+            <div style="margin-top:8px;font-size:.82rem;color:var(--muted)">supporting ① 방법은 선행연구서 검증→여기선 활용 <span class="chip cite">@kim_snapshot</span> · ② ΔPSS(피로) 적합 <span class="chip fig">Fig6</span> · ③ Material dominant <span class="chip fig">Fig7</span> <span class="chip data">Sobol S₁</span></div>
+          </div>
+          <div class="card">
+            <h3>기본 정보</h3>
+            <dl class="kv">
+              <dt>Working title</dt><dd>관상동맥 파열위험지표 정의 및 민감도 분석</dd>
+              <dt>Field</dt><dd>Computational biomechanics</dd>
+              <dt>Target #1 (style)</dt><dd>석사학위논문 (학교 제출용) — 기본 스타일</dd>
+              <dt>Affiliation</dt><dd>KAIST · CBML</dd>
+              <dt>Advisor / Author</dt><dd>김현진 교수님 / 김세혁</dd>
+            </dl>
+          </div>
+        </section>
+
+        <!-- structure (outline) -->
+        <section class="panel" data-panel="structure">
+          <div class="crumb">main / structure.md · <span class="chip cite">STEP 3 outline</span></div>
+          <h2 class="title serif">Structure</h2>
+          <p class="sub">소제목 트리 = 논문 척추. 문단당 1주장 스켈레톤. 클릭하면 해당 섹션으로 이동.</p>
+          <ul class="otree">
+            <li class="og">Method</li>
+            <li><button class="oi" data-open="method"><span class="onum">2.1</span><span><span class="ot">Cost-effective pulsatile FSI</span> <span class="oc">— 선행 검증 도구 활용</span></span><span class="arrow">↗</span></button></li>
+            <li><button class="oi" data-open="method"><span class="onum">2.2</span><span><span class="ot">Parametric dataset (1,000)</span> <span class="oc">— LAP/CP · 입력 범위</span></span><span class="arrow">↗</span></button></li>
+            <li class="og">Result</li>
+            <li><button class="oi" data-open="result"><span class="onum">3.1</span><span><span class="ot">Sensitivity analysis</span> <span class="oc">— Sobol, material dominant</span></span><span class="arrow">↗</span></button></li>
+            <li><button class="oi" data-open="result"><span class="onum">3.2</span><span><span class="ot">Rupture location</span> <span class="oc">— shoulder-dominant (opt)</span></span><span class="arrow">↗</span></button></li>
+            <li class="og">Intro / Discussion <span style="font-weight:400;text-transform:none;letter-spacing:0">· 🔒 result 확정 후</span></li>
+            <li><button class="oi" data-open="intro"><span class="onum">1.x</span><span><span class="ot">Intro skeleton</span> <span class="oc">— 잠김</span></span><span class="arrow">🔒</span></button></li>
+          </ul>
+        </section>
+
+        <!-- Method (active) -->
+        <section class="panel show" data-panel="method">
+          <div class="crumb">main / Method.md · <span class="chip cite">draft</span></div>
+          <h2 class="title serif">Method</h2>
+          <p class="sub">실제로 한 것에 근거 — 가장 먼저 쓰는 본문. 한국어 초안 → 영어(같은 파일 in-place).</p>
+          <div class="card">
+            <h3>2.1 Cost-effective pulsatile FSI <span class="badge">grounded</span></h3>
+            <p class="para">A snapshot-based fluid–structure coupling validated in prior work <span class="chip cite">@kim_snapshot</span> is <b>employed</b> here to make 1,000-sample parametric analysis tractable.</p>
+          </div>
+          <div class="card">
+            <h3>2.2 Parametric dataset (1,000 samples)</h3>
+            <p class="para">LAP (3-domain) and CP (4-domain) phenotypes; inputs sampled over ranges in <span class="chip data">data/geometry_params.csv</span>. Rupture-risk index = stress / strength, stress = <span class="mark">ΔPSS</span> <span class="chip fig">Fig 6</span>.</p>
+          </div>
+        </section>
+
+        <!-- Result with data grounding -->
+        <section class="panel" data-panel="result">
+          <div class="crumb">main / Result.md · <span class="chip cite">draft</span></div>
+          <h2 class="title serif">Result</h2>
+          <p class="sub">Sobol 민감도 — material dominant. <b>왼쪽 글 ↔ 오른쪽 data 대조</b>가 핵심(분할은 추후, 개념은 지금).</p>
+          <div class="ground">
+            <div class="gl">📊 Data grounding · 모든 주장 → figure / data / citation 추적</div>
+            <div class="gtrace"><span class="claim">"Material &gt; Hemodynamic &gt; Morphological"</span><span class="src">← data/sobol_indices.csv</span><span class="gbadge ok">✓ 일치</span></div>
+            <div class="gtrace"><span class="claim">지배 인자 = E_vessel, E_FC, 수축기압, 맥압</span><span class="src">← data/sobol_indices.csv</span><span class="gbadge ok">✓ 일치</span></div>
+            <div class="gtrace"><span class="claim">S₁(E_vessel) = [TODO 숫자]</span><span class="src">← HPC fetch 필요</span><span class="gbadge todo">⚠ 값 미입력</span></div>
+            <div style="margin-top:9px;font-size:.74rem;color:var(--data)">↳ <b>@data-analyzer</b> 가 초안 주장을 data/와 자동 대조 — 숫자 틀리면 여기서 잡힘</div>
+          </div>
+          <div class="card">
+            <h3>3.1 Sensitivity analysis</h3>
+            <p class="para">First-order Sobol indices rank <b>Material &gt; Hemodynamic &gt; Morphological</b> <span class="chip fig">Fig 7</span> <span class="chip data">sobol_indices.csv</span>; dominant factors = E_vessel, E_FC, systolic &amp; pulse pressure.</p>
+          </div>
+        </section>
+
+        <!-- locked sections -->
+        <section class="panel" data-panel="intro"><div class="crumb">main / Intro.md</div><h2 class="title serif">Intro</h2><div class="gate"><div class="lock">🔒</div><h3>Result 스토리 확정 후 잠금 해제</h3><p>figure-first, result-first — Method+Result가 자리잡기 전엔 Intro를 쓰지 않는다 (CLAUDE.md 하우스 룰을 UI가 강제).</p></div></section>
+        <section class="panel" data-panel="discussion"><div class="crumb">main / Discussion.md</div><h2 class="title serif">Discussion</h2><div class="gate"><div class="lock">🔒</div><h3>Result 스토리 확정 후 잠금 해제</h3><p>논의는 결과가 분명해진 뒤에.</p></div></section>
+        <section class="panel" data-panel="abstract"><div class="crumb">main / Abstract.md</div><h2 class="title serif">Abstract</h2><div class="gate"><div class="lock">🔒</div><h3>전 섹션 완료 후 잠금 해제</h3><p>초록·제목은 가장 마지막. 모든 본문이 자리잡은 뒤 한 번에 응축한다.</p></div></section>
+        <section class="panel" data-panel="conclusion"><div class="crumb">main / Conclusion.md</div><h2 class="title serif">Conclusion</h2><div class="gate"><div class="lock">🔒</div><h3>본문 확정 후 잠금 해제</h3><p>결론은 Result·Discussion이 끝난 뒤.</p></div></section>
+
+        <!-- Full -->
+        <section class="panel" data-panel="full">
+          <div class="crumb">main / Full.md · <span class="chip cite">합본</span></div>
+          <h2 class="title serif">Full.md — 전체 합본</h2>
+          <p class="sub">섹션별 독립 텍스트를 순서대로 묶은 단일 통독본. 컴파일·통독·제출 직전 점검용(읽기 전용).</p>
+          <div class="card"><h3>구성</h3><p class="para">Abstract · Intro · Method · Result · Discussion · Conclusion 을 in-order로 결합. 각 섹션 파일이 source of truth.</p></div>
+        </section>
+
+        <!-- reference -->
+        <section class="panel" data-panel="refjson">
+          <div class="crumb">reference / references.json</div>
+          <h2 class="title serif">Reference Table</h2>
+          <p class="sub">주장(My need) ↔ 근거 ↔ support ↔ check. 본문 <code>\cite{key}</code> 와 같은 key.</p>
+          <table class="reftable"><thead><tr><th>Cite key</th><th>Section</th><th>My need (주장)</th><th>Support</th><th>Check</th></tr></thead>
+          <tbody>
+            <tr><td class="k">@kim_snapshot</td><td>Method 2.1</td><td>비용효율 맥동성 FSI는 선행연구서 검증 → 활용</td><td><span class="lvl s">Very strong</span></td><td><span class="cstat v1">◷ Verified once</span></td></tr>
+            <tr><td class="k">@westerhof2009</td><td>Method 2.2</td><td>1:10 RCR = 표준 windkessel 관례</td><td><span class="lvl s">Strong</span></td><td><span class="cstat v2">✓ Double verified</span></td></tr>
+            <tr><td class="k">@milzi2021pss</td><td>Result 3.1</td><td>ΔPSS가 임상적으로 파열위험 더 잘 설명</td><td><span class="lvl m">So-so</span></td><td><span class="cstat need">⚠ Need claim check</span></td></tr>
+          </tbody></table>
+        </section>
+        <section class="panel" data-panel="refbib">
+          <div class="crumb">reference / references.bib</div>
+          <h2 class="title serif">references.bib</h2>
+          <p class="sub">references.json 에서 export된 BibTeX. 본문 key와 1:1.</p>
+          <div class="codeblock">@article{kim_snapshot,
+  title   = {Efficient approximation of vessel wall stress under pulsatile hemodynamics},
+  author  = {Kim, S. and ...},
+  journal = {[under review]}, year = {2025}
+}
+@article{westerhof2009,
+  title   = {The arterial Windkessel},
+  author  = {Westerhof, N. and Lankhaar, J.-W. and Westerhof, B. E.},
+  journal = {Med Biol Eng Comput}, year = {2009}
+}</div>
+        </section>
+
+        <!-- figures -->
+        <section class="panel" data-panel="fig6"><div class="crumb">figure / fig6_geometry.png</div><h2 class="title serif">Fig 6 — Geometry + morphological parameters</h2><div class="figcard"><div class="thumb">PNG<br>2-panel</div><div class="fmeta"><b>fig6_geometry.png</b> · 1536×1024<span class="lbl" style="display:block;margin-top:6px">message</span><div class="desc">LAP(3-domain) vs CP(4-domain) 도메인 차이 + FC thickness·lipid arc·plaque burden 기하학적 정의.</div></div></div></section>
+        <section class="panel" data-panel="fig7"><div class="crumb">figure / fig7_sensitivity.png</div><h2 class="title serif">Fig 7 — Sensitivity analysis</h2><div class="figcard"><div class="thumb">PNG<br>Sobol</div><div class="fmeta"><b>fig7_sensitivity.png</b> · 1536×1024<span class="lbl" style="display:block;margin-top:6px">message</span><div class="desc">Sobol S₁ &amp; S_total — Material &gt; Hemodynamic &gt; Morphological. <span class="chip data">data/sobol_indices.csv</span> 에서 생성.</div></div></div></section>
+        <section class="panel" data-panel="fig_meta"><div class="crumb">figure / figures.md</div><h2 class="title serif">figures.md — figure 메타</h2><p class="sub">각 figure의 전달 메시지 + 데이터 출처 + 상태.</p><div class="figcard"><div class="thumb">Fig 6</div><div class="fmeta"><b>Geometry + morphology</b> · 2-panel · <span class="chip data">data/geometry_params.csv</span></div></div><div class="figcard"><div class="thumb">Fig 7</div><div class="fmeta"><b>Sensitivity (Sobol)</b> · <span class="chip data">data/sobol_indices.csv</span> · <span class="chip cite">[TODO 값]</span></div></div></section>
+
+        <!-- DATA files (★ differentiator) -->
+        <section class="panel" data-panel="data_sobol">
+          <div class="crumb">data / sobol_indices.csv · <span class="chip data">grounding source</span></div>
+          <h2 class="title serif">sobol_indices.csv</h2>
+          <p class="sub">Result의 주장이 이 표에 직접 추적됨. <b>@data-analyzer</b>가 초안 vs 이 값을 대조.</p>
+          <table class="reftable data"><thead><tr><th>Factor</th><th>S₁ (first-order)</th><th>S_total</th><th>group</th></tr></thead>
+          <tbody>
+            <tr><td class="k">E_vessel</td><td>[TODO]</td><td>[TODO]</td><td>Material</td></tr>
+            <tr><td class="k">E_FC</td><td>[TODO]</td><td>[TODO]</td><td>Material</td></tr>
+            <tr><td class="k">systolic_P</td><td>[TODO]</td><td>[TODO]</td><td>Hemodynamic</td></tr>
+            <tr><td class="k">FC_thickness</td><td>[TODO]</td><td>[TODO]</td><td>Morphological</td></tr>
+          </tbody></table>
+          <p style="font-size:.78rem;color:var(--data);margin-top:12px">↳ HPC에서 값 fetch: <code>@data-analyzer</code> 또는 <code>/ssh harvey</code> 로 [TODO] 채우기 → Result 주장 자동 검증.</p>
+        </section>
+        <section class="panel" data-panel="data_geom">
+          <div class="crumb">data / geometry_params.csv · <span class="chip data">grounding source</span></div>
+          <h2 class="title serif">geometry_params.csv</h2>
+          <p class="sub">Method 2.2 입력 범위의 원천. 표에 적힌 range가 본문·Table 1과 일치해야 함.</p>
+          <table class="reftable data"><thead><tr><th>Param</th><th>min</th><th>max</th><th>dist</th></tr></thead>
+          <tbody>
+            <tr><td class="k">FC_thickness (mm)</td><td>0.05</td><td>0.25</td><td>uniform</td></tr>
+            <tr><td class="k">lipid_arc (°)</td><td>30</td><td>180</td><td>uniform</td></tr>
+            <tr><td class="k">plaque_burden (%)</td><td>40</td><td>80</td><td>uniform</td></tr>
+          </tbody></table>
+        </section>
+        <section class="panel" data-panel="data_notes">
+          <div class="crumb">data / raw_notes.md</div>
+          <h2 class="title serif">raw_notes.md</h2>
+          <p class="sub">분석 중 남긴 raw 메모·관찰. 정제 전 사고의 흔적 — discussion 아이디어 소스.</p>
+          <div class="card"><p class="para">· shoulder 영역 ΔPSS 집중 (case 03, 11, 27) — 임상 rupture 위치와 일치 경향<br>· 축방향 위치 예측은 mesh 의존성 큼 → 한계로 명시 필요<br>· E_FC 낮을수록 ΔPSS 급증 (비선형) — material dominance의 물리적 근거</p></div>
+        </section>
+      </main>
+
+      <!-- ============ CHAT DOCK ============ -->
+      <div class="chatdock">
+        <div class="mentionbar">
+          <span class="ml">@호출</span>
+          <span class="mtag dataA" data-agent="data-analyzer"><span class="at">@</span>data-analyzer</span>
+          <span class="mtag" data-agent="reference-hunter"><span class="at">@</span>reference-hunter</span>
+          <span class="mtag" data-agent="reference-double-checker"><span class="at">@</span>reference-double-checker</span>
+          <span class="mtag" data-agent="reviewer"><span class="at">@</span>reviewer</span>
+          <span class="mtag" data-agent="advisor"><span class="at">@</span>advisor</span>
+          <span class="mtag" data-agent="figure-schematic"><span class="at">@</span>figure-schematic</span>
+          <span class="mtag" data-agent="polish"><span class="at">@</span>polish</span>
+        </div>
+        <div class="composer">
+          <textarea id="chatInput" rows="1" placeholder="현재 파일(Method.md)에 대해 지시… 예) @data-analyzer 이 주장 sobol_indices.csv랑 맞는지 확인해줘"></textarea>
+          <button class="send" id="sendBtn" title="보내기">↑</button>
+        </div>
+        <p class="chathint">팁: <code>@</code> 호출 · 채팅은 <b>지금 연 파일 맥락</b>에서 동작 · <code>@data-analyzer</code> = 주장↔data 대조(차별점)</p>
+      </div>
+    </div>
+
+    <!-- ============ WORKFLOW (RIGHT) ============ -->
+    <aside class="aside" aria-label="Workflow status">
+      <div class="aside-title">Workflow</div>
+      <ul class="steps" id="steps">
+        <li class="step done" data-open="structure"><span class="node">✓</span><span class="meta"><span class="k">STEP 1</span><span class="t">아웃라인</span><span class="s">완료 · 섹션별 한 줄</span></span></li>
+        <li class="step done" data-open="fig_meta"><span class="node">✓</span><span class="meta"><span class="k">STEP 2</span><span class="t">Figure flow</span><span class="s">완료 · 메시지 확정</span></span></li>
+        <li class="step active" data-open="method"><span class="node">3</span><span class="meta"><span class="k">STEP 3</span><span class="t">글 작성 <span class="free">자유 순서</span></span><span class="s">작성 중 · 섹션 순서 자유</span></span></li>
+        <li class="step locked"><span class="node">4</span><span class="meta"><span class="k">STEP 4</span><span class="t">Review</span><span class="s">초안 후 · reviewer+advisor</span></span></li>
+      </ul>
+      <p class="aside-note"><b>게이팅:</b> 아웃라인 → figure flow 까지는 순서대로(논리 골격). 그 뒤 <b>글쓰기는 섹션 자유 순서</b> → 끝나면 Review. <br>⚡<b>Agent</b>: 1~2 주면 3을 자동 생성. ✍<b>Copilot</b>: 직접 쓰며 @agent 호출.</p>
+    </aside>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  const files = document.querySelectorAll('.file');
+  const panels = document.querySelectorAll('.panel');
+  const canvas = document.querySelector('.canvas');
+  const toastEl = document.getElementById('toast');
+  let toastTimer;
+  function toast(msg, kind) {
+    toastEl.innerHTML = (kind === 'run' ? '▶ ' : kind === 'open' ? '📂 ' : '') + msg;
+    toastEl.classList.add('show'); clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+  }
+  function openFile(id) {
+    let matched = false;
+    files.forEach(x => { const on = x.dataset.file === id; x.classList.toggle('active', on); if (on) matched = true; });
+    panels.forEach(p => p.classList.toggle('show', p.dataset.panel === id));
+    canvas.scrollTo({ top: 0, behavior: 'smooth' });
+    return matched;
+  }
+  files.forEach(f => f.addEventListener('click', () => openFile(f.dataset.file)));
+  // outline subheadings -> open section
+  document.querySelectorAll('.oi[data-open]').forEach(o => o.addEventListener('click', () => { openFile(o.dataset.open); }));
+
+  // chat
+  const input = document.getElementById('chatInput');
+  function send() {
+    const v = input.value.trim(); if (!v) return;
+    const m = v.match(/@([a-z-]+)/i);
+    toast(m ? ('<b>@' + m[1] + '</b> 호출 — 현재 파일 맥락으로 실행') : '메인 대화로 전송', 'run');
+    input.value = ''; input.style.height = 'auto';
+  }
+  document.getElementById('sendBtn').addEventListener('click', send);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
+  input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 120) + 'px'; });
+  document.querySelectorAll('.mtag').forEach(t => t.addEventListener('click', () => { input.value = ('@' + t.dataset.agent + ' ' + input.value).trim() + ' '; input.focus(); }));
+
+  // workflow step = guide lens (click opens the file for that step)
+  document.querySelectorAll('#steps .step').forEach(s => s.addEventListener('click', () => {
+    if (s.classList.contains('locked')) { toast('이 스텝은 <b>잠김</b> — 초안 완료 후 Review', ''); return; }
+    if (s.dataset.open) { openFile(s.dataset.open); toast('STEP 파일 열기 — 작업은 가운데에서', 'open'); }
+  }));
+
+  // mode toggle (Agent ⇄ Copilot)
+  const modehint = document.getElementById('modehint');
+  document.querySelectorAll('#modetoggle button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('#modetoggle button').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    const agent = b.dataset.mode === 'agent';
+    document.body.classList.toggle('agentmode', agent);
+    modehint.textContent = agent ? '아웃라인+data만 주면 에이전트가 전부 작성'
+                                 : '직접 쓰면서 @agent 호출해 다듬기';
+    input.placeholder = agent ? '에이전트에게 지시… 예) 아웃라인+data로 Result, Discussion 전부 써줘'
+                              : '현재 파일(Method.md)에 대해 지시… 예) @data-analyzer 이 주장 sobol_indices.csv랑 맞는지';
+    toast(agent ? '⚡ <b>Agent 모드</b> — 먼저 만들고 그다음 수정' : '✍ <b>Copilot 모드</b> — 직접 쓰며 호출', 'run');
+  }));
+  // default: Agent mode on (가설 강조)
+  document.body.classList.add('agentmode');
+</script>
+</body>
+</html>

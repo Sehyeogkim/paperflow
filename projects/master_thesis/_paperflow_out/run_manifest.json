@@ -1,0 +1,698 @@
+{
+  "project_dir": "../projects/master_thesis",
+  "sections": [
+    "method",
+    "result",
+    "introduction",
+    "conclusion"
+  ],
+  "classification": "MISSING_CRITICAL_INFORMATION",
+  "calls": [
+    {
+      "step": "requirement.detect",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 3764,
+      "output_tokens": 4010
+    },
+    {
+      "step": "claim_graph",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 3480,
+      "output_tokens": 5904
+    },
+    {
+      "step": "contracts.method",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 6759,
+      "output_tokens": 5709
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 11896,
+      "output_tokens": 1357
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 926,
+      "output_tokens": 1644
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 12125,
+      "output_tokens": 2645
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1520,
+      "output_tokens": 2573
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 13034,
+      "output_tokens": 1176
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 988,
+      "output_tokens": 1366
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 13572,
+      "output_tokens": 1798
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1101,
+      "output_tokens": 2850
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 14022,
+      "output_tokens": 1745
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1048,
+      "output_tokens": 1688
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 14625,
+      "output_tokens": 2065
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1315,
+      "output_tokens": 1628
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 15056,
+      "output_tokens": 1415
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 822,
+      "output_tokens": 924
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 15420,
+      "output_tokens": 1090
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1111,
+      "output_tokens": 1958
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 15777,
+      "output_tokens": 1395
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 929,
+      "output_tokens": 1347
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 16166,
+      "output_tokens": 1227
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1049,
+      "output_tokens": 1308
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 16615,
+      "output_tokens": 1555
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1174,
+      "output_tokens": 1564
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 17269,
+      "output_tokens": 1480
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1157,
+      "output_tokens": 2254
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 17876,
+      "output_tokens": 1675
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1451,
+      "output_tokens": 1430
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 18556,
+      "output_tokens": 940
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 937,
+      "output_tokens": 2823
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 18971,
+      "output_tokens": 1200
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1113,
+      "output_tokens": 2583
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 19499,
+      "output_tokens": 1194
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1083,
+      "output_tokens": 1302
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 20072,
+      "output_tokens": 1512
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1096,
+      "output_tokens": 3153
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 20518,
+      "output_tokens": 1610
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1001,
+      "output_tokens": 2734
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 21051,
+      "output_tokens": 1371
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1008,
+      "output_tokens": 1914
+    },
+    {
+      "step": "contracts.result",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 6759,
+      "output_tokens": 3314
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 8550,
+      "output_tokens": 1132
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 817,
+      "output_tokens": 726
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 8908,
+      "output_tokens": 3233
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1586,
+      "output_tokens": 3017
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 9656,
+      "output_tokens": 1678
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 979,
+      "output_tokens": 1679
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 10094,
+      "output_tokens": 1846
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1115,
+      "output_tokens": 2619
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 10586,
+      "output_tokens": 2321
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1188,
+      "output_tokens": 2819
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 11298,
+      "output_tokens": 1702
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1341,
+      "output_tokens": 3595
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 11675,
+      "output_tokens": 1662
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1087,
+      "output_tokens": 1046
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 12146,
+      "output_tokens": 1659
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1122,
+      "output_tokens": 1052
+    },
+    {
+      "step": "contracts.introduction",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 6760,
+      "output_tokens": 3253
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 3924,
+      "output_tokens": 948
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 716,
+      "output_tokens": 2576
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 3996,
+      "output_tokens": 1169
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 929,
+      "output_tokens": 2123
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 4476,
+      "output_tokens": 1479
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 873,
+      "output_tokens": 1710
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 4829,
+      "output_tokens": 1660
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 874,
+      "output_tokens": 1873
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 5268,
+      "output_tokens": 1042
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 967,
+      "output_tokens": 2027
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 5851,
+      "output_tokens": 1478
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1459,
+      "output_tokens": 2180
+    },
+    {
+      "step": "contracts.conclusion",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 6760,
+      "output_tokens": 2034
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 4399,
+      "output_tokens": 1504
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1357,
+      "output_tokens": 3796
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 4664,
+      "output_tokens": 2008
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1418,
+      "output_tokens": 2680
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 5050,
+      "output_tokens": 1902
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1165,
+      "output_tokens": 2493
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 5534,
+      "output_tokens": 1732
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 1304,
+      "output_tokens": 1308
+    }
+  ],
+  "totals": {
+    "input_tokens": 518432,
+    "output_tokens": 159191
+  },
+  "by_step": {
+    "requirement.detect": {
+      "input": 3764,
+      "output": 4010,
+      "calls": 1
+    },
+    "claim_graph": {
+      "input": 3480,
+      "output": 5904,
+      "calls": 1
+    },
+    "contracts.method": {
+      "input": 6759,
+      "output": 5709,
+      "calls": 1
+    },
+    "writer": {
+      "input": 443024,
+      "output": 58605,
+      "calls": 37
+    },
+    "validator": {
+      "input": 41126,
+      "output": 76362,
+      "calls": 37
+    },
+    "contracts.result": {
+      "input": 6759,
+      "output": 3314,
+      "calls": 1
+    },
+    "contracts.introduction": {
+      "input": 6760,
+      "output": 3253,
+      "calls": 1
+    },
+    "contracts.conclusion": {
+      "input": 6760,
+      "output": 2034,
+      "calls": 1
+    }
+  }
+}

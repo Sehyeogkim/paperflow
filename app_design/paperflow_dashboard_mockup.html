@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>paperflow — dashboard (mockup)</title>
+<style>
+  :root {
+    --bg: #F0EEE6; --accent: #CC785C; --accent-2: #E8D5C4; --border: #D4C5B0;
+    --ink: #1A1A1A; --body: #2D2D2D; --muted: #6B5E54; --code-bg: #E6E0D4; --code-ink: #8B4513;
+    --ok: #7A9A6D; --err: #C25744; --surface: #F7F5EF; --highlight: rgba(204,120,92,.15);
+    --data: #5B7A8C; --data-bg: #E6EDF0;
+    --radius: 16px; --radius-sm: 10px;
+    --shadow: 0 1px 0 rgba(26,26,26,.04), 0 10px 30px -20px rgba(60,40,30,.6);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Pretendard", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--body); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  h1,h2,h3 { color: var(--ink); font-weight: 650; letter-spacing: -.01em; margin: 0; }
+  .serif { font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif; }
+
+  .topbar { display: flex; align-items: center; gap: 18px; padding: 14px 30px; background: linear-gradient(180deg,#F4F1E9,#EFECE2); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 20; }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand .logo { font-family: "Iowan Old Style", Georgia, serif; font-size: 1.32rem; font-weight: 700; color: var(--ink); letter-spacing: -.02em; }
+  .brand .logo .dot { color: var(--accent); }
+  .brand .tag { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .14em; }
+  .spacer { flex: 1; }
+  .newbtn { display: flex; align-items: center; gap: 7px; background: var(--accent); color: #fff; border: none; border-radius: 999px; padding: 8px 16px; font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; box-shadow: var(--shadow); transition: transform .15s var(--ease); }
+  .newbtn:hover { transform: translateY(-1px); }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, var(--accent-2), var(--accent)); border: 1px solid var(--border); }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 34px 30px 60px; }
+  .hello { font-size: 1.5rem; margin-bottom: 4px; }
+  .hello .nm { color: var(--accent); }
+  .subline { color: var(--muted); font-size: .92rem; margin-bottom: 8px; }
+
+  /* summary strip */
+  .summary { display: flex; gap: 12px; margin: 18px 0 30px; flex-wrap: wrap; }
+  .stat { flex: 1; min-width: 150px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 18px; box-shadow: var(--shadow); }
+  .stat .v { font-size: 1.5rem; font-weight: 700; color: var(--ink); font-family: "Iowan Old Style", Georgia, serif; }
+  .stat .l { font-size: .74rem; color: var(--muted); margin-top: 2px; }
+  .stat.warn .v { color: var(--err); }
+
+  .sec-h { font-size: .74rem; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); font-weight: 700; margin: 6px 4px 14px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 16px; }
+
+  .pcard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); cursor: pointer; transition: transform .2s var(--ease), border-color .2s var(--ease), box-shadow .2s var(--ease); position: relative; overflow: hidden; }
+  .pcard:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 1px 0 rgba(26,26,26,.04), 0 18px 40px -22px rgba(60,40,30,.7); }
+  .pcard.active::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent); }
+  .pcard .ptop { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 4px; }
+  .pcard .pic { flex: none; width: 34px; height: 34px; border-radius: 9px; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: .78rem; font-weight: 700; }
+  .pcard .pic.j2 { background: var(--data); } .pcard .pic.j3 { background: var(--muted); }
+  .pcard h3.pt { font-size: 1.02rem; line-height: 1.35; }
+  .pcard .pmeta { font-size: .76rem; color: var(--muted); margin-top: 2px; }
+  .pcard .ptag { margin-left: auto; flex: none; font-size: .62rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+  .ptag.on { background: var(--highlight); color: var(--accent); } .ptag.idle { background: var(--code-bg); color: var(--code-ink); }
+
+  /* progress */
+  .prog { margin: 16px 0 12px; }
+  .prog .pl { display: flex; justify-content: space-between; align-items: baseline; font-size: .76rem; margin-bottom: 6px; }
+  .prog .pl .pct { font-weight: 700; color: var(--ink); font-size: .92rem; }
+  .prog .pl .stp { color: var(--muted); }
+  .bar { height: 8px; border-radius: 999px; background: var(--code-bg); overflow: hidden; }
+  .bar > span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), #d98e6f); }
+  .bar > span.b2 { background: linear-gradient(90deg, var(--data), #7d9aa8); }
+
+  /* step dots */
+  .dots { display: flex; gap: 5px; margin: 12px 0 14px; align-items: center; }
+  .dot { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: .6rem; font-weight: 700; border: 1.5px solid var(--border); background: var(--surface); color: var(--muted); }
+  .dot.done { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .dot.now { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 0 3px var(--highlight); }
+  .dot.lock { background: var(--accent-2); color: var(--muted); border-color: var(--accent-2); }
+
+  .pfoot { display: flex; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid var(--border); font-size: .76rem; }
+  .ddl { font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+  .ddl.soon { background: #f6e3dd; color: var(--err); } .ddl.mid { background: var(--code-bg); color: var(--code-ink); } .ddl.far { background: #EAF0E6; color: #4f6a44; }
+  .pfoot .nx { color: var(--muted); margin-left: auto; text-align: right; }
+  .pfoot .nx b { color: var(--ink); }
+  .databadge { display: inline-flex; align-items: center; gap: 4px; font-size: .66rem; font-weight: 700; color: var(--data); background: var(--data-bg); border: 1px solid #b9cdd6; padding: 2px 8px; border-radius: 999px; }
+
+  /* new project card */
+  .newcard { border: 2px dashed var(--border); background: transparent; border-radius: var(--radius); display: grid; place-items: center; min-height: 200px; cursor: pointer; color: var(--muted); transition: border-color .2s var(--ease), color .2s var(--ease); text-align: center; }
+  .newcard:hover { border-color: var(--accent); color: var(--accent); }
+  .newcard .plus { font-size: 1.8rem; }
+
+  .toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--ink); color: #F4F1E9; padding: 11px 20px; border-radius: 999px; font-size: .82rem; box-shadow: 0 12px 34px -10px rgba(0,0,0,.5); opacity: 0; pointer-events: none; transition: opacity .25s var(--ease), transform .25s var(--ease); z-index: 50; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); } .toast b { color: var(--accent-2); }
+  .mock-banner { text-align: center; font-size: .72rem; color: var(--muted); padding: 7px; background: var(--code-bg); border-bottom: 1px solid var(--border); letter-spacing: .04em; }
+  .mock-banner b { color: var(--accent); }
+</style>
+</head>
+<body>
+  <div class="mock-banner">● 진입화면 (대시보드) — 프로젝트 = 저널 타겟 1개 · 진행% = workflow 0→6 자동산출 · 카드 클릭 → <b>paper workspace로 전환</b></div>
+
+  <header class="topbar">
+    <div class="brand"><span class="logo">paper<span class="dot">·</span>flow</span><span class="tag">research writing</span></div>
+    <div class="spacer"></div>
+    <button class="newbtn" onclick="toast('데모: 새 저널 프로젝트 생성 (STEP 0부터)','')">＋ 새 프로젝트</button>
+    <div class="avatar" title="김세혁"></div>
+  </header>
+
+  <div class="wrap">
+    <h1 class="hello serif">안녕하세요, <span class="nm">김세혁</span>님</h1>
+    <p class="subline">진행 중인 저널 프로젝트 <b>3</b>개 · 이번 주 마감 임박 <b>1</b>개</p>
+
+    <div class="summary">
+      <div class="stat"><div class="v">3</div><div class="l">진행 중 프로젝트</div></div>
+      <div class="stat warn"><div class="v">D-12</div><div class="l">가장 임박한 마감 · master_thesis</div></div>
+      <div class="stat"><div class="v">52%</div><div class="l">전체 평균 진행률</div></div>
+      <div class="stat"><div class="v">3</div><div class="l">data 연결된 프로젝트 ★</div></div>
+    </div>
+
+    <div class="sec-h">My projects</div>
+    <div class="grid">
+
+      <!-- Project 1 (active) -->
+      <article class="pcard active" onclick="goWorkspace()">
+        <div class="ptop">
+          <span class="pic">石</span>
+          <div><h3 class="pt serif">관상동맥 파열위험지표 정의 및 민감도 분석</h3><div class="pmeta">KAIST 석사학위논문 · Computational biomechanics</div></div>
+          <span class="ptag on">작업 중</span>
+        </div>
+        <div class="prog">
+          <div class="pl"><span class="pct">65%</span><span class="stp">STEP 4 / 6 · 메소드+결과</span></div>
+          <div class="bar"><span style="width:65%"></span></div>
+        </div>
+        <div class="dots">
+          <span class="dot done">0</span><span class="dot done">1</span><span class="dot done">2</span><span class="dot done">3</span><span class="dot now">4</span><span class="dot lock">5</span><span class="dot lock">6</span>
+        </div>
+        <div class="pfoot">
+          <span class="ddl soon">D-12</span>
+          <span class="databadge">📊 data 3</span>
+          <span class="nx">다음: <b>Result 마무리</b> → STEP 5 잠금해제</span>
+        </div>
+      </article>
+
+      <!-- Project 2 -->
+      <article class="pcard" onclick="toast('데모: <b>Cost-effective FSI</b> 프로젝트 열기','open')">
+        <div class="ptop">
+          <span class="pic j2">FSI</span>
+          <div><h3 class="pt serif">Cost-effective pulsatile FSI for coronary plaque</h3><div class="pmeta">Target: J. Biomechanics · method paper</div></div>
+          <span class="ptag idle">대기</span>
+        </div>
+        <div class="prog">
+          <div class="pl"><span class="pct">30%</span><span class="stp">STEP 2 / 6 · 피규어 플로우</span></div>
+          <div class="bar"><span class="b2" style="width:30%"></span></div>
+        </div>
+        <div class="dots">
+          <span class="dot done">0</span><span class="dot done">1</span><span class="dot now">2</span><span class="dot lock">3</span><span class="dot lock">4</span><span class="dot lock">5</span><span class="dot lock">6</span>
+        </div>
+        <div class="pfoot">
+          <span class="ddl mid">D-45</span>
+          <span class="databadge">📊 data 2</span>
+          <span class="nx">다음: <b>figure flow 확정</b></span>
+        </div>
+      </article>
+
+      <!-- Project 3 -->
+      <article class="pcard" onclick="toast('데모: <b>Plaque morphology review</b> 열기','open')">
+        <div class="ptop">
+          <span class="pic j3">REV</span>
+          <div><h3 class="pt serif">Plaque morphology &amp; rupture: a review</h3><div class="pmeta">Target: Front. Cardiovasc. Med. · review</div></div>
+          <span class="ptag idle">대기</span>
+        </div>
+        <div class="prog">
+          <div class="pl"><span class="pct">12%</span><span class="stp">STEP 1 / 6 · 코어 메시지</span></div>
+          <div class="bar"><span style="width:12%"></span></div>
+        </div>
+        <div class="dots">
+          <span class="dot done">0</span><span class="dot now">1</span><span class="dot lock">2</span><span class="dot lock">3</span><span class="dot lock">4</span><span class="dot lock">5</span><span class="dot lock">6</span>
+        </div>
+        <div class="pfoot">
+          <span class="ddl far">D-90</span>
+          <span class="nx">다음: <b>core message 1문장</b></span>
+        </div>
+      </article>
+
+      <!-- New project -->
+      <button class="newcard" onclick="toast('데모: 새 저널 프로젝트 생성 (STEP 0부터)','')">
+        <div><div class="plus">＋</div><div style="font-size:.86rem;font-weight:600;margin-top:6px">새 저널 프로젝트</div><div style="font-size:.72rem;margin-top:3px">프로젝트 1개 = 저널 타겟 1개</div></div>
+      </button>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  const toastEl = document.getElementById('toast'); let t;
+  function toast(msg, kind) { toastEl.innerHTML = (kind === 'open' ? '📂 ' : '') + msg; toastEl.classList.add('show'); clearTimeout(t); t = setTimeout(() => toastEl.classList.remove('show'), 2200); }
+  function goWorkspace() {
+    toast('master_thesis 열기 → paper workspace', 'open');
+    setTimeout(() => { window.location.href = 'paperflow_app_mockup.html'; }, 650);
+  }
+</script>
+</body>
+</html>

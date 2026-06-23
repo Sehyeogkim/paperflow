@@ -385,25 +385,59 @@
         <h1>PaperFlow 에이전트 워크플로우 아키텍처</h1>
         <p>
           목적은 <strong>사용자 입력 3개</strong>만으로 근거 추적이 가능한 논문 패키지를 생성하는 것이다.
-          각 단계는 에이전트가 무작위로 움직이는 구조가 아니라, 의존성이 명시된 결정적 워크플로우 안에서 LLM/API 작업을 병렬 실행한다.
+          각 단계는 에이전트가 무작위로 움직이는 구조가 아니라, 의존성이 명시된 결정적 워크플로우 안에서 LLM/API 작업을 실행한다.
         </p>
         <div class="badge-row">
           <span class="badge">입력: 저널 정보 + 핵심 메시지 + 아웃라인</span>
           <span class="badge">핵심: Manuscript Compiler</span>
-          <span class="badge">독립 작업은 병렬</span>
-          <span class="badge">근거 의존 작업은 순차</span>
+          <span class="badge" style="background:#e9f8ee;border-color:#86d3a3;color:#15803d">● 위 = 실제 구현(2026-06-23)</span>
+          <span class="badge" style="background:#edf1f7;color:#5d687c">○ 아래 = 설계도(목표)</span>
         </div>
       </div>
-      <aside class="status-card">
-        <h2>합의 후보안 v0.1</h2>
+      <aside class="status-card" style="border-color:#86d3a3">
+        <h2>✅ 지금 실제로 동작 (engine/)</h2>
         <ul>
-          <li>Figure 기획과 실제 렌더링은 분리한다.</li>
-          <li>인용 요구사항은 작성 전에 계획하고, 인용 검증은 작성 후에 수행한다.</li>
-          <li>누락 정보 탐지는 프롬프트만이 아니라 스키마 기반으로 수행한다.</li>
-          <li>최종 산출물은 완성 가능성/리스크 기준으로 분류한다.</li>
+          <li>입력 3개 → Method·Result·Intro·Conclusion 생성됨</li>
+          <li>선행연구조사: OpenAlex 실제 논문 검색·인용 ✅</li>
+          <li>날조 인용 가드: leak 0건 ✅</li>
+          <li>Result에 실제 Sobol 숫자 인용 ✅</li>
+          <li>figure: fal nano-banana-pro PNG 생성 ✅</li>
+          <li>완성가능성 4분류 + 토큰계측 ✅</li>
         </ul>
       </aside>
     </div>
+
+    <section class="section" style="border:2px solid #86d3a3;background:#f5fcf8">
+      <h2 style="color:#15803d">▶ 지금 실제로 동작하는 파이프라인 (engine/, 검증됨)</h2>
+      <p style="color:#5d687c;font-size:13.5px;margin-bottom:14px">
+        아래 9단계가 <code>paperflow run &lt;project&gt;</code> 한 번에 실행된다. 모듈 경로는 <code>projects/paperflow/engine/src/paperflow/</code> 기준.
+        모델 tier는 env로 swap (지금은 deepseek가 이 환경서 TLS 막혀 gpt-5/mini로 라우팅).
+      </p>
+      <table class="matrix">
+        <thead><tr><th style="width:30px">#</th><th>단계</th><th>모델 tier</th><th>실제 모듈</th><th>핵심 동작</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><strong>ingest</strong></td><td>LLM 없음</td><td><code>ingest/parse_inputs.py</code></td><td>3 md 파싱 → ProjectState, data/ref 스캔</td></tr>
+          <tr><td>2</td><td><strong>선행연구조사 §0</strong></td><td>fast+writer / OpenAlex</td><td><code>litsearch/</code></td><td>쿼리 6개 → OpenAlex 검색 → survey 합성. 실제 논문+DOI를 인용키로 추가</td></tr>
+          <tr><td>3</td><td><strong>requirement.detect</strong> 🛡️</td><td>reasoning</td><td><code>requirement/detect.py</code></td><td>체크리스트 대조 → <strong>완성가능성 4분류</strong> + 질문 생성 (날조 1번 관문)</td></tr>
+          <tr><td>4</td><td><strong>claim_graph</strong></td><td>reasoning</td><td><code>compile/claim_graph.py</code></td><td>core+outline → 주장들의 논리 골격 (글 전에 구조)</td></tr>
+          <tr><td>5</td><td><strong>contracts</strong> (섹션별)</td><td>reasoning</td><td><code>compile/contracts.py</code></td><td>claim graph → 문단 계약서(쓸 것/금지/근거/연결)</td></tr>
+          <tr><td>6</td><td><strong>writer + validator</strong> 🛡️</td><td>writer+reasoning</td><td><code>compile/writer.py</code></td><td>draft(맥락+실제 data값) → validate → <strong>citation 가드</strong>(날조 키 차단)</td></tr>
+          <tr><td>7</td><td><strong>figures</strong></td><td>fast / fal</td><td><code>figures/generate.py</code></td><td>(Fig N) → 상세 프롬프트 → nano-banana-pro PNG</td></tr>
+          <tr><td>8</td><td><strong>output</strong></td><td>파일</td><td><code>output/write_fs.py</code></td><td>섹션 .md + Literature.md + figures + run_manifest(토큰)</td></tr>
+          <tr><td>9</td><td><strong>compare</strong></td><td>코드</td><td><code>eval/compare.py</code></td><td>실제 논문(answer key)과 구조 대조</td></tr>
+        </tbody>
+      </table>
+      <div class="note" style="border-color:#86d3a3;background:#eafaf0;color:#15662f">
+        <strong>🛡️ 안티-환각 = 3중 게이트:</strong> ③ 완성가능성 분류(정보 없으면 "없다") · ⑥ 없는 수치→<code>[DATA_NEEDED]</code>·없는 인용→<code>[cite:what_I_need]</code> ·
+        ⑥ citation 가드(코드, store/found refs에 없는 키 강제 변환 → 날조 인용 0). · ② 선행연구도 OpenAlex 실제 레코드(DOI)만.
+      </div>
+      <div class="note" style="border-color:#d9dfeb;background:#fff;color:#5d687c">
+        <strong>아직 안 한 것(설계도엔 있음):</strong> reference entailment 검증(이 논문이 이 주장 뒷받침하나) · reviewer 6분리 · figure를 실제 데이터 플롯으로 ·
+        프롬프트 캐싱(비용↓) · 웹UI. — 아래 "설계도"는 이 목표 전체를 그린 것이고, 위 9단계가 지금 돌아가는 실물이다.
+      </div>
+    </section>
+
+    <p style="color:#5d687c;font-size:13px;margin:18px 2px 0"><strong>○ 아래부터는 GPT가 그린 설계도(목표 아키텍처)</strong> — 위 실물이 이걸 향해 자란다.</p>
 
     <section class="section">
       <h2>1. 시스템 경계</h2>

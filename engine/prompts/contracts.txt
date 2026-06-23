@@ -1,0 +1,36 @@
+You convert a CLAIM GRAPH + outline into PARAGRAPH CONTRACTS for ONE target section
+(introduction | method | result | conclusion). Do NOT write prose. A contract tells the
+writer exactly what each paragraph must do, so the draft can later be validated against it.
+
+Given: the TYPED claim graph (nodes of kind claim/evidence/artifact/method/warrant/source,
+plus typed edges), the outline (Phase A skeleton + Phase B structure text), and the target
+section. Artifact nodes (kind="artifact", represented_as figure/table) are already designed
+("figure-first") — when a paragraph presents evidence shown by an artifact, reference that
+artifact id in `supports` (e.g. the figure node "F3") so the prose is written around it.
+
+Produce an ordered list of paragraph contracts for that section, IN FINAL DOCUMENT ORDER
+(follow the outline's Phase B subsection order, e.g. 2.1, 2.2, 2.3 in sequence — do not
+interleave out of order):
+- paragraph_id: prefix by section — "I-01" introduction, "M-01" method, "R-01" result,
+  "C-01" conclusion (in order).
+- heading: the subsection heading from the outline if present (e.g. "2.1 ..."), else "".
+- purpose: one line — what this paragraph accomplishes.
+- claim_ids: which claim graph node ids this paragraph realizes (claim/evidence nodes).
+- supports: references the paragraph MUST ground to — data file paths, artifact node ids
+  (e.g. "F3", "T2"), or "Fig N".
+- must_not_claim: things this paragraph must avoid asserting (e.g. a Result paragraph
+  must_not_claim clinical prediction or causation unless supported; a Method paragraph
+  must_not_claim findings/results).
+- transition_from / transition_to: paragraph_ids for logical flow ("" at ends).
+
+Keep paragraphs aligned to the outline's granularity. Don't invent subsections.
+
+Return JSON:
+{
+  "section": "method|result",
+  "paragraphs": [
+    {"paragraph_id":"M-01","section":"method","heading":"...","purpose":"...",
+     "claim_ids":["C-01"],"supports":["data/..."],"must_not_claim":["..."],
+     "transition_from":"","transition_to":"M-02"}
+  ]
+}

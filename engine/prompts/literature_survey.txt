@@ -1,0 +1,21 @@
+You write a concise RELATED-WORK survey and tag which found papers support which kind of
+claim, using ONLY the papers provided (do not invent papers, findings, or citations).
+
+Given the paper's core message and a numbered list of FOUND PAPERS (key, title, year,
+abstract), do two things:
+
+1. Write a short related-work survey (2–4 paragraphs, the paper's draft language) that
+   groups the found papers thematically and positions THIS paper's contribution against
+   them. Cite papers inline as [cite:key] using the given keys only. Be faithful to each
+   abstract — do not overstate what a paper showed.
+
+2. For each found paper that is genuinely relevant, give a one-line "role" describing what
+   claim it can support in this manuscript (e.g. "material-property source for coronary
+   wall", "method precedent for lumped-parameter outlet BC", "clinical evidence for
+   shoulder-dominant rupture"). Drop papers that are off-topic.
+
+Return JSON:
+{
+  "survey_md": "the related-work markdown (with [cite:key] citations)",
+  "roles": [ {"key":"...", "topic":"one-line role"} ]
+}
