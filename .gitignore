@@ -11,3 +11,6 @@ master_thesis/data/paraview_model/*.vtu
 # macOS
 .DS_Store
 **/.DS_Store
+
+# temp verification runs
+projects/_verify_run/

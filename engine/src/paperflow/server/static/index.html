@@ -74,22 +74,45 @@
   .nrow .rmbtn:hover { color: var(--err); border-color: var(--err); }
   .addbtn { margin: 2px 0 4px; border: 1px dashed var(--accent); background: var(--highlight); color: var(--accent); font: inherit; font-size: .8rem; font-weight: 700; padding: 7px 12px; border-radius: 8px; cursor: pointer; }
   .addbtn:hover { background: var(--accent); color: #fff; }
-  /* outline: fixed sections + subsection cards */
+  /* outline: fixed sections, one free-text message each */
   .osec { margin: 16px 0 4px; }
-  .osec-h { display: flex; align-items: center; gap: 8px; font-size: .92rem; font-weight: 700; color: var(--ink); padding: 8px 10px; background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+  .osec-h { display: flex; align-items: center; gap: 8px; font-size: .92rem; font-weight: 700; color: var(--ink); padding: 8px 10px; background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
   .osec-h .fixed { margin-left: auto; font-size: .56rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
   .osec-h .reqd { font-size: .56rem; font-weight: 700; color: var(--err); }
-  .osub { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 11px; margin: 7px 0 7px 14px; box-shadow: var(--shadow); }
-  .osub-top { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; }
-  .osub-top .onum { font-family: ui-monospace, Menlo, monospace; font-size: .68rem; font-weight: 700; color: var(--accent); flex: none; min-width: 28px; }
-  .osub-top input { flex: 1; border: 1px solid var(--border); border-radius: 7px; background: var(--bg); font: inherit; font-size: .86rem; font-weight: 600; color: var(--ink); padding: 6px 9px; }
-  .osub-top input:focus { outline: none; border-color: var(--accent); }
+  .osec-h .opt { font-size: .56rem; font-weight: 700; color: var(--muted); }
+  .osecta { width: 100%; border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--surface); font: inherit; font-size: .88rem; color: var(--ink); padding: 11px 12px; resize: vertical; min-height: 92px; line-height: 1.6; box-shadow: var(--shadow); }
+  .osecta:focus { outline: none; border-color: var(--accent); }
+  .osecta::placeholder { color: var(--muted); opacity: .5; }
+  /* shared by renderList (+row component) */
   .obtn { flex: none; width: 26px; height: 26px; border: 1px solid var(--border); background: var(--bg); color: var(--muted); border-radius: 6px; cursor: pointer; font-size: .72rem; line-height: 1; }
   .obtn:hover { color: var(--accent); border-color: var(--accent); } .obtn.rm:hover { color: var(--err); border-color: var(--err); }
   .obtn:disabled { opacity: .3; cursor: not-allowed; }
-  .osub textarea { width: 100%; border: 1px solid var(--border); border-radius: 7px; background: var(--bg); font: inherit; font-size: .84rem; color: var(--ink); padding: 8px 10px; resize: vertical; min-height: 46px; line-height: 1.55; }
-  .osub textarea:focus { outline: none; border-color: var(--accent); }
-  .osub textarea::placeholder, .osub-top input::placeholder { color: var(--muted); opacity: .55; }
+  /* data panel: dropzone + file list */
+  .dropzone { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; margin: 18px 0 14px; padding: 30px 20px; border: 2px dashed var(--border); border-radius: var(--radius); background: var(--surface); cursor: pointer; transition: border-color .15s, background .15s; }
+  .dropzone:hover, .dropzone.over { border-color: var(--accent); background: var(--highlight); }
+  .dropzone .dz-icon { font-size: 1.5rem; }
+  .dropzone .dz-main { font-weight: 700; font-size: .92rem; color: var(--ink); }
+  .dropzone .dz-sub { font-size: .68rem; color: var(--muted); letter-spacing: .04em; }
+  .data-split { display: flex; gap: 14px; align-items: flex-start; }
+  .filelist { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 7px; max-height: 460px; overflow-y: auto; }
+  .fl-empty { color: var(--muted); font-size: .84rem; padding: 8px 2px; }
+  .frow { display: flex; align-items: center; gap: 10px; padding: 9px 11px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--shadow); cursor: pointer; transition: border-color .12s, background .12s; }
+  .frow:hover { border-color: var(--accent); }
+  .frow.sel { border-color: var(--accent); background: var(--highlight); }
+  .frow .fkind { flex: none; font-family: ui-monospace, Menlo, monospace; font-size: .58rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); background: var(--highlight); padding: 3px 7px; border-radius: 5px; min-width: 40px; text-align: center; }
+  .frow .fname { flex: 1; font-size: .86rem; font-weight: 600; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .frow.noted .fname::after { content: "📝"; margin-left: 6px; font-size: .72rem; }
+  .frow .fmeta { flex: none; font-size: .72rem; color: var(--muted); }
+  /* note panel (right side of the data split) */
+  .notepanel { flex: 1 1 0; min-width: 0; position: sticky; top: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 15px; box-shadow: var(--shadow); min-height: 200px; }
+  .np-empty { color: var(--muted); font-size: .84rem; line-height: 1.7; text-align: center; padding: 44px 12px; }
+  .np-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .np-head .fkind { flex: none; font-family: ui-monospace, Menlo, monospace; font-size: .58rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); background: var(--highlight); padding: 3px 7px; border-radius: 5px; }
+  .np-head .np-name { font-size: .92rem; font-weight: 700; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .np-sub { font-size: .68rem; color: var(--muted); margin-bottom: 10px; word-break: break-all; }
+  .np-ta { width: 100%; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font: inherit; font-size: .88rem; color: var(--ink); padding: 11px 12px; resize: vertical; min-height: 150px; line-height: 1.6; }
+  .np-ta:focus { outline: none; border-color: var(--accent); }
+  .np-ta::placeholder { color: var(--muted); opacity: .5; }
 
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 14px; box-shadow: var(--shadow); }
   .card h3 { font-size: .98rem; margin-bottom: 10px; display: flex; align-items: center; gap: 9px; }
@@ -111,6 +134,16 @@
   .q textarea { width: 100%; border: 1px solid var(--border); border-radius: 7px; background: var(--bg); font: inherit; font-size: .85rem; color: var(--ink); padding: 8px 10px; resize: vertical; min-height: 38px; line-height: 1.5; }
   .q textarea:focus { outline: none; border-color: var(--accent); }
   .q textarea::placeholder { color: var(--muted); opacity: .65; font-style: italic; }
+  .skipbtn { margin-top: 6px; border: 1px dashed var(--border); background: transparent; color: var(--muted); font: inherit; font-size: .72rem; padding: 4px 10px; border-radius: 6px; cursor: pointer; }
+  .skipbtn:hover { border-color: var(--accent); color: var(--accent); }
+  /* generated-paper viewer (center) */
+  .paperBtn { width: 100%; margin-top: 8px; border: 1px solid var(--accent); background: var(--highlight); color: var(--accent); font: inherit; font-size: .86rem; font-weight: 700; padding: 10px; border-radius: var(--radius-sm); cursor: pointer; }
+  .paperBtn:hover { background: var(--accent); color: #fff; }
+  .paperbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 6px 0 10px; }
+  .paperbar .dl { font-size: .78rem; font-weight: 700; color: var(--accent); text-decoration: none; border: 1px solid var(--border); padding: 5px 11px; border-radius: 7px; }
+  .paperbar .dl:hover { border-color: var(--accent); background: var(--highlight); }
+  .paperframe { width: 100%; height: calc(100vh - 230px); min-height: 460px; border: 1px solid var(--border); border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); }
+  .logdetails { margin-top: 12px; } .logdetails summary { cursor: pointer; font-size: .8rem; color: var(--muted); font-weight: 700; }
   .composer-bar { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
   .send { border: none; background: var(--accent); color: #fff; font: inherit; font-size: .86rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); cursor: pointer; box-shadow: var(--shadow); }
   .send:disabled { opacity: .45; cursor: not-allowed; }
@@ -225,6 +258,7 @@
       <div class="rail-title">입력 항목</div>
       <div id="nav"></div>
       <button class="createBtn" id="createBtn" disabled>＋ Create Journal</button>
+      <button class="paperBtn" id="paperBtn" style="display:none">📄 생성된 논문 보기</button>
       <div class="railspace"></div>
       <div class="openexist">
         <label>기존 프로젝트 열기</label>
@@ -266,11 +300,16 @@ const FIELDS = [
   {key:"core", label:"core message", icon:"💡", coreform:true,
    hint:"이 논문이 증명하는 것. <b>One paragraph</b>와 <b>Novelty(기여)</b>가 필수 — Novelty는 claim graph의 핵심 주장이 됩니다. <b>＋</b>로 여러 개 추가하세요."},
   {key:"outline", label:"outline", icon:"🗂️", outlineform:true,
-   hint:"섹션은 고정. 각 섹션에 <b>＋</b>로 소제목을 추가하고, 그 안에 <b>어떤 논리로 무엇을 전달할지</b> 적어주세요 (한 줄에 하나의 논리 권장). <b>Method·Result</b>가 필수."},
+   hint:"섹션은 고정. 각 섹션에 <b>전하고 싶은 메시지를 자유롭게</b> 적어주세요. 소제목을 미리 생각해뒀다면 <b>1. 2.</b> 처럼 줄로 나눠도 됩니다(선택). <b>Method·Result</b>만 필수, 나머지는 비워도 AI가 채웁니다."},
+  {key:"data", label:"data", icon:"📎", dataform:true,
+   hint:"실험 결과·측정값·참고자료를 올려주세요. AI가 글을 쓸 때 이 파일들을 근거로 삼습니다. <b>CSV·TXT·DAT</b>는 내용까지, <b>PDF·PNG·XLSX</b>는 파일 존재를 인식합니다. (선택 — 없어도 진행됩니다)"},
 ];
 const inputs = {journal:"", core:"", outline:""};
+let dataFiles = [];   // uploaded files under <project>/data/ (+ reference/)
+let selectedData = null;  // rel path of the file whose note is open
 let current = null;
 let diskMode = false;  // existing project with on-disk inputs but no saved UI state
+let paperReady = false;  // a compiled paper.pdf exists for this project
 
 // journal info is structured (fixed fields we always need)
 const JSUB = [
@@ -290,7 +329,7 @@ const NOVELTY_PH = ["ΔPSS가 정적 PSS보다 파열 위험을 더 잘 설명�
                     "파열 위험지표에 강도 정규화가 필요하다",
                     "고체 도메인 물성치가 파열 위험에 가장 민감하다"];
 
-// outline = fixed sections, each with variable subsections {heading, intent}
+// outline = fixed sections, each ONE free-text message (user numbers 1./2. if they want)
 const SECTIONS = [
   {key:"introduction", label:"Introduction", req:false},
   {key:"method",       label:"Method",       req:true},
@@ -298,32 +337,30 @@ const SECTIONS = [
   {key:"discussion",   label:"Discussion",   req:false},
   {key:"conclusion",   label:"Conclusion",   req:false},
 ];
-const outlineData = {introduction:[], method:[], result:[], discussion:[], conclusion:[]};
+const outlineData = {introduction:"", method:"", result:"", discussion:"", conclusion:""};
 const SECTION_PH = {
-  introduction: "예) 관상동맥 질환 부담 → 파열이 핵심 → 기존 지표의 한계 → 우리 접근",
-  method: "예) FSI 프레임워크 구성과 검증 방법을 절차 순서로",
-  result: "예) Sobol 민감도 결과: 물성치 > 혈류역학 > 형태 (Fig 3로 제시)",
-  discussion: "예) 결과의 의미·한계, 선행연구와의 비교",
-  conclusion: "예) 핵심 기여 요약 + 임상적 함의(과대주장 금지)",
+  introduction: "이 섹션에서 전하고 싶은 메시지를 자유롭게 적어주세요.\n예) 관상동맥 질환 부담 → 파열이 핵심 → 기존 지표의 한계 → 우리 접근",
+  method: "Method에서 전하고 싶은 내용을 자유롭게. 소제목을 미리 생각했다면 1. 2. 처럼 줄로 나눠도 됩니다.\n예)\n1. Cost-effective FSI 프레임워크 구성\n2. 환자 맞춤 경계조건 보정\n3. 메쉬·시간 수렴 검증",
+  result: "Result에서 전하고 싶은 내용을 자유롭게. (1. 2. 로 나눠도 됨)\n예)\n1. Sobol 민감도: 물성치 > 혈류역학 > 형태 (Fig 3)\n2. ΔPSS가 정적 PSS보다 파열 위험을 잘 설명",
+  discussion: "자유롭게.\n예) 결과의 의미·한계, 선행연구와의 비교",
+  conclusion: "자유롭게.\n예) 핵심 기여 요약 + 임상적 함의(과대주장 금지)",
 };
 function secHasContent(secKey) {
-  return outlineData[secKey].some(s => s.heading.trim() || s.intent.trim());
+  return outlineData[secKey].trim().length > 0;
 }
 function assembleOutlineMd() {
+  // Phase A = numbered claim lines per [Section]; Phase B = the raw message per section.
   const a = [], b = ["## Phase B (structure)"];
   let n = 0;
   for (const sec of SECTIONS) {
-    const subs = outlineData[sec.key].filter(s => s.heading.trim() || s.intent.trim());
-    if (!subs.length) continue;
+    const txt = outlineData[sec.key].trim();
+    if (!txt) continue;
     a.push(`[${sec.label}]`);
-    b.push(`### ${sec.label}`);
-    subs.forEach((s, i) => {
-      const head = s.heading.trim() || `${sec.label} ${i + 1}`;
-      b.push(`- ${head}`);
-      const lines = s.intent.split("\n").map(x => x.trim()).filter(Boolean);
-      if (lines.length) { lines.forEach(ln => { n++; a.push(`${n}. ${ln}`); b.push(`    · ${ln}`); }); }
-      else { n++; a.push(`${n}. ${head}`); }
-    });
+    b.push(`### ${sec.label}`, txt, "");
+    const lines = txt.split("\n")
+      .map(x => x.replace(/^\s*\d+[.)]\s*/, "").replace(/^\s*[-*]\s*/, "").trim())
+      .filter(Boolean);
+    lines.forEach(ln => { n++; a.push(`${n}. ${ln}`); });
     a.push("");
   }
   return a.join("\n") + "\n" + b.join("\n");
@@ -333,6 +370,7 @@ function isFilled(key) {
   if (key === "journal") return !!(JF.field.trim() && JF.target.some(t => t.trim()));  // title optional
   if (key === "core") return !!(CM.paragraph.trim() && novelty.some(n => n.trim()));
   if (key === "outline") return secHasContent("method") && secHasContent("result");  // A안: Method+Result
+  if (key === "data") return dataFiles.length > 0;  // optional — never gates Create
   return !!inputs[key].trim();
 }
 function assembleCoreMd() {
@@ -449,21 +487,53 @@ function openField(key) {
     return;
   }
 
-  if (f.outlineform) {  // fixed sections + variable subsections
+  if (f.outlineform) {  // fixed sections, one free-text message each
     let html = `<div class="crumb">입력 / ${f.label}</div>
       <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div><div class="subform">`;
     for (const sec of SECTIONS) {
-      const req = sec.req ? '<span class="reqd">필수</span>' : '';
+      const req = sec.req ? '<span class="reqd">필수</span>' : '<span class="opt">선택</span>';
       html += `<div class="osec"><div class="osec-h">${sec.label} ${req}<span class="fixed">고정 섹션</span></div>
-        <div id="osubs_${sec.key}"></div>
-        <button class="addbtn" data-add="${sec.key}">＋ 소제목 추가</button></div>`;
+        <textarea class="osecta" id="osec_${sec.key}"></textarea></div>`;
     }
     html += `</div><div class="savednote" id="savednote"></div>`;
     $("canvas").innerHTML = html;
-    SECTIONS.forEach(sec => renderSectionSubs(sec.key));
-    document.querySelectorAll("[data-add]").forEach(btn => {
-      btn.onclick = () => { outlineData[btn.dataset.add].push({heading:"", intent:""}); renderSectionSubs(btn.dataset.add); renderNav(); refreshStep0(); };
+    SECTIONS.forEach(sec => {
+      const ta = $("osec_" + sec.key);
+      ta.value = outlineData[sec.key];
+      ta.placeholder = SECTION_PH[sec.key];
+      ta.oninput = () => { outlineData[sec.key] = ta.value; renderNav(); refreshStep0(); note(); };
     });
+    renderNav();
+    return;
+  }
+
+  if (f.dataform) {  // file uploads (experiment data / references the writer grounds claims on)
+    $("canvas").innerHTML = `<div class="crumb">입력 / ${f.label}</div>
+      <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div>
+      <input type="file" id="fileInput" multiple
+        accept=".csv,.txt,.dat,.md,.pdf,.png,.jpg,.jpeg,.xlsx,.xls,.json,.bib"
+        style="display:none">
+      <div class="dropzone" id="dropzone" role="button" tabindex="0">
+        <span class="dz-icon">⬆️</span>
+        <span class="dz-main">파일을 끌어다 놓거나 클릭해서 업로드</span>
+        <span class="dz-sub">CSV · TXT · DAT · PDF · PNG · XLSX · JSON · BIB</span>
+      </div>
+      <div class="data-split">
+        <div class="filelist" id="filelist"></div>
+        <div class="notepanel" id="notepanel"></div>
+      </div>
+      <div class="savednote" id="savednote"></div>`;
+    const inp = $("fileInput"), dz = $("dropzone");
+    inp.onchange = () => { if (inp.files.length) uploadFiles(inp.files); inp.value = ""; };
+    dz.onclick = () => inp.click();  // open the OS file picker
+    dz.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); inp.click(); } };
+    dz.ondragover = e => { e.preventDefault(); dz.classList.add("over"); };
+    dz.ondragleave = () => dz.classList.remove("over");
+    dz.ondrop = e => { e.preventDefault(); dz.classList.remove("over");
+      if (e.dataTransfer.files.length) uploadFiles(e.dataTransfer.files); };
+    renderFileList();
+    renderNotePanel();
+    loadDataFiles();
     renderNav();
     return;
   }
@@ -482,28 +552,6 @@ function openField(key) {
   renderNav();
 }
 
-function renderSectionSubs(secKey) {
-  const box = $("osubs_" + secKey); if (!box) return;
-  const list = outlineData[secKey];
-  box.innerHTML = "";
-  list.forEach((s, i) => {
-    const card = document.createElement("div"); card.className = "osub";
-    const top = document.createElement("div"); top.className = "osub-top";
-    const num = document.createElement("span"); num.className = "onum"; num.textContent = `${i + 1}.`;
-    const head = document.createElement("input");
-    head.type = "text"; head.value = s.heading; head.placeholder = "소제목 (예: 2.1 Cost-effective FSI)";
-    head.oninput = () => { s.heading = head.value; renderNav(); refreshStep0(); note(); };
-    const up = mkBtn("▲", "위로", i === 0, () => { [list[i-1], list[i]] = [list[i], list[i-1]]; renderSectionSubs(secKey); });
-    const dn = mkBtn("▼", "아래로", i === list.length - 1, () => { [list[i+1], list[i]] = [list[i], list[i+1]]; renderSectionSubs(secKey); });
-    const rm = mkBtn("✕", "삭제", false, () => { list.splice(i, 1); renderSectionSubs(secKey); renderNav(); refreshStep0(); }, true);
-    top.append(num, head, up, dn, rm);
-    const intent = document.createElement("textarea");
-    intent.value = s.intent; intent.placeholder = SECTION_PH[secKey] + "  (한 줄에 하나의 논리)";
-    intent.oninput = () => { s.intent = intent.value; renderNav(); refreshStep0(); note(); };
-    card.append(top, intent);
-    box.appendChild(card);
-  });
-}
 function mkBtn(label, title, disabled, onclick, isRm) {
   const b = document.createElement("button");
   b.className = "obtn" + (isRm ? " rm" : ""); b.textContent = label; b.title = title;
@@ -582,9 +630,9 @@ function refreshStep0() {
     subs.appendChild(li);
   });
   $("s0s").textContent = `${done} / ${FIELDS.length} 작성됨`;
-  const allCore = isFilled("journal") && isFilled("core") && isFilled("outline");
+  const allCore = isFilled("journal") && isFilled("core") && isFilled("outline");  // data optional
   const s0 = $("s0");
-  if (done === FIELDS.length) { s0.className = "step done"; s0.querySelector(".node").textContent = "✓"; }
+  if (allCore) { s0.className = "step done"; s0.querySelector(".node").textContent = "✓"; }
   else { s0.className = "step active"; s0.querySelector(".node").textContent = "0"; }
   $("createBtn").disabled = diskMode ? false : !allCore;  // journal+core+outline required
 }
@@ -624,6 +672,7 @@ function showStatus(badge, crumb, msg, kind) {
 }
 
 // ---------- questions ----------
+const _UNKNOWN = "(모름 — 나중에 보완)";
 function renderQuestions(diag) {
   showStatus(diag.classification || "진단 완료", "진단 완료",
     `분류: <b>${diag.classification||'-'}</b> · 확보된 항목 ${(diag.present||[]).length}개. ${diag.notes||''}`);
@@ -637,22 +686,38 @@ function renderQuestions(diag) {
       div.innerHTML = `<div class="qq"><span>${q.question}</span><span class="${risk}">${q.reviewer_risk||''}</span></div>`;
       const ta = document.createElement("textarea");
       ta.placeholder = q.example ? ("예) " + q.example) : "여기에 답변…";
-      ta.dataset.field = q.field; div.appendChild(ta); wrap.appendChild(div);
+      ta.dataset.field = q.field;
+      ta.oninput = refreshAnswerGate;
+      const skip = document.createElement("button");
+      skip.className = "skipbtn"; skip.type = "button"; skip.textContent = "모름 / 나중에";
+      skip.onclick = () => { ta.value = _UNKNOWN; refreshAnswerGate(); };
+      div.append(ta, skip); wrap.appendChild(div);
     }
   }
   $("dock").style.display = "block";
+  refreshAnswerGate();
+}
+// hard gate: every question needs a response (an answer OR an explicit '모름')
+function refreshAnswerGate() {
+  const tas = [...document.querySelectorAll("#questions textarea")];
+  const pending = tas.filter(ta => !ta.value.trim()).length;
+  $("answerBtn").disabled = pending > 0;
+  $("answerNote").textContent = pending > 0
+    ? `${pending}개 미응답 — 답하거나 '모름'을 눌러주세요`
+    : (tas.length ? "모든 질문 응답됨 · 생성 가능" : "");
 }
 $("answerBtn").onclick = async () => {
   $("answerBtn").disabled = true;
   try {
     const answers = {};
-    document.querySelectorAll("#questions textarea").forEach(ta => { const v = ta.value.trim(); if (v) answers[ta.dataset.field] = v; });
+    document.querySelectorAll("#questions textarea").forEach(ta => {
+      const v = ta.value.trim(); if (v) answers[ta.dataset.field] = v;  // '모름' included
+    });
     await postJSON("/api/projects/answers", {project_dir: projectDir, answers});
     $("answerNote").textContent = `${Object.keys(answers).length}개 저장됨 · 생성 시작`;
     $("dock").style.display = "none";
     await startGenerate();
-  } catch (e) { $("answerNote").textContent = "오류: " + e; }
-  finally { $("answerBtn").disabled = false; }
+  } catch (e) { $("answerNote").textContent = "오류: " + e; refreshAnswerGate(); }
 };
 
 // ---------- generate + live tree (STEP 0 stays done on top) ----------
@@ -691,6 +756,11 @@ async function startGenerate() {
     <p class="muted">우측 workflow tree에서 현재 단계를 확인하세요.</p>
     <div class="log" id="logbox"></div></div>`;
   const res = await postJSON("/api/projects/generate", {project_dir: projectDir});
+  if (res.error === "unanswered_questions") {  // hard gate (server-side backstop)
+    showStatus("미응답", "생성 차단", `아직 응답하지 않은 질문 ${ (res.pending||[]).length }개가 있어요. 모두 답하거나 '모름'을 눌러주세요.`, "warn");
+    $("dock").style.display = "block"; refreshAnswerGate();
+    return;
+  }
   renderPipeline(res.steps);
   const es = new EventSource(`/api/projects/generate/${res.job_id}/stream`);
   es.onmessage = (ev) => {
@@ -698,16 +768,115 @@ async function startGenerate() {
     if (m.type === "progress") { if (m.step_id && stepIndex[m.step_id]) setStepActive(m.step_id, m.label); logLine(m.raw || m.label); }
     else if (m.type === "done") {
       markAllDone(); es.close();
-      $("canvas").innerHTML = `<div class="crumb">완료</div>
-        <div class="card"><h3>생성 완료 <span class="badge ok">done</span></h3>
-        <p class="muted">분류: <b>${m.classification||'-'}</b> · 산출물 → <code>${m.out_dir}</code></p>
-        <div class="toks"><span>input <b>${m.input_tokens.toLocaleString()}</b></span>
-        <span>output <b>${m.output_tokens.toLocaleString()}</b></span>
-        <span>cached <b>${m.cached_tokens.toLocaleString()}</b> (${Math.round(m.cache_hit_rate*100)}%)</span></div></div>
-        <div class="card"><h3>실행 로그</h3><div class="log">${logLines.join("\n")}</div></div>`;
+      paperReady = true; $("paperBtn").style.display = "";
+      showPaper(m);
     } else if (m.type === "error") { es.close(); showStatus("실패", "오류", m.error, "warn"); }
   };
   es.onerror = () => es.close();
+}
+
+// ---------- generated-paper viewer (center = the produced journal) ----------
+function paperUrl(kind) {
+  return `/api/projects/paper?project_dir=${encodeURIComponent(projectDir)}&kind=${kind}&t=${Date.now()}`;
+}
+function showPaper(meta) {
+  meta = meta || {};
+  const toks = (meta.input_tokens != null) ? `<div class="toks">
+      <span>input <b>${meta.input_tokens.toLocaleString()}</b></span>
+      <span>output <b>${meta.output_tokens.toLocaleString()}</b></span>
+      <span>cached <b>${meta.cached_tokens.toLocaleString()}</b> (${Math.round((meta.cache_hit_rate||0)*100)}%)</span>
+    </div>` : "";
+  const cls = meta.classification ? `<span class="muted">분류 <b>${meta.classification}</b></span>` : "";
+  const log = logLines.length ? `<details class="logdetails"><summary>실행 로그</summary><div class="log">${logLines.join("\n")}</div></details>` : "";
+  $("canvas").innerHTML = `<div class="crumb">생성된 논문</div>
+    <h2 class="title serif">${JF.title || wtitleText()}</h2>
+    <div class="paperbar">
+      <span class="badge ok">PDF</span>${cls}
+      <a class="dl" href="${paperUrl('pdf')}" target="_blank">PDF 새 탭 ↗</a>
+      <a class="dl" href="${paperUrl('tex')}" target="_blank">.tex 소스 ↗</a>
+    </div>${toks}
+    <iframe class="paperframe" src="${paperUrl('pdf')}#view=FitH" title="generated paper"></iframe>
+    ${log}`;
+}
+function wtitleText() { const el = $("wtitle"); return el ? el.textContent : "Manuscript"; }
+
+// ---------- data files (experiment data / references) ----------
+function fmtSize(n) { return n >= 1e6 ? (n/1e6).toFixed(1)+" MB" : n >= 1e3 ? Math.round(n/1e3)+" KB" : (n||0)+" B"; }
+async function loadDataFiles() {
+  if (!projectDir) { dataFiles = []; return; }
+  try {
+    const r = await (await fetch("/api/projects/files?project_dir=" + encodeURIComponent(projectDir))).json();
+    dataFiles = r.files || [];
+  } catch { dataFiles = []; }
+  renderFileList(); renderNotePanel(); renderNav(); refreshStep0();
+}
+async function uploadFiles(fileList) {
+  if (!projectDir) return;
+  const fd = new FormData();
+  fd.append("project_dir", projectDir);
+  for (const f of fileList) fd.append("files", f);
+  const nt = $("savednote"); if (nt) nt.textContent = "업로드 중…";
+  try {
+    const r = await fetch("/api/projects/upload", {method:"POST", body: fd});
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    if (nt) nt.textContent = "✓ 업로드됨";
+  } catch (e) { if (nt) nt.textContent = "업로드 실패: " + e; }
+  await loadDataFiles();
+}
+async function deleteDataFile(rel) {
+  if (!projectDir) return;
+  await postJSON("/api/projects/files/delete", {project_dir: projectDir, rel});
+  await loadDataFiles();
+}
+function renderFileList() {
+  const box = $("filelist"); if (!box) return;
+  box.innerHTML = "";
+  if (!dataFiles.length) { box.innerHTML = `<div class="fl-empty">아직 업로드된 파일이 없습니다.</div>`; return; }
+  dataFiles.forEach(f => {
+    const row = document.createElement("div");
+    row.className = "frow" + (f.rel === selectedData ? " sel" : "") + (f.note ? " noted" : "");
+    row.title = "클릭하면 오른쪽에 설명을 적을 수 있어요";
+    const cols = (f.columns && f.columns.length) ? ` · ${f.columns.length} cols` : "";
+    row.innerHTML = `<span class="fkind">${f.kind || "file"}</span>
+      <span class="fname">${f.name}</span>
+      <span class="fmeta">${fmtSize(f.size)}${cols}</span>`;
+    row.onclick = () => selectData(f.rel);
+    row.appendChild(mkBtn("✕", "삭제", false,
+      (e) => { e.stopPropagation(); deleteDataFile(f.rel); }, true));
+    box.appendChild(row);
+  });
+}
+function selectData(rel) {
+  selectedData = rel;
+  renderFileList();
+  renderNotePanel();
+  const ta = $("noteTa"); if (ta) ta.focus();
+}
+function renderNotePanel() {
+  const box = $("notepanel"); if (!box) return;
+  const f = dataFiles.find(x => x.rel === selectedData);
+  if (!f) {
+    box.innerHTML = `<div class="np-empty">왼쪽에서 파일을 클릭하면<br>여기에 그 파일이 무엇인지<br>자유롭게 적을 수 있어요.</div>`;
+    return;
+  }
+  const cols = (f.columns && f.columns.length) ? ` · ${f.columns.join(", ")}` : "";
+  box.innerHTML = `<div class="np-head"><span class="fkind">${f.kind || "file"}</span>
+      <span class="np-name">${f.name}</span></div>
+    <div class="np-sub">${f.rel}${cols}</div>
+    <textarea class="np-ta" id="noteTa"
+      placeholder="이 파일이 무엇인지 자유롭게 적어주세요.\n예) VI=2 하중조건에서 그룹별 1차/전체 Sobol 민감도.\nResult 섹션의 '물성치가 가장 민감' 주장 근거(Fig 3)."></textarea>`;
+  const ta = $("noteTa");
+  ta.value = f.note || "";
+  ta.oninput = () => { f.note = ta.value; };          // keep locally so re-renders don't lose it
+  ta.onchange = () => saveNote(f.rel, ta.value);      // persist on blur
+}
+async function saveNote(rel, note) {
+  const f = dataFiles.find(x => x.rel === rel); if (f) f.note = note;
+  renderFileList();  // refresh the "noted" marker
+  try {
+    await postJSON("/api/projects/files/note", {project_dir: projectDir, rel, note});
+    const nt = $("savednote"); if (nt) nt.textContent = "✓ 설명 저장됨";
+  } catch (e) { const nt = $("savednote"); if (nt) nt.textContent = "설명 저장 실패: " + e; }
 }
 
 // ---------- structured UI state (lossless reopen) ----------
@@ -716,7 +885,7 @@ function resetState() {
   Object.assign(JF, {field:"", title:"", affiliation:"", target:[""], authors:[""], corresponding:[""]});
   Object.assign(CM, {paragraph:"", sentence:"", outscope:""}); CM.keywords = [""];
   novelty = [""];
-  SECTIONS.forEach(s => outlineData[s.key] = []);
+  SECTIONS.forEach(s => outlineData[s.key] = "");
 }
 function restoreState(st) {
   if (!st) { resetState(); return; }
@@ -725,7 +894,13 @@ function restoreState(st) {
   Object.assign(CM, st.CM || {});
   if (!Array.isArray(CM.keywords) || !CM.keywords.length) CM.keywords = [""];
   novelty = (st.novelty && st.novelty.length) ? st.novelty : [""];
-  SECTIONS.forEach(s => { outlineData[s.key] = Array.isArray((st.outlineData||{})[s.key]) ? st.outlineData[s.key] : []; });
+  SECTIONS.forEach(s => {
+    const v = (st.outlineData || {})[s.key];
+    // tolerate old format ([{heading,intent}]) by flattening to text
+    outlineData[s.key] = typeof v === "string" ? v
+      : Array.isArray(v) ? v.map(o => [o.heading, o.intent].filter(Boolean).join(" — ")).filter(Boolean).join("\n")
+      : "";
+  });
 }
 
 // ---------- dashboard ----------
@@ -769,7 +944,11 @@ function enterWorkspace(dir, title) {
   $("backBtn").style.display = ""; $("wtitle").style.display = "";
   $("wtitle").textContent = title || dir.split("/").pop();
   $("dock").style.display = "none";
-  renderNav(); renderStep0(); openField("journal");
+  dataFiles = []; selectedData = null;
+  $("paperBtn").style.display = paperReady ? "" : "none";  // show only if a paper exists
+  renderNav(); renderStep0();
+  if (paperReady) showPaper({}); else openField("journal");  // completed -> show the paper
+  loadDataFiles();  // populate the data-panel dot from disk
   if (diskMode) {
     $("createBtn").disabled = false; $("createBtn").textContent = "진단 시작 (저장된 입력)";
     showStatus("기존 입력", "기존 프로젝트", "이 프로젝트는 저장된 입력 파일이 있어요. 폼은 비어 보여도 디스크 입력으로 진단/생성합니다.");
@@ -780,9 +959,11 @@ function enterWorkspace(dir, title) {
 async function openExisting(dir, title) {
   const r = await (await fetch("/api/projects/state?project_dir=" + encodeURIComponent(dir))).json();
   diskMode = !r.ui_state;
+  paperReady = !!r.paper_ready;
   restoreState(r.ui_state);
   enterWorkspace(dir, title);
 }
+$("paperBtn").onclick = () => showPaper({});
 function openNewModal() { $("np_name").value = ""; $("np_deadline").value = ""; $("newModal").classList.add("show"); }
 $("newBtn").onclick = openNewModal;
 $("np_cancel").onclick = () => $("newModal").classList.remove("show");
@@ -791,7 +972,7 @@ $("np_create").onclick = async () => {
   const today = new Date().toISOString().slice(0, 10);
   const r = await postJSON("/api/projects/create", {name, deadline: $("np_deadline").value, created: today});
   $("newModal").classList.remove("show");
-  diskMode = false; resetState();
+  diskMode = false; paperReady = false; resetState();
   enterWorkspace(r.project_dir, name);
 };
 $("backBtn").onclick = showDashboard;

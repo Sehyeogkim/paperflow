@@ -9,15 +9,18 @@ Progress is streamed via SSE (one-way server->client; native EventSource in the 
 """
 from __future__ import annotations
 
+import csv
+import io
 import json
 import queue
 import re
+import shutil
 import threading
 import uuid
 from pathlib import Path
 
-from fastapi import FastAPI
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi import FastAPI, Form, UploadFile
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 
 from .. import config
 from ..flows.method_result import STEPS, run
@@ -159,13 +162,14 @@ def save_inputs(body: dict) -> dict:
 
 @app.get("/api/projects/state")
 def get_state(project_dir: str) -> dict:
+    paper_ready = (Path(project_dir) / "_paperflow_out" / "paper.pdf").is_file()
     p = Path(project_dir) / "main" / "_ui_state.json"
     if p.is_file():
         try:
-            return {"ui_state": json.loads(p.read_text())}
+            return {"ui_state": json.loads(p.read_text()), "paper_ready": paper_ready}
         except Exception:
             pass
-    return {"ui_state": None}
+    return {"ui_state": None, "paper_ready": paper_ready}
 
 
 @app.post("/api/projects/diagnose")
@@ -174,6 +178,7 @@ def diagnose(body: dict) -> dict:
     project_dir = body["project_dir"]
     ps = ingest(project_dir)
     report = detect.detect(ps)
+    detect.save_report(project_dir, report)  # reused by the generate run (no 2nd LLM call)
     questions = [
         {"id": m.field, "field": m.field, "question": m.question,
          "example": m.example, "reviewer_risk": m.reviewer_risk}
@@ -193,6 +198,127 @@ def save_answers(body: dict) -> dict:
     answers = body.get("answers", {})
     (main / "answer.json").write_text(json.dumps(answers, ensure_ascii=False, indent=2))
     return {"ok": True, "count": len(answers)}
+
+
+# --- data files (experiment data / references the writer grounds claims on) ---
+_UPLOAD_SUBDIR = "data/uploads"
+_ALLOWED_EXT = {".csv", ".txt", ".dat", ".md", ".pdf", ".png", ".jpg", ".jpeg",
+                ".xlsx", ".xls", ".json", ".bib"}
+
+
+def _csv_columns(p: Path) -> list[str]:
+    try:
+        with p.open(newline="") as f:
+            return next(csv.reader(io.StringIO(f.readline())), [])
+    except Exception:
+        return []
+
+
+def _notes_path(project: Path) -> Path:
+    # kept outside data/ and reference/ so it never shows up as a data file itself
+    return project / "main" / "data_notes.json"
+
+
+def _read_notes(project: Path) -> dict:
+    p = _notes_path(project)
+    if p.is_file():
+        try:
+            d = json.loads(p.read_text())
+            return d if isinstance(d, dict) else {}
+        except Exception:
+            return {}
+    return {}
+
+
+def _list_data_files(project: Path) -> list[dict]:
+    """Files under data/ and reference/ — what the engine will see when grounding claims."""
+    notes = _read_notes(project)
+    out: list[dict] = []
+    for sub in ("data", "reference"):
+        base = project / sub
+        if not base.is_dir():
+            continue
+        for p in sorted(base.rglob("*")):
+            if not p.is_file() or p.name.startswith(".") or ":" in p.name:
+                continue  # skip dotfiles + Windows ADS (e.g. ...pdf:Zone.Identifier)
+            kind = p.suffix.lower().lstrip(".") or "file"
+            rel = str(p.relative_to(project))
+            item = {"name": p.name, "rel": rel, "kind": kind,
+                    "size": p.stat().st_size, "note": notes.get(rel, "")}
+            if kind == "csv":
+                item["columns"] = _csv_columns(p)
+            out.append(item)
+    return out
+
+
+def _safe_under(project: Path, rel: str) -> Path | None:
+    """Resolve rel against project, refusing path traversal outside the project."""
+    target = (project / rel).resolve()
+    if project.resolve() not in target.parents and target != project.resolve():
+        return None
+    return target
+
+
+@app.get("/api/projects/files")
+def list_files(project_dir: str) -> dict:
+    return {"files": _list_data_files(Path(project_dir))}
+
+
+@app.get("/api/projects/paper")
+def get_paper(project_dir: str, kind: str = "pdf"):
+    """Serve the assembled manuscript — kind=pdf (compiled) or tex (source)."""
+    f = Path(project_dir) / "_paperflow_out" / ("paper.pdf" if kind == "pdf" else "paper.tex")
+    if not f.is_file():
+        return JSONResponse({"error": "not_found", "kind": kind}, status_code=404)
+    media = "application/pdf" if kind == "pdf" else "text/plain; charset=utf-8"
+    return FileResponse(f, media_type=media)
+
+
+@app.post("/api/projects/upload")
+async def upload_files(project_dir: str = Form(...),
+                       files: list[UploadFile] = None) -> dict:
+    project = Path(project_dir)
+    dest = project / _UPLOAD_SUBDIR
+    dest.mkdir(parents=True, exist_ok=True)
+    saved = []
+    for uf in files or []:
+        name = Path(uf.filename or "").name  # strip any path components
+        if not name or Path(name).suffix.lower() not in _ALLOWED_EXT:
+            continue
+        with (dest / name).open("wb") as out:
+            shutil.copyfileobj(uf.file, out)
+        saved.append(name)
+    return {"ok": True, "saved": saved, "files": _list_data_files(project)}
+
+
+@app.post("/api/projects/files/delete")
+def delete_file(body: dict) -> dict:
+    project = Path(body["project_dir"])
+    rel = body.get("rel", "")
+    target = _safe_under(project, rel)
+    if target and target.is_file():
+        target.unlink()
+    notes = _read_notes(project)  # drop any orphaned note
+    if notes.pop(rel, None) is not None:
+        _notes_path(project).write_text(json.dumps(notes, ensure_ascii=False, indent=2))
+    return {"ok": True, "files": _list_data_files(project)}
+
+
+@app.post("/api/projects/files/note")
+def set_file_note(body: dict) -> dict:
+    """One free-text description per file — surfaced to the writer as grounding context."""
+    project = Path(body["project_dir"])
+    rel = body.get("rel", "")
+    note = str(body.get("note", "")).strip()
+    notes = _read_notes(project)
+    if note:
+        notes[rel] = note
+    else:
+        notes.pop(rel, None)
+    p = _notes_path(project)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(notes, ensure_ascii=False, indent=2))
+    return {"ok": True}
 
 
 def _run_job(job_id: str, project_dir: str, sections: list[str], litsearch: bool) -> None:
@@ -218,10 +344,30 @@ def _run_job(job_id: str, project_dir: str, sections: list[str], litsearch: bool
         q.put(None)  # sentinel: stream ends
 
 
+def _unanswered(project_dir: str) -> list[str]:
+    """Hard gate: every diagnosed question must have a response (an answer or an
+    explicit '모름'). Returns the question fields still missing a response."""
+    report = detect.load_report(project_dir)
+    if report is None:
+        return []  # no diagnose on record (e.g. CLI) -> nothing to gate
+    answered = set()
+    ap = Path(project_dir) / "main" / "answer.json"
+    if ap.is_file():
+        try:
+            data = json.loads(ap.read_text())
+            answered = {k for k, v in data.items() if str(v).strip()}
+        except Exception:
+            answered = set()
+    return [m.field for m in report.missing if m.question and m.field not in answered]
+
+
 @app.post("/api/projects/generate")
 def generate(body: dict) -> dict:
     """Kick off the pipeline on a worker thread; return the job id + the step list."""
     project_dir = body["project_dir"]
+    pending = _unanswered(project_dir)
+    if pending:  # hard gate — refuse to generate with unanswered questions
+        return {"error": "unanswered_questions", "pending": pending}
     sections = body.get("sections") or ["method", "result", "discussion",
                                         "introduction", "conclusion", "abstract"]
     litsearch = bool(body.get("litsearch", True))

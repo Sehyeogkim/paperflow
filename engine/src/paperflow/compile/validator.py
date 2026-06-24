@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import os
+from concurrent.futures import ThreadPoolExecutor
 
 from ..llm import client
 from ..schemas.claim import ClaimGraph, SectionContract
@@ -62,13 +63,23 @@ def validate_sections(graph: ClaimGraph, contracts: dict[str, SectionContract],
 
     revised_md = dict(section_md)
     report: dict = {"mode": "section", "sections": {}}
-    for sec, md in section_md.items():
-        c = contracts.get(sec)
-        if not c or not md.strip():
-            continue
-        progress(f"validate: {sec}")
+    items = [(sec, md, contracts[sec]) for sec, md in section_md.items()
+             if contracts.get(sec) and md.strip()]
+    if not items:
+        return revised_md, report
+
+    # sections validate independently -> run them concurrently (LLM calls are I/O-bound)
+    progress(f"섹션 {len(items)}개 병렬 검증")
+
+    def _work(item: tuple) -> tuple:
+        sec, md, c = item
         v = validate_section(graph, c, md)
-        report["sections"][sec] = {"ok": v["ok"], "issues": v["issues"]}
-        if not v["ok"] and v["revised"]:
-            revised_md[sec] = v["revised"].rstrip() + "\n"
+        progress(f"validate: {sec}")
+        return sec, v
+
+    with ThreadPoolExecutor(max_workers=min(6, len(items))) as ex:
+        for sec, v in ex.map(_work, items):  # results assembled in the main thread
+            report["sections"][sec] = {"ok": v["ok"], "issues": v["issues"]}
+            if not v["ok"] and v["revised"]:
+                revised_md[sec] = v["revised"].rstrip() + "\n"
     return revised_md, report

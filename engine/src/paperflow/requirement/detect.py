@@ -15,6 +15,27 @@ from ..util import inputs_block, prompt
 _PACKS = Path(__file__).resolve().parent / "packs"
 
 
+def report_path(project_dir: str) -> Path:
+    return Path(project_dir) / "main" / "requirement_report.json"
+
+
+def save_report(project_dir: str, report: RequirementReport) -> None:
+    """Persist the diagnose result so the generate run reuses it (no second LLM call)."""
+    p = report_path(project_dir)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(report.model_dump_json(indent=2))
+
+
+def load_report(project_dir: str) -> RequirementReport | None:
+    p = report_path(project_dir)
+    if p.is_file():
+        try:
+            return RequirementReport.model_validate_json(p.read_text())
+        except Exception:
+            return None
+    return None
+
+
 def load_pack(study_type: str = "computational_biomechanics") -> RequirementPack:
     data = yaml.safe_load((_PACKS / f"{study_type}.yaml").read_text())
     return RequirementPack.model_validate(data)

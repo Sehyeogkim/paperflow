@@ -1,0 +1,517 @@
+{
+  "main_contribution": "ΔPSS(응력 최대진폭, 피로 관점)를 stress/strength 형태로 정규화한 취약성지수(VI1, VI2)를 사용한 전역 민감도 분석에서 재료물성(특히 E_vessel, E_FC)과 수축기압·맥압이 파열 위험도를 지배함을 규명하고, ΔPSS 기반 지표가 임상적으로 더 적합함을 보였다.",
+  "nodes": [
+    {
+      "id": "C1",
+      "kind": "claim",
+      "text": "기존 파열위험지표는 응력(stress)만으로 정의되어 환자마다 다른 strength(재료물성)를 무시한다 — 정확한 지표는 stress/strength 비율이어야 한다.",
+      "parent_id": null,
+      "role": "problem",
+      "represented_as": null,
+      "section": "introduction",
+      "provenance": null
+    },
+    {
+      "id": "C2",
+      "kind": "claim",
+      "text": "ΔPSS(응력 최대진폭, 피로 관점)는 PSS(최대응력)보다 파열 위험 예측에서 더 의학적으로 적합하며, 따라서 맥동성(피로)을 반영한 해석이 필요하다.",
+      "parent_id": null,
+      "role": "contribution",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C2.1",
+      "kind": "claim",
+      "text": "시뮬레이션/분석 결과 ΔPSS가 PSS보다 더 강한 예측인자임이 관찰되었다.",
+      "parent_id": "C2",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C2.2",
+      "kind": "claim",
+      "text": "따라서 맥동성 유체-고체 연성(FSI)을 통한 피로(진폭) 관점의 해석이 파열 취약성 평가에 필수적이다.",
+      "parent_id": "C2",
+      "role": "",
+      "represented_as": null,
+      "section": "discussion",
+      "provenance": null
+    },
+    {
+      "id": "C3",
+      "kind": "claim",
+      "text": "파열 취약성지수는 stress/strength의 형태로 정의되어야 하며, strength에 대한 정규화(지수 α의 선택)가 결과 민감도 및 지배 인자 해석에 영향을 미친다.",
+      "parent_id": null,
+      "role": "contribution",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C3.1",
+      "kind": "claim",
+      "text": "본 연구에서는 stress(최대응력, 최대진폭) 2종 × strength(3가지 시나리오)로 총 6개의 후보 VI를 정의하였다.",
+      "parent_id": "C3",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "C3.2",
+      "kind": "claim",
+      "text": "임상적으로 확립된 7개 고위험 플라크 특징의 부호일치 기준으로 6개 후보 중 2개(VI1=ΔPSS/E_FC^0.5, VI2=ΔPSS/E_FC^1.0)를 채택하였다.",
+      "parent_id": "C3",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "C4",
+      "kind": "claim",
+      "text": "전역 민감도 분석 결과 재료물성(Material)이 혈류역학(Hemo)·형태(Morpho)보다 파열 위험도를 더 지배하며, 상위 결정인자는 E_vessel, E_FC, 수축기혈압(SBP), 맥압(PP)이다 (Material > Hemo > Morpho).",
+      "parent_id": null,
+      "role": "contribution",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C4.1",
+      "kind": "claim",
+      "text": "그룹 수준의 Sobol 1차 민감도에서 Material 그룹의 기여가 가장 크며(LAP/CP 모두), LAP·VI2에서 Material S1≈0.75로 관찰되었다.",
+      "parent_id": "C4",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C4.2",
+      "kind": "claim",
+      "text": "개별 파라미터 수준의 Sobol 결과에서 E_FC(E_fc), E_vessel, SBP, PP가 상위 4인자이다(E_fc S1≈0.55 등).",
+      "parent_id": "C4",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "M1",
+      "kind": "method",
+      "text": "비용효율적 맥동 FSI 시뮬레이션을 사용하여 두 표현형(LAP 3도메인, CP 4도메인)에 대해 1,000-sample 설계공간에서 입력(형태·혈류역학·재료)을 변동시키며 PSS·ΔPSS(구면평균)와 파열위치 지수를 출력으로 생성함 — 경계조건 및 심근/유입 파형은 참조된 BC/입력 파일을 사용.",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": "data/cost_effective_FSI_BC/bc.md; data/input_parameter/elastance.dat; data/input_parameter/inflow.dat; data/input_parameter/input.csv"
+    },
+    {
+      "id": "M2",
+      "kind": "method",
+      "text": "VI 후보(6개)를 정의하고 임상 7기준으로 선별; 최종 VI에 대해 GPR surrogate를 학습(LAP 784 / CP 727 유효쌍)하고 surrogate 위에서 Sobol 1차 및 전차(ST) 지수를 계산하여 전역 민감도 분석을 수행함(대략 1.5만 회 평가에 해당).",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": "user_statement; data/input_parameter/input.csv"
+    },
+    {
+      "id": "E_sim_validation",
+      "kind": "evidence",
+      "text": "시뮬레이션으로 얻은 PSS, FFR, 파열위치 경향이 선행연구들(임상/구조해석)과 일치함 — 시뮬레이션 타당성 확인.",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "[DATA_NEEDED]"
+    },
+    {
+      "id": "E_vi_candidates",
+      "kind": "evidence",
+      "text": "정의된 6개 후보 VI(2 stress × 3 strength)와 각 후보의 수식적 형태(예: stress/ E_FC^α)가 방법론으로 문서화됨.",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": "user_statement"
+    },
+    {
+      "id": "E_vi_selection",
+      "kind": "evidence",
+      "text": "임상 7기준 부호일치로 6개 후보 중 VI1=ΔPSS/E_FC^0.5 및 VI2=ΔPSS/E_FC^1.0이 선정되었음(선택 근거: 7개 임상 특징과 부호 일치).",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "[DATA_NEEDED]"
+    },
+    {
+      "id": "E_sobol_grp_LAP_VI2",
+      "kind": "evidence",
+      "text": "LAP·VI2 그룹별 Sobol 민감도(그룹: 형태/재료/혈류역학) — Material 그룹 S1≈0.75로 재료가 지배적임을 보여줌.",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_grp_LAP_VI2.csv"
+    },
+    {
+      "id": "E_sobol_grp_LAP_VI1",
+      "kind": "evidence",
+      "text": "LAP·VI1 그룹별 Sobol 민감도 파일(그룹별 S1, ST).",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_grp_LAP_VI1.csv"
+    },
+    {
+      "id": "E_sobol_grp_CP_VI1",
+      "kind": "evidence",
+      "text": "CP·VI1 그룹별 Sobol 민감도 파일(그룹별 S1, ST).",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_grp_CP_VI1.csv"
+    },
+    {
+      "id": "E_sobol_grp_CP_VI2",
+      "kind": "evidence",
+      "text": "CP·VI2 그룹별 Sobol 민감도 파일(그룹별 S1, ST).",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_grp_CP_VI2.csv"
+    },
+    {
+      "id": "E_sobol_ind_LAP_VI2",
+      "kind": "evidence",
+      "text": "LAP·VI2 개별 파라미터별 Sobol S1·ST 결과 — E_FC가 S1≈0.55로 1위, 상위 4인자 = E_vessel, E_FC, SBP, PP.",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_ind_LAP_VI2.csv"
+    },
+    {
+      "id": "E_sobol_ind_LAP_VI1",
+      "kind": "evidence",
+      "text": "LAP·VI1 개별 파라미터별 Sobol 결과 파일.",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_ind_LAP_VI1.csv"
+    },
+    {
+      "id": "E_sobol_ind_CP_VI1",
+      "kind": "evidence",
+      "text": "CP·VI1 개별 파라미터별 Sobol 결과 파일.",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_ind_CP_VI1.csv"
+    },
+    {
+      "id": "E_sobol_ind_CP_VI2",
+      "kind": "evidence",
+      "text": "CP·VI2 개별 파라미터별 Sobol 결과 파일.",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_ind_CP_VI2.csv"
+    },
+    {
+      "id": "F1",
+      "kind": "artifact",
+      "text": "그룹별(Sobol) 민감도 막대그래프(형태 vs 재료 vs 혈류역학) — Material>Hemo>Morpho 시각화",
+      "parent_id": null,
+      "role": "",
+      "represented_as": "figure",
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "F2",
+      "kind": "artifact",
+      "text": "개별 파라미터별 Sobol S1·ST 막대그래프(상위 파라미터 강조, E_FC 등)",
+      "parent_id": null,
+      "role": "",
+      "represented_as": "figure",
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "T1",
+      "kind": "artifact",
+      "text": "VI 후보 6개의 수식 및 임상 7기준 부호일치 표(선택된 VI1, VI2 표시)",
+      "parent_id": null,
+      "role": "",
+      "represented_as": "table",
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "T2",
+      "kind": "artifact",
+      "text": "개별 파라미터별 Sobol 결과 표(파일 기반 요약 표, S1·ST 포함)",
+      "parent_id": null,
+      "role": "",
+      "represented_as": "table",
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "W1",
+      "kind": "warrant",
+      "text": "응력-강도비(stress/strength)는 재료가 분모로 작용하므로 환자별 강도의 불확실성을 정량적으로 반영하는 합리적 물리적 프레임워크이다(구조역학적 근거).",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "discussion",
+      "provenance": "cite:cheng1993; cite:arroyo1999; cite:brown2016"
+    },
+    {
+      "id": "W2",
+      "kind": "warrant",
+      "text": "피로(응력 진폭·맥동)는 조직 열화·파열에 중요하며 ΔPSS(최대진폭)는 파열 취약성 평가에서 의미있는 기계적 지표다.",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "discussion",
+      "provenance": "cite:arroyo1999; cite:cheng1993"
+    },
+    {
+      "id": "W3",
+      "kind": "warrant",
+      "text": "Sobol 1차(S1)·전차(ST) 지수는 입력 파라미터(또는 그룹)가 출력 분산에 기여하는 정도를 분해하여 전역 민감도(주효과 및 상호작용)를 정량화한다 — 민감도 기반 우선순위 도출의 통계적 근거.",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": "user_statement"
+    },
+    {
+      "id": "R_members2008",
+      "kind": "source",
+      "text": "임상 지침: 급성 심근경색 및 관상동맥 질환에서 플라크 파열의 임상적 중요성 근거",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "introduction",
+      "provenance": "cite:members2008"
+    },
+    {
+      "id": "R_cheng1993",
+      "kind": "source",
+      "text": "구조해석 근거: circumferential stress 분포와 인간 관상동맥 병변에서의 파열 위치 관련 연구",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "introduction",
+      "provenance": "cite:cheng1993"
+    },
+    {
+      "id": "R_arroyo1999",
+      "kind": "source",
+      "text": "기계적 및 생물학적 상호작용을 통한 플라크 파열 기작 리뷰 — 응력/피로 관련 근거",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "discussion",
+      "provenance": "cite:arroyo1999"
+    },
+    {
+      "id": "R_brown2016",
+      "kind": "source",
+      "text": "바이오메카닉스 관점에서 플라크의 힘학적 역할 고찰 — 연구의 동기 및 배경 근거",
+      "parent_id": null,
+      "role": "",
+      "represented_as": null,
+      "section": "introduction",
+      "provenance": "cite:brown2016"
+    }
+  ],
+  "edges": [
+    {
+      "src": "E_sobol_grp_LAP_VI2",
+      "dst": "C4.1",
+      "rel": "supports"
+    },
+    {
+      "src": "E_sobol_grp_LAP_VI1",
+      "dst": "C4.1",
+      "rel": "supports"
+    },
+    {
+      "src": "E_sobol_grp_CP_VI1",
+      "dst": "C4.1",
+      "rel": "supports"
+    },
+    {
+      "src": "E_sobol_grp_CP_VI2",
+      "dst": "C4.1",
+      "rel": "supports"
+    },
+    {
+      "src": "E_sobol_ind_LAP_VI2",
+      "dst": "C4.2",
+      "rel": "supports"
+    },
+    {
+      "src": "E_sobol_ind_LAP_VI1",
+      "dst": "C4.2",
+      "rel": "supports"
+    },
+    {
+      "src": "E_sobol_ind_CP_VI1",
+      "dst": "C4.2",
+      "rel": "supports"
+    },
+    {
+      "src": "E_sobol_ind_CP_VI2",
+      "dst": "C4.2",
+      "rel": "supports"
+    },
+    {
+      "src": "F1",
+      "dst": "E_sobol_grp_LAP_VI2",
+      "rel": "visualizes"
+    },
+    {
+      "src": "F1",
+      "dst": "E_sobol_grp_CP_VI1",
+      "rel": "visualizes"
+    },
+    {
+      "src": "F2",
+      "dst": "E_sobol_ind_LAP_VI2",
+      "rel": "visualizes"
+    },
+    {
+      "src": "T2",
+      "dst": "E_sobol_ind_LAP_VI2",
+      "rel": "visualizes"
+    },
+    {
+      "src": "T1",
+      "dst": "E_vi_candidates",
+      "rel": "visualizes"
+    },
+    {
+      "src": "E_vi_candidates",
+      "dst": "C3.1",
+      "rel": "supports"
+    },
+    {
+      "src": "E_vi_selection",
+      "dst": "C3.2",
+      "rel": "supports"
+    },
+    {
+      "src": "E_sim_validation",
+      "dst": "C2.1",
+      "rel": "supports"
+    },
+    {
+      "src": "E_sim_validation",
+      "dst": "C2.2",
+      "rel": "supports"
+    },
+    {
+      "src": "M1",
+      "dst": "E_sim_validation",
+      "rel": "derived_from"
+    },
+    {
+      "src": "M2",
+      "dst": "E_sobol_grp_LAP_VI2",
+      "rel": "derived_from"
+    },
+    {
+      "src": "M2",
+      "dst": "E_sobol_ind_LAP_VI2",
+      "rel": "derived_from"
+    },
+    {
+      "src": "M1",
+      "dst": "E_vi_candidates",
+      "rel": "derived_from"
+    },
+    {
+      "src": "W1",
+      "dst": "C3",
+      "rel": "qualifies"
+    },
+    {
+      "src": "W2",
+      "dst": "C2",
+      "rel": "qualifies"
+    },
+    {
+      "src": "W3",
+      "dst": "C4",
+      "rel": "qualifies"
+    },
+    {
+      "src": "R_members2008",
+      "dst": "C1",
+      "rel": "supports"
+    },
+    {
+      "src": "R_cheng1993",
+      "dst": "W1",
+      "rel": "supports"
+    },
+    {
+      "src": "R_arroyo1999",
+      "dst": "W2",
+      "rel": "supports"
+    },
+    {
+      "src": "R_brown2016",
+      "dst": "W1",
+      "rel": "supports"
+    },
+    {
+      "src": "data/input_parameter/input.csv",
+      "dst": "M1",
+      "rel": "derived_from"
+    },
+    {
+      "src": "data/cost_effective_FSI_BC/bc.md",
+      "dst": "M1",
+      "rel": "derived_from"
+    },
+    {
+      "src": "E_vi_candidates",
+      "dst": "C3",
+      "rel": "supports"
+    },
+    {
+      "src": "E_vi_selection",
+      "dst": "C3",
+      "rel": "supports"
+    },
+    {
+      "src": "F2",
+      "dst": "E_sobol_ind_LAP_VI2",
+      "rel": "visualizes"
+    },
+    {
+      "src": "T1",
+      "dst": "E_vi_selection",
+      "rel": "visualizes"
+    }
+  ]
+}

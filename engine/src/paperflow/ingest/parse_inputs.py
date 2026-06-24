@@ -106,25 +106,40 @@ def parse_outline(md: str) -> Outline:
     return Outline(skeleton=skeleton, structured_raw=phase_b.strip(), raw=md)
 
 
+def _read_data_notes(project: Path) -> dict[str, str]:
+    """Per-file one-line descriptions written in the UI (main/data_notes.json)."""
+    p = project / "main" / "data_notes.json"
+    if not p.is_file():
+        return {}
+    try:
+        d = json.loads(p.read_text())
+        return {str(k): str(v) for k, v in d.items()} if isinstance(d, dict) else {}
+    except Exception:
+        return {}
+
+
 def _scan_data(project: Path) -> list[DataAsset]:
     assets: list[DataAsset] = []
     ddir = project / "data"
     if not ddir.is_dir():
         return assets
+    notes = _read_data_notes(project)
     for p in sorted(ddir.rglob("*")):
         if not p.is_file():
             continue
         rel = str(p.relative_to(project))
-        if p.suffix.lower() == ".csv":
+        note = notes.get(rel, "")
+        suf = p.suffix.lower().lstrip(".")
+        if suf == "csv":
             cols: list[str] = []
             try:
                 with p.open(newline="") as f:
                     cols = next(csv.reader(io.StringIO(f.readline())), [])
             except Exception:
                 pass
-            assets.append(DataAsset(path=rel, kind="csv", columns=cols))
-        elif p.suffix.lower() in (".md", ".dat", ".txt"):
-            assets.append(DataAsset(path=rel, kind=p.suffix.lower().lstrip(".")))
+            assets.append(DataAsset(path=rel, kind="csv", columns=cols, note=note))
+        elif suf in ("md", "dat", "txt", "json", "pdf", "png", "jpg", "jpeg", "xlsx", "xls"):
+            assets.append(DataAsset(path=rel, kind=suf, note=note))
     return assets
 
 

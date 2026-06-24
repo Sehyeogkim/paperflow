@@ -1,0 +1,11 @@
+study_type: clinical_trial_reporting
+required:
+- randomization_sequence_and_type
+- allocation_concealment_mechanism
+- blinding_status_and_details
+- pre_specified_primary_and_secondary_outcomes
+- sample_size_calculation_and_assumptions
+- participant_flow_counts
+- statistical_methods_for_primary_and_secondary_outcomes
+- harms_and_adverse_events_by_group
+conditional: []

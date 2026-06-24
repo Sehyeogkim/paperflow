@@ -1,0 +1,52 @@
+{
+  "generation": "deferred (fal.ai nano-banana pro)",
+  "figures": [
+    {
+      "id": "F1",
+      "kind": "figure",
+      "message": "그룹별(Sobol) 민감도 막대그래프(형태 vs 재료 vs 혈류역학) — Material>Hemo>Morpho 시각화",
+      "section": "result",
+      "visualizes": [
+        "E_sobol_grp_LAP_VI2",
+        "E_sobol_grp_CP_VI1"
+      ],
+      "status": "planned",
+      "source": "claim_graph"
+    },
+    {
+      "id": "F2",
+      "kind": "figure",
+      "message": "개별 파라미터별 Sobol S1·ST 막대그래프(상위 파라미터 강조, E_FC 등)",
+      "section": "result",
+      "visualizes": [
+        "E_sobol_ind_LAP_VI2",
+        "E_sobol_ind_LAP_VI2"
+      ],
+      "status": "planned",
+      "source": "claim_graph"
+    },
+    {
+      "id": "T1",
+      "kind": "table",
+      "message": "VI 후보 6개의 수식 및 임상 7기준 부호일치 표(선택된 VI1, VI2 표시)",
+      "section": "method",
+      "visualizes": [
+        "E_vi_candidates",
+        "E_vi_selection"
+      ],
+      "status": "planned",
+      "source": "claim_graph"
+    },
+    {
+      "id": "T2",
+      "kind": "table",
+      "message": "개별 파라미터별 Sobol 결과 표(파일 기반 요약 표, S1·ST 포함)",
+      "section": "result",
+      "visualizes": [
+        "E_sobol_ind_LAP_VI2"
+      ],
+      "status": "planned",
+      "source": "claim_graph"
+    }
+  ]
+}

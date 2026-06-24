@@ -1,0 +1,92 @@
+[
+  {
+    "key": "members2008",
+    "title": "Management of acute myocardial infarction in patients presenting with persistent ST-segment elevation",
+    "authors": "Authors/Task Force Members, Frans Van de Werf, Jeroen J. Bax, Amadeo Betriu, C. Blomström‐Lundqvist, Filippo Crea, Volkmar Falk, Gerasimos Filippatos, Keith A.A. Fox, Kurt Huber, Adnan Kastrati, Annika Rosengren, Philippe Gabríel Steg, Marco Tubaro, Freek W.A. Verheugt, Franz Weidinger, Michael Weis, Alec Vahanian, A. John Camm, Raffaele De Caterina, Verónica Dean, Kenneth Dickstein, Gerasimos Filippatos, Christian Funck‐Brentano, Irene Hellemans, Steen Dalby Kristensen, Keith McGregor, Udo Sechtem, Sigmund Silber, Michał Tendera, Petr Widimský, José Luis Zamorano, Document Reviewers, Sigmund Silber, Frank V. Aguirre, Nawwar Al‐Attar, Eduardo Alegría, Felicita Andreotti, Werner Benzer, Ole A. Breithardt, N Danchin, Carlo Di Mario, Dariusz Dudek, Dietrich C. Gulba, Sigrun Halvorsen, Philipp A. Kaufmann, Ran Kornowski, Gregory Y.H. Lip, Frans H. Rutten",
+    "year": 2008,
+    "doi": "10.1093/eurheartj/ehn416",
+    "abstract": "The ESC Guidelines represent the views of the ESC and were arrived at after careful consideration of the available evidence at the time they were written. Health professionals are encouraged to take them fully into account when exercising their clinical judgement. The guidelines do not, however, override the individual responsibility of health professionals to make appropriate decisions in the circumstances of the individual patients, in consultation with that patient, and where appropriate and necessary the patient's guardian or carer. It is also the health professional's responsibility to ve",
+    "topic": "clinical-guideline source emphasizing the importance of prompt management of ST-elevation myocardial infarction and motivating clinical relevance of plaque rupture"
+  },
+  {
+    "key": "vandewerf2003",
+    "title": "Management of acute myocardial infarction in patients presenting with ST-segment elevation",
+    "authors": "F VandeWerf",
+    "year": 2003,
+    "doi": "10.1016/s0195-668x(02)00618-8",
+    "abstract": "The management of acute myocardial infarction continues to undergo major changes. Good practice should be based on sound evidence derived from well-conducted clinical trials. Because of the great number of trials on new treatments performed in recent years and because of new diagnostic tests, the European Society of Cardiology decided that it was opportune to upgrade the 1996 guidelines and appointed a Task …",
+    "topic": "earlier ESC guideline context for management of ST-elevation myocardial infarction, supporting the clinical importance of rupture-related events"
+  },
+  {
+    "key": "martntimn2014",
+    "title": "Type 2 diabetes and cardiovascular disease: Have all risk factors the same strength?",
+    "authors": "Iciar Martín-Timón",
+    "year": 2014,
+    "doi": "10.4239/wjd.v5.i4.444",
+    "abstract": "Diabetes mellitus is a chronic condition that occurs when the body cannot produce enough or effectively use of insulin. Compared with individuals without diabetes, patients with type 2 diabetes mellitus have a considerably higher risk of cardiovascular morbidity and mortality, and are disproportionately affected by cardiovascular disease. Most of this excess risk is it associated with an augmented prevalence of well-known risk factors such as hypertension, dyslipidaemia and obesity in these patients. However the improved cardiovascular disease in type 2 diabetes mellitus patients can not be at",
+    "topic": "epidemiologic support that type 2 diabetes markedly increases cardiovascular risk and is relevant background for patient-level risk stratification"
+  },
+  {
+    "key": "meng2013",
+    "title": "High WSS or Low WSS? Complex Interactions of Hemodynamics with Intracranial Aneurysm Initiation, Growth, and Rupture: Toward a Unifying Hypothesis",
+    "authors": "Hui Meng, Vincent M. Tutino, J. Xiang, Adnan H. Siddiqui",
+    "year": 2013,
+    "doi": "10.3174/ajnr.a3558",
+    "abstract": "SUMMARY: Increasing detection of unruptured intracranial aneurysms, catastrophic outcomes from subarachnoid hemorrhage, and risks and cost of treatment necessitate defining objective predictive parameters of aneurysm rupture risk. Image-based computational fluid dynamics models have suggested associations between hemodynamics and intracranial aneurysm rupture, albeit with conflicting findings regarding wall shear stress. We propose that the \"high-versus-low wall shear stress\" controversy is a manifestation of the complexity of aneurysm pathophysiology, and both high and low wall shear stress c",
+    "topic": "conceptual and methodological discussion of the high-versus-low WSS debate that motivates integrating multiple hemodynamic metrics"
+  },
+  {
+    "key": "cheng1993",
+    "title": "Distribution of circumferential stress in ruptured and stable atherosclerotic lesions. A structural analysis with histopathological correlation.",
+    "authors": "Guijuan Cheng, Howard M. Loree, Roger D. Kamm, Michael C. Fishbein, R T Lee",
+    "year": 1993,
+    "doi": "10.1161/01.cir.87.4.1179",
+    "abstract": "BACKGROUND: Although rupture of an atherosclerotic plaque is considered to be the cause of most acute coronary syndromes, the mechanism of plaque rupture is controversial. METHODS AND RESULTS: To test the hypothesis that plaque rupture occurs at sites of high circumferential stress in the diseased vessel, the distribution of stress was analyzed in 24 coronary artery lesions. Histological specimens from 12 coronary artery lesions that caused lethal myocardial infarction were compared with those from 12 stable control lesions. A finite element model was used to calculate the stress distributions",
+    "topic": "empirical structural-analysis precedent linking circumferential stress distributions to sites of plaque rupture in human coronary lesions"
+  },
+  {
+    "key": "wal1999",
+    "title": "Atherosclerotic plaque rupture – pathologic basis of plaque stability and instability",
+    "authors": "Allard C. van der Wal",
+    "year": 1999,
+    "doi": "10.1016/s0008-6363(98)00276-4",
+    "abstract": "Time for primary reveiw 27 days \n\nAtherosclerosis continues to be one of the main subjects in pathology research. The intriguing complexity of its pathogenesis as well as the importance of its clinical sequelae provide a rationale for this [1]. A large number of diseases with totally different clinical presentations are basically atherosclerosis related, and among these, myocardial infarction, stroke, abdominal aneurysms and lower limb ischemia determine to a large extent the morbidity and mortality in Western style populations. But, despite this broad spectrum of clinical disease, most of the",
+    "topic": "pathology-review source summarizing structural features of plaque stability and instability"
+  },
+  {
+    "key": "brown2016",
+    "title": "Role of biomechanical forces in the natural history of coronary atherosclerosis",
+    "authors": "Adam J. Brown, Zhongzhao Teng, Paul C. Evans, Jonathan H. Gillard, Habib Samady, Martin R. Bennett",
+    "year": 2016,
+    "doi": "10.1038/nrcardio.2015.203",
+    "abstract": "",
+    "topic": "recent perspective supporting the central role of biomechanical forces in the natural history of coronary atherosclerosis"
+  },
+  {
+    "key": "arroyo1999",
+    "title": "Mechanisms of plaque rupture mechanical and biologic interactions",
+    "authors": "Luis G. Arroyo",
+    "year": 1999,
+    "doi": "10.1016/s0008-6363(98)00308-3",
+    "abstract": "Atherosclerotic vascular disease is the most common cause of morbidity and mortality in developed countries, and the world-wide importance of acute vascular syndromes is increasing. Acute events are usually triggered by the development of plaque disruption and subsequent thrombus formation. Histological studies have established specific structural features common among unstable plaques. The plaque has to bear remarkably increased mechanical stress at particular regions, and weakening of the extracellular matrix at these sites leads to fibrous cap rupture. The biologic factors that cause weaken",
+    "topic": "mechanistic review highlighting interactions between mechanical stress and biological weakening in plaque rupture"
+  },
+  {
+    "key": "eshtehardi2012",
+    "title": "Association of Coronary Wall Shear Stress With Atherosclerotic Plaque Burden, Composition, and Distribution in Patients With Coronary Artery Disease",
+    "authors": "Parham Eshtehardi, Michael McDaniel, Jin Suo, Saurabh S. Dhawan, Lucas H. Timmins, José Binongo, Lucas Golub, Michel Corban, Aloke V. Finn, John N. Oshinsk, Arshed A. Quyyumi, Don P. Giddens, Habib Samady",
+    "year": 2012,
+    "doi": "10.1161/jaha.112.002543",
+    "abstract": "BACKGROUND: Extremes of wall shear stress (WSS) have been associated with plaque progression and transformation, which has raised interest in the clinical assessment of WSS. We hypothesized that calculated coronary WSS is predicted only partially by luminal geometry and that WSS is related to plaque composition. METHODS AND RESULTS: Twenty-seven patients with coronary artery disease underwent virtual histology intravascular ultrasound and Doppler velocity measurement for computational fluid dynamics modeling for WSS calculation in each virtual histology intravascular ultrasound segment (N=3581",
+    "topic": "clinical-imaging and CFD evidence that calculated coronary WSS relates to plaque burden and composition and is not fully predicted by lumen geometry"
+  },
+  {
+    "key": "cullen2003",
+    "title": "Rupture of the Atherosclerotic Plaque",
+    "authors": "Paul Cullen, Roberta Baetta, Stefano Bellosta, Franco Bernini, Giulia Chinetti, Andrea Cignarella, Arnold von Eckardstein, Andrew Exley, Martin Goddard, Marten H. Hofker, Eva Hurt‐Camejo, Edwin Kanters, Petri T. Kovanen, Stefan Lorkowski, William L. McPheat, Markku O. Pentikäinen, Jürgen Rauterberg, Andrew J. Ritchie, Bart Staels, Benedikt Weitkamp, Menno P.J. de Winther",
+    "year": 2003,
+    "doi": "10.1161/01.atv.0000060200.73623.f8",
+    "abstract": "By its very nature, rupture of the atherosclerotic plaque is difficult to study directly in humans. A good animal model would help us not only to understand how rupture occurs but also to design and test treatments to prevent it from happening. However, several difficulties surround existing models of plaque rupture, including the need for radical interventions to produce the rupture, lack of direct evidence of rupture per se, and absence of convincing evidence of platelet- and fibrin-rich thrombus at the rupture site. At the present time, attention should therefore focus on the processes of p",
+    "topic": "critical review documenting limitations of animal models for studying human plaque rupture"
+  }
+]

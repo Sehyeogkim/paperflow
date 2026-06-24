@@ -1,0 +1,88 @@
+{
+  "study_type": "computational_biomechanics",
+  "classification": "EXPERT_REVIEW_REQUIRED",
+  "present": [
+    "research_objective",
+    "geometry_definition (high-level: idealized coronary models; LAP 3-domain / CP 4-domain)",
+    "sample_definition (1000-sample design space provided: data/input_parameter/input.csv)",
+    "boundary_conditions (bc.md, inflow.dat, elastance.dat provided)",
+    "material_properties (E_vessel, E_fc, E_lipid, E_cal present in input.csv)",
+    "outcome_metric (PSS, ΔPSS, rupture-location index and final VI formulas stated in outline)",
+    "sensitivity_results (Sobol index CSV files for LAP/CP and VI1/VI2 present)"
+  ],
+  "missing": [
+    {
+      "field": "governing_equations",
+      "why_it_matters": "Reproducible Methods require explicit PDEs/assumptions (fluid/solid equations, compressibility, Newtonian vs non-Newtonian blood, structural constitutive law, coupling conditions). Without this a reviewer cannot assess model appropriateness or compare results.",
+      "reviewer_risk": "high",
+      "question": "Please state the governing equations and modelling assumptions used for the fluid and solid domains and the FSI coupling (e.g. incompressible Navier–Stokes, Newtonian/Non-Newtonian blood, conservation statements, solid constitutive laws — linear elastic / hyperelastic / viscoelastic — and the kinematic/traction continuity enforced at the fluid–solid interface). Include values used for fluid density and viscosity if assumed constant.",
+      "example": "Incompressible Navier–Stokes for the fluid (Newtonian, rho=1060 kg·m−3, mu=3.5e−3 Pa·s) coupled to quasi-static small-strain linear elastic solids (Hookean, E and nu=0.45 for vessel/FC/lipid/calcium). Kinematic and traction continuity enforced; partitioned staggered coupling solved each time step.",
+      "priority": 3.0
+    },
+    {
+      "field": "numerical_solver",
+      "why_it_matters": "The solver, discretisation choices, FSI coupling algorithm and solver settings strongly affect stress predictions and computational cost; reviewers need these to judge reproducibility and numerical fidelity.",
+      "reviewer_risk": "high",
+      "question": "Give the numerical implementation details: code or software (and version), FSI coupling strategy (monolithic or partitioned; if partitioned: coupling algorithm and relaxation), spatial discretisation (finite element/volume, element types), temporal integration schemes for fluid and solid, linear/nonlinear solver types and tolerances, and hardware used for runs.",
+      "example": "We used a partitioned FSI implementation combining OpenFOAM 7 (PISO, second-order spatial) for fluid and CalculiX (implicit Newmark) for structure with Aitken relaxation for coupling; fluid linear solver GMRES with tol=1e-8; structural Newton–Raphson with residual tol=1e-6; runs on 32-core HPC nodes.",
+      "priority": 3.0
+    },
+    {
+      "field": "validation",
+      "why_it_matters": "A quantitative validation (comparison to prior FSI/experimental/clinical benchmarks) is required to support the claim that the simulations reproduce realistic PSS/FFR/rupture-location trends and to justify using the simulator for the sensitivity study.",
+      "reviewer_risk": "high",
+      "question": "Provide quantitative validation results: what benchmarks or datasets were used, which metrics were compared (e.g. FFR, peak PSS, rupture-location frequency), numerical/experimental/clinical references used for comparison, and error/fit metrics (e.g. RMSE, percent error, R2). If validation is based on a prior paper for the same solver, cite it and summarise the key quantitative agreement.",
+      "example": "We validated the solver against Cheng et al. (1993) circumferential stress profiles and against published FFR ranges: median FFR in our baseline models = 0.82 versus published mean 0.80±0.06 (difference 2.5%); PSS spatial distribution had correlation R2=0.87 with digitised reference profiles; detailed comparison in Supplementary Table S1.",
+      "priority": 3.0
+    },
+    {
+      "field": "mesh_independence",
+      "why_it_matters": "Stress fields (PSS, peak stresses) are mesh-sensitive; a mesh-convergence study is required to show that PSS and ΔPSS used in VIs are grid-independent within an acceptable tolerance.",
+      "reviewer_risk": "high",
+      "question": "Provide a mesh refinement study: meshes tested (element types and counts), key quantities monitored (max PSS, ΔPSS, rupture-location index), relative changes between meshes, and the chosen mesh with justification (e.g. percentage change threshold).",
+      "example": "Tested coarse/medium/fine meshes with 0.5M, 1.2M and 2.6M elements. Max PSS changed 6% (coarse→medium) and 1.8% (medium→fine); ΔPSS changed <2% between medium and fine. We selected the medium mesh (1.2M) where changes <2%.",
+      "priority": 3.0
+    },
+    {
+      "field": "timestep_independence",
+      "why_it_matters": "Pulsatile FSI results (ΔPSS amplitude) depend on temporal resolution and time-integration scheme; a timestep-convergence study is needed to justify the chosen time step and ensure ΔPSS is resolved.",
+      "reviewer_risk": "high",
+      "question": "Provide a time-step convergence study for the pulsatile simulations: time steps tested (or steps per cardiac cycle), monitored outputs (ΔPSS, peak PSS, FFR), and the chosen time step with justification (e.g. percent change threshold).",
+      "example": "We tested dt = 4 ms, 2 ms, 1 ms (250/500/1000 steps per 1s cycle). ΔPSS difference between 2 ms and 1 ms was <1.5%; we used dt=2 ms as a compromise between accuracy and cost.",
+      "priority": 3.0
+    },
+    {
+      "field": "convergence_criteria",
+      "why_it_matters": "Convergence tolerances for nonlinear solves, linear solvers and FSI coupling determine solution accuracy and are required for reproducible stress/ΔPSS results.",
+      "reviewer_risk": "medium",
+      "question": "Provide the convergence criteria used for (a) nonlinear iterations and linear solver residuals in each solver, and (b) the FSI coupling convergence (e.g. interface displacement/traction tolerances or maximum coupling iterations).",
+      "example": "Nonlinear residuals reduced to L2 norm <1e-6, linear solver tol=1e-8; FSI coupling converged when max interface displacement change between coupling iterations <1e-5 m or after a maximum of 20 coupling iterations.",
+      "priority": 2.0
+    },
+    {
+      "field": "sensitivity_method (detailed surrogate & Sobol protocol)",
+      "why_it_matters": "Global sensitivity claims hinge on surrogate training quality and Sobol estimation details. Reviewers need the surrogate model specification, training/validation metrics, Sobol sampling scheme, sample sizes and confidence intervals to assess the robustness of the indices.",
+      "reviewer_risk": "medium",
+      "question": "Provide the GPR surrogate and Sobol details: GPR kernel(s), hyperparameter optimisation method, input/output scaling, train/validation split or cross-validation metrics (RMSE, R2), number of training points used per phenotype, how missing/invalid simulations were handled, which Sobol estimator (Saltelli, Jansen, etc.) and sample sizes were used, and how confidence intervals were computed.",
+      "example": "GPR with squared-exponential kernel + white noise; hyperparameters optimised via maximum likelihood; inputs standardised to zero mean/unit variance; trained on 80% of valid LAP samples (Ntrain=627) with 5-fold CV RMSE=0.06 (normalized); Sobol indices computed with Saltelli estimator using N=5000 base samples (total ~15,000 model evaluations) and 1000 bootstrap replicates for 95% CIs.",
+      "priority": 2.0
+    },
+    {
+      "field": "sample_selection / phenotype splitting",
+      "why_it_matters": "You report LAP 784 / CP 727 valid pairs and use different training sizes for surrogates; reviewers need the selection criteria, how the 1000 initial samples were filtered/assigned to LAP vs CP, and the exact counts used for surrogate training/testing to reproduce GPR/Sobol results.",
+      "reviewer_risk": "medium",
+      "question": "Describe how the 1000-sample input design was mapped to LAP and CP phenotypes: what acceptance/validity criteria were applied, the final counts for each phenotype (training vs test splits), and whether any simulations failed or were excluded (and why).",
+      "example": "From 1000 designs, 784 met LAP geometry feasibility checks (no lumen collapse) and 727 met CP constraints; we used 80/20 train/test splits (LAP train=627/test=157; CP train=582/test=145); 19 simulations failed due to solver non-convergence and were excluded.",
+      "priority": 2.0
+    },
+    {
+      "field": "outcome_metric (precise definitions/formulae for PSS, ΔPSS, spherical averaging and rupture-location index)",
+      "why_it_matters": "The manuscript states PSS and ΔPSS (spherical mean) and final VI formulae, but precise mathematical definitions and processing steps (how PSS computed on mesh, how ΔPSS is measured over cycle, how spherical averaging is done, and how rupture-location index is defined) are required for reproducibility and to interpret Sobol sensitivity targets.",
+      "reviewer_risk": "medium",
+      "question": "Provide exact definitions and algorithms for PSS and ΔPSS (including whether PSS is von Mises/maximum principal/hoop stress), the formula and procedure for 'spherical mean' averaging (over what patch/area), how ΔPSS amplitude is computed over the cardiac cycle, and the algorithm used to compute the rupture-location index from the field.",
+      "example": "PSS = maximum principal stress on the fibrous cap; ΔPSS = peak-to-peak amplitude at each surface node over one cardiac cycle; spherical mean = surface-area-weighted average of the nodal ΔPSS over the fibrous cap sphere-like patch; rupture-location index = fraction of cap surface area where PSS exceeds 90th percentile of baseline stress.",
+      "priority": 2.0
+    }
+  ],
+  "notes": "The authors provided a comprehensive design-space (input.csv), BC waveforms, and Sobol outputs, so the study is close to draftable. However several critical numerical and methodological details are missing (governing equations, solver/coupling, convergence/mesh/time-step studies, quantitative validation, and full surrogate/Sobol protocol). These must be supplied for a defensible Methods and for reviewers to accept the sensitivity/rupture-risk claims."
+}

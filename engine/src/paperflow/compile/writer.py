@@ -8,7 +8,7 @@ import re
 
 from ..ingest.load_data import values_for_section
 from ..llm import client
-from ..schemas.claim import ClaimGraph, ParagraphContract, SectionContract
+from ..schemas.claim import ClaimGraph, SectionContract
 from ..schemas.project_state import ProjectState
 from ..util import inputs_block, prompt
 
@@ -50,38 +50,38 @@ def _node_refs(graph: ClaimGraph, ids: list[str]) -> list[dict]:
     return refs
 
 
-def _draft_paragraph(ps: ProjectState, graph: ClaimGraph, c: ParagraphContract,
-                     section_so_far: str, data_values: str) -> str:
-    contract_block = json.dumps({
-        **c.model_dump(),
-        "nodes": _node_refs(graph, c.claim_ids),
-    }, ensure_ascii=False, indent=2)
-    prior = section_so_far.strip() or "(this is the first paragraph of the section)"
-    dv = (f"\n\n## DATA VALUES (real numbers from the author's files — use these verbatim "
-          f"where relevant; do NOT invent numbers)\n{data_values}") if data_values else ""
-    user = (
-        f"{inputs_block(ps)}{dv}\n\n"
-        f"## SECTION SO FAR (continue coherently; do NOT repeat definitions/claims already stated)\n{prior}\n\n"
-        f"## PARAGRAPH CONTRACT (write the NEXT paragraph only)\n{contract_block}"
-    )
-    return client.call(
-        "writer", prompt("writer"), user, step="writer", max_tokens=1400, temperature=0.4
-    ).text.strip()
+def _paragraph_briefs(graph: ClaimGraph, contract: SectionContract) -> str:
+    """Ordered paragraph contracts with their claim/evidence/artifact nodes resolved."""
+    briefs = [{**c.model_dump(), "nodes": _node_refs(graph, c.claim_ids)}
+              for c in contract.paragraphs]
+    return json.dumps(briefs, ensure_ascii=False, indent=2)
 
 
 def write_section(ps: ProjectState, graph: ClaimGraph, contract: SectionContract) -> str:
-    """Draft the whole section paragraph-by-paragraph. No inline validation."""
+    """Draft the whole section in ONE writer call (1 call per section, not per paragraph).
+    Faster (≈6 calls/run vs ~29) and more coherent — the model sees the whole section at once."""
     allowed = set(ps.all_citation_keys)  # existing store + literature-search finds
     data_values = values_for_section(ps.project_dir, contract.section,
                                      [d.path for d in ps.data_assets])
-    out: list[str] = []
-    seen_headings: set[str] = set()
-    for c in contract.paragraphs:
-        # deterministic heading insertion (don't rely on the model for structure)
-        if c.heading and c.heading not in seen_headings:
-            seen_headings.add(c.heading)
-            out.append(f"### {c.heading}")
-        section_so_far = "\n\n".join(out)
-        draft = _draft_paragraph(ps, graph, c, section_so_far, data_values)
-        out.append(_guard_citations(draft, allowed))  # never let invented keys survive
-    return "\n\n".join(out).strip() + "\n"
+    dv = (f"\n\n## DATA VALUES (real numbers from the author's files — use these verbatim "
+          f"where relevant; do NOT invent numbers)\n{data_values}") if data_values else ""
+    # hard journal limit: enforce the abstract word count from the (pre-fetched) guideline
+    limit = ps.journal_constraints.get("abstract_word_limit") if contract.section == "abstract" else None
+    limit_note = (f"\n\n## HARD LIMIT (obey strictly)\nThis is the ABSTRACT: it MUST be at most "
+                  f"{limit} words — one concise paragraph, NO headings. Count words and stay under "
+                  f"{limit}.") if limit else ""
+    user = (
+        f"{inputs_block(ps)}{dv}{limit_note}\n\n"
+        f"## SECTION CONTRACT — write the COMPLETE '{contract.section}' section\n"
+        f"Write exactly one paragraph per contract below, in this order.\n\n"
+        f"{_paragraph_briefs(graph, contract)}"
+    )
+    n = max(1, len(contract.paragraphs))
+    max_tokens = min(8000, 1100 * n + 800)  # scale to paragraph count
+    if limit:
+        max_tokens = min(max_tokens, int(limit * 3))  # words -> token budget cap
+    draft = client.call(
+        "writer", prompt("writer_section"), user, step="writer",
+        max_tokens=max_tokens, temperature=0.4,
+    ).text.strip()
+    return _guard_citations(draft, allowed).strip() + "\n"  # never let invented keys survive

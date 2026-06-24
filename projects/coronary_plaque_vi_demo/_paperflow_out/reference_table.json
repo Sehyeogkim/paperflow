@@ -1,0 +1,11 @@
+[
+  {
+    "key": "terahara2020",
+    "title": "Heart valve isogeometric sequentially-coupled FSI analysis with the space–time topology change method",
+    "authors": "Takuya Terahara, Kenji Takizawa, Tayfun E. Tezduyar, Yuri Bazilevs, Ming‐Chen Hsu",
+    "year": 2020,
+    "doi": "10.1007/s00466-019-01813-0",
+    "used_for": "validation of the cost-effective pulsatile FSI method",
+    "verification_status": "auto_openalex"
+  }
+]

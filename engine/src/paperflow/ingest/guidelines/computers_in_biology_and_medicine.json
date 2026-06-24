@@ -1,0 +1,30 @@
+{
+  "journal": "Computers in Biology and Medicine",
+  "aliases": [
+    "computers in biology and medicine",
+    "computers in bology and medicine",
+    "comput biol med",
+    "cibm"
+  ],
+  "source": "Elsevier guide-for-authors (ScienceDirect 0010-4825) + web search 2026-06. Reference style and Highlights confirmed; abstract_word_limit is the Elsevier standard (verify against live guide, which blocks automated fetch).",
+  "fetched": "2026-06-24",
+  "constraints": {
+    "abstract_word_limit": 250,
+    "abstract_structure": "unstructured single paragraph",
+    "keywords_max": 6,
+    "reference_style": "elsarticle-num (Elsevier numbered, Vancouver-style)",
+    "highlights_required": true,
+    "highlights_format": "3 to 5 bullet points, each <= 85 characters including spaces",
+    "required_sections": [
+      "Introduction",
+      "Materials and Methods",
+      "Results",
+      "Discussion",
+      "Conclusion"
+    ],
+    "other_limits": [
+      "Highlights are mandatory",
+      "Declare ethics approval / data availability where applicable"
+    ]
+  }
+}

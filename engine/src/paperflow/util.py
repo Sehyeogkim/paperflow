@@ -49,7 +49,8 @@ def inputs_block(ps: ProjectState) -> str:
     if ps.data_assets:
         for d in ps.data_assets:
             cols = f" cols={d.columns}" if d.columns else ""
-            lines.append(f"  - {d.path} ({d.kind}){cols}")
+            note = f" — {d.note}" if d.note else ""
+            lines.append(f"  - {d.path} ({d.kind}){cols}{note}")
     else:
         lines.append("  (none)")
     lines += ["", "## EXISTING REFERENCE KEYS", "  " + (", ".join(ps.reference_keys) or "(none)")]

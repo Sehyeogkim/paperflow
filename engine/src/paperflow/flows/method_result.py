@@ -65,8 +65,14 @@ def run(project_dir: str, sections: list[str], out_dir: Path,
         ps.found_references = found
         progress(f"[litsearch] 찾은 논문 {len(found)}편")
 
-    progress("[requirement] 누락정보 진단 (완성가능성 분류)")
-    report = detect.detect(ps)
+    # reuse the diagnose result if the UI already computed it (no second LLM call)
+    cached = detect.load_report(project_dir)
+    if cached is not None:
+        progress("[requirement] 진단 결과 재사용")
+        report = cached
+    else:
+        progress("[requirement] 누락정보 진단 (완성가능성 분류)")
+        report = detect.detect(ps)
     manifest.classification = report.classification
 
     progress("[claim_graph] Claim graph (typed)")
@@ -97,8 +103,14 @@ def run(project_dir: str, sections: list[str], out_dir: Path,
         section_md, progress=lambda m: progress(f"[citation] {m}"))
 
     progress("[output] 출력 기록")
+    paper_meta = {
+        "title": ps.journal_info.working_title,
+        "authors": ps.journal_info.extra.get("authors", ""),
+        "field": ps.journal_info.author_field,
+    }
     write_all(out_dir, sections=section_md, graph=graph, contracts=section_contracts,
               requirement=report, figure_spec=fig_spec, manifest=manifest,
               literature_md=literature_md, found_references=ps.found_references,
-              reference_table=reference_table, validation_report=validation_report)
+              reference_table=reference_table, validation_report=validation_report,
+              paper_meta=paper_meta)
     return manifest

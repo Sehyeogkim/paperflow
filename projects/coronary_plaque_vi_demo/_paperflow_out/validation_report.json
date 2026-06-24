@@ -1,0 +1,88 @@
+{
+  "mode": "section",
+  "sections": {
+    "method": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "coherence",
+          "detail": "Near-duplicate restatement of the same procedural claim (use of the cost-effective pulsatile FSI on the 1,000-sample design for LAP/CP to produce PSS/ΔPSS/rupture index) appears across multiple paragraphs, creating unnecessary repetition. The most prominent redundancy occurs between the data-generation paragraph (M-02) and the input-design paragraph (M-04), which both restate the same FSI execution sentence.",
+          "paragraph": "M-04"
+        }
+      ]
+    },
+    "result": {
+      "ok": true,
+      "issues": []
+    },
+    "discussion": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "grounding",
+          "detail": "Malformed / nonstandard citation token '[cite:what_I_need — cite:cheng1993]' appears in the first paragraph, so the empirical support for the cited pathology/mechanistic reports is not properly referenced.",
+          "paragraph": "C-01"
+        },
+        {
+          "type": "grounding",
+          "detail": "Malformed / placeholder citation '[cite:what_I_need — cost‑effective FSI validation study]' appears in the limitations paragraph, leaving a claim about prior validation unsupported by a proper citation or a [DATA_NEEDED:] placeholder.",
+          "paragraph": "C-04"
+        },
+        {
+          "type": "grounding",
+          "detail": "The empirical claim that ΔPSS was observed to be a stronger predictor in the simulation/analysis is not explicitly tied to the listed support item E_sim_validation; the sentence should reference that support (or carry a [DATA_NEEDED:] placeholder).",
+          "paragraph": "C-01"
+        },
+        {
+          "type": "violation",
+          "detail": "Scope creep: paragraph C-04 names additional input files 'data/input_parameter/inflow.dat, data/input_parameter/elastance.dat' that are not listed in the paragraph's supports (contract lists only data/cost_effective_FSI_BC/bc.md and data/input_parameter/input.csv). Mentioning these specific files exceeds the declared supports.",
+          "paragraph": "C-04"
+        }
+      ]
+    },
+    "introduction": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "violation",
+          "detail": "Paragraph I-04 mentions a specific computational technique used in this paper ('맥동성 유체‑고체 연성(FSI) 해석을 포함하여'), which is disallowed by the paragraph's must_not_claim (description of the specific computational technique used in this paper should be saved for Methods).",
+          "paragraph": "I-04"
+        },
+        {
+          "type": "violation",
+          "detail": "Paragraph I-04 contains a clinical recommendation example ('예를 들어 재료 지배성이 확인되면 임상적으로는 형태학적 스크리닝보다 OCT 기반의 강성 특성화가 우선시되어야 할 것이다.') that is not part of the paragraph's contract claims (scope creep). The paragraph's claim_ids only include W3; this illustrative clinical prescription is an extra claim and should be removed.",
+          "paragraph": "I-04"
+        }
+      ]
+    },
+    "conclusion": {
+      "ok": true,
+      "issues": []
+    },
+    "abstract": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "grounding",
+          "detail": "Quantitative claims in paragraph I-05 lack explicit reference to a supports item or citation: 'VI 후보 6개' is unreferenced.",
+          "paragraph": "I-05"
+        },
+        {
+          "type": "grounding",
+          "detail": "Quantitative claim in paragraph I-05 '임상적으로 확립된 7개 고위험 플라크 특징' is unreferenced.",
+          "paragraph": "I-05"
+        },
+        {
+          "type": "grounding",
+          "detail": "Quantitative claim in paragraph I-05 'GPR surrogate를 학습(LAP 784 / CP 727 유효쌍)' lacks an explicit reference to a supports item.",
+          "paragraph": "I-05"
+        },
+        {
+          "type": "grounding",
+          "detail": "Quantitative claim in paragraph I-05 '약 1.5만 회 평가에 해당하는 Sobol' lacks an explicit reference to a supports item.",
+          "paragraph": "I-05"
+        }
+      ]
+    }
+  }
+}
