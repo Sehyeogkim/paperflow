@@ -13,7 +13,14 @@ Produce an ordered list of paragraph contracts for that section, IN FINAL DOCUME
 interleave out of order):
 - paragraph_id: prefix by section — "I-01" introduction, "M-01" method, "R-01" result,
   "C-01" conclusion (in order).
-- heading: the subsection heading from the outline if present (e.g. "2.1 ..."), else "".
+- heading: a short subsection TITLE that DIVIDES the section into readable subsections.
+  Group the paragraphs into 2-4 logical subsections and put the title on the FIRST
+  paragraph of each subsection ("" on the rest). If the outline already names subsections,
+  use those; otherwise INFER sensible ones from the claims (e.g. method ->
+  "Cost-effective pulsatile FSI", "Design space and sampling", "Vulnerability index &
+  surrogate sensitivity"). Title text ONLY — NO manual numbers like "2.1" (auto-numbered).
+  Long sections (method, result, discussion) MUST be subdivided; short ones (conclusion,
+  abstract) use a single "" heading.
 - purpose: one line — what this paragraph accomplishes.
 - claim_ids: which claim graph node ids this paragraph realizes (claim/evidence nodes).
 - supports: references the paragraph MUST ground to — data file paths, artifact node ids
@@ -23,7 +30,8 @@ interleave out of order):
   must_not_claim findings/results).
 - transition_from / transition_to: paragraph_ids for logical flow ("" at ends).
 
-Keep paragraphs aligned to the outline's granularity. Don't invent subsections.
+Keep paragraphs aligned to the outline's granularity, but DO group them under inferred
+subsection headings as described above so the section reads with clear structure.
 
 Return JSON:
 {

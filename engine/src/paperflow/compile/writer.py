@@ -34,6 +34,31 @@ def _guard_citations(text: str, allowed: set[str]) -> str:
     return re.sub(r"\[cite:([^\]]+)\]", repl, text)
 
 
+_LONG_DEC = re.compile(r"\d+\.\d{5,}")
+_PAREN_PATH = re.compile(r"[（(]\s*[^（()]*?data/[\w./-]+\.\w+[^（()]*?\s*[)）]")
+_BARE_PATH = re.compile(r"\s*(?:관련 파일[:：]?\s*|see\s+)?data/[\w./-]+\.\w+")
+
+
+def _round_decimals(text: str) -> str:
+    """Round any 5+-decimal number to 4 places (0.7506966098655802 -> 0.7507)."""
+    def r(m: re.Match) -> str:
+        return f"{float(m.group(0)):.4f}".rstrip("0").rstrip(".")
+    return _LONG_DEC.sub(r, text)
+
+
+def _strip_data_paths(text: str) -> str:
+    """A published paper never prints a data file path — drop it from the prose
+    (the file stays the source of record in the claim graph's provenance)."""
+    text = _PAREN_PATH.sub("", text)   # "(data/sobol/x.csv)" / "(관련 파일 data/..)"
+    text = _BARE_PATH.sub("", text)    # bare path mentions
+    # tidy dangling artifacts left where a path was removed from inside parentheses
+    text = re.sub(r"[（(]\s*[；;,]\s*", "(", text)   # "(; (Fig)" -> "((Fig)"
+    text = re.sub(r"\s*[；;,]\s*[)）]", ")", text)    # "..; )" -> "..)"
+    text = re.sub(r"[（(]\s*[)）]", "", text)         # empty "()" -> ""
+    text = re.sub(r"[ \t]{2,}", " ", text)
+    return re.sub(r"\s+([,.;)）])", r"\1", text)
+
+
 def _node_refs(graph: ClaimGraph, ids: list[str]) -> list[dict]:
     """Resolve contract node ids to typed nodes. A paragraph may reference claims,
     evidence, or artifacts — surface kind + how an artifact is displayed."""
@@ -63,8 +88,9 @@ def write_section(ps: ProjectState, graph: ClaimGraph, contract: SectionContract
     allowed = set(ps.all_citation_keys)  # existing store + literature-search finds
     data_values = values_for_section(ps.project_dir, contract.section,
                                      [d.path for d in ps.data_assets])
-    dv = (f"\n\n## DATA VALUES (real numbers from the author's files — use these verbatim "
-          f"where relevant; do NOT invent numbers)\n{data_values}") if data_values else ""
+    dv = (f"\n\n## DATA VALUES (real numbers from the author's files — use these where "
+          f"relevant, ROUNDED to <=4 decimals; do NOT invent numbers and do NOT print the "
+          f"file path in prose — attribute to a Table/Fig instead)\n{data_values}") if data_values else ""
     # hard journal limit: enforce the abstract word count from the (pre-fetched) guideline
     limit = ps.journal_constraints.get("abstract_word_limit") if contract.section == "abstract" else None
     limit_note = (f"\n\n## HARD LIMIT (obey strictly)\nThis is the ABSTRACT: it MUST be at most "
@@ -84,4 +110,6 @@ def write_section(ps: ProjectState, graph: ClaimGraph, contract: SectionContract
         "writer", prompt("writer_section"), user, step="writer",
         max_tokens=max_tokens, temperature=0.4,
     ).text.strip()
-    return _guard_citations(draft, allowed).strip() + "\n"  # never let invented keys survive
+    draft = _guard_citations(draft, allowed)      # never let invented keys survive
+    draft = _strip_data_paths(_round_decimals(draft))  # enforce the publishing rules deterministically
+    return draft.strip() + "\n"

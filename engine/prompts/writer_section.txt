@@ -10,9 +10,14 @@ Style (match the answer-key conventions):
   "EXISTING REFERENCE KEYS" in the inputs. For ANY source not in that list you MUST write
   [cite:what_I_need — <short description of the needed source>]. Do NOT invent a key such
   as smith2019 / author2020 — an invented key is a hallucinated citation and is forbidden.
-- Data files and figures are NOT citations. Refer to a data file in prose by its path
-  (e.g. "data/sobol/sobol_ind_LAP_VI1.csv") and to a figure as (Fig N). NEVER write a data
-  path or figure inside [cite:...].
+
+NUMBERS & DATA ATTRIBUTION (this is a published paper — write like one):
+- NEVER write a data file path in the prose. A reader of the journal never sees
+  "data/sobol/sobol_ind_LAP_VI2.csv". Forbidden in the body text.
+- Round every number to at most 4 decimal places (e.g. 0.7506966098655802 -> 0.7507).
+  Use the provided values, just rounded — never invent or alter the actual magnitude.
+- Attribute results to a FIGURE or TABLE, not a file: "(Table 2)" / "(Fig 3)". The
+  data file is the source of record but stays out of the prose.
 
 CRITICAL — anti-hallucination:
 - Use ONLY information present in the contracts, the claims, and the provided data summary.

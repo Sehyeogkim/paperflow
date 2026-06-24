@@ -1,0 +1,83 @@
+%% Reference template — the author's REAL Elsevier elsarticle submission.
+%% latex.assemble() should produce output matching THIS structure (CiBM journal format):
+%%   - \documentclass[preprint,12pt]{elsarticle}
+%%   - \begin{frontmatter}: \title, \author[..]{}, \ead, \cortext, \affiliation[..]{organization=,city=,country=},
+%%     \begin{abstract}..\end{abstract} (<=250 words), \begin{keyword} a \sep b \end{keyword}
+%%   - body \section{}\label{} flow CONTINUOUSLY (NO \clearpage between sections)
+%%   - tables and figures collected at the END, each preceded by \clearpage (wide ones in \begin{landscape})
+%%   - \bibliographystyle{elsarticle-num} + numbered \cite{a,b}
+\documentclass[preprint,12pt]{elsarticle}
+\usepackage{xcolor,color}
+\usepackage{soul}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{pdflscape}
+\usepackage{makecell}
+\usepackage{kotex}
+\usepackage{multirow}
+
+\journal{Computers in Biology and Medicine}
+
+\begin{document}
+\begin{frontmatter}
+
+\title{Efficient approximation of vessel wall stress under pulsatile hemodynamics using a snapshot-based coupling framework}
+
+\author[label1,label2]{Se Hyeog Kim}
+\author[label1]{Hyun Jin Kim\corref{cor1}}
+\ead{kim.hyunjin@kaist.ac.kr}
+\cortext[cor1]{Corresponding author}
+\affiliation[label1]{organization={Department of Mechanical Engineering, Korea Advanced Institute of Science and Technology},
+            city={Daejeon},
+            country={South Korea}}
+
+%% abstract (247/250 words) — confirms the ~250-word limit
+\begin{abstract}
+Fluid--structure interaction (FSI) analysis is essential for evaluating vessel-wall stress ... (<=250 words).
+\end{abstract}
+
+\begin{keyword}
+Fluid--structure interaction \sep Vessel wall stress \sep Reduced-order modeling \sep Pulsatile hemodynamics \sep Snapshot-based coupling
+\end{keyword}
+
+\end{frontmatter}
+
+%% Body sections flow continuously — NO \clearpage between them.
+\section{Introduction}
+\label{Introduction}
+... \cite{a, b} ...
+
+\section{Methods}
+\label{Methods}
+\subsection{Proposed snapshot-based coupling framework}
+\subsubsection{One-dimensional reduced-order hemodynamics}
+\begin{gather} ... \end{gather}
+
+\section{Results}
+\label{Results}
+\subsection{Idealized LAD coronary artery model}
+
+\section{Discussion}
+\label{discussion}
+
+\section{Conclusion}
+\label{conclusion}
+
+%% ===== END MATTER: tables then figures, each on its own \clearpage =====
+\clearpage
+\begin{table}[t]\centering
+\begin{tabular}{@{}lr@{}}\toprule a & b \\ \bottomrule \end{tabular}
+\caption{...}\label{tab:error}
+\end{table}
+
+\clearpage
+\begin{figure}\centering
+\includegraphics{Fig1.pdf}
+\caption{...}\label{fig:fig1}
+\end{figure}
+
+\clearpage
+\bibliographystyle{elsarticle-num}
+\bibliography{sn-bibliography.bib}
+\end{document}

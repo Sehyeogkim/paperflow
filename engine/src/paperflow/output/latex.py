@@ -1,25 +1,28 @@
-"""Assemble the drafted section markdown into a single LaTeX manuscript (paper.tex).
+"""Assemble the drafted section markdown into an Elsevier `elsarticle` manuscript (paper.tex).
 
-The prose already uses LaTeX math ($...$). This converts headings, citation markers and
-data-needed markers to LaTeX, escapes specials in plain prose (leaving math untouched),
-and wraps everything in an article skeleton + a thebibliography built from reference_table.
+Matches the author's real CiBM submission format (see reference_elsarticle.tex):
+  - \\documentclass[preprint,12pt]{elsarticle} + \\begin{frontmatter} (title/author/affiliation/
+    abstract/keyword)
+  - body \\section{} flow continuously (NO \\clearpage between them — that is thesis \\chapter style)
+  - inline thebibliography (numbered, elsarticle-num default)
 Compile with XeLaTeX/LuaLaTeX (kotex) for the Korean draft.
 """
 from __future__ import annotations
 
 import re
 
-# proper journal reading order (abstract handled separately)
+# proper journal reading order (abstract handled in the frontmatter)
 _BODY_ORDER = ["introduction", "method", "result", "discussion", "conclusion"]
 _TITLE = {"introduction": "Introduction", "method": "Methods", "result": "Results",
           "discussion": "Discussion", "conclusion": "Conclusion"}
 
-_PREAMBLE = r"""\documentclass[11pt]{article}
-\usepackage{amsmath,amssymb}
-\usepackage{graphicx}
-\usepackage[hidelinks]{hyperref}
-\usepackage{kotex}            % Korean draft — compile with XeLaTeX or LuaLaTeX
-\usepackage[margin=1in]{geometry}"""
+_PREAMBLE = r"""\documentclass[preprint,12pt]{elsarticle}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{kotex}            % Korean draft — compile with XeLaTeX or LuaLaTeX"""
 
 _MATH = re.compile(r"(\$\$.*?\$\$|\$[^$]*?\$)", re.DOTALL)
 _CITE_NEED = re.compile(r"\[cite:\s*what_i_need\s*[—\-:]\s*([^\]]+)\]", re.IGNORECASE)
@@ -85,24 +88,48 @@ def _bibliography(reference_table, found_references) -> str:
         doi = r.get("doi", "")
         line = f"\\bibitem{{{key}}} {authors} ({year}). {title}."
         if doi:
-            line += f" \\href{{https://doi.org/{doi}}}{{DOI: {doi}}}"
+            line += f" DOI: {_esc(doi)}"
         items.append(line)
     if not items:
         return ""
     return "\\begin{thebibliography}{99}\n" + "\n".join(items) + "\n\\end{thebibliography}"
 
 
+def _frontmatter(meta: dict, sections: dict[str, str]) -> str:
+    """elsarticle \\begin{frontmatter}: title, authors (+corresponding), affiliation,
+    abstract, keywords."""
+    title = _esc(meta.get("title") or "Untitled Manuscript")
+    affil = _esc(meta.get("affiliation") or meta.get("field") or "")
+    corr = (meta.get("corresponding") or "").strip()
+    authors = [a.strip() for a in re.split(r"[;,/]|\band\b", meta.get("authors") or "") if a.strip()]
+    authors = authors or ["Anonymous"]
+    corr_idx = -1
+    if corr:
+        tok = corr.split()[0]
+        corr_idx = next((i for i, n in enumerate(authors) if tok and tok in n), len(authors) - 1)
+    p = ["\\begin{frontmatter}", f"\\title{{{title}}}"]
+    for i, n in enumerate(authors):
+        p.append(f"\\author[label1]{{{_esc(n)}}}" + ("\\corref{cor1}" if i == corr_idx else ""))
+    if corr_idx >= 0:
+        p.append("\\cortext[cor1]{Corresponding author}")
+    p.append(f"\\affiliation[label1]{{organization={{{affil}}}, country={{}}}}")
+    if sections.get("abstract", "").strip():
+        p += ["\\begin{abstract}", _body(sections["abstract"]), "\\end{abstract}"]
+    kws = [k for k in (meta.get("keywords") or []) if str(k).strip()]
+    if kws:
+        p.append("\\begin{keyword}\n" + " \\sep ".join(_esc(str(k)) for k in kws) + "\n\\end{keyword}")
+    p.append("\\end{frontmatter}")
+    return "\n".join(p)
+
+
 def assemble(sections: dict[str, str], reference_table=None, found_references=None,
              meta: dict | None = None) -> str:
-    """Build the full paper.tex string from the section markdown + all cited references."""
+    """Build the full elsarticle paper.tex from the section markdown + all cited references."""
     meta = meta or {}
-    title = meta.get("title") or "Untitled Manuscript"
-    authors = meta.get("authors") or ""
-    parts = [_PREAMBLE, f"\\title{{{_esc(title)}}}", f"\\author{{{_esc(authors)}}}",
-             "\\date{}", "\\begin{document}", "\\maketitle"]
-    if sections.get("abstract", "").strip():
-        parts += ["\\begin{abstract}", _body(sections["abstract"]), "\\end{abstract}"]
-    for sec in _BODY_ORDER:
+    journal = _esc(meta.get("journal") or "")
+    head = _PREAMBLE + (f"\n\\journal{{{journal}}}" if journal else "")
+    parts = [head, "\\begin{document}", _frontmatter(meta, sections)]
+    for sec in _BODY_ORDER:  # body sections flow continuously (no \clearpage)
         if sections.get(sec, "").strip():
             parts += [f"\\section{{{_TITLE[sec]}}}", _body(sections[sec])]
     bib = _bibliography(reference_table, found_references)

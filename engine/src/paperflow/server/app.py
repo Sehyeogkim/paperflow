@@ -23,7 +23,9 @@ from fastapi import FastAPI, Form, UploadFile
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 
 from .. import config
-from ..flows.method_result import STEPS, run
+from ..compile import plan_chat
+from ..flows import method_result as mr
+from ..flows.method_result import GEN_STEPS, PLAN_STEPS
 from ..ingest.parse_inputs import ingest
 from ..requirement import detect
 
@@ -321,17 +323,49 @@ def set_file_note(body: dict) -> dict:
     return {"ok": True}
 
 
-def _run_job(job_id: str, project_dir: str, sections: list[str], litsearch: bool) -> None:
-    q = _JOBS[job_id]
-
+def _progress_fn(q: "queue.Queue"):
     def progress(msg: str) -> None:
         m = _STEP_RE.match(msg)
         step_id, label = (m.group(1), m.group(2)) if m else ("", msg)
         q.put({"type": "progress", "step_id": step_id, "label": label, "raw": msg})
+    return progress
 
+
+def _proposal(project_dir: str) -> dict | None:
+    """The plan the user reviews/edits in Stage 3 — claims, subheadings, figure sketches."""
+    pl = mr.load_plan(project_dir)
+    if pl is None:
+        return None
+    nodes = (pl.get("claim_graph") or {}).get("nodes") or []
+    claims = [{"id": n.get("id"), "text": n.get("text", "")}
+              for n in nodes if n.get("kind") == "claim"][:10]
+    figs = [{"id": f.get("id"), "kind": f.get("kind"), "message": f.get("message"),
+             "section": f.get("section"), "svg": f.get("svg", "")}
+            for f in (pl.get("figures") or {}).get("figures") or []]
+    return {
+        "classification": pl.get("classification"),
+        "main_contribution": pl.get("main_contribution", ""),
+        "claims": claims, "structure": pl.get("structure", {}),
+        "figures": figs, "sections": pl.get("sections", []),
+    }
+
+
+def _plan_job(job_id: str, project_dir: str, sections: list[str], litsearch: bool) -> None:
+    q = _JOBS[job_id]
+    try:
+        mr.plan(project_dir, sections, progress=_progress_fn(q), litsearch=litsearch)
+        q.put({"type": "plan_ready", "proposal": _proposal(project_dir)})
+    except Exception as e:
+        q.put({"type": "error", "error": str(e)[:400]})
+    finally:
+        q.put(None)
+
+
+def _run_job(job_id: str, project_dir: str) -> None:
+    q = _JOBS[job_id]
     try:
         out_dir = Path(project_dir) / "_paperflow_out"
-        manifest = run(project_dir, sections, out_dir, progress=progress, litsearch=litsearch)
+        manifest = mr.generate_from_plan(project_dir, out_dir, progress=_progress_fn(q))
         q.put({"type": "done",
                "classification": manifest.classification.value if manifest.classification else None,
                "input_tokens": manifest.total_input, "output_tokens": manifest.total_output,
@@ -361,25 +395,58 @@ def _unanswered(project_dir: str) -> list[str]:
     return [m.field for m in report.missing if m.question and m.field not in answered]
 
 
-@app.post("/api/projects/generate")
-def generate(body: dict) -> dict:
-    """Kick off the pipeline on a worker thread; return the job id + the step list."""
+_DEFAULT_SECTIONS = ["method", "result", "discussion", "introduction", "conclusion", "abstract"]
+
+
+@app.post("/api/projects/plan")
+def start_plan(body: dict) -> dict:
+    """Phase 1 — build the plan (claim graph + structure + figures) for the user to confirm."""
     project_dir = body["project_dir"]
     pending = _unanswered(project_dir)
-    if pending:  # hard gate — refuse to generate with unanswered questions
+    if pending:  # hard gate — must answer the questions before planning
         return {"error": "unanswered_questions", "pending": pending}
-    sections = body.get("sections") or ["method", "result", "discussion",
-                                        "introduction", "conclusion", "abstract"]
+    sections = body.get("sections") or _DEFAULT_SECTIONS
     litsearch = bool(body.get("litsearch", True))
     job_id = uuid.uuid4().hex[:12]
     _JOBS[job_id] = queue.Queue()
-    threading.Thread(target=_run_job, args=(job_id, project_dir, sections, litsearch),
+    threading.Thread(target=_plan_job, args=(job_id, project_dir, sections, litsearch),
                      daemon=True).start()
-    return {"job_id": job_id, "steps": [{"id": s, "label": label} for s, label in STEPS]}
+    return {"job_id": job_id, "steps": [{"id": s, "label": label} for s, label in PLAN_STEPS]}
 
 
-@app.get("/api/projects/generate/{job_id}/stream")
-def stream(job_id: str) -> StreamingResponse:
+@app.get("/api/projects/plan/state")
+def plan_state(project_dir: str) -> dict:
+    return {"proposal": _proposal(project_dir)}
+
+
+@app.post("/api/projects/chat")
+def chat(body: dict) -> dict:
+    """Stage-3 chat — refine the plan (subheadings / figure intent / contribution)."""
+    project_dir = body["project_dir"]
+    pl = mr.load_plan(project_dir)
+    if pl is None:
+        return {"error": "no_plan"}
+    reply, pl = plan_chat.revise(pl, body.get("history", []), body.get("message", ""))
+    mr.save_plan(project_dir, pl)
+    return {"reply": reply, "proposal": _proposal(project_dir)}
+
+
+@app.post("/api/projects/generate")
+def generate(body: dict) -> dict:
+    """Phase 2 — draft + validate + cite + output, from the CONFIRMED plan."""
+    project_dir = body["project_dir"]
+    pending = _unanswered(project_dir)
+    if pending:
+        return {"error": "unanswered_questions", "pending": pending}
+    if mr.load_plan(project_dir) is None:  # must plan + confirm first
+        return {"error": "no_plan"}
+    job_id = uuid.uuid4().hex[:12]
+    _JOBS[job_id] = queue.Queue()
+    threading.Thread(target=_run_job, args=(job_id, project_dir), daemon=True).start()
+    return {"job_id": job_id, "steps": [{"id": s, "label": label} for s, label in GEN_STEPS]}
+
+
+def _sse(job_id: str) -> StreamingResponse:
     q = _JOBS.get(job_id)
 
     def gen():
@@ -395,6 +462,16 @@ def stream(job_id: str) -> StreamingResponse:
 
     return StreamingResponse(gen(), media_type="text/event-stream",
                              headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
+
+@app.get("/api/projects/plan/{job_id}/stream")
+def plan_stream(job_id: str) -> StreamingResponse:
+    return _sse(job_id)
+
+
+@app.get("/api/projects/generate/{job_id}/stream")
+def stream(job_id: str) -> StreamingResponse:
+    return _sse(job_id)
 
 
 def serve(host: str = "127.0.0.1", port: int = 8765) -> None:

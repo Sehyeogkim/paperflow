@@ -144,6 +144,31 @@
   .paperbar .dl:hover { border-color: var(--accent); background: var(--highlight); }
   .paperframe { width: 100%; height: calc(100vh - 230px); min-height: 460px; border: 1px solid var(--border); border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); }
   .logdetails { margin-top: 12px; } .logdetails summary { cursor: pointer; font-size: .8rem; color: var(--muted); font-weight: 700; }
+  /* Stage 3: plan confirm + chat */
+  .planview { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; margin: 14px 0 10px; }
+  .plabel { font-size: .64rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: var(--accent); margin: 12px 0 5px; }
+  .pcontrib { font-size: .92rem; font-weight: 600; color: var(--ink); background: var(--highlight); border-radius: 8px; padding: 9px 11px; }
+  .claims { margin: 0 0 4px 16px; font-size: .84rem; color: var(--ink); } .claims li { margin: 3px 0; }
+  .secblock { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 11px; margin-bottom: 7px; box-shadow: var(--shadow); }
+  .sechead { font-size: .86rem; font-weight: 800; color: var(--ink); }
+  .secsum { font-size: .78rem; color: var(--muted); margin: 2px 0 4px; }
+  .subs { margin: 0 0 0 16px; font-size: .82rem; color: var(--accent); font-weight: 600; } .subs li { margin: 2px 0; }
+  .nosubs { font-size: .74rem; color: var(--muted); font-style: italic; }
+  .figgrid { display: flex; flex-direction: column; gap: 9px; }
+  .figcard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 9px; box-shadow: var(--shadow); }
+  .figcard svg { display: block; }
+  .figmeta { font-size: .76rem; color: var(--muted); margin-top: 5px; line-height: 1.45; }
+  .figmeta .fkind { font-family: ui-monospace, Menlo, monospace; font-size: .58rem; font-weight: 700; text-transform: uppercase; color: var(--accent); background: var(--highlight); padding: 2px 6px; border-radius: 5px; }
+  .chatwrap { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; }
+  .chatlog { display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; margin-bottom: 10px; }
+  .cmsg { font-size: .86rem; line-height: 1.55; padding: 8px 12px; border-radius: 12px; max-width: 90%; }
+  .cmsg.user { align-self: flex-end; background: var(--accent); color: #fff; } .cmsg.user b { display: none; }
+  .cmsg.agent { align-self: flex-start; background: var(--code-bg); color: var(--ink); } .cmsg.agent b { display: none; }
+  .cmsg.muted { opacity: .6; }
+  .chatrow { display: flex; gap: 8px; align-items: flex-end; }
+  .chatrow textarea { flex: 1; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); font: inherit; font-size: .88rem; color: var(--ink); padding: 10px 12px; resize: vertical; min-height: 42px; line-height: 1.5; }
+  .chatrow textarea:focus { outline: none; border-color: var(--accent); }
+  .send.go { background: var(--ink); }
   .composer-bar { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
   .send { border: none; background: var(--accent); color: #fff; font: inherit; font-size: .86rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); cursor: pointer; box-shadow: var(--shadow); }
   .send:disabled { opacity: .45; cursor: not-allowed; }
@@ -714,9 +739,9 @@ $("answerBtn").onclick = async () => {
       const v = ta.value.trim(); if (v) answers[ta.dataset.field] = v;  // '모름' included
     });
     await postJSON("/api/projects/answers", {project_dir: projectDir, answers});
-    $("answerNote").textContent = `${Object.keys(answers).length}개 저장됨 · 생성 시작`;
+    $("answerNote").textContent = `${Object.keys(answers).length}개 저장됨 · 계획 수립`;
     $("dock").style.display = "none";
-    await startGenerate();
+    await startPlan();   // Stage 3: build the plan, then confirm via chat
   } catch (e) { $("answerNote").textContent = "오류: " + e; refreshAnswerGate(); }
 };
 
@@ -748,6 +773,83 @@ function markAllDone() {
 }
 let logLines = [];
 function logLine(s) { logLines.push(s); if (logLines.length>200) logLines.shift(); const el=$("logbox"); if (el){ el.textContent=logLines.join("\n"); el.scrollTop=el.scrollHeight; } }
+
+// ---------- Stage 3: plan -> confirm via chat -> generate ----------
+let planProposal = null, chatHistory = [];
+const SEC_LABEL = {introduction:"Introduction", method:"Methods", result:"Results", discussion:"Discussion", conclusion:"Conclusion", abstract:"Abstract"};
+async function startPlan() {
+  logLines = []; chatHistory = [];
+  $("canvas").innerHTML = `<div class="crumb">제작 계획</div>
+    <div class="card"><h3>계획 수립 중… <span class="badge">planning</span></h3>
+    <p class="muted">claim graph · 섹션 구조 · figure를 설계하고 있어요. 우측 트리 참고.</p>
+    <div class="log" id="logbox"></div></div>`;
+  const res = await postJSON("/api/projects/plan", {project_dir: projectDir});
+  if (res.error === "unanswered_questions") {
+    showStatus("미응답", "계획 차단", `미응답 질문 ${(res.pending||[]).length}개. 답하거나 '모름'을 눌러주세요.`, "warn");
+    $("dock").style.display = "block"; refreshAnswerGate(); return;
+  }
+  renderPipeline(res.steps);
+  const es = new EventSource(`/api/projects/plan/${res.job_id}/stream`);
+  es.onmessage = (ev) => {
+    const m = JSON.parse(ev.data);
+    if (m.type === "progress") { if (m.step_id && stepIndex[m.step_id]) setStepActive(m.step_id, m.label); logLine(m.raw||m.label); }
+    else if (m.type === "plan_ready") { markAllDone(); es.close(); planProposal = m.proposal;
+      chatHistory = [{role:"assistant", content:"아래 구성으로 작성할게요. 소제목·figure를 보고 바꿀 게 있으면 채팅으로 말해주세요. 좋으면 ‘제작 시작’을 누르면 됩니다."}];
+      renderPlanView(); }
+    else if (m.type === "error") { es.close(); showStatus("실패","오류", m.error, "warn"); }
+  };
+  es.onerror = () => es.close();
+}
+function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function renderPlanView() {
+  const p = planProposal || {};
+  const claims = (p.claims||[]).map(c => `<li>${esc(c.text)}</li>`).join("");
+  const structure = (p.sections||[]).map(sec => {
+    const s = (p.structure||{})[sec] || {}; const subs = (s.subheadings||[]);
+    const subhtml = subs.length ? `<ul class="subs">${subs.map(h=>`<li>${esc(h)}</li>`).join("")}</ul>` : `<div class="nosubs">소제목 없음</div>`;
+    return `<div class="secblock"><div class="sechead">${esc(SEC_LABEL[sec]||sec)}</div>
+      <div class="secsum">${esc(s.summary||"")}</div>${subhtml}</div>`;
+  }).join("");
+  const figs = (p.figures||[]).map(f => `<div class="figcard">${f.svg||""}
+      <div class="figmeta"><span class="fkind">${esc(f.kind||"figure")}</span> ${esc(f.section||"")}<br>${esc(f.message||"")}</div></div>`).join("");
+  const chat = chatHistory.map(m => `<div class="cmsg ${m.role}"><b>${m.role==="user"?"나":"agent"}</b> ${esc(m.content)}</div>`).join("");
+  $("canvas").innerHTML = `<div class="crumb">제작 계획 · 확인/수정</div>
+    <h2 class="title serif">제작 계획 — 확인하고 수정하세요</h2>
+    <div class="ehint">분류 <b>${esc(p.classification||"-")}</b>. claim graph·소제목·figure를 검토하고, 바꿀 게 있으면 아래 채팅으로. 좋으면 <b>제작 시작</b>.</div>
+    <div class="planview">
+      <div class="plancol">
+        <div class="plabel">핵심 기여</div><div class="pcontrib">${esc(p.main_contribution||"")}</div>
+        <div class="plabel">주요 주장</div><ul class="claims">${claims||"<li class='muted'>(없음)</li>"}</ul>
+        <div class="plabel">섹션 구조 · 소제목</div>${structure}
+      </div>
+      <div class="plancol">
+        <div class="plabel">Figure / Table 설계 (스케치)</div>
+        <div class="figgrid">${figs||"<div class='muted'>(없음)</div>"}</div>
+      </div>
+    </div>
+    <div class="chatwrap"><div class="chatlog" id="chatlog">${chat}</div>
+      <div class="chatrow">
+        <textarea id="chatInput" rows="1" placeholder="수정 요청… 예) Result 소제목을 '검증·선정·민감도'로 바꿔줘"></textarea>
+        <button class="send" id="chatSend">보내기</button>
+        <button class="send go" id="startGenBtn">▶ 제작 시작</button>
+      </div></div>`;
+  $("chatSend").onclick = sendChat;
+  $("startGenBtn").onclick = startGenerate;
+  const ci = $("chatInput");
+  ci.onkeydown = (e) => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); sendChat(); } };
+  const cl = $("chatlog"); if (cl) cl.scrollTop = cl.scrollHeight;
+}
+async function sendChat() {
+  const ci = $("chatInput"); const msg = (ci.value||"").trim(); if (!msg) return;
+  chatHistory.push({role:"user", content: msg}); ci.value = ""; ci.disabled = true;
+  renderPlanView(); $("chatlog").innerHTML += `<div class="cmsg agent muted">생각 중…</div>`;
+  try {
+    const r = await postJSON("/api/projects/chat", {project_dir: projectDir, message: msg, history: chatHistory});
+    if (r.proposal) planProposal = r.proposal;
+    chatHistory.push({role:"assistant", content: r.reply || "반영했어요."});
+  } catch (e) { chatHistory.push({role:"assistant", content:"오류: " + e}); }
+  renderPlanView();
+}
 
 async function startGenerate() {
   logLines = [];
