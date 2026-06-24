@@ -159,6 +159,21 @@
   .figcard svg { display: block; }
   .figmeta { font-size: .76rem; color: var(--muted); margin-top: 5px; line-height: 1.45; }
   .figmeta .fkind { font-family: ui-monospace, Menlo, monospace; font-size: .58rem; font-weight: 700; text-transform: uppercase; color: var(--accent); background: var(--highlight); padding: 2px 6px; border-radius: 5px; }
+  /* Stage 3: claim graph cards */
+  .graphgrid { display: flex; flex-direction: column; gap: 9px; }
+  .gcard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 9px 11px; box-shadow: var(--shadow); }
+  .gclaim { font-size: .85rem; font-weight: 800; color: var(--ink); margin-bottom: 5px; }
+  .gsub { border-left: 2px solid var(--border); padding: 3px 0 3px 9px; margin: 5px 0 0 4px; }
+  .gsubtext { font-size: .8rem; color: var(--ink); margin-bottom: 3px; }
+  .gchips { display: flex; flex-wrap: wrap; gap: 4px; }
+  .gchip { font-size: .66rem; font-weight: 700; padding: 2px 7px; border-radius: 999px; border: 1px solid var(--border); }
+  .gchip.ev { color: #2f6f4f; background: #eaf5ee; border-color: #cfe6d8; }
+  .gchip.me { color: var(--accent); background: var(--highlight); }
+  .gchip.da { color: #6b5e54; background: var(--code-bg); }
+  .gchip.fi { color: #7a5cc2; background: #efeafb; border-color: #ddd2f2; }
+  .gchip.re { color: #8b4513; background: #f4ece0; border-color: #e3d4bf; }
+  .gnone { font-size: .72rem; color: var(--muted); font-style: italic; }
+  .ghint { font-size: .74rem; color: var(--muted); margin: -2px 0 8px; }
   .chatwrap { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; }
   .chatlog { display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; margin-bottom: 10px; }
   .cmsg { font-size: .86rem; line-height: 1.55; padding: 8px 12px; border-radius: 12px; max-width: 90%; }
@@ -812,6 +827,18 @@ function renderPlanView() {
   }).join("");
   const figs = (p.figures||[]).map(f => `<div class="figcard">${f.svg||""}
       <div class="figmeta"><span class="fkind">${esc(f.kind||"figure")}</span> ${esc(f.section||"")}<br>${esc(f.message||"")}</div></div>`).join("");
+  const chips = (arr, cls) => (arr||[]).map(x => `<span class="gchip ${cls}">${esc(x.text||x.id||"")}</span>`).join("");
+  const subRow = (sc) => {
+    const groups = [
+      chips(sc.evidence, "ev"), chips(sc.methods, "me"), chips(sc.data, "da"),
+      chips(sc.figures, "fi"), chips(sc.refs, "re"),
+    ].filter(Boolean).join("");
+    return `<div class="gsub"><div class="gsubtext">${esc(sc.text||"")}</div>
+      <div class="gchips">${groups || "<span class='gnone'>근거 노드 없음</span>"}</div></div>`;
+  };
+  const graph = (p.graph||[]).map(g => `<div class="gcard">
+      <div class="gclaim">${esc((g.claim||{}).text||"")}</div>
+      ${(g.subclaims||[]).map(subRow).join("")}</div>`).join("");
   const chat = chatHistory.map(m => `<div class="cmsg ${m.role}"><b>${m.role==="user"?"나":"agent"}</b> ${esc(m.content)}</div>`).join("");
   $("canvas").innerHTML = `<div class="crumb">제작 계획 · 확인/수정</div>
     <h2 class="title serif">제작 계획 — 확인하고 수정하세요</h2>
@@ -821,6 +848,8 @@ function renderPlanView() {
         <div class="plabel">핵심 기여</div><div class="pcontrib">${esc(p.main_contribution||"")}</div>
         <div class="plabel">주요 주장</div><ul class="claims">${claims||"<li class='muted'>(없음)</li>"}</ul>
         <div class="plabel">섹션 구조 · 소제목</div>${structure}
+        <div class="plabel">Claim graph · 주장별 근거</div>
+        <div class="graphgrid">${graph||"<div class='muted'>(없음)</div>"}</div>
       </div>
       <div class="plancol">
         <div class="plabel">Figure / Table 설계 (스케치)</div>
@@ -828,6 +857,7 @@ function renderPlanView() {
       </div>
     </div>
     <div class="chatwrap"><div class="chatlog" id="chatlog">${chat}</div>
+      <div class="ghint">claim graph도 채팅으로 편집할 수 있어요. 예) E1을 C1.2가 아니라 C1.1을 지지하게 바꿔줘</div>
       <div class="chatrow">
         <textarea id="chatInput" rows="1" placeholder="수정 요청… 예) Result 소제목을 '검증·선정·민감도'로 바꿔줘"></textarea>
         <button class="send" id="chatSend">보내기</button>

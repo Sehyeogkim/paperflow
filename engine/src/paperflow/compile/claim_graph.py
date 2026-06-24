@@ -1,9 +1,12 @@
-"""core message + outline -> ClaimGraph (reasoning tier).
+"""core message + outline -> ClaimGraph (reasoning tier), built in TWO passes:
+  Pass A — claim skeleton (main claims + subclaims).
+  Pass B — grounding (evidence / method / data / warrant / source / artifact + edges).
 
-The LLM occasionally emits out-of-vocabulary node kinds / edge relations (e.g. an edge
-rel 'produces' or 'enables'). The typed schema is strict, so we coerce unknown values to
-the nearest valid one and drop dangling edges BEFORE validation — one bad edge must never
-crash a whole run.
+A typed VALIDATOR then runs (not a silent sanitizer): node kinds and edge relations are
+coerced from known synonyms to the canonical vocabulary; UNKNOWN relations are dropped
+(never coerced to 'supports'); edges whose src->dst kinds violate the allowed matrix are
+dropped; dangling edges are dropped. One bad edge never crashes a run, and a wrong edge
+never silently passes as valid.
 """
 from __future__ import annotations
 
@@ -12,54 +15,106 @@ from ..schemas.claim import ClaimGraph
 from ..schemas.project_state import ProjectState
 from ..util import inputs_block, prompt
 
-_VALID_NODE = {"claim", "evidence", "artifact", "warrant", "method", "source"}
-_VALID_EDGE = {"supports", "visualizes", "derived_from", "qualifies", "contradicts"}
+_VALID_NODE = {"claim", "evidence", "method", "data", "warrant", "source", "artifact"}
+_VALID_EDGE = {"supports", "produces", "uses", "derived_from", "part_of",
+               "visualizes", "justifies", "qualifies", "contradicts"}
 
-# synonyms the model tends to produce -> canonical kind/rel (valid values map to themselves)
 _NODE_MAP = {**{k: k for k in _VALID_NODE},
              "assertion": "claim", "contribution": "claim", "hypothesis": "claim",
              "conclusion": "claim", "subclaim": "claim", "objective": "claim",
-             "result": "evidence", "finding": "evidence", "data": "evidence",
-             "observation": "evidence", "measurement": "evidence", "datum": "evidence",
-             "figure": "artifact", "table": "artifact", "chart": "artifact",
-             "plot": "artifact", "panel": "artifact", "visualization": "artifact",
+             "result": "evidence", "finding": "evidence", "observation": "evidence",
+             "measurement": "evidence", "datum": "evidence",
+             "dataset": "data", "file": "data", "csv": "data", "output": "data",
+             "procedure": "method", "technique": "method", "approach": "method",
+             "protocol": "method", "submethod": "method", "step": "method",
              "assumption": "warrant", "principle": "warrant", "background": "warrant",
              "rationale": "warrant", "premise": "warrant",
-             "procedure": "method", "technique": "method", "approach": "method", "protocol": "method",
-             "reference": "source", "citation": "source", "paper": "source", "prior_work": "source"}
+             "reference": "source", "citation": "source", "paper": "source", "prior_work": "source",
+             "figure": "artifact", "table": "artifact", "chart": "artifact",
+             "plot": "artifact", "equation": "artifact", "panel": "artifact"}
+# known synonyms -> canonical relation. UNKNOWN relations are intentionally absent:
+# they get dropped, not mapped to 'supports'.
 _EDGE_MAP = {**{r: r for r in _VALID_EDGE},
-             "enables": "supports", "produces": "supports", "leads_to": "supports",
-             "causes": "supports", "results_in": "supports", "yields": "supports",
-             "implies": "supports", "informs": "supports", "motivates": "supports",
-             "demonstrates": "supports", "explains": "supports", "support": "supports",
+             "support": "supports", "demonstrates": "supports", "confirms": "supports",
+             "shows_that": "supports", "evidences": "supports",
+             "generates": "produces", "yields": "produces", "outputs": "produces",
+             "computes": "produces",
+             "consumes": "uses", "takes": "uses", "requires": "uses", "requires_input": "uses",
+             "computed_from": "derived_from", "based_on": "derived_from", "from": "derived_from",
+             "calculated_from": "derived_from",
+             "subprocess_of": "part_of", "component_of": "part_of", "belongs_to": "part_of",
+             "step_of": "part_of",
              "shows": "visualizes", "displays": "visualizes", "illustrates": "visualizes",
-             "depicts": "visualizes", "presents": "visualizes", "visualize": "visualizes",
-             "from": "derived_from", "based_on": "derived_from", "computed_from": "derived_from",
-             "uses": "derived_from", "derives": "derived_from", "measured_from": "derived_from",
+             "depicts": "visualizes", "presents": "visualizes",
+             "licenses": "justifies", "grounds": "justifies", "motivates": "justifies",
              "limits": "qualifies", "caveats": "qualifies", "restricts": "qualifies",
-             "weakens": "qualifies", "constrains": "qualifies",
+             "weakens": "qualifies",
              "refutes": "contradicts", "conflicts": "contradicts", "disagrees": "contradicts"}
 
+# allowed (src_kind, dst_kind) per relation — directional
+_ALLOWED_EDGE: dict[str, set[tuple[str, str]]] = {
+    "supports": {("evidence", "claim"), ("claim", "claim")},
+    "produces": {("method", "data"), ("method", "evidence")},
+    "uses": {("method", "data")},
+    "derived_from": {("evidence", "data"), ("evidence", "evidence"), ("data", "data"),
+                     ("data", "method")},
+    "part_of": {("method", "method"), ("claim", "claim")},
+    "visualizes": {("artifact", "evidence"), ("artifact", "method"), ("artifact", "data")},
+    "justifies": {("warrant", "claim"), ("source", "warrant"), ("warrant", "method"),
+                  ("source", "claim")},
+    "qualifies": {("warrant", "claim"), ("claim", "claim")},
+    "contradicts": {("evidence", "claim"), ("claim", "claim")},
+}
 
-def _sanitize(raw: dict) -> dict:
+
+def _coerce_kind(k) -> str:
+    return _NODE_MAP.get(str(k).strip().lower(), "claim")
+
+
+def validate(raw: dict) -> dict:
+    """Coerce node kinds, drop unknown/invalid/dangling edges. Returns a clean dict."""
     nodes = [n for n in (raw.get("nodes") or []) if isinstance(n, dict) and n.get("id")]
     for n in nodes:
-        n["kind"] = _NODE_MAP.get(str(n.get("kind", "")).strip().lower(), "claim")
+        n["kind"] = _coerce_kind(n.get("kind"))
         n.setdefault("text", "")
     raw["nodes"] = nodes
-    ids = {n.get("id") for n in nodes}
-    edges = []
+    kind_of = {n["id"]: n["kind"] for n in nodes}
+
+    out_edges, idx = [], 1
     for e in raw.get("edges") or []:
-        if not isinstance(e, dict):
-            continue
-        e["rel"] = _EDGE_MAP.get(str(e.get("rel", "")).strip().lower(), "supports")
-        if e.get("src") in ids and e.get("dst") in ids:  # drop edges to missing nodes
-            edges.append(e)
-    raw["edges"] = edges
+        if not isinstance(e, dict) or e.get("src") not in kind_of or e.get("dst") not in kind_of:
+            continue  # dangling -> drop
+        rel = _EDGE_MAP.get(str(e.get("rel", "")).strip().lower())
+        if rel is None:
+            continue  # UNKNOWN relation -> drop (never coerce to supports)
+        if (kind_of[e["src"]], kind_of[e["dst"]]) not in _ALLOWED_EDGE.get(rel, set()):
+            continue  # wrong src->dst kinds -> drop
+        e["rel"] = rel
+        if not e.get("id"):
+            e["id"] = f"L{idx}"
+        idx += 1
+        out_edges.append(e)
+    raw["edges"] = out_edges
     return raw
 
 
 def build(ps: ProjectState) -> ClaimGraph:
-    raw = client.call_json("reasoning", prompt("claim_graph"), inputs_block(ps),
-                           step="claim_graph", max_tokens=4096)
-    return ClaimGraph.model_validate(_sanitize(raw))
+    ib = inputs_block(ps)
+    # Pass A — claim skeleton
+    a = client.call_json("reasoning", prompt("claim_graph_a"), ib, step="claim_graph.a", max_tokens=2500)
+    claims = [c for c in (a.get("claims") or []) if isinstance(c, dict) and c.get("id")]
+    for c in claims:
+        c["kind"] = "claim"
+    claim_block = "\n".join(f"- {c['id']} [{c.get('section', '')}] {c.get('text', '')}" for c in claims)
+
+    # Pass B — grounding for the given claims
+    b = client.call_json("reasoning", prompt("claim_graph_b"),
+                         f"{ib}\n\n## CLAIM SKELETON (do not restate these)\n{claim_block}",
+                         step="claim_graph.b", max_tokens=4096)
+
+    merged = {
+        "main_contribution": a.get("main_contribution", ""),
+        "nodes": claims + [n for n in (b.get("nodes") or []) if isinstance(n, dict)],
+        "edges": (a.get("claim_edges") or []) + (b.get("edges") or []),
+    }
+    return ClaimGraph.model_validate(validate(merged))

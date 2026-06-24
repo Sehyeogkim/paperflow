@@ -337,6 +337,7 @@ def _proposal(project_dir: str) -> dict | None:
     if pl is None:
         return None
     nodes = (pl.get("claim_graph") or {}).get("nodes") or []
+    edges = (pl.get("claim_graph") or {}).get("edges") or []
     claims = [{"id": n.get("id"), "text": n.get("text", "")}
               for n in nodes if n.get("kind") == "claim"][:10]
     figs = [{"id": f.get("id"), "kind": f.get("kind"), "message": f.get("message"),
@@ -347,7 +348,75 @@ def _proposal(project_dir: str) -> dict | None:
         "main_contribution": pl.get("main_contribution", ""),
         "claims": claims, "structure": pl.get("structure", {}),
         "figures": figs, "sections": pl.get("sections", []),
+        "graph": _graph_view(nodes, edges),
     }
+
+
+def _graph_view(nodes: list, edges: list) -> list:
+    """Per-MAIN-claim grouped view of the claim graph for the Stage-3 UI. For each claim
+    (main + its subclaims) attach the directly-connected supporting nodes by kind."""
+    by_id = {n.get("id"): n for n in nodes if isinstance(n, dict) and n.get("id")}
+    claims = [n for n in nodes if isinstance(n, dict) and n.get("kind") == "claim" and n.get("id")]
+    subs_of: dict = {}
+    for c in claims:
+        pid = c.get("parent_id")
+        if pid:
+            subs_of.setdefault(pid, []).append(c)
+    mains = [c for c in claims if not c.get("parent_id")] or claims
+
+    def support(claim_id):
+        ev, methods, data, figures, refs = [], [], [], [], []
+        for e in edges:
+            if not isinstance(e, dict) or e.get("dst") != claim_id:
+                continue
+            src = by_id.get(e.get("src"))
+            if not src:
+                continue
+            rel, kind = e.get("rel"), src.get("kind")
+            item = {"id": src.get("id"), "text": src.get("text", "")}
+            if rel == "supports" and kind == "evidence":
+                ev.append(item)
+            elif rel == "justifies" and kind in ("warrant", "source"):
+                refs.append(item)
+        # for each supporting evidence, pull its method/data/artifact via edges
+        ev_ids = {x["id"] for x in ev}
+        for e in edges:
+            if not isinstance(e, dict):
+                continue
+            src, dst = by_id.get(e.get("src")), by_id.get(e.get("dst"))
+            rel = e.get("rel")
+            if not src or not dst:
+                continue
+            item_src = {"id": src.get("id"), "text": src.get("text", "")}
+            # method produces evidence/data ; evidence derived_from data ; method uses data
+            if dst.get("id") in ev_ids and rel == "produces" and src.get("kind") == "method":
+                methods.append(item_src)
+            if src.get("id") in ev_ids and rel == "derived_from" and dst.get("kind") == "data":
+                data.append({"id": dst.get("id"), "text": dst.get("text", "")})
+            if rel == "produces" and src.get("kind") == "method" and dst.get("kind") == "data" \
+                    and dst.get("id") in {d["id"] for d in data}:
+                methods.append(item_src)
+            # artifact visualizes evidence
+            if rel == "visualizes" and src.get("kind") == "artifact" and dst.get("id") in ev_ids:
+                figures.append(item_src)
+
+        def dedup(xs):
+            seen, out = set(), []
+            for x in xs:
+                if x["id"] not in seen:
+                    seen.add(x["id"]); out.append(x)
+            return out
+        return {"evidence": dedup(ev), "methods": dedup(methods), "data": dedup(data),
+                "figures": dedup(figures), "refs": dedup(refs)}
+
+    out = []
+    for m in mains:
+        subclaims = []
+        for c in [m, *subs_of.get(m.get("id"), [])]:
+            subclaims.append({"id": c.get("id"), "text": c.get("text", ""), **support(c.get("id"))})
+        out.append({"claim": {"id": m.get("id"), "text": m.get("text", "")},
+                    "subclaims": subclaims})
+    return out
 
 
 def _plan_job(job_id: str, project_dir: str, sections: list[str], litsearch: bool) -> None:

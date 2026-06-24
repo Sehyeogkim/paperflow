@@ -15,6 +15,7 @@ import json
 import os
 from concurrent.futures import ThreadPoolExecutor
 
+from . import graph_slice
 from ..llm import client
 from ..schemas.claim import ClaimGraph, SectionContract
 from ..util import prompt
@@ -40,7 +41,14 @@ def validate_section(graph: ClaimGraph, contract: SectionContract, section_md: s
         "paragraphs": [{**p.model_dump(), "nodes": _node_texts(graph, p.claim_ids)}
                        for p in contract.paragraphs],
     }, ensure_ascii=False, indent=2)
-    user = f"## SECTION CONTRACT\n{contract_block}\n\n## DRAFTED SECTION\n{section_md}"
+    # The section's LOCAL SUBGRAPH (grounding chain of every claim in the section) — so the
+    # validator checks evidence/figure/method attribution against the ACTUAL grounding, not
+    # just the claim text.
+    section_claims = [cid for p in contract.paragraphs for cid in p.claim_ids]
+    grounding = graph_slice.context_text(graph, section_claims)
+    user = (f"## SECTION CONTRACT\n{contract_block}\n\n## GROUNDING (the claims' local "
+            f"subgraph — check attribution against this)\n{grounding}\n\n"
+            f"## DRAFTED SECTION\n{section_md}")
     try:
         res = client.call_json("reasoning", prompt("section_validator"), user,
                                step="validator", max_tokens=6000)

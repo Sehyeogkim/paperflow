@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import re
 
+from . import graph_slice
 from ..ingest.load_data import values_for_section
 from ..llm import client
 from ..schemas.claim import ClaimGraph, SectionContract
@@ -76,8 +77,12 @@ def _node_refs(graph: ClaimGraph, ids: list[str]) -> list[dict]:
 
 
 def _paragraph_briefs(graph: ClaimGraph, contract: SectionContract) -> str:
-    """Ordered paragraph contracts with their claim/evidence/artifact nodes resolved."""
-    briefs = [{**c.model_dump(), "nodes": _node_refs(graph, c.claim_ids)}
+    """Ordered paragraph contracts with their claim/evidence/artifact nodes resolved AND
+    the claim's LOCAL GROUNDING SUBGRAPH (evidence/method/data/warrant/source/artifact +
+    edge rationales) so the writer grounds the prose in real data, not just claim text."""
+    briefs = [{**c.model_dump(),
+               "nodes": _node_refs(graph, c.claim_ids),
+               "graph_context": graph_slice.context_text(graph, c.claim_ids, c.context_node_ids)}
               for c in contract.paragraphs]
     return json.dumps(briefs, ensure_ascii=False, indent=2)
 

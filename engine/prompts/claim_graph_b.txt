@@ -1,0 +1,60 @@
+You build PASS B of a typed claim graph: the GROUNDING — how each claim is supported by
+evidence, which methods/data produced that evidence, what principles/references license
+it, and which figures/tables display it. Do NOT write prose. Do NOT restate the claims
+(they are given); only ADD the supporting nodes and edges.
+
+You are given the CLAIM SKELETON (claim nodes) plus the core message, outline, data files,
+and found references.
+
+Node kinds you create (NOT claim):
+- evidence  : a result-proposition that backs a claim (the interpreted finding).
+- method    : an action that produced or analyzed data. Decompose into submethods with
+              parent_id when steps are distinct (e.g. M1 pipeline -> M1.1 geometry,
+              M1.2 simulation, M1.3 postprocessing). Set subtype (simulation|preprocessing|
+              analysis|validation|statistical_analysis|...).
+- data      : a REAL object — a CSV/file/simulation-output/measurement. Set provenance to
+              the actual file path (e.g. "data/sobol/sobol_ind_LAP_VI2.csv") or "[DATA_NEEDED]".
+- warrant   : a scientific principle that licenses an evidence->claim link.
+- source    : an external reference (id = cite key; provenance = cite key).
+- artifact  : a figure/table/equation that DISPLAYS evidence or method. Set kind="artifact"
+              and represented_as = "figure"|"table"|"text"; ids like "F3"/"T2".
+
+Edges (DIRECTION MATTERS — use exactly these src->dst kinds):
+- "produces"     method -> data | method -> evidence
+- "uses"         method -> data
+- "derived_from" evidence -> data | evidence -> evidence | data -> data
+- "part_of"      method -> method   (submethod -> parent method)
+- "supports"     evidence -> claim
+- "justifies"    warrant -> claim | source -> warrant
+- "visualizes"   artifact -> evidence | artifact -> method
+- "qualifies"    warrant -> claim | claim -> claim   (limitations/caveats)
+- "contradicts"  evidence -> claim | claim -> claim  (only explicit alternatives)
+Give every "supports"/"justifies" edge a short rationale (WHY it holds) and a
+grounding_status: "grounded" (data present), "partial", or "missing" ([DATA_NEEDED]).
+
+Rules:
+- Every evidence MUST trace to a data node or method (no floating evidence).
+- A data file path is a `data` node, NEVER a bare string inside an edge.
+- NEVER invent numbers, results, or citations — mark gaps with data node provenance
+  "[DATA_NEEDED]" and grounding_status "missing".
+
+Return ONLY JSON (do NOT include the claim nodes again):
+{
+  "nodes": [
+    {"id":"M1","kind":"method","subtype":"simulation","text":"...","section":"method"},
+    {"id":"M1.2","kind":"method","subtype":"analysis","parent_id":"M1","text":"...","section":"method"},
+    {"id":"D3","kind":"data","text":"Sobol indices (LAP VI2)","section":"result","provenance":"data/sobol/sobol_ind_LAP_VI2.csv"},
+    {"id":"E1","kind":"evidence","text":"...","section":"result"},
+    {"id":"F3","kind":"artifact","represented_as":"figure","text":"sensitivity bar chart","section":"result"},
+    {"id":"W1","kind":"warrant","text":"...","section":"discussion"},
+    {"id":"R12","kind":"source","text":"prior fatigue study","section":"introduction","provenance":"smith2019"}
+  ],
+  "edges": [
+    {"src":"M1.2","dst":"M1","rel":"part_of"},
+    {"src":"M1","dst":"D3","rel":"produces"},
+    {"src":"E1","dst":"D3","rel":"derived_from"},
+    {"src":"E1","dst":"C1.1","rel":"supports","rationale":"...","grounding_status":"grounded"},
+    {"src":"F3","dst":"E1","rel":"visualizes"},
+    {"src":"R12","dst":"W1","rel":"justifies"}
+  ]
+}

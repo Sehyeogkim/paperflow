@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 
+from . import graph_slice
 from ..llm import client
 from ..schemas.claim import ClaimGraph, SectionContract
 from ..schemas.project_state import ProjectState
@@ -27,4 +28,12 @@ def build(ps: ProjectState, graph: ClaimGraph, section: str,
     for p in raw.get("paragraphs", []):
         if isinstance(p, dict):
             p.setdefault("section", section)  # LLM often sets section only at top level
-    return SectionContract.model_validate(raw)
+    contract = SectionContract.model_validate(raw)
+    # Deterministically persist WHICH grounding nodes/edges back each paragraph, from the
+    # claim graph's local subgraph — so the writer/validator consume the grounding chain,
+    # not just the claim text. (The LLM names claims; the graph supplies their grounding.)
+    for p in contract.paragraphs:
+        sl = graph_slice.slice_for_claim(graph, p.claim_ids)
+        p.context_node_ids = [n.id for n in sl["nodes"] if n.id not in p.claim_ids]
+        p.required_edge_ids = [e.id for e in sl["edges"] if e.rationale]
+    return contract

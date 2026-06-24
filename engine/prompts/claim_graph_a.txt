@@ -1,0 +1,31 @@
+You build PASS A of a typed claim graph: the CLAIM SKELETON only. Do NOT write prose, and
+do NOT add evidence/method/data yet — only the claims and their hierarchy.
+
+You are given the core message (the ONE thing the paper proves + supporting findings), the
+outline skeleton, and any author answers.
+
+Do this:
+1. Extract the paper's 2-4 MAIN claims (the novelty / contributions). Each is a `claim`
+   node, role="contribution" (use "problem"/"gap" for framing claims).
+2. Decompose each main claim into the subclaims that must hold for it to stand. Each
+   subclaim is a `claim` node with parent_id = its main claim id. Keep it shallow (<=2
+   levels); do not over-fragment.
+3. Connect each subclaim to its main claim with a "supports" edge, and give a short
+   rationale (why the subclaim supports the main claim).
+
+Rules:
+- Claim text stays close to the author's wording. Do NOT invent claims absent from inputs.
+- Every claim has a section (introduction|method|result|discussion|conclusion).
+- ids: main claims C1, C2...; subclaims C1.1, C1.2...
+
+Return ONLY JSON:
+{
+  "main_contribution": "one sentence",
+  "claims": [
+    {"id":"C1","kind":"claim","text":"...","role":"contribution","section":"result","parent_id":null},
+    {"id":"C1.1","kind":"claim","text":"...","section":"result","parent_id":"C1"}
+  ],
+  "claim_edges": [
+    {"src":"C1.1","dst":"C1","rel":"supports","rationale":"..."}
+  ]
+}
