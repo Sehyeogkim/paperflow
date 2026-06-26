@@ -248,11 +248,17 @@ def generate_from_plan(project_dir: str, out_dir: Path, progress=lambda m: None)
     from ..schemas.requirement import RequirementReport
     report = detect.load_report(project_dir) or RequirementReport(
         study_type="", classification=manifest.classification)
+    # load-bearing gaps still open at generation time -> recorded as warnings (never a gate)
+    from ..question import loop as qloop
+    warnings = qloop.warnings_for(load_prelim_graph(project_dir) or graph,
+                                  ps.research_state, ps.evidence_inventory,
+                                  answered=qloop.load_answers(project_dir))
     write_all(out_dir, sections=section_md, graph=graph, contracts=section_contracts,
               requirement=report, figure_spec=pl.get("figures", {}), manifest=manifest,
               literature_md=pl.get("literature_md", ""), found_references=ps.found_references,
               reference_table=reference_table, validation_report=validation_report,
-              paper_meta=_paper_meta(ps))
+              paper_meta=_paper_meta(ps), warnings=warnings,
+              research_state=ps.research_state, evidence_inventory=ps.evidence_inventory)
     return manifest
 
 

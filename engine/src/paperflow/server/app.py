@@ -314,6 +314,76 @@ def list_files(project_dir: str) -> dict:
     return {"files": _list_data_files(Path(project_dir))}
 
 
+# --- generated output files (right-side read-only preview) ---
+_OUT_DIR = "_paperflow_out"
+_PREVIEW_KINDS = {"md", "json", "html", "tex", "txt"}
+
+
+def _safe_in_out(project_dir: str, rel: str) -> Path | None:
+    """Resolve rel within <project>/_paperflow_out, refusing traversal."""
+    out = (Path(project_dir) / _OUT_DIR).resolve()
+    target = (Path(project_dir) / rel).resolve()
+    if out != target and out not in target.parents:
+        return None
+    return target
+
+
+@app.get("/api/projects/output/list")
+def list_output(project_dir: str) -> dict:
+    """Generated files (the centre column the user clicks to preview)."""
+    out = Path(project_dir) / _OUT_DIR
+    files: list[dict] = []
+    if out.is_dir():
+        for p in sorted(out.rglob("*")):
+            if not p.is_file() or p.name.startswith("."):
+                continue
+            kind = p.suffix.lower().lstrip(".") or "file"
+            files.append({"name": p.name, "rel": str(p.relative_to(project_dir)),
+                          "kind": kind, "size": p.stat().st_size,
+                          "previewable": kind in _PREVIEW_KINDS or kind in ("pdf", "docx")})
+    return {"files": files}
+
+
+@app.get("/api/projects/output/preview")
+def preview_output(project_dir: str, rel: str) -> dict:
+    """Render a generated file as read-only HTML for the right pane."""
+    target = _safe_in_out(project_dir, rel)
+    if target is None or not target.is_file():
+        return {"error": "not_found"}
+    kind = target.suffix.lower().lstrip(".")
+    if kind in ("pdf", "docx"):
+        # binary — the UI embeds/links these via the download endpoint instead
+        return {"kind": kind, "html": "", "download": True}
+    text = target.read_text(errors="replace")
+    from ..output import manuscript_state as ms_mod
+    if target.name == "manuscript.json":
+        try:
+            ms = ms_mod.ManuscriptState.model_validate_json(text)
+            return {"kind": "manuscript", "html": ms_mod.to_html(ms)}
+        except Exception:
+            pass
+    if kind == "html":
+        return {"kind": "html", "html": text}
+    if kind == "md":
+        return {"kind": "md", "html": f'<div class="pf-preview">{ms_mod._md_block_to_html(text)}</div>'}
+    # json / tex / txt -> escaped monospace block
+    import html as _html
+    return {"kind": kind, "html": f"<pre class='pf-pre'>{_html.escape(text)}</pre>"}
+
+
+@app.get("/api/projects/output/file")
+def get_output_file(project_dir: str, rel: str):
+    """Raw download/serve of a generated file (used for .docx / .pdf)."""
+    target = _safe_in_out(project_dir, rel)
+    if target is None or not target.is_file():
+        return JSONResponse({"error": "not_found"}, status_code=404)
+    media = {
+        "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "pdf": "application/pdf", "json": "application/json",
+    }.get(target.suffix.lower().lstrip("."), "application/octet-stream")
+    return FileResponse(target, media_type=media, filename=target.name)
+
+
 @app.get("/api/projects/paper")
 def get_paper(project_dir: str, kind: str = "pdf"):
     """Serve the assembled manuscript — kind=pdf (compiled) or tex (source)."""
