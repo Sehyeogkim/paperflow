@@ -11,9 +11,11 @@ import json
 import re
 from pathlib import Path
 
+from ..schemas.evidence_inventory import EvidenceInventory
 from ..schemas.project_state import (
     CoreMessage, DataAsset, JournalInfo, Outline, OutlineParagraph, ProjectState,
 )
+from ..schemas.research_state import ResearchState
 
 
 def _sections(md: str) -> dict[str, str]:
@@ -173,12 +175,31 @@ def _read_style(main: Path) -> str:
     return p.read_text().strip() if p.is_file() else ""
 
 
+def _read_reconstruction(main: Path) -> tuple[ResearchState | None, EvidenceInventory | None]:
+    """Load previously-built reconstruction state if present (no LLM, no rebuild).
+    Keeps ingest() cheap/deterministic; reconstruct.build_state writes these files."""
+    rs = inv = None
+    rp, ip = main / "research_state.json", main / "evidence_inventory.json"
+    if rp.is_file():
+        try:
+            rs = ResearchState.model_validate_json(rp.read_text())
+        except Exception:
+            rs = None
+    if ip.is_file():
+        try:
+            inv = EvidenceInventory.model_validate_json(ip.read_text())
+        except Exception:
+            inv = None
+    return rs, inv
+
+
 def ingest(project_dir: str) -> ProjectState:
     project = Path(project_dir)
     main = project / "main"
     js = parse_journal_info((main / "0_journal_info.md").read_text())
     cm = parse_core_message((main / "1_coremessage.md").read_text())
     ol = parse_outline((main / "3_outline.md").read_text())
+    rs, inv = _read_reconstruction(main)
     return ProjectState(
         project_dir=str(project),
         journal_info=js, core_message=cm, outline=ol,
@@ -186,4 +207,5 @@ def ingest(project_dir: str) -> ProjectState:
         reference_keys=_reference_keys(project),
         answers=_read_answers(main),
         style=_read_style(main),
+        research_state=rs, evidence_inventory=inv,
     )

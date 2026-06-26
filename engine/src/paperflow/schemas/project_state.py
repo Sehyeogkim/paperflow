@@ -3,6 +3,9 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
+from .evidence_inventory import EvidenceInventory
+from .research_state import ResearchState
+
 
 class JournalInfo(BaseModel):
     working_title: str = ""
@@ -64,6 +67,9 @@ class ProjectState(BaseModel):
     answers: dict[str, str] = Field(default_factory=dict)   # Gate A: main/answer.json (field -> answer)
     style: str = ""                                         # main/style.md (D constraint: author's style)
     journal_constraints: dict = Field(default_factory=dict)  # scraped journal guideline limits
+    # reconstructed canonical state (minimal-input mode) — None in pure legacy mode
+    research_state: ResearchState | None = None
+    evidence_inventory: EvidenceInventory | None = None
 
     @property
     def all_citation_keys(self) -> list[str]:

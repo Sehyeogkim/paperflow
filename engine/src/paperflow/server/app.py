@@ -25,8 +25,10 @@ from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from .. import config
 from ..compile import plan_chat
 from ..flows import method_result as mr
-from ..flows.method_result import GEN_STEPS, PLAN_STEPS
+from ..flows.method_result import GEN_STEPS, PLAN_STEPS, RECONSTRUCT_STEPS
 from ..ingest.parse_inputs import ingest
+from ..question import loop as qloop
+from ..reconstruct import build_state
 from ..requirement import detect
 
 app = FastAPI(title="paperflow")
@@ -194,12 +196,58 @@ def diagnose(body: dict) -> dict:
 
 @app.post("/api/projects/answers")
 def save_answers(body: dict) -> dict:
-    """Persist Gate A answers to main/answer.json."""
-    main = Path(body["project_dir"]) / "main"
-    main.mkdir(parents=True, exist_ok=True)
-    answers = body.get("answers", {})
-    (main / "answer.json").write_text(json.dumps(answers, ensure_ascii=False, indent=2))
-    return {"ok": True, "count": len(answers)}
+    """MERGE answers into main/answer.json (adaptive loop: each batch adds, never overwrites).
+    Answering is never a gate — generation can proceed with answers still pending."""
+    project_dir = body["project_dir"]
+    merged = qloop.save_answers(project_dir, body.get("answers", {}))
+    return {"ok": True, "count": len(merged)}
+
+
+@app.post("/api/projects/questions")
+def questions(body: dict) -> dict:
+    """Adaptive question batch from the CURRENT preliminary graph + reconstruction state.
+    No fixed count, no hard gate. Works offline (graph absent -> reconstruction gaps only)."""
+    project_dir = body["project_dir"]
+    graph = mr.load_prelim_graph(project_dir)
+    rs, inv = build_state.load(project_dir)
+    answered = qloop.load_answers(project_dir)
+    batch_size = int(body.get("batch_size", qloop.DEFAULT_BATCH))
+    batch = qloop.next_batch(graph, rs, inv, answered=answered, batch_size=batch_size)
+    return {**batch.model_dump(), "has_graph": graph is not None,
+            "answered_count": len(answered)}
+
+
+def _reconstruct_job(job_id: str, project_dir: str) -> None:
+    q = _JOBS[job_id]
+    try:
+        summary = mr.preliminary(project_dir, progress=_progress_fn(q))
+        rs, inv = build_state.load(project_dir)
+        graph = mr.load_prelim_graph(project_dir)
+        batch = qloop.next_batch(graph, rs, inv, answered=qloop.load_answers(project_dir))
+        q.put({"type": "reconstruct_ready",
+               "research_state": summary.get("research_state"),
+               "has_graph": summary.get("has_graph"),
+               "questions": batch.model_dump()})
+    except Exception as e:
+        q.put({"type": "error", "error": str(e)[:400]})
+    finally:
+        q.put(None)
+
+
+@app.post("/api/projects/reconstruct")
+def start_reconstruct(body: dict) -> dict:
+    """Phase R — reconstruct research state + build the preliminary logic graph (background
+    job with SSE), then surface the first adaptive question batch."""
+    project_dir = body["project_dir"]
+    job_id = uuid.uuid4().hex[:12]
+    _JOBS[job_id] = queue.Queue()
+    threading.Thread(target=_reconstruct_job, args=(job_id, project_dir), daemon=True).start()
+    return {"job_id": job_id, "steps": [{"id": s, "label": label} for s, label in RECONSTRUCT_STEPS]}
+
+
+@app.get("/api/projects/reconstruct/{job_id}/stream")
+def reconstruct_stream(job_id: str) -> StreamingResponse:
+    return _sse(job_id)
 
 
 # --- data files (experiment data / references the writer grounds claims on) ---
@@ -447,21 +495,12 @@ def _run_job(job_id: str, project_dir: str) -> None:
         q.put(None)  # sentinel: stream ends
 
 
-def _unanswered(project_dir: str) -> list[str]:
-    """Hard gate: every diagnosed question must have a response (an answer or an
-    explicit '모름'). Returns the question fields still missing a response."""
-    report = detect.load_report(project_dir)
-    if report is None:
-        return []  # no diagnose on record (e.g. CLI) -> nothing to gate
-    answered = set()
-    ap = Path(project_dir) / "main" / "answer.json"
-    if ap.is_file():
-        try:
-            data = json.loads(ap.read_text())
-            answered = {k for k, v in data.items() if str(v).strip()}
-        except Exception:
-            answered = set()
-    return [m.field for m in report.missing if m.question and m.field not in answered]
+def _load_bearing_warnings(project_dir: str) -> list[str]:
+    """Adaptive-loop replacement for the old hard gate: load-bearing graph gaps that are
+    still unanswered. These are WARNINGS — they never block planning/generation."""
+    graph = mr.load_prelim_graph(project_dir)
+    rs, inv = build_state.load(project_dir)
+    return qloop.warnings_for(graph, rs, inv, answered=qloop.load_answers(project_dir))
 
 
 _DEFAULT_SECTIONS = ["method", "result", "discussion", "introduction", "conclusion", "abstract"]
@@ -469,18 +508,17 @@ _DEFAULT_SECTIONS = ["method", "result", "discussion", "introduction", "conclusi
 
 @app.post("/api/projects/plan")
 def start_plan(body: dict) -> dict:
-    """Phase 1 — build the plan (claim graph + structure + figures) for the user to confirm."""
+    """Phase 1 — build the plan (claim graph + structure + figures) for the user to confirm.
+    No hard gate: unanswered load-bearing gaps are returned as warnings, not blockers."""
     project_dir = body["project_dir"]
-    pending = _unanswered(project_dir)
-    if pending:  # hard gate — must answer the questions before planning
-        return {"error": "unanswered_questions", "pending": pending}
     sections = body.get("sections") or _DEFAULT_SECTIONS
     litsearch = bool(body.get("litsearch", True))
     job_id = uuid.uuid4().hex[:12]
     _JOBS[job_id] = queue.Queue()
     threading.Thread(target=_plan_job, args=(job_id, project_dir, sections, litsearch),
                      daemon=True).start()
-    return {"job_id": job_id, "steps": [{"id": s, "label": label} for s, label in PLAN_STEPS]}
+    return {"job_id": job_id, "steps": [{"id": s, "label": label} for s, label in PLAN_STEPS],
+            "warnings": _load_bearing_warnings(project_dir)}
 
 
 @app.get("/api/projects/plan/state")
@@ -502,17 +540,16 @@ def chat(body: dict) -> dict:
 
 @app.post("/api/projects/generate")
 def generate(body: dict) -> dict:
-    """Phase 2 — draft + validate + cite + output, from the CONFIRMED plan."""
+    """Phase 2 — draft + validate + cite + output, from the CONFIRMED plan.
+    No hard gate: load-bearing gaps still open are returned as warnings."""
     project_dir = body["project_dir"]
-    pending = _unanswered(project_dir)
-    if pending:
-        return {"error": "unanswered_questions", "pending": pending}
     if mr.load_plan(project_dir) is None:  # must plan + confirm first
         return {"error": "no_plan"}
     job_id = uuid.uuid4().hex[:12]
     _JOBS[job_id] = queue.Queue()
     threading.Thread(target=_run_job, args=(job_id, project_dir), daemon=True).start()
-    return {"job_id": job_id, "steps": [{"id": s, "label": label} for s, label in GEN_STEPS]}
+    return {"job_id": job_id, "steps": [{"id": s, "label": label} for s, label in GEN_STEPS],
+            "warnings": _load_bearing_warnings(project_dir)}
 
 
 def _sse(job_id: str) -> StreamingResponse:

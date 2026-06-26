@@ -23,6 +23,7 @@ from ..ingest import journal_guideline
 from ..ingest.parse_inputs import ingest
 from ..llm import client
 from ..output.write_fs import write_all
+from ..reconstruct import build_state
 from ..requirement import detect
 from ..schemas.claim import ClaimGraph, SectionContract
 from ..schemas.eval import RunManifest
@@ -33,8 +34,13 @@ _GEN_ORDER = ["method", "result", "discussion", "introduction", "conclusion", "a
 _ALIAS = {"intro": "introduction", "concl": "conclusion"}
 
 # stable step lists for the UI workflow trees (id, label)
+RECONSTRUCT_STEPS = [
+    ("ingest", "입력 수집"), ("reconstruct", "연구 상태 복원"),
+    ("prelim_graph", "잠정 logic graph"),
+]
 PLAN_STEPS = [
-    ("ingest", "입력 수집"), ("guideline", "저널 가이드라인"), ("litsearch", "선행연구조사"),
+    ("ingest", "입력 수집"), ("reconstruct", "연구 상태 복원"),
+    ("guideline", "저널 가이드라인"), ("litsearch", "선행연구조사"),
     ("requirement", "누락정보 진단"), ("claim_graph", "Claim graph"),
     ("figure_plan", "Figure 설계"), ("structure", "섹션 구조·소제목"),
 ]
@@ -45,6 +51,56 @@ GEN_STEPS = [
 STEPS = PLAN_STEPS + GEN_STEPS  # full pipeline (CLI / back-compat)
 
 _PLAN_FILE = "_plan.json"
+_PRELIM_GRAPH_FILE = "_prelim_graph.json"
+
+
+def prelim_graph_path(project_dir: str) -> Path:
+    return Path(project_dir) / "main" / _PRELIM_GRAPH_FILE
+
+
+def load_prelim_graph(project_dir: str) -> ClaimGraph | None:
+    p = prelim_graph_path(project_dir)
+    if p.is_file():
+        try:
+            return ClaimGraph.model_validate_json(p.read_text())
+        except Exception:
+            return None
+    return None
+
+
+def _attach_reconstruction(project_dir: str, ps: ProjectState) -> ProjectState:
+    """Load saved reconstruction or build it; attach to ps so the claim graph consumes it."""
+    rs, inv = build_state.load(project_dir)
+    if rs is None or inv is None:
+        rs, inv = build_state.reconstruct(project_dir, ps)
+        build_state.save(project_dir, rs, inv)
+    ps.research_state, ps.evidence_inventory = rs, inv
+    return ps
+
+
+def preliminary(project_dir: str, progress=lambda m: None) -> dict:
+    """Reconstruct study state + build the PRELIMINARY logic graph used to find question
+    gaps. The graph build needs an LLM; if unavailable it is skipped (questions then come
+    from reconstruction gaps only). Always persists research_state / evidence_inventory."""
+    manifest = RunManifest(project_dir=project_dir)
+    client.set_manifest(manifest)
+    progress("[ingest] 입력 수집")
+    ps = ingest(project_dir)
+    progress("[reconstruct] 연구 상태 복원")
+    rs, inv = build_state.reconstruct(project_dir, ps)
+    build_state.save(project_dir, rs, inv)
+    ps.research_state, ps.evidence_inventory = rs, inv
+    has_graph = False
+    try:
+        progress("[prelim_graph] 잠정 logic graph 생성")
+        graph = claim_graph.build(ps)
+        prelim_graph_path(project_dir).write_text(graph.model_dump_json(indent=2))
+        has_graph = True
+    except Exception as e:
+        progress(f"[prelim_graph] 건너뜀 ({str(e)[:80]})")
+    return {"research_state": rs.model_dump(), "evidence_inventory": inv.model_dump(),
+            "has_graph": has_graph,
+            "tokens": {"input": manifest.total_input, "output": manifest.total_output}}
 
 
 def _order(sections: list[str]) -> list[str]:
@@ -97,6 +153,8 @@ def plan(project_dir: str, sections: list[str], progress=lambda m: None,
 
     progress("[ingest] 입력 수집")
     ps = ingest(project_dir)
+    progress("[reconstruct] 연구 상태 복원")
+    ps = _attach_reconstruction(project_dir, ps)
     progress("[guideline] 저널 가이드라인 확인")
     ps.journal_constraints = journal_guideline.fetch(ps.journal_info)
 
@@ -152,6 +210,7 @@ def generate_from_plan(project_dir: str, out_dir: Path, progress=lambda m: None)
     client.set_manifest(manifest)
 
     ps = ingest(project_dir)  # cheap, no LLM
+    ps = _attach_reconstruction(project_dir, ps)
     ps.journal_constraints = journal_guideline.fetch(ps.journal_info)
     ps.found_references = [FoundRef(**r) for r in pl.get("found_references", [])]
     graph = ClaimGraph.model_validate(pl["claim_graph"])
