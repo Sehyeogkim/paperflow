@@ -18,7 +18,7 @@ def derive_queries(ps: ProjectState) -> tuple[str, str, list[str]]:
     """Return (study_archetype, field, queries). Falls back to keyword heuristics on error."""
     try:
         raw = client.call_json("fast", prompt("derive_search_queries"), inputs_block(ps),
-                               step="lit.queries", max_tokens=900)
+                               step="lit.queries", max_tokens=900, effort="minimal")
         archetype = str(raw.get("study_archetype", "")).strip()
         field = str(raw.get("field", "")).strip() or ps.journal_info.author_field
         queries = [str(q).strip() for q in (raw.get("queries") or []) if str(q).strip()]

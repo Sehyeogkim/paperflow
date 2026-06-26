@@ -30,23 +30,19 @@ Rules — read carefully:
 
 Also state the paper's `study_archetype` in a short English phrase.
 
+KEEP OUTPUT SMALL (this feeds a clustering step, not the manuscript):
+- Return AT MOST 6 reported_items per paper — the most important/representative ones.
+- For each item emit ONLY: raw_name, category, sub_category, explicitly_reported.
+  Do NOT include description, evidence_text, section, importance, applies_to, or
+  source_location — they are not used downstream and just slow the call.
+
 Return ONLY JSON:
 {
   "paper_id": "...",
   "study_archetype": "...",
   "content_level": "...",
   "reported_items": [
-    {
-      "raw_name": "...",
-      "category": "<one fixed category>",
-      "sub_category": "...",
-      "description": "...",
-      "section": "",
-      "evidence_text": "",
-      "importance_to_main_claim": "high|medium|low|unknown",
-      "explicitly_reported": true,
-      "applies_to": ["..."],
-      "source_location": ""
-    }
+    { "raw_name": "...", "category": "<one fixed category>", "sub_category": "...",
+      "explicitly_reported": true }
   ]
 }

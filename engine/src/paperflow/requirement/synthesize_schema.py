@@ -35,7 +35,7 @@ def _judge(clusters: list[dict], ps: ProjectState, archetype: str) -> dict:
     # judgement is classification, not deep reasoning -> fast tier. Simplified output: the LLM
     # only judges requirement_level + required_when + reason; counts are computed in code.
     raw = client.call_json("fast", prompt("synthesize_overall_schema"), user,
-                           step="lit.synthesize", max_tokens=3000)
+                           step="lit.synthesize", max_tokens=3000, effort="minimal")
     return {str(r.get("key")): r for r in (raw.get("requirements") or []) if r.get("key")}
 
 

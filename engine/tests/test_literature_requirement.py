@@ -6,7 +6,7 @@ import pytest
 
 from paperflow.ingest.parse_inputs import ingest
 from paperflow.requirement import (
-    compare_user_state, detect, fallback, generate_questions, literature_search,
+    compare_user_state, detect, fallback, literature_search,
     normalize_items, paper_extract, pipeline, synthesize_schema,
 )
 from paperflow.llm import client
@@ -23,7 +23,7 @@ def _fake_papers(n=8):
     } for i in range(1, n + 1)]
 
 
-def _dispatch(tier, system, user, *, step="", max_tokens=4096):
+def _dispatch(tier, system, user, *, step="", max_tokens=4096, effort=""):
     """Deterministic LLM responses keyed by pipeline step."""
     if step == "lit.queries":
         return {"study_archetype": "computational plaque biomechanics sensitivity study",
@@ -43,17 +43,20 @@ def _dispatch(tier, system, user, *, step="", max_tokens=4096):
                     {"raw_name": "Mooney-Rivlin material model", "category": "models_and_equations",
                      "sub_category": "constitutive", "description": "vessel wall", "explicitly_reported": True},
                 ]}
-    if step == "lit.normalize":
-        return {"clusters": [
-            {"canonical_key": "mesh_independence", "category": "validation",
-             "aliases": ["mesh convergence study", "grid independence test"],
-             "applicable_to": ["quantitative_numerical_simulation", "peak_field_value_claim"],
-             "source_items": ["paper_001:item_01", "paper_003:item_01", "paper_005:item_01"]},
-            {"canonical_key": "material_constitutive_model", "category": "models_and_equations",
-             "aliases": ["Mooney-Rivlin material model", "hyperelastic law"],
-             "applicable_to": ["finite_element_simulation"],
-             "source_items": ["paper_001:item_02", "paper_002:item_02"]},
-        ]}
+    if step.startswith("lit.normalize"):   # now per-category: "lit.normalize:<category>"
+        if "validation" in step:
+            return {"clusters": [
+                {"canonical_key": "mesh_independence", "category": "validation",
+                 "aliases": ["mesh convergence study", "grid independence test"],
+                 "applicable_to": ["quantitative_numerical_simulation", "peak_field_value_claim"],
+                 "source_items": ["paper_001:item_01", "paper_003:item_01", "paper_005:item_01"]}]}
+        if "models_and_equations" in step:
+            return {"clusters": [
+                {"canonical_key": "material_constitutive_model", "category": "models_and_equations",
+                 "aliases": ["Mooney-Rivlin material model", "hyperelastic law"],
+                 "applicable_to": ["finite_element_simulation"],
+                 "source_items": ["paper_001:item_02", "paper_002:item_02"]}]}
+        return {"clusters": []}
     if step == "lit.synthesize":
         return {"study_archetype": "computational plaque biomechanics sensitivity study",
                 "requirements": [
@@ -66,21 +69,15 @@ def _dispatch(tier, system, user, *, step="", max_tokens=4096):
                      "applicable_papers": 4, "requirement_level": "mandatory",
                      "reason": "Constitutive law governs stress outputs."},
                 ]}
-    if step == "lit.compare":
-        return {"statuses": [
+    if step == "lit.compare_question":   # merged compare + question (single call)
+        return {"results": [
             {"key": "mesh_independence", "status": "missing", "found_evidence": [],
-             "reason": "No mesh comparison found in materials."},
-            {"key": "material_constitutive_model", "status": "present",
-             "found_evidence": ["core_message"], "reason": "Material model stated."},
-        ]}
-    if step == "lit.questions":
-        return {"questions": [
-            {"id": "mesh_independence",
+             "reason": "No mesh comparison found in materials.", "ask": True,
              "question": "주요 결과인 peak plaque stress에 대해 mesh-independence test를 수행했나요?",
              "why_asked": "Peak stress is mesh-sensitive; 3 of 5 applicable papers reported it.",
-             "expected_answer": "비교한 mesh 크기와 변화율",
-             "applicability_reason": "peak stress claim is present",
-             "not_found_reason": "No mesh comparison in uploaded materials."},
+             "expected_answer": "비교한 mesh 크기와 변화율"},
+            {"key": "material_constitutive_model", "status": "present",
+             "found_evidence": ["core_message"], "reason": "Material model stated.", "ask": False},
         ]}
     if step == "requirement.detect":   # static fallback path
         return {"study_type": "computational_biomechanics",
@@ -158,8 +155,7 @@ def test_questions_only_high_value_with_grounding(patched, mini_project):
     papers = literature_search.search_and_select(["q"])
     exts = paper_extract.extract_all(papers)
     schema = synthesize_schema.synthesize(normalize_items.normalize(exts), ps, papers, "p", "a")
-    statuses = compare_user_state.compare(schema, ps)
-    qs = generate_questions.generate(schema, statuses, ps)
+    statuses, qs = compare_user_state.compare_and_question(schema, ps)
     # only the missing strongly_expected/mandatory is asked (present one skipped)
     assert [q.id for q in qs] == ["mesh_independence"]
     q = qs[0]
@@ -180,6 +176,17 @@ def test_pipeline_persists_and_report(patched, mini_project):
               "requirement_status.json", "grounded_questions.json"]:
         assert (litdir / f).is_file(), f
     assert (litdir / "paper_001.json").is_file()
+    assert (litdir / "_fingerprint.json").is_file()
+
+
+def test_fingerprint_cache_reuses_literature(patched, monkeypatch, mini_project):
+    ps = ingest(mini_project)
+    pipeline.run(mini_project, ps)                       # 1st run: full pipeline + fingerprint
+    # 2nd run with OpenAlex DEAD: if it re-searched it would fall back; cache must avoid that
+    monkeypatch.setattr(openalex, "search", lambda q, n=5: (_ for _ in ()).throw(RuntimeError("down")))
+    res = pipeline.run(mini_project, ingest(mini_project))
+    assert res["requirement_source"] == "literature_derived"   # reused, did NOT re-search
+    assert any(q.id == "mesh_independence" for q in res["questions"])
 
 
 # ---------- Regression: OpenAlex failure -> static fallback ----------

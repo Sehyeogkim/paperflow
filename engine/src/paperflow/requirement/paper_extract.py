@@ -11,6 +11,8 @@ from ..llm import client
 from ..schemas.literature import LiteraturePaper, PaperExtraction, ReportedItem
 from ..util import prompt
 
+_MAX_ITEMS_PER_PAPER = 6   # abstract-based discovery doesn't need more; bounds normalize payload
+
 
 def _paper_block(p: LiteraturePaper) -> str:
     return json.dumps({
@@ -24,11 +26,11 @@ def extract_one(p: LiteraturePaper) -> PaperExtraction:
     """Extract reported items from one paper. Never raises — returns an empty extraction on error."""
     try:
         raw = client.call_json("fast", prompt("extract_reported_items"), _paper_block(p),
-                               step="lit.extract", max_tokens=2200)
+                               step="lit.extract", max_tokens=1600, effort="minimal")
     except Exception:
         return PaperExtraction(paper_id=p.paper_id, content_level=p.content_level)
     items: list[ReportedItem] = []
-    for it in (raw.get("reported_items") or []):
+    for it in (raw.get("reported_items") or [])[:_MAX_ITEMS_PER_PAPER]:   # cap to bound payload
         if not isinstance(it, dict) or not it.get("raw_name") or not it.get("category"):
             continue
         try:
@@ -43,8 +45,9 @@ def extract_one(p: LiteraturePaper) -> PaperExtraction:
 
 
 def extract_all(papers: list[LiteraturePaper], progress=lambda m: None,
-                max_workers: int = 6) -> list[PaperExtraction]:
-    """Extract every paper concurrently (LLM calls are I/O-bound)."""
+                max_workers: int = 10) -> list[PaperExtraction]:
+    """Extract every paper concurrently (LLM calls are I/O-bound). 10 workers = the default
+    ~10-paper set extracts in a single wave instead of two."""
     if not papers:
         return []
     progress(f"논문 {len(papers)}편 항목 추출 (병렬)")

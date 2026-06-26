@@ -15,12 +15,15 @@ ALWAYS contains a compatible RequirementReport so the generate flow keeps workin
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from pathlib import Path
 
+from ..schemas.literature import LiteraturePaper
+
 from . import (
-    compare_user_state, content_retrieval, detect, fallback, generate_questions,
+    compare_user_state, content_retrieval, detect, fallback,
     literature_search, normalize_items, paper_extract, synthesize_schema,
 )
 from ..schemas.overall_schema import OverallSchema
@@ -41,6 +44,13 @@ def _dump(project_dir: str, name: str, obj) -> None:
             json.dumps(obj, ensure_ascii=False, indent=2, default=str))
     except Exception:
         pass
+
+
+def _load_json(path: Path):
+    try:
+        return json.loads(path.read_text()) if path.is_file() else None
+    except Exception:
+        return None
 
 
 def _to_report(study_type: str, questions: list[GroundedQuestion],
@@ -65,46 +75,86 @@ def _to_report(study_type: str, questions: list[GroundedQuestion],
     return report, cls.value, present
 
 
+def _fingerprint(ps: ProjectState) -> str:
+    """Hash of the inputs that determine the literature analysis (NOT outline/answers — those
+    only affect compare). Same fingerprint -> reuse papers/extraction/normalize/schema."""
+    ji, cm = ps.journal_info, ps.core_message
+    parts = [
+        getattr(ji, "author_field", ""), " ".join(getattr(ji, "target_journals", []) or []),
+        getattr(cm, "one_sentence", ""), getattr(cm, "one_paragraph", ""),
+        " ".join(getattr(cm, "keywords", []) or []),
+        " ".join(getattr(cm, "summary_bullets", []) or []),
+        " ".join(ps.reference_keys or []),
+    ]
+    return hashlib.sha256("\x01".join(parts).encode("utf-8")).hexdigest()[:16]
+
+
+def _load_lit_cache(project_dir: str, fp: str):
+    """Return (schema, archetype, field, papers) if the saved literature analysis matches the
+    fingerprint, else None."""
+    d = _litdir(project_dir)
+    meta = _load_json(d / "_fingerprint.json")
+    if not meta or meta.get("fingerprint") != fp:
+        return None
+    sc_raw = _load_json(d / "overall_schema.json")
+    if not sc_raw or not sc_raw.get("requirements"):
+        return None
+    try:
+        schema = OverallSchema.model_validate(sc_raw)
+    except Exception:
+        return None
+    papers = [LiteraturePaper.model_validate(p) for p in (_load_json(d / "selected_papers.json") or [])]
+    field = (_load_json(d / "search_queries.json") or {}).get("field", "")
+    return schema, schema.study_archetype, field, papers
+
+
 def run(project_dir: str, ps: ProjectState, progress=lambda m: None) -> dict:
-    """Run the full literature-grounded pipeline; fall back to the static pack on any failure."""
+    """Run the literature-grounded pipeline; reuse cached literature analysis when the core
+    inputs are unchanged; fall back to the static pack on any failure."""
     project_id = Path(project_dir).name
     try:
-        progress("[field] 연구 분야·archetype 분석")
-        archetype, field, queries = literature_search.derive_queries(ps)
-        _dump(project_dir, "search_queries.json",
-              {"study_archetype": archetype, "field": field, "queries": queries})
+        fp = _fingerprint(ps)
+        queries: list[str] = []
+        cached = _load_lit_cache(project_dir, fp)
+        if cached is not None:
+            schema, archetype, field, papers = cached
+            queries = (_load_json(_litdir(project_dir) / "search_queries.json") or {}).get("queries", [])
+            progress(f"[cache] 문헌 분석 재사용 (핵심 입력 동일, 논문 {len(papers)}편)")
+        else:
+            progress("[field] 연구 분야·archetype 분석")
+            archetype, field, queries = literature_search.derive_queries(ps)
+            _dump(project_dir, "search_queries.json",
+                  {"study_archetype": archetype, "field": field, "queries": queries})
 
-        progress("[search] 관련 문헌 검색 (OpenAlex)")
-        papers = literature_search.search_and_select(queries)
-        papers = content_retrieval.attach_content(papers, ps)
-        if not literature_search.have_enough(papers):
-            progress(f"[search] 문헌 부족({len(papers)}편) → static fallback")
-            return _finish_fallback(project_dir, ps, f"only {len(papers)} papers found")
-        _dump(project_dir, "selected_papers.json", [p.model_dump() for p in papers])
-        progress(f"[search] 논문 {len(papers)}편 선정")
+            progress("[search] 관련 문헌 검색 (OpenAlex)")
+            papers = literature_search.search_and_select(queries)
+            papers = content_retrieval.attach_content(papers, ps)
+            if not literature_search.have_enough(papers):
+                progress(f"[search] 문헌 부족({len(papers)}편) → static fallback")
+                return _finish_fallback(project_dir, ps, f"only {len(papers)} papers found")
+            _dump(project_dir, "selected_papers.json", [p.model_dump() for p in papers])
+            progress(f"[search] 논문 {len(papers)}편 선정")
 
-        progress("[extract] 논문별 항목 추출")
-        extractions = paper_extract.extract_all(papers, progress=lambda m: progress(f"[extract] {m}"))
-        for ex in extractions:
-            _dump(project_dir, f"{ex.paper_id}.json", ex.model_dump())
+            progress("[extract] 논문별 항목 추출")
+            extractions = paper_extract.extract_all(papers, progress=lambda m: progress(f"[extract] {m}"))
+            for ex in extractions:
+                _dump(project_dir, f"{ex.paper_id}.json", ex.model_dump())
 
-        progress("[normalize] 개념 통합")
-        clusters = normalize_items.normalize(extractions)
-        _dump(project_dir, "normalized_items.json", clusters)
-        if not clusters:
-            progress("[normalize] 클러스터 없음 → static fallback")
-            return _finish_fallback(project_dir, ps, "no clusters from extraction")
+            progress("[normalize] 개념 통합 (category별 병렬)")
+            clusters = normalize_items.normalize(extractions)
+            _dump(project_dir, "normalized_items.json", clusters)
+            if not clusters:
+                progress("[normalize] 클러스터 없음 → static fallback")
+                return _finish_fallback(project_dir, ps, "no clusters from extraction")
 
-        progress("[schema] 프로젝트 schema 합성")
-        schema: OverallSchema = synthesize_schema.synthesize(clusters, ps, papers, project_id, archetype)
-        _dump(project_dir, "overall_schema.json", schema.model_dump())
+            progress("[schema] 프로젝트 schema 합성")
+            schema = synthesize_schema.synthesize(clusters, ps, papers, project_id, archetype)
+            _dump(project_dir, "overall_schema.json", schema.model_dump())
+            _dump(project_dir, "_fingerprint.json", {"fingerprint": fp})
 
-        progress("[compare] 사용자 입력 비교")
-        statuses = compare_user_state.compare(schema, ps)
+        progress("[compare] 사용자 입력 비교 + 질문 생성 (단일 호출)")
+        statuses, questions = compare_user_state.compare_and_question(schema, ps)
         _dump(project_dir, "requirement_status.json", [s.model_dump() for s in statuses])
-
-        progress("[questions] 근거 기반 질문 생성")
-        questions = generate_questions.generate(schema, statuses, ps)
         _dump(project_dir, "grounded_questions.json", [q.model_dump() for q in questions])
 
         report, classification, present = _to_report(archetype or field or "research",

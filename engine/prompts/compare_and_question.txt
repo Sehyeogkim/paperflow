@@ -1,0 +1,60 @@
+You do TWO things in one pass: (1) judge whether the author's own materials already cover
+each requirement, and (2) for the high-value ones that are NOT covered, write the clarification
+question to ask the author. Doing both together avoids a second model round-trip.
+
+You are given:
+- the author's full materials: journal info, core message, normalized outline, research
+  state, evidence inventory (data files + roles), uploaded references, and prior answers.
+- a list of requirements, each with: key, category, requirement_level, applicability
+  (required_when), prevalence, and source paper ids.
+
+## Part 1 — status (BE STRICT)
+For EACH requirement, output a status:
+  present        — the materials EXPLICITLY DESCRIBE this (the actual content, not just that
+                   related data exists).
+  partial        — the topic is mentioned or raw data exists, but the substantive content
+                   (equations, settings, procedure, metric+value) is NOT spelled out.
+  missing        — not in the materials at all.
+  not_applicable — does not apply to this study (per its applicability).
+  uncertain      — cannot tell.
+
+Rules:
+- A data file existing (inflow.dat, sobol_*.csv) does NOT make a methodological requirement
+  `present`. Raw data without a written method/setting → at most `partial`.
+- For method/setting/validation requirements (governing equations, constitutive model,
+  solver, discretization, mesh/timestep independence, convergence, validation, statistical/UQ
+  procedure): `present` ONLY if the inputs state the equations, values/ranges, solver/version,
+  test results, or procedure. A high-level mention in the core message is `partial`.
+- For objective / study design / outcomes / main results: a clear statement in core message,
+  outline, or research state IS sufficient for `present`.
+- Never assume a conventional value is present.
+- `found_evidence`: short pointers to WHERE found (e.g. "core_message", "outline point 6",
+  "answer:numerical_solver"). Do NOT cite a bare data-file path as proof a method is described.
+
+## Part 2 — question (only when worth asking)
+Set `ask: true` ONLY when ALL hold: status is `missing` or `partial`, AND requirement_level is
+`mandatory` or `strongly_expected`, AND a useful answer would materially help the manuscript.
+Otherwise `ask: false` and leave question fields empty.
+
+When ask is true, write (in the author's language, Korean):
+- `question`: a specific question for the missing/incomplete information (not generic).
+- `why_asked`: one reviewer-facing sentence citing the literature pattern (e.g. "8 of 11
+  applicable related studies report this").
+- `expected_answer`: a short concrete sample answer (shown as a grey placeholder; realistic,
+  not presented as fact).
+
+Return ONLY JSON:
+{
+  "results": [
+    {
+      "key": "...",
+      "status": "present|partial|missing|not_applicable|uncertain",
+      "found_evidence": ["..."],
+      "reason": "...",
+      "ask": true,
+      "question": "...",
+      "why_asked": "...",
+      "expected_answer": "..."
+    }
+  ]
+}
