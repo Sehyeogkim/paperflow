@@ -1,0 +1,139 @@
+{
+  "mode": "section",
+  "sections": {
+    "method": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "grounding",
+          "detail": "Paragraph M-01 contains multiple quantitative statements (\"총 1,000 표본\", \"유효 시뮬레이션 쌍은 LAP 784, CP 727\", \"약 15,000회 규모의 서로게이트 평가\", \"6개의 후보 VI\", \"7개의 임상적 고위험 특징\") that are presented as facts but are not accompanied by a citation, a reference to a supports item, or a [DATA_NEEDED:...] placeholder.",
+          "paragraph": "M-01"
+        },
+        {
+          "type": "grounding",
+          "detail": "Paragraph M-04 reports the numeric counts of valid simulation pairs (\"유효 쌍 수: LAP 784, CP 727\") without a citation or reference to supporting dataset/evidence.",
+          "paragraph": "M-04"
+        },
+        {
+          "type": "grounding",
+          "detail": "Paragraph M-06 states numeric counts (\"총 6개\", \"7개의 임상적으로 확립된 고위험 플라크 특징\") without explicit citation or reference to the supporting selection table (F_vi_selection_table) or data.",
+          "paragraph": "M-06"
+        },
+        {
+          "type": "grounding",
+          "detail": "Paragraph M-08 states the numbers of training pairs (\"LAP 784, CP 727\") and the surrogate evaluation budget (\"약 15,000회 수준\") without inline references to supporting dataset/model artifacts or evidence.",
+          "paragraph": "M-08"
+        },
+        {
+          "type": "grounding",
+          "detail": "Paragraph M-09 refers to \"약 15,000회 평가\" and claims that group/individual Sobol results are provided in appendix/files but does not explicitly reference the sobol CSV files listed in the supports; the numerical surrogate-evaluation count is not cited or linked to supporting evidence.",
+          "paragraph": "M-09"
+        }
+      ]
+    },
+    "result": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "grounding",
+          "detail": "Numerical statements (dataset/sample counts and surrogate evaluation budget) are presented without citing a supports item or a [DATA_NEEDED:] placeholder. Paragraphs R-01 and R-02 report '1,000 표본', 'LAP=784, CP=727', and '약 1.5×10^4회의' but do not reference the supporting files (e.g., data/input_parameter/input.csv) or include [DATA_NEEDED:] for the surrogate evaluation count.",
+          "paragraph": "R-01"
+        },
+        {
+          "type": "grounding",
+          "detail": "Paragraph R-02 repeats numerical claims ('1,000 표본', 'LAP=784, CP=727') without explicit reference to a supports item.",
+          "paragraph": "R-02"
+        },
+        {
+          "type": "coverage",
+          "detail": "Claim C3.3 (clinical implication that prioritizing measurement of vessel/fibrous cap stiffness may be more informative than morphology for clinical risk stratification) from the contract is not asserted anywhere in the drafted section.",
+          "paragraph": "R-04"
+        }
+      ]
+    },
+    "discussion": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "grounding",
+          "detail": "Paragraph C-01 states empirical claims about ΔPSS superiority, the 6 candidate VI evaluation, and the final VI selection but does not reference the supporting table/file evidence (F_vi_selection_table, E_deltaPSS_better, D_vi_eval). Quantitative/empirical claims need explicit support references.",
+          "paragraph": "C-01"
+        },
+        {
+          "type": "grounding",
+          "detail": "Paragraph C-02 reports numeric dataset counts (LAP 784, CP 727) and the surrogate evaluation budget (~1.5×10^4) without citing the supporting evidence (E_dataset_and_models, E_surrogate_enables_sobol). Also contains a malformed citation token '[cite:what_I_need — ...]'.",
+          "paragraph": "C-02"
+        },
+        {
+          "type": "grounding",
+          "detail": "Paragraph C-03 contains malformed citation tokens '[cite:what_I_need — cite:choi2015, cite:stefanadis2017]' instead of the proper citations required by the contract.",
+          "paragraph": "C-03"
+        },
+        {
+          "type": "grounding",
+          "detail": "Paragraph C-04 refers to Table 2 and group Sobol plots (Fig. 5) but does not reference the supporting artifacts (F_vi_selection_table, F_sobol_group_fig) that substantiate the empirical selection of VI1/VI2 and the Sobol comparisons.",
+          "paragraph": "C-04"
+        },
+        {
+          "type": "grounding",
+          "detail": "Paragraph C-05 states group and individual Sobol results (Material dominance; top parameters E_vessel, E_FC, SBP, PP) while referring to Fig. 5 and Fig. 6 but does not cite the supporting figure artifacts (F_sobol_group_fig, F_sobol_ind_fig / data/sobol CSVs).",
+          "paragraph": "C-05"
+        },
+        {
+          "type": "grounding",
+          "detail": "Paragraph C-07 gives the design sample size (1,000 샘플) and repeats the final valid simulation counts (LAP 784, CP 727) without explicit reference to the input specification or dataset evidence (data/input_parameter/input.csv, E_dataset_and_models).",
+          "paragraph": "C-07"
+        }
+      ]
+    },
+    "introduction": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "grounding",
+          "detail": "The sentence asserting that many computational studies fixed some factors and that comprehensive global sensitivity analyses have been limited is an empirical claim but lacks an explicit supporting citation in this paragraph.",
+          "paragraph": "I-02"
+        },
+        {
+          "type": "grounding",
+          "detail": "Quantitative dataset/sample counts are stated without an explicit supporting reference or data placeholder: '1,000개 샘플 수준' and the reported valid simulation pair counts 'LAP 유효쌍 784, CP 유효쌍 727' require grounding — add a data reference or [DATA_NEEDED:...] placeholder.",
+          "paragraph": "I-05"
+        }
+      ]
+    },
+    "conclusion": {
+      "ok": true,
+      "issues": []
+    },
+    "abstract": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "coverage",
+          "detail": "Missing claim C2: the draft does not state that the choice of normalization exponent α changes the sensitivity analysis results (i.e., '정규화 지수 α의 선택에 따라 민감도 결과가 달라진다').",
+          "paragraph": "I-01"
+        },
+        {
+          "type": "coverage",
+          "detail": "Missing claim C4.1 detail: the draft does not state that FC 두께는 균일 단일 스칼라(fc_av_th)로 취급되었다 (explicit handling of fibrous cap thickness).",
+          "paragraph": "I-01"
+        },
+        {
+          "type": "grounding",
+          "detail": "Quantitative statements lack grounding/support references or DATA_NEEDED placeholders: '1,000 샘플 설계공간' has no support; '유효 시뮬레이션 쌍: LAP=784, CP=727' has no support; '2 stress 정의 × 3 strength 시나리오 = 6개 후보 VI' and '임상 고위험 특성 7개' are unreferenced; '대략 ~1.5×10^4 회의 대규모 평가' has no support. Each of these numeric/empirical assertions must cite a support item or carry a [DATA_NEEDED:...] placeholder.",
+          "paragraph": "I-01"
+        },
+        {
+          "type": "grounding",
+          "detail": "Claims about VI selection and Sobol results are not tied to the provided artifacts: the statements selecting VI1/VI2 and asserting Material > Hemo > Morpho and top individual contributors need explicit reference to the supporting artifacts (e.g., F_vi_selection_table, F_sobol_group_fig, F_sobol_ind_fig) or DATA_NEEDED placeholders.",
+          "paragraph": "I-01"
+        },
+        {
+          "type": "grounding",
+          "detail": "Malformed/invalid citation token '[cite:what_I_need — cite:choi2015, cite:stefanadis2017, cite:chaichana2012]' appears; use only valid citation tags from the contract (e.g., [cite:brown2016], [cite:choi2015], [cite:stefanadis2017], [cite:chaichana2012]) or remove the malformed token.",
+          "paragraph": "I-01"
+        }
+      ]
+    }
+  }
+}

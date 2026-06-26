@@ -1,0 +1,101 @@
+[
+  {
+    "key": "frostegrd2013",
+    "title": "Immunity, atherosclerosis and cardiovascular disease",
+    "authors": "Johan Frostegård",
+    "year": 2013,
+    "doi": "10.1186/1741-7015-11-117",
+    "abstract": "Atherosclerosis, the major cause of cardiovascular disease (CVD), is a chronic inflammatory condition with immune competent cells in lesions producing mainly pro-inflammatory cytokines. Dead cells and oxidized forms of low density lipoproteins (oxLDL) are abundant. The major direct cause of CVD appears to be rupture of atherosclerotic plaques. oxLDL has proinflammatory and immune-stimulatory properties, causes cell death at higher concentrations and contains inflammatory phospholipids with phosphorylcholine (PC) as an interesting epitope. Antibodies against PC (anti-PC) may be atheroprotective",
+    "topic": "Supports the claim that oxLDL and proinflammatory immune responses drive plaque inflammation and contribute to plaque rupture risk"
+  },
+  {
+    "key": "hansson2002",
+    "title": "Innate and Adaptive Immunity in the Pathogenesis of Atherosclerosis",
+    "authors": "Göran K. Hansson, Peter Libby, Uwe Schönbeck, Zhong-qun Yan",
+    "year": 2002,
+    "doi": "10.1161/01.res.0000029784.15893.10",
+    "abstract": "This review considers critically the evidence for the involvement of mediators of innate and acquired immunity in various stages of atherosclerosis. Rapidly mobilized arms of innate immunity, including phagocytic leukocytes, complement, and proinflammatory cytokines, contribute to atherogenesis. In addition, adaptive immunity, with its T cells, antibodies, and immunoregulatory cytokines, powerfully modulates disease activity and progression. Atherogenesis involves cross talk between and shared pathways involved in adaptive and innate immunity. Immune processes can influence the balance between",
+    "topic": "Provides foundational evidence that innate and adaptive immune mediators modulate atherogenesis and lesion progression"
+  },
+  {
+    "key": "hutcheson2016",
+    "title": "Genesis and growth of extracellular-vesicle-derived microcalcification in atherosclerotic plaques",
+    "authors": "Joshua D. Hutcheson, Claudia Goettsch, Sérgio Bertazzo, Natalia Maldonado, Jessica Ruiz, Wilson Wen Bin Goh, Katsumi Yabusaki, Tyler Faits, Carlijn V. C. Bouten, G Franck, Thibaut Quillard, Peter Libby, Masanori Aikawa, Sheldon Weinbaum, Elena Aïkawa",
+    "year": 2016,
+    "doi": "10.1038/nmat4519",
+    "abstract": "",
+    "topic": "Provides evidence on the genesis and growth of extracellular‑vesicle–derived microcalcifications within atherosclerotic plaques"
+  },
+  {
+    "key": "potteaux2011",
+    "title": "Suppressed monocyte recruitment drives macrophage removal from atherosclerotic plaques of Apoe–/– mice during disease regression",
+    "authors": "Stéphane Potteaux, Emmanuel L. Gautier, Susan Hutchison, Nico van Rooijen, Daniel J. Rader, Michael J. Thomas, Mary G. Sorci‐Thomas, Gwendalyn J. Randolph",
+    "year": 2011,
+    "doi": "10.1172/jci43802",
+    "abstract": "Experimental models of atherosclerosis suggest that recruitment of monocytes into plaques drives the progression of this chronic inflammatory condition. Cholesterol-lowering therapy leads to plaque stabilization or regression in human atherosclerosis, characterized by reduced macrophage content, but the mechanisms that underlie this reduction are incompletely understood. Mice lacking the gene Apoe (Apoe-/- mice) have high levels of cholesterol and spontaneously develop atherosclerotic lesions. Here, we treated Apoe-/- mice with apoE-encoding adenoviral vectors that induce plaque regression, an",
+    "topic": "Method/mechanistic precedent showing monocyte recruitment controls macrophage content and that macrophage removal occurs during regression in Apoe−/− models"
+  },
+  {
+    "key": "serruys2011",
+    "title": "From metallic cages to transient bioresorbable scaffolds: change in paradigm of coronary revascularization in the upcoming decade?",
+    "authors": "Patrick W. Serruys, Héctor M. García‐García, Y. Onuma",
+    "year": 2011,
+    "doi": "10.1093/eurheartj/ehr384",
+    "abstract": "Drug-eluting bioresorbable scaffolds (BRSs) may in the near future change drastically the landscape of percutaneous coronary revascularization.1 In 1977, when Andreas Gruentzig introduced the concept of percutaneous transluminal coronary angioplasty, the most feared enemy of the operators was acute occlusion of the dilated lesion due to a combination of elastic recoil and intimal and medial dissection, sometimes aggravated by intraparietal haematoma (Figure 1).2 Surgical standby was a sine qua non condition for the safe performance of the percutaneous treatment. At short term, proliferative ne",
+    "topic": "Contextual reference on interventional strategies and how device paradigms relate to plaque mechanical and compositional issues"
+  },
+  {
+    "key": "stefanadis2017",
+    "title": "Coronary Atherosclerotic Vulnerable Plaque: Current Perspectives",
+    "authors": "Christodoulos Stefanadis, C. Antoniou, Dimitris Tsiachris, P Pietri",
+    "year": 2017,
+    "doi": "10.1161/jaha.117.005543",
+    "abstract": "",
+    "topic": "Clinical perspective summarizing current concepts of vulnerable coronary plaque composition and risk"
+  },
+  {
+    "key": "brown2016",
+    "title": "Role of biomechanical forces in the natural history of coronary atherosclerosis",
+    "authors": "Adam J. Brown, Zhongzhao Teng, Paul C. Evans, Jonathan H. Gillard, Habib Samady, Martin R. Bennett",
+    "year": 2016,
+    "doi": "10.1038/nrcardio.2015.203",
+    "abstract": "",
+    "topic": "Review precedent that biomechanical forces influence the natural history of coronary atherosclerosis"
+  },
+  {
+    "key": "eshtehardi2012",
+    "title": "Association of Coronary Wall Shear Stress With Atherosclerotic Plaque Burden, Composition, and Distribution in Patients With Coronary Artery Disease",
+    "authors": "Parham Eshtehardi, Michael McDaniel, Jin Suo, Saurabh S. Dhawan, Lucas H. Timmins, José Binongo, Lucas Golub, Michel Corban, Aloke V. Finn, John N. Oshinsk, Arshed A. Quyyumi, Don P. Giddens, Habib Samady",
+    "year": 2012,
+    "doi": "10.1161/jaha.112.002543",
+    "abstract": "BACKGROUND: Extremes of wall shear stress (WSS) have been associated with plaque progression and transformation, which has raised interest in the clinical assessment of WSS. We hypothesized that calculated coronary WSS is predicted only partially by luminal geometry and that WSS is related to plaque composition. METHODS AND RESULTS: Twenty-seven patients with coronary artery disease underwent virtual histology intravascular ultrasound and Doppler velocity measurement for computational fluid dynamics modeling for WSS calculation in each virtual histology intravascular ultrasound segment (N=3581",
+    "topic": "Clinical study linking computed wall shear stress to plaque burden, composition, and distribution—supporting WSS as a relevant metric"
+  },
+  {
+    "key": "lee2017",
+    "title": "Interaction of IL-6 and TNF-α contributes to endothelial dysfunction in type 2 diabetic mouse hearts",
+    "authors": "Jonghae Lee, Sewon Lee, Hanrui Zhang, Michael A. Hill, Cuihua Zhang, Yoonjung Park",
+    "year": 2017,
+    "doi": "10.1371/journal.pone.0187189",
+    "abstract": "OBJECTIVES: Inflammatory cytokines, such as tumor necrosis factor-α (TNF-α) and interleukin-6 (IL-6), are individually considered as important contributors to endothelial dysfunction in obesity and type 2 diabetes (T2D). However, their interactions in coronary arteriole endothelial dysfunction are uncertain. Therefore, this study aimed to determine the effects of TNF-α and IL-6 interactions on coronary endothelial dysfunction in experimental T2D. METHODS: The studies used wild type (WT), diabetic mice (db/db), db/db null for TNF (dbTNF-/dbTNF-), and db/db mice treated with neutralizing antibod",
+    "topic": "Supports the role of cytokine interactions (IL‑6, TNF‑α) in driving coronary endothelial dysfunction relevant to atherogenic processes"
+  },
+  {
+    "key": "choi2015",
+    "title": "Coronary Artery Axial Plaque Stress and its Relationship With Lesion Geometry",
+    "authors": "Gilwoo Choi, Joo Myung Lee, Hyun Jin Kim, Jun‐Bean Park, Sethuraman Sankaran, Hiromasa Otake, Joon‐Hyung Doh, Chang‐Wook Nam, Eun‐Seok Shin, Charles A. Taylor, Bon‐Kwon Koo",
+    "year": 2015,
+    "doi": "10.1016/j.jcmg.2015.04.024",
+    "abstract": "",
+    "topic": "Supports the relevance of axial plaque stress and its relationship with lesion geometry as a biomechanical factor"
+  },
+  {
+    "key": "chaichana2012",
+    "title": "Computational Fluid Dynamics Analysis of the Effect of Plaques in the Left Coronary Artery",
+    "authors": "Thanapong Chaichana, Zhonghua Sun, James Jewkes",
+    "year": 2012,
+    "doi": "10.1155/2012/504367",
+    "abstract": "This study was to investigate the hemodynamic effect of simulated plaques in left coronary artery models, which were generated from a sample patient's data. Plaques were simulated and placed at the left main stem and the left anterior descending (LAD) to produce at least 60% coronary stenosis. Computational fluid dynamics analysis was performed to simulate realistic physiological conditions that reflect the in vivo cardiac hemodynamics, and comparison of wall shear stress (WSS) between Newtonian and non-Newtonian fluid models was performed. The pressure gradient (PSG) and flow velocities in th",
+    "topic": "Methodological precedent for CFD analysis of coronary plaques and comparisons of WSS under physiologic conditions"
+  }
+]

@@ -1,0 +1,137 @@
+\documentclass[preprint,12pt]{elsarticle}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{kotex}            % Korean draft — compile with XeLaTeX or LuaLaTeX
+\journal{Computers in Biology and Medicine}
+
+\begin{document}
+
+\begin{frontmatter}
+\title{관상동맥 파열위험지표(ΔPSS 기반) 정의 및 민감도 분석}
+\author[label1]{김세혁 (Se Hyeog Kim)}\corref{cor1}
+\cortext[cor1]{Corresponding author}
+\affiliation[label1]{organization={한국과학기술원 기계공학과 · CBML (Computational Biomechanics Lab)}, country={}}
+\begin{abstract}
+관상동맥 죽상경화 플라크의 파열은 급성 관상동맥 증후군의 주요 원인으로 플라크 역학적 분석이 환자 위험층화에 중요하다. 본 연구는 형태·혈류역학·재료(강성)를 포함하는 1,000 샘플 설계공간\textbf{[DATA NEEDED: data/input\_parameter/input.csv]}에 대해 비용효율적 맥동성 FSI 파이프라인을 이용해 LAP(루멘·FC·지질; FC 두께는 균일 단일 스칼라(fc\_av\_th)로 취급)와 CP(+석회화) 표현형의 대규모 입출력 데이터셋을 생성한 뒤(유효 시뮬레이션 쌍: LAP=784, CP=727 \textbf{[DATA NEEDED: D\_sim\_post\_LAP,D\_sim\_post\_CP]}), 2 stress 정의(최대응력·응력 최대진폭 ΔPSS) × 3 strength 시나리오로 구성된 6개 후보 VI를 임상 고위험 특성 7개와의 부호 일치성으로 평가하였다. ΔPSS(진폭·피로 관점)를 stress로 사용하는 지표가 최대 PSS 기반 지표보다 임상 특성 부호 일치에서 우수하여, 최종적으로 $ \mathrm{VI1}=\Delta\mathrm{PSS}/E_{FC}^{0.5}$ 및 $ \mathrm{VI2}=\Delta\mathrm{PSS}/E_{FC}^{1.0}$을 채택하였다 (F\_vi\_selection\_table). 채택된 VI에 대해 유효 시뮬레이션으로 GPR 대리모델을 학습하고 대략 $\sim1.5\times10^{4}$ 회의 대규모 평가를 통해 Sobol 1차·전차 지수 기반 전역 민감도 분석을 수행한 결과, 그룹 수준에서 Material(재료물성)이 Hemo·Morpho를 지속적으로 능가(Material > Hemo > Morpho)하였고, 개별 변수로는 $E_{vessel}$, $E_{FC}$, 수축기압(SBP), 맥압(PP)이 상위 결정 인자로 확인되었다 (F\_sobol\_group\_fig; F\_sobol\_ind\_fig). 본 결과는 응력/강도 프레임의 중요성과 ΔPSS(피로) 관점의 임상적 적합성 및 환자별 strength를 반영한 정규화의 필요성을 시사하며, 특히 정규화 지수 α의 선택이 전역 민감도 분석 결과에 실질적 영향을 미침을 보였다; 플라크 파열 위험 해석에 맥동성 FSI와 재료 특성화의 우선순위가 있음을 제안한다 \cite{brown2016} \cite{choi2015} \cite{stefanadis2017} \cite{chaichana2012}.
+\end{abstract}
+\begin{keyword}
+coronary plaque rupture \sep fluid-structure interaction \sep Sobol sensitivity analysis \sep Gaussian process regression \sep ΔPSS \sep vulnerability index
+\end{keyword}
+\end{frontmatter}
+
+\section{Introduction}
+
+\subsection{관상동맥 플라크 파열의 임상적 중요성}
+관상동맥 죽상경화성 플라크의 파열은 급성 관상동맥 증후군(ACS)의 주요 병인으로 보고되며, 플라크 안정성 변화는 심혈관계 사망과 이환율에 직접적인 영향을 준다 \cite{stefanadis2017}. 특히 혈관 내 기계적 힘과 조직 거동이 병변의 자연사에 중요한 역할을 한다는 기계생물학적 관점은 최근 종설과 임상검토에서 일관되게 강조되어 왔다 \cite{brown2016}. 이러한 임상·기초적 중요성은 플라크 파열 위험을 정량화하는 객관적 지표 개발의 필요성을 부각시킨다.
+
+\subsection{파열 결정요인의 다요인성(형태·혈류역학·재료)과 기존 지표의 한계}
+플라크의 파열 위험은 병변 형태학(lesion geometry), 국소 혈류역학(hemodynamics), 그리고 조직·섬유막의 재료물성(material properties)이 상호작용하여 결정되는 다요인적 현상이다; 예컨대 축방향 응력 분포와 병변 형상 간의 관련성은 역학적 해석에서 반복적으로 보고되었다 \cite{choi2015}, 또한 생체역학적 힘이 병변의 생성·진화에 미치는 영향은 광범한 문헌적 근거가 존재한다 \cite{brown2016} \textbf{[CITATION NEEDED: cite:stefanadis2017]}. 그러나 많은 전산 연구는 계산 비용·모델 복잡성의 제약으로 인해 일부 인자만 고정하거나 국소적 범위에서만 민감도 검토를 수행해, 형태·혈류·재료 세 군을 동시에 넓게 변동시키는 체계적 전역 민감도 분석은 제한적으로 이루어졌다 \cite{brown2016}.
+
+기존 전산·역학적 지표들이 주로 응력(stress) 단일 지표에 의존해 왔고, 환자별로 다른 섬유막 강도(strength)를 무시하는 한계가 있다. 물리적 파열 메커니즘과 피로·파손 이론은 적용된 응력과 국소 재료 강도의 관계가 파열 위험을 지배함을 시사하므로, 응력만을 단독 지표로 사용하는 접근은 환자 간 재료 특성 차이를 반영하지 못할 수 있다; 따라서 응력 값을 강도로 정규화하는 stress/strength 프레임워크가 개념적으로 타당하다 \cite{brown2016} \textbf{[CITATION NEEDED: cite:choi2015, cite:stefanadis2017]}. 또한 진폭 기반 응력(ΔPSS)은 주기적 부하 하의 피로 관점에서 물리적 근거를 제공하므로 정규화 항과 함께 고려되어야 한다.
+
+\subsection{ΔPSS(응력 최대진폭)과 strength 정규화의 당위성 및 연구 목적}
+응력의 최대진폭(ΔPSS)은 맥동성 부하에서의 피로·진폭 효과를 직접적으로 반영하므로, 플라크 파열 취약성 해석에서 물리적 의미가 명확하다; 진폭 기반 관점은 국소 응력의 최대값뿐 아니라 주기적 변화가 누적 손상에 미치는 영향을 고려하도록 동기를 부여한다. 한편 형태·혈류·재료의 광범위한 동시 변동을 반영하는 전역 민감도 분석은 전산 비용 측면에서 현실적 장벽이 있어 왔지만, 선행의 비용효율적 맥동성 FSI 설정을 데이터 생성 단계에 적용하고 대리모델(예: GPR)을 결합하면 대규모 입력–출력 데이터셋을 구성하고 민감도 산출을 실현할 수 있다 \cite{chaichana2012} \textbf{[CITATION NEEDED: cite:brown2016]}. 본 연구는 이러한 파이프라인을 적용하여 ΔPSS를 stress로, 재료물성(예: E\_FC)에 기반한 정규화를 포함하는 취약성지수 후보들을 평가하고자 한다; 구체적 수치적 우위나 민감도 결과는 이 도입부에서 단정하지 않는다.
+
+본 연구의 목표는 다음과 같다: 비용효율적 맥동성 FSI 파이프라인을 이용해 형태·혈류역학·재료의 설계공간(1,000개 샘플 수준)[data/input\_parameter/input.csv]을 광범위하게 샘플링하여 LAP(3도메인)와 CP(4도메인) 각각에 대한 입력–출력 데이터셋을 구축하고, ΔPSS 기반의 stress/strength 취약성지수 후보들을 임상적으로 확립된 고위험 특징과의 부호 일치성으로 선별한 뒤, 최종 지수에 대해 Gaussian process regression 대리모델을 학습(LAP 유효쌍 784\textbf{[DATA NEEDED: D\_sim\_post\_LAP\_valid\_count]}, CP 유효쌍 727\textbf{[DATA NEEDED: D\_sim\_post\_CP\_valid\_count]})하여 surrogate 상에서 Sobol 1차·전차 지수로 전역 민감도를 평가하는 것이다. 이 접근은 상세한 솔버 설정·하이퍼파라미터·검증 수치 등 방법학적 세부를 이 도입부에서 기술하지 않으며, 풀 파이프라인의 경계조건·유입파형 등은 선행 검증된 FSI 설정을 기반으로 적용되었다.
+
+\section{Methods}
+
+\subsection{분석 개요 및 파이프라인}
+본 연구는 세 단계의 분석 파이프라인으로 구성된다: (1) 비용효율적 맥동성 FSI를 이용한 대규모 입력‑출력 데이터셋 생성(데이터 생성), (2) 후보 취약성지수(VI) 산출 및 임상적 부호 일치(sign concordance)에 따른 후보 선별(VI 후보 선정), (3) 최종 채택 VI에 대한 Gaussian process regression(GPR) 서로게이트 학습 후 상에서의 분산분해 기반 Sobol 전역 민감도 분석(서로게이트 기반 전역 민감도). 1단계에서는 형태·혈류역학·재료의 3개 군으로 구성된 설계공간(총 1,000 표본 [data/input\_parameter/input.csv])을 모델 파라미터로 매핑하여 LAP(3도메인: lumen, fibrous cap, lipid)과 CP(4도메인: +calcification)를 각기 시뮬레이션하였고, FC 두께는 단일 스칼라 변수(fc\_av\_th)로 취급하였다; 유효 시뮬레이션 쌍은 LAP 784 [E\_dataset\_and\_models], CP 727 [E\_dataset\_and\_models]을 확보하였다. 2단계에서는 stress 정의(최대응력 또는 응력의 최대진폭 ΔPSS)와 세 가지 strength 시나리오의 직교 조합으로 6개의 후보 VI를 계산하고, 7개의 임상적 고위험 특징과의 부호 일치를 기준으로 선별하였다(후보별 부호 일치표는 표로 제시 [F\_vi\_selection\_table]). 3단계에서는 확보된 유효 쌍으로 GPR 서로게이트를 학습하여 약 15,000회 규모의 서로게이트 평가 [E\_surrogate\_enables\_sobol]를 수행함으로써 Sobol의 1차(S1) 및 전차(ST) 지수를 산출하여 그룹(level: Material/Hemo/Morpho) 및 개별 파라미터 수준의 민감도를 분석하였다; 본 파이프라인은 기존 관상동맥 CFD/FSI 선행 기법의 방법론적 근거를 따른다 \cite{chaichana2012}. 
+
+\subsection{비용효율 맥동성 FSI 데이터셋 구축(모델·입력·경계조건·후처리)}
+데이터 생성 단계는 선행에 의해 검증된 비용효율적 맥동성 양방향(two‑way) FSI 설정을 도구로 사용하여 수행되었다. 유체는 비압축성 Navier–Stokes 방정식(혈액을 Newtonian으로 가정), 고체는 선형 등방성 탄성체 가정으로 모델링하였으며, 유체‑고체 계면에서 속도 및 traction 연속 조건을 적용하는 양방향 결합을 수행하였다. 관상동맥 특이 경계조건은 시간변동 심근 elastance 파형과 관상동맥 입구의 맥동 유량 파형 및 적절한 아웃렛 Windkessel 계통을 이용하여 설정하였고(경계조건과 파형은 경계조건 설명 자료에 기술됨), 본 연구에서는 해당 선행 설정을 변경하지 않고 데이터셋 생성에 적용하였다. 수치해석적 세부(사용한 solver·수치 파라미터·수렴 기준 등)는 본문 범위를 벗어나므로 기술하지 않으며, 시뮬레이션 출력의 물리적 타당성은 선행 문헌과의 경향 일치로 정성적 검증을 수행하였다 \cite{chaichana2012}. 
+
+모델화된 플라크 표현형과 전처리
+각 설계표본의 입력 파라미터는 형태·혈류역학·재료 항목으로 구성된 설계표에서 모델화 파라미터로 매핑되었다(형상 관련 변수: 협착정도·병변길이·지질길이비·형상왜곡 변수 등; 혈류 관련: SBP·PP·inflow 파형 등; 재료: E\_vessel, E\_FC, E\_lipid, E\_cal). LAP는 루멘·섬유막(FC)·지질의 3도메인으로, CP는 여기에 석회화 도메인을 추가한 4도메인으로 구성하였다. 각 도메인은 균일한 선형 등방성 탄성체로 가정하였고, FC 두께는 균일한 단일 스칼라 변수 $fc\_av\_th$로 처리하여 설계공간 내에서 변동시켰다. 전처리 과정에서는 설계표의 각 수치가 대응하는 기하·물성·경계조건 파라미터로 변환되어 시뮬레이션 입력으로 투입되었다. 
+
+시뮬레이션 실행 절차 및 설계공간 운영
+각 설계표본에 대해 시간해석적(transient) 맥동 FSI 계산을 수행하였다; 유체는 시계열 Navier–Stokes, 고체는 선형 탄성 해를 시간적으로 연성해석하고 유체‑고체 계면에서 상호작용을 반영하는 방식으로 처리하였다. 입구 맥동 유량 및 시간가변 심근 elastance 파형을 경계조건으로 적용하였고, 입력 설계표의 형태·혈류·재료 파라미터를 개별 시뮬레이션에 반영하였다. 전체 설계표본 집단으로부터 얻은 원시 시뮬레이션 결과는 후처리 단계를 거쳐 유효 쌍으로 선별되었고(유효 쌍 수: LAP 784 [E\_dataset\_and\_models], CP 727 [E\_dataset\_and\_models]), 이들 유효 데이터를 후속 분석(취약성지수 산출 및 서로게이트 학습)에 사용하였다. 계산 인프라·solver 세부·수렴성 검증 등은 본 논문에서 제안하는 것이 아니라 선행 도구의 적용 범위로 취급한다. 
+
+후처리 산출물 및 산정 절차
+각 시뮬레이션의 후처리에서는 플라크 표면 및 관련 구조에서의 PSS(plaque structural stress) 장을 계산하였고, 시간적으로 관찰되는 PSS 필드에서 지점별 진폭(최대값–최소값)으로부터 구면(또는 표면) 평균을 취하여 ΔPSS(심장주기 동안의 최대 진폭의 표면 평균)를 산출하였다. 또한 유관계수로서의 FFR 유사치와 파열위치 지수(rupture‑location index)를 계산하여 취약성지수 계산 및 임상기준 비교에 필요한 출력 벡터를 구성하였다. 후처리 알고리즘의 내부 수치적 파라미터(필터링·보간 등)는 본문에서 상세 제시하지 않으며, 산출된 PSS·ΔPSS·파열위치 지수 등은 VI 후보 생성의 입력으로 사용되었다. 
+
+\subsection{취약성지수 후보 생성 및 임상 기준 기반 선별}
+취약성지수 후보는 stress 정의 2종(최대 PSS, ΔPSS)과 strength 가정 3종의 직교 조합으로 총 6개를 구성하였다 [F\_vi\_selection\_table]. 각 후보는 일반형으로서 stress/strength 형태로 산정되며, strength는 섬유막 강성 등 재료 특성에 의한 정규화 항을 포함한다(정규화 지수 α는 strength 시나리오별로 달리 설정). 후보 VI들은 모든 유효 시뮬레이션에 대해 계산되어 7개의 임상적으로 확립된 고위험 플라크 특징과의 부호 일치(예: 특징이 고위험 방향으로 변할 때 VI가 증가하는지 여부)를 정량적으로 평가하는 절차를 거쳤다; 후보‑기준 간의 부호 일치 결과는 후보 선별 표(F\_vi\_selection\_table)에 요약되었다. 
+
+VI 후보의 부호 일치 판정 및 최종 지수 선정
+각 후보 VI에 대하여 7개 임상 고위험 특징과의 부호 일치를 표 형태로 집계하고, 모든 7개 기준과의 부호 일치를 만족하는 후보를 최종 채택 대상으로 판정하였다(판정표는 본문 표로 제시). 상기 절차에 따라 최종 채택된 두 지수는 다음과 같다: $\\mathrm{VI1}=\\Delta\\mathrm{PSS}/E\_{FC}^{0.5}$ 및 $\\mathrm{VI2}=\\Delta\\mathrm{PSS}/E\_{FC}^{1.0}$; 이들 지수는 이후 서로게이트 학습 및 민감도 분석의 대상이 되었다(선택 기준 및 판정 표는 F\textbackslash \_vi\textbackslash \_selection\textbackslash \_table에 수록). 
+
+GPR 서로게이트 학습 및 Sobol 전역 민감도 분석
+선택된 최종 VI들에 대해 GPR 서로게이트를 학습하였다. 학습에는 유효 시뮬레이션 쌍(LAP 784 [E\_dataset\_and\_models], CP 727 [E\_dataset\_and\_models])을 사용하였고, 일반적인 절차로서 학습/검증 분할과 하이퍼파라미터 최적화(교차검증 기반)를 수행하여 서로게이트의 예측적 일반화 능력을 확보하는 작업을 진행하였다(구체적 성능 지표와 하이퍼파라미터 수치는 본문에 제시하지 않음). 학습된 GPR 서로게이트는 불확실성 정보를 포함하는 확률적 예측을 제공함으로써 고비용 시뮬레이션을 대체하여 대규모 평가(약 15,000회 수준 [E\_surrogate\_enables\_sobol])를 가능하게 하였고, 이를 기반으로 Sobol 지수 산출을 수행하였다. 
+
+Sobol 전역 민감도 분석 절차
+서로게이트 상에서 수행한 전역 민감도 분석은 분산분해(variance decomposition)에 기초한 Sobol 방법을 따랐으며, 출력 분산에 대한 각 입력의 1차 기여도 S1과 전체 기여도 ST(주효과 및 상호작용 포함)를 계산하였다. 입력 변수는 실험적 목적에 맞춰 세 개의 그룹(Material, Hemo, Morpho)과 개별 파라미터 수준으로 분류하였고, 그룹별 S1·ST는 해당 그룹에 속한 파라미터들의 기여를 집계하여 산출하였다. 서로게이트를 이용한 대규모 샘플링(약 15,000회 평가 [E\_surrogate\_enables\_sobol])을 통해 그룹 및 개별 파라미터별 Sobol 지수를 계산하였으며, 그룹별·개별 파라미터별 결과는 본문과 부록의 그룹·개별 민감도 결과 표/도표에 제공한다(관련 요약 자료는 부록의 그룹·개별 Sobol 결과 파일에 수록: data/sobol/sobol\_grp\_LAP\_VI1.csv, data/sobol/sobol\_grp\_LAP\_VI2.csv, data/sobol/sobol\_grp\_CP\_VI1.csv, data/sobol/sobol\_grp\_CP\_VI2.csv, data/sobol/sobol\_ind\_LAP\_VI1.csv, data/sobol/sobol\_ind\_LAP\_VI2.csv, data/sobol/sobol\_ind\_CP\_VI1.csv, data/sobol/sobol\_ind\_CP\_VI2.csv). 이 방법론은 Sobol 분해 이론의 표준적 적용에 따르며 결과 해석 및 임상적 함의는 결과 및 논의 섹션에서 제시한다.
+
+\section{Results}
+
+\subsection{시뮬레이션 타당성 및 데이터셋 요약(LAP/CP 유효 쌍 수)}
+비용효율 맥동성 FSI 파이프라인으로 생성한 출력은 선행의 관상동맥 CFD/FSI 연구에서 보고된 PSS 분포·FFR 경향·예상 파열 위치의 정성적 경향과 일치하여 본 데이터셋이 물리적으로 타당한 입력–출력 쌍을 제공함을 확인하였다(예: 관상동맥 플라크 관련 CFD 선행연구와의 정성 비교) \cite{chaichana2012}. 맥동성 경계조건은 임상적 맥파형(inflow, elastance)과 일치하도록 설정하였고, 생성된 대규모 입력–출력 쌍은 이후 GPR 대리모델 학습의 근거가 되었다; 최종적으로 유효한 시뮬레이션 쌍은 LAP 784개 및 CP 727개로 정리되었고 (data/input\_parameter/input.csv), 이 유효쌍을 바탕으로 학습된 GPR 대리모델은 약 1.5×10\textasciicircum 4회의 \textbf{[DATA NEEDED: surrogate evaluation count]} 대량 평가를 가능하게 하여 Sobol 전역 민감도 계산을 수행하였다(대규모 데이터생성 → 대리모델 → 전역 민감도의 파이프라인 구성). 본 문헌·정성 비교는 시뮬레이션 파이프라인의 정성적 타당성을 뒷받침하되, 정량적 오차 지표나 임상 예측력 보장을 제시하지는 않는다.
+
+본 연구에서 구성한 입력설계공간은 형태·혈류역학·재료 3군으로 구성된 1,000 표본(data/input\_parameter/input.csv)을 기반으로 하며, 플라크 표현형은 LAP(3도메인: lumen, fibrous cap, lipid) 및 CP(4도메인: + calcification)로 모델링하고 섬유막 두께는 단일 스칼라(fc\_av\_th)로 균일 가정하였다. 전처리·후처리 과정을 거쳐 확보된 유효 시뮬레이션 쌍(LAP=784, CP=727) (data/input\_parameter/input.csv)은 GPR 학습의 학습·검증 데이터로 사용되었고, 이 데이터셋은 이후 VI 후보 평가 및 Sobol 민감도 분석의 근거 자료로 활용되었다(설계공간·표현형·유효쌍 수는 본문·보조자료에 상세히 제시한다). 본 데이터셋은 분석 범위 내의 다양한 변수 조합을 포괄하지만, 모든 임상 변이를 대표한다고 단정하지는 않는다.
+
+\subsection{VI 후보 검토와 임상 7기준 일치성: ΔPSS 기반 VI1·VI2의 선택 근거}
+스트레스·강도 조합으로 생성한 6개 후보(VI 후보 = 2개의 stress 정의 × 3개의 strength 시나리오)를 7개의 임상 고위험 플라크 특징과의 부호(sign) 일치성 기준으로 비교한 결과, 6개 중 2개만이 모든 7개 기준과 부호 일치를 만족하였다(E\_vi\_candidates\_evaluation). 비교 결과 ΔPSS(구면평균된 응력 최대진폭)를 stress로 사용하는 후보들이 최대 PSS(peak PSS) 기반 후보들보다 7개 임상 기준과의 부호 일치성이 전반적으로 우수하여, 최종적으로 다음 두 지수를 채택하였다: $$\mathrm{VI1}=\dfrac{\Delta\mathrm{PSS}}{E_{FC}^{0.5}},\qquad \mathrm{VI2}=\dfrac{\Delta\mathrm{PSS}}{E_{FC}^{1.0}} \tag{1}$$ 이 선택 과정은 6개 후보에 대한 7개 기준의 부호 일치 표로 정리되어 본문 표(F\_vi\_selection\_table)에 제시되며, ΔPSS 기반 지표의 우수성은 맥동성(진폭·피로) 관점에서 stress를 해석할 필요성을 뒷받침한다. 본 평가는 임상적 민감도·특이도 등 성능 지표를 제공하지 않으며, ΔPSS 기반 지표가 모든 상황에서 절대적으로 우수하다고 단정하지 않는다.
+
+\subsection{전역 민감도 결과: 그룹별(Sobol S1·ST) 및 개별 파라미터 영향}
+GPR 대리모델 상에서 계산한 그룹 단위 Sobol 1차(S1) 및 전차(ST) 지수는 LAP·CP, VI1·VI2 전반에 걸쳐 일관되게 Material(재료물성) 그룹이 Hemo(혈역학) 및 Morpho(형태) 그룹보다 큰 기여도를 보였음을 보여준다(E\_material\_group\_domination). 구체적으로 그룹별 S1(및 ST)은 다음과 같다(소수점 4자리 반올림): LAP·VI1에서 Material S1=0.5013, ST=0.6023 vs Hemo S1=0.2329, ST=0.2470 vs Morpho S1=0.1508, ST=0.2827; LAP·VI2에서 Material S1=0.7507, ST=0.7965 vs Hemo S1=0.1101, ST=0.1172 vs Morpho S1=0.0710, ST=0.1349; CP·VI1에서 Material S1=0.5087, ST=0.6259 vs Hemo S1=0.2533, ST=0.2605 vs Morpho S1=0.1515, ST=0.2443; CP·VI2에서 Material S1=0.7968, ST=0.8359 vs Hemo S1=0.1279, ST=0.1321 vs Morpho S1=0.0438, ST=0.0892. 이 결과는 분산분해 기반 Sobol 분석의 해석 맥락에서 Material 그룹이 VI 변동을 주로 설명함을 시사하며(정량적 우위는 Fig. F\_sobol\_group\_fig 및 관련 CSV에 제시됨), 이 결과는 임상적 위험층화에서 형태학적 특징보다 혈관·섬유막 강성(예: OCT 기반 강성 특성화)을 우선 측정하는 것이 정보 가치가 클 수 있다는 함의를 가진다. Sobol 지표로부터 직접적인 인과관계는 단정할 수 없다.
+
+마지막으로 개별 파라미터별 Sobol 지수는 VI 분산에 대한 주된 결정인자로 혈관 및 섬유막 강성 및 혈압 변수를 규명한다(E\_individual\_top\_parameters). LAP·VI2와 CP·VI2의 대표값(소수점 4자리)으로 예를 들면, LAP·VI2에서 $E_{fc}$ S1=0.5503, ST=0.5751; $E_{vessel}$ S1=0.1459, ST=0.1957; $P_{sys}$ S1=0.0786, ST=0.0815; PP S1=0.0303, ST=0.0338. CP·VI2에서 $E_{fc}$ S1=0.6272, ST=0.6341; $E_{vessel}$ S1=0.1287, ST=0.1670; $P_{sys}$ S1=0.0955, ST=0.0987; PP S1=0.0308, ST=0.0319. 개별 지수 전체는 본문 그림 및 보조자료(F\_sobol\_ind\_fig, 관련 CSV 파일)에 등급별로 제시되어 있으며, 전반적으로 상위 네 인자는 $E_{vessel}$, $E_{fc}$, 수축기 혈압($P_{sys}$), 맥압(PP)으로 확인되었다; 다만 이러한 순위는 본 모델링·설계공간 범위 내의 결과임을 명시한다.
+
+\section{Discussion}
+
+\subsection{ΔPSS(피로·진폭) 관점과 맥동성 FSI의 필요성}
+본 연구에서는 파열위험지수(VI)를 stress/strength 비로 정의하고 stress를 응력의 최대진폭(ΔPSS)으로 취급한 지표가, 최대응력(max‑PSS) 기반 지표보다 7개의 임상적 고위험 플라크 특징과의 부호 일치(sign concordance)에서 우수함을 관찰하였다 (F\_vi\_selection\_table, E\_deltaPSS\_better); 2가지 stress 정의(ΔPSS, max‑PSS)와 3가지 strength 시나리오로 구성한 총 6개 후보 VI를 비교한 결과 오직 두 후보만이 모든 7개 기준과 부호 일치하여 최종적으로 VI1 = ΔPSS / E\_FC\textasciicircum 0.5 및 VI2 = ΔPSS / E\_FC\textasciicircum 1.0을 채택하였다(후보 비교는 Table 2, F\_vi\_selection\_table에 정리됨). ΔPSS 기반 지표의 상대적 우수성은 응력의 진폭(피로·사이클성) 정보가 고위험 특성과 더 밀접한 관계를 갖는다는 해석을 가능하게 하며, 이는 ΔPSS를 피로 관점으로 해석할 때 맥동성(시간정확한) 해석의 필요성을 시사한다. 다만 본 결과는 설계공간 내의 부호 일치성 비교에 근거한 것이며 ΔPSS가 임상적 사건(예: 실제 파열 또는 ACS)을 확정적으로 예측한다는 주장이나 인과관계의 증명으로 확장해서는 안 된다.
+
+맥동성(시간적 진폭)을 고려해야 한다는 점은 물리적 정당성으로 뒷받침된다: 동일한 평균응력이라도 주기적 진폭이 클수록 피로 손상과 국부적 재료피로 누적이 중요하다는 파고성 피로 이론과 일치한다(기계적 stress/strength 프레임). 따라서 본 연구는 선행에 보고된 비용‑효율적 맥동성 FSI 파이프라인을 도구로 사용하여 맥동 조건의 유체–구조 상호작용을 재현하고, 입구 유량 및 심근 elastance 파형 등 맥동성 경계조건을 적용하였다(경계조건 세부는 보충자료에 기술). LAP·CP 각각에 대해 대규모 입력–출력 데이터셋을 구축한 뒤 GPR 대리모델을 학습하여 Sobol 전역 민감도를 산출하였고, 최종 유효 시뮬레이션 쌍은 LAP 784, CP 727이며 GPR를 통해 약 1.5×10\textasciicircum 4회 수준의 평가가 가능해져 Sobol S1/ST 산출이 실현되었다 (E\_dataset\_and\_models, E\_surrogate\_enables\_sobol). 방법론적 전제와 관련하여 유체역학적 관점과 플라크 기하의 연관성은 기존 문헌에서 보고된 바 있으며 본 파이프라인은 그러한 맥락을 따랐다 \cite{brown2016} \cite{choi2015} \cite{stefanadis2017} \cite{chaichana2012}.
+
+\subsection{strength 정규화(정규화 지수 α)와 민감도 결과의 민감성}
+파열위험은 적용된 응력과 국소 재료 강도의 관계에 의해 규정되므로, 동일한 응력 수준이라도 환자별로 다른 섬유막 강도(strength)를 반영하려면 stress를 재료물성으로 정규화하는 것이 이치에 맞다(즉 VI = stress / E\_FC\textasciicircum α 형태의 정규화). 본 연구에서는 정규화 지수 α의 변화가 전역 민감도 결과에 실질적 영향을 미쳤고, 이는 α 선택이 VI 해석 및 입력변수 중요도 순위에 영향을 준다는 의미이다. 이러한 stress/strength 프레임은 관상동맥 생체역학과 플라크 불안정성 논의의 전통적 근거와 일치하며 임상적·역학적 맥락에서도 타당성을 갖는다 \cite{brown2016} \cite{choi2015} \cite{stefanadis2017}. 다만 본 논문에서 채택한 지수값(예: α=0.5, 1.0)은 테스트된 범위 내에서의 실용적 선택이며, 보편적·유일한 생물학적 스케일링이라는 주장은 추가 검증 없이는 할 수 없다.
+
+정규화 지수 α의 변경은 결과 해석 면에서 중요한 함의를 가진다: α가 커질수록 재료변수의 영향력이 상대적으로 증가하거나 감소하는 방식으로 Sobol 분해 결과가 달라질 수 있으므로, 임상 또는 실험에서의 E\_FC 측정 불확실성·분포를 고려한 민감도 검토가 필수적이다. 이러한 정규화 논리는 피로·파단역학의 기본 원리에서 기인하며 본 연구의 VI 구성과 민감도 해석 전반에 적용되었다.
+
+정규화 지수 α의 선택이 실제 분석 결과에 미치는 영향을 명시적으로 확인하기 위해 본 연구는 α 변형에 따른 후보 VI들의 임상 기준 부호 일치성과 Sobol 민감도 변화를 비교하였고(상세 비교는 Table 2, F\_vi\_selection\_table 및 그룹별 Sobol 도표(그룹 결과는 Fig. 5, F\_sobol\_group\_fig에 제시)), 그 결과를 근거로 VI1 및 VI2를 최종 채택하였다. 여기서도 α의 범위와 형태를 모든 경우에 대해 포괄적으로 탐색한 것은 아니며, 추가적인 범위 확장과 환자자료 기반 보정이 향후 과제로 남는다.
+
+임상적 함의: 재료물성 우세가 시사하는 측정·위험층화 우선순위
+GPR 대리모델 기반 Sobol 전역 민감도 분석 결과, 그룹 수준에서 Material(재료물성) 그룹이 Hemo(혈류역학)와 Morpho(형태학)를 일관되게 앞서는 기여도를 보였고(Material > Hemo > Morpho), 개별 변수 수준에서도 E\_vessel, E\_FC, 수축기 혈압(SBP), 맥압(PP)이 VI 분산을 주도하는 상위 인자로 확인되었다(그룹·개별 결과는 Fig. 5, Fig. 6에 제시; F\_sobol\_group\_fig, F\_sobol\_ind\_fig). 이 결과는 설계공간(형태·혈류·재료)의 변동을 광범위하게 고려한 대규모 민감도 분석에서 도출된 것으로, 분산기여도 분해(Sobol S1, ST)의 표준적 해석에 근거한다. 다만 이 결론은 본 연구에서 정의한 VI 프레임과 입력설계공간에 종속적이며, 모든 임상 맥락에서 형태학적 변수(예: 협착도)가 중요하지 않음을 의미하지는 않는다; 오히려 특정 VI 관점에서는 재료물성 정보가 상대적으로 더 큰 정보가치(information value)를 제공함을 시사한다.
+
+임상적 적용 가능성: OCT 등 강성 측정의 우선순위
+상기 민감도 결과는 위험층화 전략에서 형태학적 지표만을 우선할 것이 아니라 혈관 및 섬유막의 강성·탄성 특성(예: OCT 기반의 기계적 특성화)이 추가적이고 실질적인 정보 가치를 제공할 수 있음을 시사한다. 이는 취약 플라크의 조성·기계적 특성이 파열 가능성에 중요한 역할을 한다는 임상·역학적 논의와도 일관된다 \cite{stefanadis2017} \cite{brown2016}. 다만 본 연구 결과만으로 즉각적인 진료 지침 변경을 권고하거나 OCT 단독으로 파열 위험을 결정할 수 있다고 주장해서는 안 되며, 제안된 우선순위는 전향적 임상 검증과 추가적 기계학적·통계적 검토를 전제로 한 권고적 함의로 이해되어야 한다.
+
+\subsection{모델 가정과 한계(균일 FC 두께·이상화 기하·선형 탄성 등)}
+본 연구의 해석적 유효성은 몇 가지 주요 가정과 한계 아래에 있다. 모델상에서는 LAP를 3도메인(루멘·섬유막·지질), CP를 4도메인(+석회화)으로 단순화하였고, 섬유막 두께는 균일한 단일 스칼라(fc\_av\_th)로 취급하였다; 입력 설계공간(형태·혈류·재료 1,000 샘플) (data/input\_parameter/input.csv)과 맥동성 경계조건의 구체적 매핑은 보충자료 및 입력 파라미터 설명에 기술되어 있다. 고체는 선형 등방 탄성으로 가정하였고 점성·비선형·피로거동 등은 모사하지 않았다. 또한 본 논문에서는 solver·메시·시간간격 수렴 연구, 대규모 정량적 검증 지표(예: RMSE, R²) 및 GPR 하이퍼파라미터 상세를 제시하지 않았으며(이는 향후 보완 예정), 해석적 타당성은 시뮬레이션 결과가 선행 임상·전산 연구의 경향과 정성적으로 일치함으로써 부분적으로 확립되었다(E\_sim\_validation). 대규모 데이터셋(LAP 784, CP 727)을 사용해 GPR을 학습하고 Sobol을 계산한 방법론적 선택은 대규모 민감도 추정을 가능하게 했으나, 위 한계들은 정량적 결과의 범용성 및 임상적 일반화 가능성을 제한한다 (E\_dataset\_and\_models). 본 한계들은 현재의 정성적·상대적 결론을 무효화하지는 않지만, 향후 수치적 보강과 환자특이적 자료 적용을 통해 해석의 정밀도를 개선해야 한다.
+
+향후 연구 권고
+본 연구의 발견을 견고히 하고 임상·물리적 타당성을 확충하기 위해 다음 연구들이 필요하다. 첫째, 환자특이적 섬유막 두께 분포 및 기하를 반영한 모델을 도입하여 균일 두께 가정의 영향을 평가할 것. 둘째, 섬유막 및 기타 성분에 대한 비선형·피로(누적손상) 재료 모델을 포함하여 ΔPSS 기반 해석의 물리적 연결고리를 강화할 것. 셋째, 실험적 재료시험(조직 수준의 강성·파단강도 측정) 및 in‑vitro/동물모델 캘리브레이션을 통해 E\_FC 분포와 정규화 지수 α에 대한 근거를 마련할 것. 넷째, GPR 대리모델의 불확실성 정량화(UQ)를 확대하고 메시·시간분해능·solver 수렴성 검토 결과를 투명하게 보고할 것. 마지막으로, 제안된 VI와 측정 우선순위(예: OCT‑derived stiffness)의 임상적 가치 판단을 위해 전향적 코호트 연구와 비교검증을 수행해야 한다. 이러한 후속 연구들은 본 연구에서 관찰된 재료물성의 우세성 및 ΔPSS의 피로적 의미를 보다 결정적으로 검증하고, VI 정의와 민감도 결론의 강건성을 평가하는 데 필수적이다.
+
+\section{Conclusion}
+
+\subsection{Key findings}
+본 연구에서는 파열위험지수(VI)를 stress/strength 비로 정의하고 stress를 응력의 최대진폭(ΔPSS, fatigue/진폭 관점)으로 취급하는 접근을 제안하였다; 후보로서 stress 정의 2종(최대 PSS, ΔPSS)과 strength 시나리오 3종을 조합한 총 6개 VI를 평가한 결과, 7개 임상 고위험 플라크 특징과의 부호 일치(sign concordance)에서 ΔPSS 기반 지표가 최대 PSS 기반 지표보다 우수하였고(후보 6종 중 2종만이 7개 기준을 모두 만족), 최종적으로 VI1 = ΔPSS / E\_FC\textasciicircum {0.5} 및 VI2 = ΔPSS / E\_FC\textasciicircum {1.0}을 선정하였다(선정 근거 및 후보별 부호 일치 결과는 Table 2). 본 결과는 ΔPSS(응력 진폭)를 사용한 VI가 형태·혈류·재료 관점에서 임상적으로 정의된 고위험 신호와 더 잘 정렬함을 보여주며, ΔPSS의 우수성은 사이클 부하(피로) 효과를 반영해야 함을 시사한다(즉, 맥동성 FSI가 분석에 적합함). 단, 본 선택은 설계공간 내의 부호 일치 기준에 근거한 것으로, 환자 예후 예측력의 임상적 타당성은 추가 검증이 필요하다; 본 연구는 VI의 기능형을 제안·선별했을 뿐 이를 유일·최종적 임상 지표라 주장하지 않는다.
+
+GPR 대리모델 기반 Sobol 전역 민감도 분석 결과, 입력 변수군의 그룹별 기여도에서 재료물성(Material)이 혈류역학(Hemo) 및 형태학(Morpho)을 일관되게 능가하였다(Material > Hemo > Morpho). 그룹 수준의 Sobol 1차(S1) 및 전차(ST) 지수는 LAP·CP 양 표현형과 VI1·VI2 전반에서 Material 그룹이 더 큰 기여를 보였고(그룹별 막대도표 참조, Fig 4), 개별 파라미터 수준의 순위에서는 E\_vessel, E\_FC, 수축기 혈압(SBP), 맥압(PP)이 VI 분산의 주요 결정인자로 나타났다(개별 변수 막대도표 참조, Fig 5). 이 민감도 결과는 대리모델(학습 데이터: LAP=784 유효쌍, CP=727 유효쌍)을 통해 광범위한 평가(대략 1.5×10\textasciicircum 4 회의 surrogate 평가)를 수행한 Sobol 분해로 얻어졌음을 밝힌다. 다만 이 분석은 본 연구의 설계공간과 모델 가정 하에서의 상대적 중요도 서열을 제시하는 것이며 임상 파열 사건의 인과를 증명하거나 본 결과가 다른 설계공간으로 일반화된다고 주장할 수 없다.
+
+\subsection{Implications}
+첫째, ΔPSS(응력 최대진폭)가 최대 PSS보다 임상 고위험 특징과 더 잘 정렬한다는 발견은 파열평가에서 맥동성(사이클 부하/피로) 효과를 반영하는 것이 중요함을 의미하므로, 맥동성 FSI를 포함한 해석이 타당성을 가진다(관련한 생체역학적 맥락은 \cite{brown2016}, \cite{choi2015}, 임상 관점은 \cite{stefanadis2017} 참조). 둘째, VI 정의에서 strength에 대한 정규화(분모로 재료물성 포함)가 필요하며, 정규화 지수 α의 선택은 전역 민감도 결과(재료·혈류·형태의 상대적 기여도)에 실질적 영향을 미치므로 α 선택은 해석적·민감도 관점에서 명시적으로 보고되어야 한다(본 연구에서는 VI1: α=0.5, VI2: α=1.0을 채택하여 임상기준과의 부호 일치를 확보함; Table 2). 셋째, 재료물성의 우세성은 임상적 위험층화에서 단순 형태학 측정보다 혈관·섬유막의 강성 특성화(예: 영상 기반 stiffness 지표)가 추가적인 정보 가치를 제공할 수 있음을 시사하나, 본 연구는 방법론적·모델 조건에 기반한 함의를 제시할 뿐 즉각적인 임상 도입을 권고하지는 않는다. 관련 시각화와 그룹 민감도 결과는 Fig 4에 제시되어 있다.
+
+\subsection{Limitations, future work and data availability}
+본 연구에는 몇 가지 제한이 있다. 모델링 측면에서 이상화된 관상동맥 형상, 균일한 FC 두께(fc\_av\_th 단일 스칼라 가정), 선형 등방성 탄성 재료 가정 등은 실제 환자 조직의 복잡성 및 이방성·비선형 거동을 반영하지 못한다; 또한 solver 설정·수렴 기준·메시·시간간격 독립성에 관한 상세 수치는 본문에 포함되지 않았으며 이들에 대한 정량적 검토가 필요하다(\textbf{[DATA NEEDED: solver 설정·수렴 기준 및 수치 독립성 결과]}). 민감도 해석 관점에서는 정규화 지수 α의 변경이 재료·혈류·형태의 상대적 기여도를 변화시킨다는 점을 확인하였으므로(본 연구의 C2.1), 향후 연구에서는 α 선택에 관한 가이드라인과 환자별 강도 추정 절차를 마련해야 한다. 본 파이프라인은 비용효율 맥동성 FSI로 LAP·CP에 대해 대규모 입력–출력 데이터셋을 구축하고 GPR 대리모델을 학습하여 Sobol 분석을 수행한 것으로, 최종 유효 시뮬레이션 쌍은 LAP=784, CP=727이며 이를 이용해 약 1.5×10\textasciicircum 4 회의 대리모델 평가로 Sobol S1·ST를 산출하였다(대규모 데이터셋 및 Sobol 결과는 부록과 보조자료에 포함됨). 단, 훈련된 GPR 모델 아티팩트(모델 파일·하이퍼파라미터)와 대리모델 성능 지표(R\textasciicircum 2, RMSE)는 본문에 상세 기재되지 않았으므로 공개 위치 및 정량적 성능 보고는 후속 보완이 필요하다(\textbf{[DATA NEEDED: trained GPR surrogate artifacts for LAP and CP]}; \textbf{[DATA NEEDED: GPR kernel/hyperparameters and R\textasciicircum 2/RMSE]}). 본 연구의 시뮬레이션 결과는 PSS·FFR·파열위치 경향이 선행 연구와 정성적으로 일치함으로써 정성적 타당성을 확보하였으나, 정량적 검증 지표는 추가 공개되어야 한다(\textbf{[DATA NEEDED: quantitative validation metrics comparing simulated outputs to reference studies]}). 윤리적 측면에서 본 연구는 환자 식별 가능 인간·동물 데이터를 사용하지 않았으므로 기관윤리심의(IRB) 승인은 해당되지 않는다. 데이터 이용 가능성: 입력 설계공간·Sobol 결과·선정된 VI 평가표 등은 본 논문의 보조자료에 포함되어 제공되며, 추가 자료(시뮬레이션 출력 필드·대리모델 아티팩트)는 지정된 공개 저장소에 추가 게시할 예정이다(\textbf{[DATA NEEDED: URL 또는 접근 방법 for simulation outputs and surrogate artifacts]}).
+
+\begin{thebibliography}{99}
+\bibitem{frostegrd2013} Johan Frostegård (2013). Immunity, atherosclerosis and cardiovascular disease. DOI: 10.1186/1741-7015-11-117
+\bibitem{hansson2002} Göran K. Hansson, Peter Libby, Uwe Schönbeck, Zhong-qun Yan (2002). Innate and Adaptive Immunity in the Pathogenesis of Atherosclerosis. DOI: 10.1161/01.res.0000029784.15893.10
+\bibitem{hutcheson2016} Joshua D. Hutcheson, Claudia Goettsch, Sérgio Bertazzo, Natalia Maldonado, Jessica Ruiz, Wilson Wen Bin Goh, Katsumi Yabusaki, Tyler Faits, Carlijn V. C. Bouten, G Franck, Thibaut Quillard, Peter Libby, Masanori Aikawa, Sheldon Weinbaum, Elena Aïkawa (2016). Genesis and growth of extracellular-vesicle-derived microcalcification in atherosclerotic plaques. DOI: 10.1038/nmat4519
+\bibitem{potteaux2011} Stéphane Potteaux, Emmanuel L. Gautier, Susan Hutchison, Nico van Rooijen, Daniel J. Rader, Michael J. Thomas, Mary G. Sorci‐Thomas, Gwendalyn J. Randolph (2011). Suppressed monocyte recruitment drives macrophage removal from atherosclerotic plaques of Apoe–/– mice during disease regression. DOI: 10.1172/jci43802
+\bibitem{serruys2011} Patrick W. Serruys, Héctor M. García‐García, Y. Onuma (2011). From metallic cages to transient bioresorbable scaffolds: change in paradigm of coronary revascularization in the upcoming decade?. DOI: 10.1093/eurheartj/ehr384
+\bibitem{stefanadis2017} Christodoulos Stefanadis, C. Antoniou, Dimitris Tsiachris, P Pietri (2017). Coronary Atherosclerotic Vulnerable Plaque: Current Perspectives. DOI: 10.1161/jaha.117.005543
+\bibitem{brown2016} Adam J. Brown, Zhongzhao Teng, Paul C. Evans, Jonathan H. Gillard, Habib Samady, Martin R. Bennett (2016). Role of biomechanical forces in the natural history of coronary atherosclerosis. DOI: 10.1038/nrcardio.2015.203
+\bibitem{eshtehardi2012} Parham Eshtehardi, Michael McDaniel, Jin Suo, Saurabh S. Dhawan, Lucas H. Timmins, José Binongo, Lucas Golub, Michel Corban, Aloke V. Finn, John N. Oshinsk, Arshed A. Quyyumi, Don P. Giddens, Habib Samady (2012). Association of Coronary Wall Shear Stress With Atherosclerotic Plaque Burden, Composition, and Distribution in Patients With Coronary Artery Disease. DOI: 10.1161/jaha.112.002543
+\bibitem{lee2017} Jonghae Lee, Sewon Lee, Hanrui Zhang, Michael A. Hill, Cuihua Zhang, Yoonjung Park (2017). Interaction of IL-6 and TNF-α contributes to endothelial dysfunction in type 2 diabetic mouse hearts. DOI: 10.1371/journal.pone.0187189
+\bibitem{choi2015} Gilwoo Choi, Joo Myung Lee, Hyun Jin Kim, Jun‐Bean Park, Sethuraman Sankaran, Hiromasa Otake, Joon‐Hyung Doh, Chang‐Wook Nam, Eun‐Seok Shin, Charles A. Taylor, Bon‐Kwon Koo (2015). Coronary Artery Axial Plaque Stress and its Relationship With Lesion Geometry. DOI: 10.1016/j.jcmg.2015.04.024
+\bibitem{chaichana2012} Thanapong Chaichana, Zhonghua Sun, James Jewkes (2012). Computational Fluid Dynamics Analysis of the Effect of Plaques in the Left Coronary Artery. DOI: 10.1155/2012/504367
+\end{thebibliography}
+
+\end{document}

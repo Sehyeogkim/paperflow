@@ -1,0 +1,103 @@
+{
+  "study_type": "computational_biomechanics",
+  "classification": "MISSING_CRITICAL_INFORMATION",
+  "present": [
+    "research_objective",
+    "sample_definition (input.csv, 1000 samples)",
+    "boundary_conditions (data/cost_effective_FSI_BC/bc.md, inflow.dat, elastance.dat)",
+    "VI_candidates_and_final_selection_statement (VI1, VI2 described)",
+    "sobol_results_files_provided (group and individual S1, ST for LAP and CP)",
+    "method_workflow_description (3-stage pipeline described in outline)"
+  ],
+  "missing": [
+    {
+      "field": "geometry_definition",
+      "why_it_matters": "The exact vessel and plaque geometry (dimensions, domain extents, layer thicknesses, meshable features) determine the mechanical/flow fields and are needed to reproduce simulations and interpret sensitivity to morphological parameters.",
+      "reviewer_risk": "high",
+      "question": "Please provide a complete geometry definition for the idealized LAP and CP models used: global vessel diameter and length, lumen/profile parametrization (how DOS, lesion_length, axial skewness etc. map to geometric coordinates), plaque sub-domain layout for the '3-domain' and '4-domain' descriptions, initial fibrous cap (FC) geometry and how the uniform FC thickness parameter fc_av_th controls the mesh/geometry, and units.",
+      "example": "Example: 'Straight cylindrical coronary segment, length 40 mm, reference lumen diameter 3.0 mm. Plaque axial extent set by lesion_length (5–15 mm). LAP (3-domain): lumen, lipid core and vessel wall; CP (4-domain): lumen, lipid, calcification inclusion (ellipsoid at x=10 mm), vessel wall. FC modeled as shell over lipid with uniform thickness fc_av_th varied 0.05–0.5 mm. All dimensions in mm.'",
+      "priority": 3.0
+    },
+    {
+      "field": "governing_equations",
+      "why_it_matters": "Reviewers require explicit statement of the fluid and solid governing equations, coupling approach for FSI, and assumptions (compressibility, inertial terms, linearization) to judge physical fidelity and reproducibility.",
+      "reviewer_risk": "high",
+      "question": "State the governing equations used for the fluid and solid, the FSI coupling strategy, and any simplifying assumptions (e.g. incompressible Navier–Stokes, linear elasticity, small strains, one-way/partitioned coupling). Include constitutive forms and whether added-mass issues were addressed.",
+      "example": "Example: 'Incompressible Navier–Stokes for the blood (ρ=1060 kg/m3, Newtonian), and linear elastic solid for vessel/plaque components (small-strain linear elasticity). Fully-coupled partitioned FSI with implicit fluid–structure coupling using Aitken relaxation to stabilize added-mass.'",
+      "priority": 3.0
+    },
+    {
+      "field": "material_properties",
+      "why_it_matters": "The claim that material properties dominate VI depends on how materials were modeled (constitutive law), densities, Poisson ratios, and the range/distributions of elastic moduli used; these are required for reproducibility and to assess physical plausibility.",
+      "reviewer_risk": "high",
+      "question": "Provide full material model specifications for all tissue domains (vessel wall, fibrous cap, lipid core, calcification): constitutive law (linear elastic / hyperelastic), parameter values/ranges/distributions used (E, ν, density), units, and whether spatial heterogeneity or isotropy were assumed.",
+      "example": "Example: 'All solid domains modeled as linear isotropic elastic. Vessel: E_vessel sampled 200–800 kPa, ν=0.45, ρ=1100 kg/m3. Fibrous cap: E_FC sampled 100–1000 kPa, ν=0.45. Lipid: E_lipid sampled 1–50 kPa. Calcification: E_cal fixed at 1 GPa. Young’s moduli in input.csv are in kPa.'",
+      "priority": 3.0
+    },
+    {
+      "field": "numerical_solver",
+      "why_it_matters": "Details of the numerical solver (codes, discretization, element types, time integration, coupling algorithm) are essential for reproducibility and to understand numerical error sources affecting PSS/ΔPSS.",
+      "reviewer_risk": "high",
+      "question": "Specify the numerical solvers and discretizations used: fluid solver (finite element/volume, stabilization), solid solver and element types, mesh generation tool, time integration scheme (order), FSI coupling algorithm (monolithic/partitioned, relaxation), software package or in-house code and version.",
+      "example": "Example: 'Fluid: stabilized FEM (SUPG) implemented in Code_A, tetrahedral P2-P1 elements; Solid: linear tetrahedral P1 elements; time integration: implicit Newmark-beta for solid (β=0.25, γ=0.5) and second-order backward differentiation for fluid; partitioned implicit coupling with Aitken relaxation; simulations run in in-house FSI code v2.1.'",
+      "priority": 3.0
+    },
+    {
+      "field": "convergence_criteria",
+      "why_it_matters": "Solver and coupling convergence tolerances, residual norms, and criteria for cycle-periodic steady state determine numerical accuracy; without them, PSS/ΔPSS and sensitivity results cannot be judged or reproduced.",
+      "reviewer_risk": "high",
+      "question": "Give the convergence criteria used for fluid/solid iterative solves and the FSI coupling (residual tolerances, maximum iterations), mesh quality criteria, and the criteria to declare a periodic steady state (number of cycles, convergence threshold on cycle-to-cycle differences).",
+      "example": "Example: 'Nonlinear solver tolerance 1e-6 (relative L2 residual), linear solver tolerance 1e-8, max 50 Newton iterations; FSI coupling Aitken-relaxation until interface displacement change <1e-5 mm; periodic steady state declared after 3 consecutive cycles with peak wall stress change <0.5%.'",
+      "priority": 3.0
+    },
+    {
+      "field": "validation",
+      "why_it_matters": "A claim that simulations agree with prior PSS/FFR/rupture location trends requires explicit validation against experimental/benchmark data or previously published computational results (and citation). Validation is critical for credibility.",
+      "reviewer_risk": "high",
+      "question": "Provide explicit validation evidence: which prior studies or benchmark cases were used, what metrics were compared (PSS peaks, FFR values, rupture location distributions), quantitative comparison statistics (errors, correlation), and citations to the validating references. If validation is in a prior methods paper, provide the citation and summarize the validation results.",
+      "example": "Example: 'Validation against X et al. 20XX: reproduced peak PSS within 8% and FFR within 5% for two benchmark lesions. See Supplementary Table S1. The cost-effective FSI method was validated in Kim et al., Biomech Model 2020 (DOI:...), showing <10% error vs. full monolithic FSI on benchmark geometry.'",
+      "priority": 3.0
+    },
+    {
+      "field": "outcome_metric (detailed definitions)",
+      "why_it_matters": "PSS, ΔPSS (spherical averaging), rupture-location index, and the VI formulas are central to the claims. Reviewers need precise mathematical definitions, computation procedures (where measured on geometry), units, and any smoothing/averaging used.",
+      "reviewer_risk": "high",
+      "question": "Provide explicit formulas and operational definitions for PSS, ΔPSS, the spherical-mean averaging procedure, how peak and amplitude are computed (pointwise max vs. area-averaged), the rupture-location index definition, and the exact VI formulas including units and exponent α interpretation.",
+      "example": "Example: 'PSS defined as von Mises stress on the luminal surface of the fibrous cap; ΔPSS computed as PSS_systole − PSS_diastole at each node; spherical mean: average of nodal values over a 1 mm-radius spherical neighborhood; rupture-index defined as location of maximal PSS normalized by cap area; VI = ΔPSS / (E_FC^α) with E_FC in kPa and α=0.5 or 1.0.'",
+      "priority": 3.0
+    },
+    {
+      "field": "mesh_independence",
+      "why_it_matters": "Peak stresses and localized quantities are sensitive to mesh resolution. A mesh convergence study is required to support peak-stress/quantitative field claims and to ensure Sobol results are not contaminated by discretization error.",
+      "reviewer_risk": "high",
+      "question": "Provide the mesh independence study: mesh sizes tested, element counts, convergence behaviour of PSS and ΔPSS (tables/plots), chosen mesh with rationale (error tolerance), and mesh generation details (element type, quality metrics).",
+      "example": "Example: 'Three meshes tested: coarse 250k elems, medium 1.1M elems, fine 3.8M elems. Peak PSS changed by 9% (coarse→medium) and 1.2% (medium→fine); medium mesh chosen (1.1M) with estimated discretization error <2% for peak PSS. Tetrahedral linear elements used; average aspect ratio <1.5.'",
+      "priority": 3.0
+    },
+    {
+      "field": "timestep_independence",
+      "why_it_matters": "Pulsatile/transient FSI results (ΔPSS) depend on timestep size and number of cycles to reach periodic state. Without a timestep-convergence study, temporal discretization may bias amplitudes and derived VI.",
+      "reviewer_risk": "high",
+      "question": "Provide timestep independence evidence: time steps tested, number of time levels per cardiac cycle, effect on peak PSS and ΔPSS amplitudes, and the selected timestep with justification. Also state number of cycles simulated to reach periodic state and criteria used.",
+      "example": "Example: 'Time steps tested: Δt = 2 ms, 1 ms, 0.5 ms for 1 s cardiac cycle. ΔPSS amplitude varied by 6% (2→1 ms) and 1.5% (1→0.5 ms). Selected Δt=1 ms (1000 steps/cycle) with cycle-to-cycle peak stress change <0.5% after 3 cycles; results reported from 4th cycle.'",
+      "priority": 3.0
+    },
+    {
+      "field": "sensitivity_method",
+      "why_it_matters": "Sobol indices reported require details on how GPR surrogates were trained, cross-validation, sampling strategy for Sobol (Saltelli, sample counts), error propagation from surrogate to Sobol, and software used; without this, the sensitivity conclusions cannot be validated.",
+      "reviewer_risk": "high",
+      "question": "Describe the surrogate + Sobol workflow: GPR kernel and hyperparameter tuning, training/test split and cross-validation metrics (RMSE, R2), number of training samples (per phenotype), how Sobol indices were computed (Saltelli scheme? sample sizes), uncertainty estimation for S1 and ST, and software libraries used.",
+      "example": "Example: 'GPR with squared-exponential kernel, ARD; 80/20 train/test split, 5-fold CV, reported RMSE=0.12 and R2=0.92 on test set for LAP (N=784). Sobol indices computed using Saltelli sampling with N_base=10,000 (total 2*(n_params+2)*N_base samples) on the trained surrogate; uncertainty from bootstrap (100 resamples).' ",
+      "priority": 3.0
+    },
+    {
+      "field": "statistical_analysis",
+      "why_it_matters": "Given cohort sizes and group comparisons (LAP vs CP, multiple VI candidates), statistical methods (confidence intervals, hypothesis tests, multiple-comparison correction) are needed to support claims like 'only 2 of 6 VIs satisfy 7 clinical criteria' and to quantify surrogate performance.",
+      "reviewer_risk": "medium",
+      "question": "Provide the statistical analysis details: how comparisons between groups were performed, statistical tests used, significance thresholds, confidence intervals for surrogate predictions and Sobol indices, and handling of multiple comparisons (if any). Also report effective sample sizes used for final analyses (you listed LAP 784 / CP 727; confirm).",
+      "example": "Example: 'Group comparisons used two-sided Mann–Whitney U tests with α=0.05; 95% CI for Sobol indices estimated via bootstrap (1000 resamples). VI candidate screening used binary sign-agreement against 7 criteria; significance of differences between VI distributions assessed with Kolmogorov–Smirnov tests, p-values corrected by Benjamini–Hochberg.'",
+      "priority": 2.0
+    }
+  ],
+  "notes": "Key simulation and analysis artifacts (input parameter file and Sobol outputs) are provided, but essential reproducibility and credibility items are missing: governing equations/FSI coupling, full material constitutive details, mesh/time convergence, solver and convergence settings, and explicit validation. These omissions are critical for reviewers to accept the numerical findings."
+}

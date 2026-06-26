@@ -1,0 +1,41 @@
+{
+  "generation": "deferred (fal.ai nano-banana pro)",
+  "figures": [
+    {
+      "id": "F_sobol_group_fig",
+      "kind": "figure",
+      "message": "Bar charts of group Sobol S1 and ST (Material/Hemo/Morpho) for LAP & CP, VI1 & VI2 (visualizes dominance of Material group).",
+      "section": "result",
+      "visualizes": [
+        "E_material_group_domination"
+      ],
+      "status": "planned",
+      "source": "claim_graph",
+      "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"figure sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><line x1=\"20\" y1=\"96\" x2=\"190\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><line x1=\"20\" y1=\"20\" x2=\"20\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><rect x=\"26\" y=\"26\" width=\"20\" height=\"70\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"56\" y=\"50\" width=\"20\" height=\"46\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"86\" y=\"66\" width=\"20\" height=\"30\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"116\" y=\"74\" width=\"20\" height=\"22\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"146\" y=\"82\" width=\"20\" height=\"14\" rx=\"2\" fill=\"#CC785C\"/><text x=\"205\" y=\"40\" font-size=\"9\" fill=\"#6B5E54\">S1 / ST</text><text x=\"205\" y=\"54\" font-size=\"9\" fill=\"#6B5E54\">bar chart</text></svg>"
+    },
+    {
+      "id": "F_sobol_ind_fig",
+      "kind": "figure",
+      "message": "Ranked bar charts of individual parameter Sobol S1 and ST (shows E_vessel, E_FC, SBP, PP as top contributors).",
+      "section": "result",
+      "visualizes": [
+        "E_individual_top_parameters"
+      ],
+      "status": "planned",
+      "source": "claim_graph",
+      "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"figure sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><line x1=\"20\" y1=\"96\" x2=\"190\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><line x1=\"20\" y1=\"20\" x2=\"20\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><rect x=\"26\" y=\"26\" width=\"20\" height=\"70\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"56\" y=\"50\" width=\"20\" height=\"46\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"86\" y=\"66\" width=\"20\" height=\"30\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"116\" y=\"74\" width=\"20\" height=\"22\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"146\" y=\"82\" width=\"20\" height=\"14\" rx=\"2\" fill=\"#CC785C\"/><text x=\"205\" y=\"40\" font-size=\"9\" fill=\"#6B5E54\">S1 / ST</text><text x=\"205\" y=\"54\" font-size=\"9\" fill=\"#6B5E54\">bar chart</text></svg>"
+    },
+    {
+      "id": "F_vi_selection_table",
+      "kind": "table",
+      "message": "Table of 6 candidate VIs vs 7 clinical criteria (sign concordance): highlights two VIs that satisfy all criteria.",
+      "section": "result",
+      "visualizes": [
+        "E_vi_candidates_evaluation"
+      ],
+      "status": "planned",
+      "source": "claim_graph",
+      "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"table sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><rect x=\"16\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"45.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col1</text><rect x=\"74\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"103.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col2</text><rect x=\"132\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"161.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col3</text><rect x=\"190\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"219.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col4</text><rect x=\"16\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"16\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"16\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"140\" y=\"112\" font-size=\"9\" text-anchor=\"middle\" fill=\"#6B5E54\">table</text></svg>"
+    }
+  ]
+}

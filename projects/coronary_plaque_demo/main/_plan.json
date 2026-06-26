@@ -1,0 +1,1364 @@
+{
+  "sections": [
+    "method",
+    "result",
+    "discussion",
+    "introduction",
+    "conclusion",
+    "abstract"
+  ],
+  "classification": "MISSING_CRITICAL_INFORMATION",
+  "main_contribution": "ΔPSS(응력 최대진폭)를 stress로 하고 strength로 정규화한 취약성지수(VI1=ΔPSS/E_FC^0.5, VI2=ΔPSS/E_FC^1.0)를 제안하고, 비용효율 맥동성 FSI로 생성한 대규모 데이터와 GPR+Sobol 전역 민감도 분석을 통해 재료물성(Material)이 혈류역학·형태학보다 관상동맥 플라크 파열 위험을 더 지배함을 규명하였다.",
+  "claim_graph": {
+    "main_contribution": "ΔPSS(응력 최대진폭)를 stress로 하고 strength로 정규화한 취약성지수(VI1=ΔPSS/E_FC^0.5, VI2=ΔPSS/E_FC^1.0)를 제안하고, 비용효율 맥동성 FSI로 생성한 대규모 데이터와 GPR+Sobol 전역 민감도 분석을 통해 재료물성(Material)이 혈류역학·형태학보다 관상동맥 플라크 파열 위험을 더 지배함을 규명하였다.",
+    "nodes": [
+      {
+        "id": "C1",
+        "kind": "claim",
+        "text": "파열위험지수(VI)를 stress/strength 비로 정의하고, ΔPSS(응력 최대진폭, 피로·진폭 관점)를 stress로 사용한 지표가 PSS(최대응력) 기반 지표보다 임상적으로 더 적합하다.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "contribution",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "C1.1",
+        "kind": "claim",
+        "text": "ΔPSS 기반 지표가 PSS 기반 지표보다 7개 임상 고위험 플라크 특징과의 부호 일치에서 우수하다.",
+        "parent_id": "C1",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "C1.2",
+        "kind": "claim",
+        "text": "임상기준 7개를 모두 만족하는 최종 채택 지수는 VI1=ΔPSS/E_FC^0.5 및 VI2=ΔPSS/E_FC^1.0이다.",
+        "parent_id": "C1",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "C1.3",
+        "kind": "claim",
+        "text": "ΔPSS를 피로(최대진폭) 관점으로 해석하면 맥동성 효과를 반영해야 하므로 맥동성 FSI 시뮬레이션이 필요하다.",
+        "parent_id": "C1",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "discussion",
+        "provenance": null
+      },
+      {
+        "id": "C2",
+        "kind": "claim",
+        "text": "파열위험지수 정의에는 strength 정규화(재료물성으로 나눔)가 필요하며, 정규화 지수 α의 선택에 따라 민감도 결과가 달라진다.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "contribution",
+        "represented_as": null,
+        "section": "discussion",
+        "provenance": null
+      },
+      {
+        "id": "C2.1",
+        "kind": "claim",
+        "text": "정규화 지수 α를 변경하면 전역 민감도 분석에서 재료·혈류·형태의 상대적 기여도가 변동한다.",
+        "parent_id": "C2",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "C2.2",
+        "kind": "claim",
+        "text": "재료물성(E_FC 등)을 분모로 넣어 정규화함으로써 환자별 섬유막 강도 차이를 반영할 수 있다.",
+        "parent_id": "C2",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "discussion",
+        "provenance": null
+      },
+      {
+        "id": "C3",
+        "kind": "claim",
+        "text": "GPR 대리모델 기반 Sobol 전역 민감도 분석 결과 재료물성(Material)이 혈류역학(Hemo)·형태학(Morpho)보다 파열 위험도를 주로 지배한다 (Material > Hemo > Morpho).",
+        "parent_id": null,
+        "subtype": "",
+        "role": "contribution",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "C3.1",
+        "kind": "claim",
+        "text": "그룹별 Sobol 1차 및 전차 지수에서 Material 그룹이 Hemo 및 Morpho 보다 높은 값을 보였고(LAP·CP·VI1·VI2 전반에 걸쳐 일관), 따라서 Material이 우세하다.",
+        "parent_id": "C3",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "C3.2",
+        "kind": "claim",
+        "text": "개별 파라미터별 Sobol 지수에서 상위 결정 인자는 E_vessel, E_FC, 수축기 혈압(SBP), 맥압(PP)이다.",
+        "parent_id": "C3",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "C3.3",
+        "kind": "claim",
+        "text": "이 결과는 임상적 위험층화에서 형태학적 특징보다 혈관·섬유막 강성(예: OCT 기반 강성 특성화)을 우선 측정하는 것이 정보 가치가 클 수 있다는 함의를 가진다.",
+        "parent_id": "C3",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "discussion",
+        "provenance": null
+      },
+      {
+        "id": "C4",
+        "kind": "claim",
+        "text": "비용효율 맥동성 FSI로 LAP와 CP 각각에 대해 대규모 입력–출력 데이터셋을 구축하고, GPR 대리모델을 학습하여 Sobol 전역 민감도 분석을 수행하였다(대규모 시뮬레이션+서로게이트를 통한 민감도 평가 파이프라인).",
+        "parent_id": null,
+        "subtype": "",
+        "role": "contribution",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "C4.1",
+        "kind": "claim",
+        "text": "입력 설계공간은 형태·혈류역학·재료 3군으로 1,000 샘플을 구성했으며, LAP는 3도메인(루멘·FC·지질), CP는 4도메인(+석회화)으로 모델링하고 FC 두께는 균일 단일 스칼라(fc_av_th)로 취급하였다.",
+        "parent_id": "C4",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "C4.2",
+        "kind": "claim",
+        "text": "최종 유효 시뮬레이션 쌍은 LAP 784, CP 727이며, 이 데이터로 GPR surrogate를 학습해 약 1.5만 회 평가로 Sobol 1차·전차 지수를 산출했다.",
+        "parent_id": "C4",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "M1",
+        "kind": "method",
+        "text": "Cost‑effective pulsatile two‑way FSI pipeline used to generate simulation outputs for LAP (3 domains) and CP (4 domains). Follows prior validated cost‑efficient FSI setup (BCs, inflow, elastance) referenced in bc.md.",
+        "parent_id": null,
+        "subtype": "simulation",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "M1.1",
+        "kind": "method",
+        "text": "FSI setup and preprocessing: map input design parameters (geometry, material, hemodynamic) from input.csv to model geometries (LAP: lumen/FC/lipid; CP: +calcification), assign linear isotropic elastic properties, prescribe inflow/elastance/BC from files.",
+        "parent_id": "M1",
+        "subtype": "preprocessing",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "M1.2",
+        "kind": "method",
+        "text": "Transient cost‑effective pulsatile FSI runs for each design sample (time‑accurate Navier–Stokes for incompressible Newtonian blood + linear isotropic solid mechanics for vessel/plaque; two‑way coupling at interface).",
+        "parent_id": "M1",
+        "subtype": "simulation",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "M1.3",
+        "kind": "method",
+        "text": "Postprocessing of FSI results: compute PSS fields, spherical‑mean ΔPSS (maximum amplitude over the cardiac cycle), FFR surrogate, and rupture‑location index.",
+        "parent_id": "M1",
+        "subtype": "analysis",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "M2",
+        "kind": "method",
+        "text": "VI candidate generation and clinical sign concordance evaluation: compute 6 candidate VIs (2 stress definitions × 3 strength scenarios) and evaluate sign agreement with 7 established clinical high‑risk plaque features to select final VIs.",
+        "parent_id": null,
+        "subtype": "analysis",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "M3",
+        "kind": "method",
+        "text": "Gaussian process regression (GPR) surrogate training: fit GPR surrogates for final VIs using valid simulation pairs (LAP and CP datasets) to enable large‑scale surrogate evaluations.",
+        "parent_id": null,
+        "subtype": "analysis",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "id:M3.1",
+        "kind": "method",
+        "text": "GPR hyperparameter tuning and cross‑validation to assess surrogate predictive performance (train/validation splits; metrics not listed here).",
+        "parent_id": "M3",
+        "subtype": "validation",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "M4",
+        "kind": "method",
+        "text": "Variance‑based Sobol global sensitivity analysis (first‑order S1 and total ST indices) computed on the trained GPR surrogate to obtain group‑level and individual parameter sensitivities.",
+        "parent_id": null,
+        "subtype": "statistical_analysis",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "D_bc_md",
+        "kind": "data",
+        "text": "Boundary condition and cost‑effective FSI setup description",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": "data/cost_effective_FSI_BC/bc.md"
+      },
+      {
+        "id": "D_elastance",
+        "kind": "data",
+        "text": "Time‑varying myocardial elastance waveform (used for coronary/FSI BC)",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": "data/input_parameter/elastance.dat"
+      },
+      {
+        "id": "D_inflow",
+        "kind": "data",
+        "text": "Coronary inlet pulsatile inflow waveform",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": "data/input_parameter/inflow.dat"
+      },
+      {
+        "id": "D_input",
+        "kind": "data",
+        "text": "Design space input parameter table (1,000 samples) mapping morphology/hemodynamics/material variables",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": "data/input_parameter/input.csv"
+      },
+      {
+        "id": "D_sim_outputs_LAP",
+        "kind": "data",
+        "text": "Raw simulation outputs for LAP cases (FSI solution time series, nodal fields)",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "[DATA_NEEDED]"
+      },
+      {
+        "id": "D_sim_outputs_CP",
+        "kind": "data",
+        "text": "Raw simulation outputs for CP cases (FSI solution time series, nodal fields)",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "[DATA_NEEDED]"
+      },
+      {
+        "id": "D_sim_post_LAP",
+        "kind": "data",
+        "text": "Postprocessed quantities for LAP: PSS fields, ΔPSS spherical means, rupture‑location index, FFR surrogate outputs",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "[DATA_NEEDED]"
+      },
+      {
+        "id": "D_sim_post_CP",
+        "kind": "data",
+        "text": "Postprocessed quantities for CP: PSS fields, ΔPSS spherical means, rupture‑location index, FFR surrogate outputs",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "[DATA_NEEDED]"
+      },
+      {
+        "id": "D_vi_eval",
+        "kind": "data",
+        "text": "Evaluation table of 6 candidate VIs against 7 clinical high‑risk criteria (sign concordance per criterion per VI)",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "[DATA_NEEDED]"
+      },
+      {
+        "id": "D_gpr_model_LAP",
+        "kind": "data",
+        "text": "Trained GPR surrogate model artifact for LAP VI(s)",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "[DATA_NEEDED]"
+      },
+      {
+        "id": "D_gpr_model_CP",
+        "kind": "data",
+        "text": "Trained GPR surrogate model artifact for CP VI(s)",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "[DATA_NEEDED]"
+      },
+      {
+        "id": "D_sobol_grp_CP_VI1",
+        "kind": "data",
+        "text": "Group Sobol indices (CP, VI1): group, S1, ST",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/sobol/sobol_grp_CP_VI1.csv"
+      },
+      {
+        "id": "D_sobol_grp_CP_VI2",
+        "kind": "data",
+        "text": "Group Sobol indices (CP, VI2): group, S1, ST",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/sobol/sobol_grp_CP_VI2.csv"
+      },
+      {
+        "id": "D_sobol_grp_LAP_VI1",
+        "kind": "data",
+        "text": "Group Sobol indices (LAP, VI1): group, S1, ST",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/sobol/sobol_grp_LAP_VI1.csv"
+      },
+      {
+        "id": "D_sobol_grp_LAP_VI2",
+        "kind": "data",
+        "text": "Group Sobol indices (LAP, VI2): group, S1, ST",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/sobol/sobol_grp_LAP_VI2.csv"
+      },
+      {
+        "id": "D_sobol_ind_CP_VI1",
+        "kind": "data",
+        "text": "Individual parameter Sobol indices (CP, VI1): parameter, display_name, S1, ST",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/sobol/sobol_ind_CP_VI1.csv"
+      },
+      {
+        "id": "D_sobol_ind_CP_VI2",
+        "kind": "data",
+        "text": "Individual parameter Sobol indices (CP, VI2): parameter, display_name, S1, ST",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/sobol/sobol_ind_CP_VI2.csv"
+      },
+      {
+        "id": "D_sobol_ind_LAP_VI1",
+        "kind": "data",
+        "text": "Individual parameter Sobol indices (LAP, VI1): parameter, display_name, S1, ST",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/sobol/sobol_ind_LAP_VI1.csv"
+      },
+      {
+        "id": "D_sobol_ind_LAP_VI2",
+        "kind": "data",
+        "text": "Individual parameter Sobol indices (LAP, VI2): parameter, display_name, S1, ST",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/sobol/sobol_ind_LAP_VI2.csv"
+      },
+      {
+        "id": "E_sim_validation",
+        "kind": "evidence",
+        "text": "Simulated PSS, FFR surrogates, and rupture‑location trends qualitatively match trends reported in prior computational and clinical studies (used as qualitative validation of simulation pipeline).",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "E_dataset_and_models",
+        "kind": "evidence",
+        "text": "Large input–output dataset assembled for LAP and CP from FSI pipeline; final valid simulation pairs reported as LAP=784 and CP=727 used for surrogate training.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "E_vi_candidates_evaluation",
+        "kind": "evidence",
+        "text": "Out of 6 candidate VIs (2 stress defs × 3 strength scenarios), only two candidates satisfied sign concordance for all 7 clinical high‑risk features.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "E_vi_selected",
+        "kind": "evidence",
+        "text": "Final selected vulnerability indices are VI1 = ΔPSS / E_FC^0.5 and VI2 = ΔPSS / E_FC^1.0.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "E_deltaPSS_better",
+        "kind": "evidence",
+        "text": "ΔPSS‑based indices show superior sign agreement with the 7 clinical high‑risk plaque features compared with maximum PSS‑based indices (evaluated across design samples).",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "E_material_group_domination",
+        "kind": "evidence",
+        "text": "Group‑level Sobol indices indicate the Material group (E_vessel, E_FC, E_lipid, E_cal) has higher S1 and ST contributions than Hemo (SBP, PP, inflow) and Morpho (DOS, lesion_length, geometry) consistently across LAP and CP for both VI1 and VI2.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "E_individual_top_parameters",
+        "kind": "evidence",
+        "text": "Individual parameter Sobol indices identify the top contributors to VI variance as E_vessel, E_FC, SBP (systolic blood pressure), and PP (pulse pressure).",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "E_surrogate_enables_sobol",
+        "kind": "evidence",
+        "text": "GPR surrogates trained on the valid simulation pairs enabled ~1.5×10^4 surrogate evaluations required to compute Sobol S1 and ST indices.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "W_stress_strength",
+        "kind": "warrant",
+        "text": "Rupture risk is governed by the relation between applied stress and local material strength; normalizing stress by strength accounts for inter‑individual material variability. Fatigue/failure mechanics motivate using stress amplitude (Δ) for cyclic loading relevance.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "discussion",
+        "provenance": null
+      },
+      {
+        "id": "W_sobol_theory",
+        "kind": "warrant",
+        "text": "Variance‑based Sobol sensitivity analysis decomposes output variance into contributions attributable to input variables and their interactions, enabling ranking by importance (S1, ST).",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "W_gpr_surrogate",
+        "kind": "warrant",
+        "text": "Gaussian process regression provides a probabilistic surrogate model with quantified uncertainty suited to replace expensive simulations for large‑scale sensitivity computations.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null
+      },
+      {
+        "id": "R_brown2016",
+        "kind": "source",
+        "text": "Role of biomechanical forces in the natural history of coronary atherosclerosis",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "introduction",
+        "provenance": "cite:brown2016"
+      },
+      {
+        "id": "R_choi2015",
+        "kind": "source",
+        "text": "Coronary Artery Axial Plaque Stress and its Relationship With Lesion Geometry",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "introduction",
+        "provenance": "cite:choi2015"
+      },
+      {
+        "id": "R_stefanadis2017",
+        "kind": "source",
+        "text": "Coronary Atherosclerotic Vulnerable Plaque: Current Perspectives",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "introduction",
+        "provenance": "cite:stefanadis2017"
+      },
+      {
+        "id": "R_chaichana2012",
+        "kind": "source",
+        "text": "Computational Fluid Dynamics Analysis of the Effect of Plaques in the Left Coronary",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "methods",
+        "provenance": "cite:chaichana2012"
+      },
+      {
+        "id": "F_sobol_group_fig",
+        "kind": "artifact",
+        "text": "Bar charts of group Sobol S1 and ST (Material/Hemo/Morpho) for LAP & CP, VI1 & VI2 (visualizes dominance of Material group).",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": "figure",
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "F_sobol_ind_fig",
+        "kind": "artifact",
+        "text": "Ranked bar charts of individual parameter Sobol S1 and ST (shows E_vessel, E_FC, SBP, PP as top contributors).",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": "figure",
+        "section": "result",
+        "provenance": null
+      },
+      {
+        "id": "F_vi_selection_table",
+        "kind": "artifact",
+        "text": "Table of 6 candidate VIs vs 7 clinical criteria (sign concordance): highlights two VIs that satisfy all criteria.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": "table",
+        "section": "result",
+        "provenance": null
+      }
+    ],
+    "edges": [
+      {
+        "id": "L1",
+        "src": "C1.1",
+        "dst": "C1",
+        "rel": "supports",
+        "rationale": "임상 기준과의 부호 일치의 우수성은 ΔPSS 기반 정의가 PSS 기반 정의보다 임상 적합함을 직접적으로 보여준다.",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L2",
+        "src": "C1.2",
+        "dst": "C1",
+        "rel": "supports",
+        "rationale": "구체적 수식(VI1, VI2)의 선정은 ΔPSS 기반 VI가 실용적이고 임상기준에 부합함을 명시한다.",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L3",
+        "src": "C1.3",
+        "dst": "C1",
+        "rel": "supports",
+        "rationale": "ΔPSS가 진폭 기반 지표임을 강조함으로써 맥동성 FSI 필요성을 근거로 제시한다.",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L4",
+        "src": "C2.1",
+        "dst": "C2",
+        "rel": "supports",
+        "rationale": "α 변화에 따른 민감도 변동은 정규화 항(α)의 선택이 VI 결과에 실질적 영향을 미친다는 근거를 제공한다.",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L5",
+        "src": "C2.2",
+        "dst": "C2",
+        "rel": "supports",
+        "rationale": "재료물성을 분모로 포함시켜야 환자별 strength 차이를 반영할 수 있다는 논리적 근거를 제공한다.",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L6",
+        "src": "C3.1",
+        "dst": "C3",
+        "rel": "supports",
+        "rationale": "그룹 수준의 Sobol 지수 우위는 Material 그룹이 전반적 영향력을 더 크게 갖는다는 직접적 증거이다.",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L7",
+        "src": "C3.2",
+        "dst": "C3",
+        "rel": "supports",
+        "rationale": "개별 파라미터의 높은 Sobol 지수는 어떤 변수들이 실제로 VI 변동을 주도하는지 명확히 보여준다.",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L8",
+        "src": "C3.3",
+        "dst": "C3",
+        "rel": "supports",
+        "rationale": "분석 결과의 임상적 함의를 제시하여 '재료물성 지배' 발견의 적용 가능성을 뒷받침한다.",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L9",
+        "src": "C4.1",
+        "dst": "C4",
+        "rel": "supports",
+        "rationale": "데이터셋의 구성(입력공간 및 플라크 표현형)은 대규모 분석 수행의 기반을 제공한다.",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L10",
+        "src": "C4.2",
+        "dst": "C4",
+        "rel": "supports",
+        "rationale": "GPR surrogate 학습 및 대량 평가 가능성은 실제로 Sobol 전역 민감도 분석을 실행할 수 있게 한 기술적 근거이다.",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L11",
+        "src": "M1.1",
+        "dst": "M1",
+        "rel": "part_of",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L12",
+        "src": "M1.2",
+        "dst": "M1",
+        "rel": "part_of",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L13",
+        "src": "M1.3",
+        "dst": "M1",
+        "rel": "part_of",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L14",
+        "src": "M1.1",
+        "dst": "D_bc_md",
+        "rel": "uses",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L15",
+        "src": "M1.1",
+        "dst": "D_inflow",
+        "rel": "uses",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L16",
+        "src": "M1.1",
+        "dst": "D_elastance",
+        "rel": "uses",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L17",
+        "src": "M1.1",
+        "dst": "D_input",
+        "rel": "uses",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L18",
+        "src": "M1.2",
+        "dst": "D_input",
+        "rel": "uses",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L19",
+        "src": "M1.2",
+        "dst": "D_sim_outputs_LAP",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L20",
+        "src": "M1.2",
+        "dst": "D_sim_outputs_CP",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L21",
+        "src": "M1.3",
+        "dst": "D_sim_outputs_LAP",
+        "rel": "uses",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L22",
+        "src": "M1.3",
+        "dst": "D_sim_outputs_CP",
+        "rel": "uses",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L23",
+        "src": "M1.3",
+        "dst": "D_sim_post_LAP",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L24",
+        "src": "M1.3",
+        "dst": "D_sim_post_CP",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L25",
+        "src": "M2",
+        "dst": "D_sim_post_LAP",
+        "rel": "uses",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L26",
+        "src": "M2",
+        "dst": "D_sim_post_CP",
+        "rel": "uses",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L27",
+        "src": "M2",
+        "dst": "D_vi_eval",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L28",
+        "src": "M2",
+        "dst": "E_vi_candidates_evaluation",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L29",
+        "src": "M2",
+        "dst": "E_vi_selected",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L30",
+        "src": "M3",
+        "dst": "D_gpr_model_LAP",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L31",
+        "src": "M3",
+        "dst": "D_gpr_model_CP",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L32",
+        "src": "M3",
+        "dst": "E_surrogate_enables_sobol",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L33",
+        "src": "M4",
+        "dst": "D_sobol_grp_CP_VI1",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L34",
+        "src": "M4",
+        "dst": "D_sobol_grp_CP_VI2",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L35",
+        "src": "M4",
+        "dst": "D_sobol_grp_LAP_VI1",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L36",
+        "src": "M4",
+        "dst": "D_sobol_grp_LAP_VI2",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L37",
+        "src": "M4",
+        "dst": "D_sobol_ind_CP_VI1",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L38",
+        "src": "M4",
+        "dst": "D_sobol_ind_CP_VI2",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L39",
+        "src": "M4",
+        "dst": "D_sobol_ind_LAP_VI1",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L40",
+        "src": "M4",
+        "dst": "D_sobol_ind_LAP_VI2",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L41",
+        "src": "E_sim_validation",
+        "dst": "C4",
+        "rel": "supports",
+        "rationale": "Qualitative agreement of simulated PSS/FFR/rupture‑location trends with prior studies supports that the employed cost‑effective FSI pipeline produces physically plausible outputs for the dataset generation step.",
+        "grounding_status": "partial"
+      },
+      {
+        "id": "L42",
+        "src": "E_dataset_and_models",
+        "dst": "C4.2",
+        "rel": "supports",
+        "rationale": "Reported final valid simulation pair counts (LAP=784, CP=727) and assembled input–output dataset underpin the surrogate training and subsequent sensitivity analysis.",
+        "grounding_status": "partial"
+      },
+      {
+        "id": "L43",
+        "src": "E_vi_candidates_evaluation",
+        "dst": "C1.1",
+        "rel": "supports",
+        "rationale": "Evaluation of candidate VIs against the 7 clinical features produced the sign concordance table showing ΔPSS‑based candidates outperform PSS‑based ones.",
+        "grounding_status": "missing"
+      },
+      {
+        "id": "L44",
+        "src": "E_vi_selected",
+        "dst": "C1.2",
+        "rel": "supports",
+        "rationale": "The selection result documents the chosen normalization exponents and identifies VI1 and VI2 as the indices that met all 7 clinical sign criteria.",
+        "grounding_status": "missing"
+      },
+      {
+        "id": "L45",
+        "src": "E_deltaPSS_better",
+        "dst": "C1",
+        "rel": "supports",
+        "rationale": "Direct comparison of sign concordance between ΔPSS‑based and max‑PSS‑based indices across samples indicates ΔPSS offers better alignment with established clinical high‑risk features.",
+        "grounding_status": "missing"
+      },
+      {
+        "id": "L46",
+        "src": "E_deltaPSS_better",
+        "dst": "C1.3",
+        "rel": "supports",
+        "rationale": "Improved performance of ΔPSS (stress amplitude) over max PSS implies cyclic/fatigue effects are relevant, motivating pulsatile FSI.",
+        "grounding_status": "missing"
+      },
+      {
+        "id": "L47",
+        "src": "E_material_group_domination",
+        "dst": "C3",
+        "rel": "supports",
+        "rationale": "Group Sobol results from LAP and CP for both VI1 and VI2 show consistently larger S1 and ST for Material group, indicating material properties dominate VI variance.",
+        "grounding_status": "grounded"
+      },
+      {
+        "id": "L48",
+        "src": "E_material_group_domination",
+        "dst": "C3.1",
+        "rel": "supports",
+        "rationale": "Group‑level Sobol CSVs report higher Material group indices than Hemo and Morpho across cases, directly supporting the claim.",
+        "grounding_status": "grounded"
+      },
+      {
+        "id": "L49",
+        "src": "E_individual_top_parameters",
+        "dst": "C3.2",
+        "rel": "supports",
+        "rationale": "Individual Sobol index CSVs list E_vessel, E_FC, SBP, and PP among the top S1/ST contributors, supporting identification of principal determinants.",
+        "grounding_status": "grounded"
+      },
+      {
+        "id": "L50",
+        "src": "E_material_group_domination",
+        "dst": "C3.3",
+        "rel": "supports",
+        "rationale": "The dominance of material properties implies clinical risk stratification may gain more information by measuring stiffness (e.g., OCT‑derived) than morphology alone.",
+        "grounding_status": "grounded"
+      },
+      {
+        "id": "L51",
+        "src": "E_surrogate_enables_sobol",
+        "dst": "C4",
+        "rel": "supports",
+        "rationale": "GPR surrogates trained on the simulation data enabled the computationally feasible evaluation budget (~1.5e4 evaluations) required to compute Sobol indices, validating the surrogate‑based pipeline.",
+        "grounding_status": "partial"
+      },
+      {
+        "id": "L52",
+        "src": "E_surrogate_enables_sobol",
+        "dst": "C4.2",
+        "rel": "supports",
+        "rationale": "Reported training/valid pair counts and surrogate use are the basis for the surrogate enabling large‑scale Sobol evaluation.",
+        "grounding_status": "partial"
+      },
+      {
+        "id": "L53",
+        "src": "W_stress_strength",
+        "dst": "C2",
+        "rel": "justifies",
+        "rationale": "Physical rupture mechanics and fatigue theory justify defining VI as stress normalized by material strength and support the need for strength normalization.",
+        "grounding_status": "grounded"
+      },
+      {
+        "id": "L54",
+        "src": "W_stress_strength",
+        "dst": "C2.2",
+        "rel": "justifies",
+        "rationale": "The warrant explains why placing E_FC in the denominator reflects patient‑specific strength variability.",
+        "grounding_status": "grounded"
+      },
+      {
+        "id": "L55",
+        "src": "W_sobol_theory",
+        "dst": "C3",
+        "rel": "justifies",
+        "rationale": "Sobol variance decomposition provides the methodological basis for claiming relative contributions (Material vs Hemo vs Morpho).",
+        "grounding_status": "grounded"
+      },
+      {
+        "id": "L56",
+        "src": "W_gpr_surrogate",
+        "dst": "C4",
+        "rel": "justifies",
+        "rationale": "GPR surrogate theory justifies replacing expensive simulations with a predictive model to enable large‑scale sensitivity estimation.",
+        "grounding_status": "grounded"
+      },
+      {
+        "id": "L57",
+        "src": "R_brown2016",
+        "dst": "W_stress_strength",
+        "rel": "justifies",
+        "rationale": "Biomechanical force considerations in coronary atherosclerosis support the physical basis for stress/strength framing and the relevance of stress measures.",
+        "grounding_status": "grounded"
+      },
+      {
+        "id": "L58",
+        "src": "R_choi2015",
+        "dst": "W_stress_strength",
+        "rel": "justifies",
+        "rationale": "Findings on plaque axial stress and relation to geometry support the biomechanical warrant linking stress distribution to rupture risk.",
+        "grounding_status": "grounded"
+      },
+      {
+        "id": "L59",
+        "src": "R_stefanadis2017",
+        "dst": "W_stress_strength",
+        "rel": "justifies",
+        "rationale": "Clinical perspectives on vulnerable plaque composition and mechanics provide clinical context for using stress/strength metrics.",
+        "grounding_status": "grounded"
+      },
+      {
+        "id": "L60",
+        "src": "R_chaichana2012",
+        "dst": "W_gpr_surrogate",
+        "rel": "justifies",
+        "rationale": "Methodological precedent for CFD in coronary plaques supports the use of simulation + surrogate pipelines for mechanistic studies.",
+        "grounding_status": "grounded"
+      },
+      {
+        "id": "L61",
+        "src": "F_sobol_group_fig",
+        "dst": "E_material_group_domination",
+        "rel": "visualizes",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L62",
+        "src": "F_sobol_ind_fig",
+        "dst": "E_individual_top_parameters",
+        "rel": "visualizes",
+        "rationale": "",
+        "grounding_status": "unverified"
+      },
+      {
+        "id": "L63",
+        "src": "F_vi_selection_table",
+        "dst": "E_vi_candidates_evaluation",
+        "rel": "visualizes",
+        "rationale": "",
+        "grounding_status": "unverified"
+      }
+    ]
+  },
+  "figures": {
+    "generation": "deferred (fal.ai nano-banana pro)",
+    "figures": [
+      {
+        "id": "F_sobol_group_fig",
+        "kind": "figure",
+        "message": "Bar charts of group Sobol S1 and ST (Material/Hemo/Morpho) for LAP & CP, VI1 & VI2 (visualizes dominance of Material group).",
+        "section": "result",
+        "visualizes": [
+          "E_material_group_domination"
+        ],
+        "status": "planned",
+        "source": "claim_graph",
+        "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"figure sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><line x1=\"20\" y1=\"96\" x2=\"190\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><line x1=\"20\" y1=\"20\" x2=\"20\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><rect x=\"26\" y=\"26\" width=\"20\" height=\"70\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"56\" y=\"50\" width=\"20\" height=\"46\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"86\" y=\"66\" width=\"20\" height=\"30\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"116\" y=\"74\" width=\"20\" height=\"22\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"146\" y=\"82\" width=\"20\" height=\"14\" rx=\"2\" fill=\"#CC785C\"/><text x=\"205\" y=\"40\" font-size=\"9\" fill=\"#6B5E54\">S1 / ST</text><text x=\"205\" y=\"54\" font-size=\"9\" fill=\"#6B5E54\">bar chart</text></svg>"
+      },
+      {
+        "id": "F_sobol_ind_fig",
+        "kind": "figure",
+        "message": "Ranked bar charts of individual parameter Sobol S1 and ST (shows E_vessel, E_FC, SBP, PP as top contributors).",
+        "section": "result",
+        "visualizes": [
+          "E_individual_top_parameters"
+        ],
+        "status": "planned",
+        "source": "claim_graph",
+        "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"figure sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><line x1=\"20\" y1=\"96\" x2=\"190\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><line x1=\"20\" y1=\"20\" x2=\"20\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><rect x=\"26\" y=\"26\" width=\"20\" height=\"70\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"56\" y=\"50\" width=\"20\" height=\"46\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"86\" y=\"66\" width=\"20\" height=\"30\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"116\" y=\"74\" width=\"20\" height=\"22\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"146\" y=\"82\" width=\"20\" height=\"14\" rx=\"2\" fill=\"#CC785C\"/><text x=\"205\" y=\"40\" font-size=\"9\" fill=\"#6B5E54\">S1 / ST</text><text x=\"205\" y=\"54\" font-size=\"9\" fill=\"#6B5E54\">bar chart</text></svg>"
+      },
+      {
+        "id": "F_vi_selection_table",
+        "kind": "table",
+        "message": "Table of 6 candidate VIs vs 7 clinical criteria (sign concordance): highlights two VIs that satisfy all criteria.",
+        "section": "result",
+        "visualizes": [
+          "E_vi_candidates_evaluation"
+        ],
+        "status": "planned",
+        "source": "claim_graph",
+        "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"table sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><rect x=\"16\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"45.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col1</text><rect x=\"74\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"103.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col2</text><rect x=\"132\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"161.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col3</text><rect x=\"190\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"219.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col4</text><rect x=\"16\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"16\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"16\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"140\" y=\"112\" font-size=\"9\" text-anchor=\"middle\" fill=\"#6B5E54\">table</text></svg>"
+      }
+    ]
+  },
+  "structure": {
+    "method": {
+      "summary": "데이터 생성 → 취약성지수(VI) 후보 선정 → GPR 서로게이트 기반 Sobol 전역 민감도의 3단계 파이프라인과 각 단계의 구현 세부를 설명한다.",
+      "subheadings": [
+        "분석 개요 및 파이프라인",
+        "비용효율 맥동성 FSI 데이터셋 구축(모델·입력·경계조건·후처리)",
+        "취약성지수 후보 생성 및 임상 기준 기반 선별",
+        "GPR 서로게이트 학습 및 Sobol 전역 민감도 분석"
+      ]
+    },
+    "result": {
+      "summary": "시뮬레이션 타당성 확인, 6개 VI 후보의 임상 기준 비교를 통한 ΔPSS 기반 VI1·VI2 채택, 그리고 GPR+Sobol 분석에서 재료물성의 지배적 영향(상위 인자: E_vessel, E_FC, SBP, PP)을 제시한다.",
+      "subheadings": [
+        "시뮬레이션 타당성 및 데이터셋 요약(LAP/CP 유효 쌍 수)",
+        "VI 후보 검토와 임상 7기준 일치성: ΔPSS 기반 VI1·VI2의 선택 근거",
+        "전역 민감도 결과: 그룹별(Sobol S1·ST) 및 개별 파라미터 영향"
+      ]
+    },
+    "discussion": {
+      "summary": "ΔPSS(최대진폭·피로) 관점의 우수성, strength 정규화의 필요성과 정규화 지수 α가 미치는 영향, 재료물성 우세의 임상적 함의 및 연구적 한계를 논의한다.",
+      "subheadings": [
+        "ΔPSS(피로·진폭) 관점과 맥동성 FSI의 필요성",
+        "strength 정규화(정규화 지수 α)와 민감도 결과의 민감성",
+        "임상적 함의: 재료물성 우세가 시사하는 측정·위험층화 우선순위",
+        "모델 가정과 한계(균일 FC 두께·이상화 기하·선형 탄성 등) 및 향후 연구"
+      ]
+    },
+    "introduction": {
+      "summary": "관상동맥 죽상경화 플라크 파열의 임상적 중요성과 파열을 결정하는 형태·혈류·재료의 다요인성을 제시하고, 기존 stress‑only 지표의 한계와 ΔPSS 기반의 strength‑정규화된 VI 및 이를 검증할 비용효율 맥동성 FSI 기반 전역 민감도 분석의 필요성을 제시한다.",
+      "subheadings": [
+        "관상동맥 플라크 파열의 임상적 중요성",
+        "파열 결정요인의 다요인성(형태·혈류역학·재료)과 기존 지표의 한계",
+        "ΔPSS(응력 최대진폭)과 strength 정규화의 당위성 및 연구 목적"
+      ]
+    },
+    "conclusion": {
+      "summary": "ΔPSS 기반의 strength‑정규화 취약성지수(VI1·VI2)와 비용효율 맥동성 FSI로 구축한 대규모 데이터 + GPR·Sobol 분석을 통해 재료물성이 관상동맥 플라크 파열 위험을 주로 지배함을 요약한다.",
+      "subheadings": []
+    },
+    "abstract": {
+      "summary": "본 연구는 ΔPSS(응력 최대진폭)를 stress로 하고 섬유막 강도로 정규화한 VI1·VI2를 제안하고, 비용효율 맥동성 FSI로 구축한 대규모 데이터세트와 GPR+Sobol 전역 민감도 분석을 통해 재료물성이 혈류역학·형태학보다 파열 위험을 더 지배함을 보고한다.",
+      "subheadings": []
+    }
+  },
+  "found_references": [
+    {
+      "key": "frostegrd2013",
+      "title": "Immunity, atherosclerosis and cardiovascular disease",
+      "authors": "Johan Frostegård",
+      "year": 2013,
+      "doi": "10.1186/1741-7015-11-117",
+      "abstract": "Atherosclerosis, the major cause of cardiovascular disease (CVD), is a chronic inflammatory condition with immune competent cells in lesions producing mainly pro-inflammatory cytokines. Dead cells and oxidized forms of low density lipoproteins (oxLDL) are abundant. The major direct cause of CVD appears to be rupture of atherosclerotic plaques. oxLDL has proinflammatory and immune-stimulatory properties, causes cell death at higher concentrations and contains inflammatory phospholipids with phosphorylcholine (PC) as an interesting epitope. Antibodies against PC (anti-PC) may be atheroprotective",
+      "topic": "Supports the claim that oxLDL and proinflammatory immune responses drive plaque inflammation and contribute to plaque rupture risk"
+    },
+    {
+      "key": "hansson2002",
+      "title": "Innate and Adaptive Immunity in the Pathogenesis of Atherosclerosis",
+      "authors": "Göran K. Hansson, Peter Libby, Uwe Schönbeck, Zhong-qun Yan",
+      "year": 2002,
+      "doi": "10.1161/01.res.0000029784.15893.10",
+      "abstract": "This review considers critically the evidence for the involvement of mediators of innate and acquired immunity in various stages of atherosclerosis. Rapidly mobilized arms of innate immunity, including phagocytic leukocytes, complement, and proinflammatory cytokines, contribute to atherogenesis. In addition, adaptive immunity, with its T cells, antibodies, and immunoregulatory cytokines, powerfully modulates disease activity and progression. Atherogenesis involves cross talk between and shared pathways involved in adaptive and innate immunity. Immune processes can influence the balance between",
+      "topic": "Provides foundational evidence that innate and adaptive immune mediators modulate atherogenesis and lesion progression"
+    },
+    {
+      "key": "hutcheson2016",
+      "title": "Genesis and growth of extracellular-vesicle-derived microcalcification in atherosclerotic plaques",
+      "authors": "Joshua D. Hutcheson, Claudia Goettsch, Sérgio Bertazzo, Natalia Maldonado, Jessica Ruiz, Wilson Wen Bin Goh, Katsumi Yabusaki, Tyler Faits, Carlijn V. C. Bouten, G Franck, Thibaut Quillard, Peter Libby, Masanori Aikawa, Sheldon Weinbaum, Elena Aïkawa",
+      "year": 2016,
+      "doi": "10.1038/nmat4519",
+      "abstract": "",
+      "topic": "Provides evidence on the genesis and growth of extracellular‑vesicle–derived microcalcifications within atherosclerotic plaques"
+    },
+    {
+      "key": "potteaux2011",
+      "title": "Suppressed monocyte recruitment drives macrophage removal from atherosclerotic plaques of Apoe–/– mice during disease regression",
+      "authors": "Stéphane Potteaux, Emmanuel L. Gautier, Susan Hutchison, Nico van Rooijen, Daniel J. Rader, Michael J. Thomas, Mary G. Sorci‐Thomas, Gwendalyn J. Randolph",
+      "year": 2011,
+      "doi": "10.1172/jci43802",
+      "abstract": "Experimental models of atherosclerosis suggest that recruitment of monocytes into plaques drives the progression of this chronic inflammatory condition. Cholesterol-lowering therapy leads to plaque stabilization or regression in human atherosclerosis, characterized by reduced macrophage content, but the mechanisms that underlie this reduction are incompletely understood. Mice lacking the gene Apoe (Apoe-/- mice) have high levels of cholesterol and spontaneously develop atherosclerotic lesions. Here, we treated Apoe-/- mice with apoE-encoding adenoviral vectors that induce plaque regression, an",
+      "topic": "Method/mechanistic precedent showing monocyte recruitment controls macrophage content and that macrophage removal occurs during regression in Apoe−/− models"
+    },
+    {
+      "key": "serruys2011",
+      "title": "From metallic cages to transient bioresorbable scaffolds: change in paradigm of coronary revascularization in the upcoming decade?",
+      "authors": "Patrick W. Serruys, Héctor M. García‐García, Y. Onuma",
+      "year": 2011,
+      "doi": "10.1093/eurheartj/ehr384",
+      "abstract": "Drug-eluting bioresorbable scaffolds (BRSs) may in the near future change drastically the landscape of percutaneous coronary revascularization.1 In 1977, when Andreas Gruentzig introduced the concept of percutaneous transluminal coronary angioplasty, the most feared enemy of the operators was acute occlusion of the dilated lesion due to a combination of elastic recoil and intimal and medial dissection, sometimes aggravated by intraparietal haematoma (Figure 1).2 Surgical standby was a sine qua non condition for the safe performance of the percutaneous treatment. At short term, proliferative ne",
+      "topic": "Contextual reference on interventional strategies and how device paradigms relate to plaque mechanical and compositional issues"
+    },
+    {
+      "key": "stefanadis2017",
+      "title": "Coronary Atherosclerotic Vulnerable Plaque: Current Perspectives",
+      "authors": "Christodoulos Stefanadis, C. Antoniou, Dimitris Tsiachris, P Pietri",
+      "year": 2017,
+      "doi": "10.1161/jaha.117.005543",
+      "abstract": "",
+      "topic": "Clinical perspective summarizing current concepts of vulnerable coronary plaque composition and risk"
+    },
+    {
+      "key": "brown2016",
+      "title": "Role of biomechanical forces in the natural history of coronary atherosclerosis",
+      "authors": "Adam J. Brown, Zhongzhao Teng, Paul C. Evans, Jonathan H. Gillard, Habib Samady, Martin R. Bennett",
+      "year": 2016,
+      "doi": "10.1038/nrcardio.2015.203",
+      "abstract": "",
+      "topic": "Review precedent that biomechanical forces influence the natural history of coronary atherosclerosis"
+    },
+    {
+      "key": "eshtehardi2012",
+      "title": "Association of Coronary Wall Shear Stress With Atherosclerotic Plaque Burden, Composition, and Distribution in Patients With Coronary Artery Disease",
+      "authors": "Parham Eshtehardi, Michael McDaniel, Jin Suo, Saurabh S. Dhawan, Lucas H. Timmins, José Binongo, Lucas Golub, Michel Corban, Aloke V. Finn, John N. Oshinsk, Arshed A. Quyyumi, Don P. Giddens, Habib Samady",
+      "year": 2012,
+      "doi": "10.1161/jaha.112.002543",
+      "abstract": "BACKGROUND: Extremes of wall shear stress (WSS) have been associated with plaque progression and transformation, which has raised interest in the clinical assessment of WSS. We hypothesized that calculated coronary WSS is predicted only partially by luminal geometry and that WSS is related to plaque composition. METHODS AND RESULTS: Twenty-seven patients with coronary artery disease underwent virtual histology intravascular ultrasound and Doppler velocity measurement for computational fluid dynamics modeling for WSS calculation in each virtual histology intravascular ultrasound segment (N=3581",
+      "topic": "Clinical study linking computed wall shear stress to plaque burden, composition, and distribution—supporting WSS as a relevant metric"
+    },
+    {
+      "key": "lee2017",
+      "title": "Interaction of IL-6 and TNF-α contributes to endothelial dysfunction in type 2 diabetic mouse hearts",
+      "authors": "Jonghae Lee, Sewon Lee, Hanrui Zhang, Michael A. Hill, Cuihua Zhang, Yoonjung Park",
+      "year": 2017,
+      "doi": "10.1371/journal.pone.0187189",
+      "abstract": "OBJECTIVES: Inflammatory cytokines, such as tumor necrosis factor-α (TNF-α) and interleukin-6 (IL-6), are individually considered as important contributors to endothelial dysfunction in obesity and type 2 diabetes (T2D). However, their interactions in coronary arteriole endothelial dysfunction are uncertain. Therefore, this study aimed to determine the effects of TNF-α and IL-6 interactions on coronary endothelial dysfunction in experimental T2D. METHODS: The studies used wild type (WT), diabetic mice (db/db), db/db null for TNF (dbTNF-/dbTNF-), and db/db mice treated with neutralizing antibod",
+      "topic": "Supports the role of cytokine interactions (IL‑6, TNF‑α) in driving coronary endothelial dysfunction relevant to atherogenic processes"
+    },
+    {
+      "key": "choi2015",
+      "title": "Coronary Artery Axial Plaque Stress and its Relationship With Lesion Geometry",
+      "authors": "Gilwoo Choi, Joo Myung Lee, Hyun Jin Kim, Jun‐Bean Park, Sethuraman Sankaran, Hiromasa Otake, Joon‐Hyung Doh, Chang‐Wook Nam, Eun‐Seok Shin, Charles A. Taylor, Bon‐Kwon Koo",
+      "year": 2015,
+      "doi": "10.1016/j.jcmg.2015.04.024",
+      "abstract": "",
+      "topic": "Supports the relevance of axial plaque stress and its relationship with lesion geometry as a biomechanical factor"
+    },
+    {
+      "key": "chaichana2012",
+      "title": "Computational Fluid Dynamics Analysis of the Effect of Plaques in the Left Coronary Artery",
+      "authors": "Thanapong Chaichana, Zhonghua Sun, James Jewkes",
+      "year": 2012,
+      "doi": "10.1155/2012/504367",
+      "abstract": "This study was to investigate the hemodynamic effect of simulated plaques in left coronary artery models, which were generated from a sample patient's data. Plaques were simulated and placed at the left main stem and the left anterior descending (LAD) to produce at least 60% coronary stenosis. Computational fluid dynamics analysis was performed to simulate realistic physiological conditions that reflect the in vivo cardiac hemodynamics, and comparison of wall shear stress (WSS) between Newtonian and non-Newtonian fluid models was performed. The pressure gradient (PSG) and flow velocities in th",
+      "topic": "Methodological precedent for CFD analysis of coronary plaques and comparisons of WSS under physiologic conditions"
+    }
+  ],
+  "literature_md": "Inflammation and immune cell dynamics are widely recognized as central drivers of atherosclerotic lesion development and instability. Foundational reviews summarize the roles of innate and adaptive immune mediators, proinflammatory cytokines, and oxidized lipoproteins in atherogenesis and plaque destabilization [cite:hansson2002, cite:frostegrd2013]. Experimental work further links monocyte recruitment and macrophage content to lesion progression and regression in murine models, providing mechanistic context for how changes in lipid load or therapy translate into altered cellular composition of plaques [cite:potteaux2011]. At the level of endothelial biology, interactions between inflammatory cytokines such as IL‑6 and TNF‑α have been implicated in coronary endothelial dysfunction in disease models, supporting a pathway by which systemic or local inflammation can modulate vascular function and possibly plaque behavior [cite:lee2017].\n\nPlaque composition and microstructural features have been associated with clinical vulnerability. Studies of plaque biology emphasize microcalcification as a potential contributor to mechanical instability, and work describing the genesis and growth of extracellular‑vesicle–derived microcalcifications highlights how mineralization processes arise within lesions [cite:hutcheson2016]. Recent clinical and review articles synthesize current perspectives on the vulnerable coronary plaque, placing compositional markers such as lipid pools, fibrous cap status and calcification patterns in the context of rupture risk and clinical management [cite:stefanadis2017]. Imaging‑based studies have also linked wall shear stress (WSS) patterns to plaque burden and composition in patients, suggesting that local hemodynamic forces correlate with—and may help predict—biological plaque features measurable by intravascular imaging [cite:eshtehardi2012].\n\nComplementing the biological literature, a growing biomechanics and computational‑hemodynamics literature connects mechanical loading to plaque natural history. Reviews highlight the role of biomechanical forces in coronary atherosclerosis progression, while targeted studies relate computed metrics such as WSS and axial plaque stress to lesion geometry and composition [cite:brown2016, cite:choi2015]. Patient‑specific and computational fluid dynamics (CFD) analyses have been used to model how stenoses and plaque shapes alter coronary hemodynamics and WSS, providing methodological precedents for linking in vivo imaging with biomechanical metrics [cite:chaichana2012, cite:eshtehardi2012]. Building on these strands, this paper aims to integrate patient‑level CFD‑derived mechanical metrics with localized histopathological markers of inflammation and microcalcification, extending prior associative studies by mapping spatially resolved hemodynamic stresses to cellular and mineral features within coronary plaques.\n\nInterventional context is relevant when considering translational implications: perspectives on evolving devices and therapies remind that mechanical and compositional plaque features together influence revascularization decisions and scaffold design [cite:serruys2011].",
+  "plan_tokens": {
+    "input": 25227,
+    "output": 20292,
+    "cached": 0
+  }
+}

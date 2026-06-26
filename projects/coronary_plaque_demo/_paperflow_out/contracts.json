@@ -1,0 +1,1632 @@
+{
+  "method": {
+    "section": "method",
+    "paragraphs": [
+      {
+        "paragraph_id": "M-01",
+        "section": "method",
+        "heading": "분석 개요 및 파이프라인",
+        "purpose": "연구에서 수행한 전체 분석 흐름을 세 단계(데이터 생성 → VI 후보 선정 → surrogate 기반 전역 민감도 분석)로 간결히 제시하고 각 단계의 역할과 상호 연결을 설명한다.",
+        "claim_ids": [
+          "C4",
+          "M1",
+          "M2",
+          "M3",
+          "M4"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "C4.1",
+          "C4.2",
+          "M1.1",
+          "M1.2",
+          "M1.3",
+          "D_bc_md",
+          "D_elastance",
+          "D_inflow",
+          "D_input",
+          "D_sim_outputs_LAP",
+          "D_sim_outputs_CP",
+          "D_sim_post_LAP",
+          "D_sim_post_CP",
+          "D_vi_eval",
+          "D_gpr_model_LAP",
+          "D_gpr_model_CP",
+          "D_sobol_grp_CP_VI1",
+          "D_sobol_grp_CP_VI2",
+          "D_sobol_grp_LAP_VI1",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_CP_VI1",
+          "D_sobol_ind_CP_VI2",
+          "D_sobol_ind_LAP_VI1",
+          "D_sobol_ind_LAP_VI2",
+          "E_sim_validation",
+          "E_dataset_and_models",
+          "E_vi_candidates_evaluation",
+          "E_vi_selected",
+          "E_surrogate_enables_sobol",
+          "W_gpr_surrogate",
+          "R_chaichana2012",
+          "F_vi_selection_table"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L43",
+          "L44",
+          "L51",
+          "L52",
+          "L56",
+          "L60"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "data/cost_effective_FSI_BC/bc.md"
+        ],
+        "must_not_claim": [
+          "개별 결과(예: 어떤 인자군이 지배적인지) 또는 민감도 수치",
+          "서로게이트 성능(R², RMSE 등)이나 검증 지표",
+          "수치해석적 수렴성·메시/시간간격 독립성 등 미제공 기술 세부사항"
+        ],
+        "transition_from": "",
+        "transition_to": "M-02"
+      },
+      {
+        "paragraph_id": "M-02",
+        "section": "method",
+        "heading": "비용효율 맥동성 FSI 데이터셋 구축(모델·입력·경계조건·후처리)",
+        "purpose": "사용한 cost‑effective 맥동성 두방향 FSI 파이프라인의 개괄(지배방정식, 유체/고체 물성 가정, 인터페이스 결합 방식)과 선행 설정의 출처를 서술한다.",
+        "claim_ids": [
+          "M1",
+          "M1.2",
+          "C4"
+        ],
+        "context_node_ids": [
+          "C4.1",
+          "C4.2",
+          "M1.1",
+          "M1.3",
+          "M2",
+          "M3",
+          "D_bc_md",
+          "D_elastance",
+          "D_inflow",
+          "D_input",
+          "D_sim_outputs_LAP",
+          "D_sim_outputs_CP",
+          "D_sim_post_LAP",
+          "D_sim_post_CP",
+          "D_gpr_model_LAP",
+          "D_gpr_model_CP",
+          "E_sim_validation",
+          "E_dataset_and_models",
+          "E_surrogate_enables_sobol",
+          "W_gpr_surrogate",
+          "R_chaichana2012"
+        ],
+        "required_edge_ids": [
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L51",
+          "L52",
+          "L56",
+          "L60"
+        ],
+        "supports": [
+          "data/cost_effective_FSI_BC/bc.md",
+          "data/input_parameter/inflow.dat",
+          "data/input_parameter/elastance.dat"
+        ],
+        "must_not_claim": [
+          "새로운 FSI 방법 자체의 학술적 검증(본 연구는 선행 비용효율 FSI을 도구로 사용함)",
+          "구체적 solver 소프트웨어·버전·수치 파라미터(시간적분법·허용오차 등)",
+          "수치적 수렴·오차 측정치"
+        ],
+        "transition_from": "M-01",
+        "transition_to": "M-03"
+      },
+      {
+        "paragraph_id": "M-03",
+        "section": "method",
+        "heading": "",
+        "purpose": "모델화된 플라크 표현형과 전처리 절차(모델 도메인, FC 두께 처리, 입력 파라미터 매핑)를 상세히 기술한다: LAP(3도메인), CP(4도메인), FC 두께는 단일 스칼라(fc_av_th)로 취급함을 명시한다.",
+        "claim_ids": [
+          "M1.1",
+          "C4.1"
+        ],
+        "context_node_ids": [
+          "C4",
+          "C4.2",
+          "M1",
+          "M1.2",
+          "M1.3",
+          "M3",
+          "D_bc_md",
+          "D_elastance",
+          "D_inflow",
+          "D_input",
+          "D_sim_outputs_LAP",
+          "D_sim_outputs_CP",
+          "D_sim_post_LAP",
+          "D_sim_post_CP",
+          "E_sim_validation",
+          "E_dataset_and_models",
+          "E_surrogate_enables_sobol",
+          "W_gpr_surrogate",
+          "R_chaichana2012"
+        ],
+        "required_edge_ids": [
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L51",
+          "L52",
+          "L56",
+          "L60"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "개별 해석 사례의 상세 형상(내경·외벽 직경·세그먼트 길이)의 구체값(문서에서 보완 예정임)",
+          "형상·물성의 공간적 비균질성(본 연구는 각 도메인을 균일 물성으로 가정함)"
+        ],
+        "transition_from": "M-02",
+        "transition_to": "M-04"
+      },
+      {
+        "paragraph_id": "M-04",
+        "section": "method",
+        "heading": "",
+        "purpose": "시뮬레이션 실행 절차와 입력 설계공간(샘플 생성 및 실행 방식)을 설명하고, 전체 시뮬레이션 파이프라인이 각 설계표본에 대해 시간해석적 FSI를 수행하는 방법을 기술한다(입력 파라미터 활용 방식 포함).",
+        "claim_ids": [
+          "M1.2",
+          "C4.2",
+          "M1.1"
+        ],
+        "context_node_ids": [
+          "C4",
+          "C4.1",
+          "M1",
+          "M1.3",
+          "M3",
+          "D_bc_md",
+          "D_elastance",
+          "D_inflow",
+          "D_input",
+          "D_sim_outputs_LAP",
+          "D_sim_outputs_CP",
+          "D_sim_post_LAP",
+          "D_sim_post_CP",
+          "D_gpr_model_LAP",
+          "D_gpr_model_CP",
+          "E_sim_validation",
+          "E_dataset_and_models",
+          "E_surrogate_enables_sobol",
+          "W_gpr_surrogate",
+          "R_chaichana2012"
+        ],
+        "required_edge_ids": [
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L51",
+          "L52",
+          "L56",
+          "L60"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "data/cost_effective_FSI_BC/bc.md",
+          "data/input_parameter/inflow.dat"
+        ],
+        "must_not_claim": [
+          "시뮬레이션의 개별 수렴/수렴 한계치·메시 분해능성·타임스텝 독립성(세부 검증은 후속 보완 예정)",
+          "하드웨어/계산비용에 대한 정량적 주장"
+        ],
+        "transition_from": "M-03",
+        "transition_to": "M-05"
+      },
+      {
+        "paragraph_id": "M-05",
+        "section": "method",
+        "heading": "",
+        "purpose": "FSI 결과의 후처리 산출물과 산정 방법을 규정한다: 면내 PSS장 계산, 구면평균 기반 ΔPSS(심장주기 최대 진폭) 산출, FFR 유사치 및 파열위치 지수 산정 절차를 명시한다.",
+        "claim_ids": [
+          "M1.3"
+        ],
+        "context_node_ids": [
+          "M1",
+          "M1.1",
+          "M1.2",
+          "M2",
+          "D_bc_md",
+          "D_elastance",
+          "D_inflow",
+          "D_input",
+          "D_sim_outputs_LAP",
+          "D_sim_outputs_CP",
+          "D_sim_post_LAP",
+          "D_sim_post_CP",
+          "D_vi_eval",
+          "E_vi_candidates_evaluation",
+          "E_vi_selected"
+        ],
+        "required_edge_ids": [],
+        "supports": [
+          "data/cost_effective_FSI_BC/bc.md",
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "후처리 알고리즘의 수치적 상세(예: 필터링·보간 방법의 파라미터) 또는 후처리 파이프라인의 재현성 지표",
+          "후처리 결과의 해석적 결론(이는 결과 섹션에서 다룸)"
+        ],
+        "transition_from": "M-04",
+        "transition_to": "M-06"
+      },
+      {
+        "paragraph_id": "M-06",
+        "section": "method",
+        "heading": "취약성지수 후보 생성 및 임상 기준 기반 선별",
+        "purpose": "VI 후보 생성 절차를 기술한다: stress 정의(최대 PSS, ΔPSS) 2종과 strength 시나리오 3종의 직교 조합으로 6개 후보를 산출하는 계산적 방법을 설명한다.",
+        "claim_ids": [
+          "M2"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "M1",
+          "M1.3",
+          "D_sim_outputs_LAP",
+          "D_sim_outputs_CP",
+          "D_sim_post_LAP",
+          "D_sim_post_CP",
+          "D_vi_eval",
+          "E_vi_candidates_evaluation",
+          "E_vi_selected",
+          "F_vi_selection_table"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L43",
+          "L44"
+        ],
+        "supports": [
+          "F_vi_selection_table"
+        ],
+        "must_not_claim": [
+          "어떤 후보가 최종적으로 채택되었는지에 대한 해석적 주장(후속 문단에서 선별 결과만 기술)",
+          "후보 간 통계적 유의성·성능 지표(결과 섹션에서 보고)"
+        ],
+        "transition_from": "M-05",
+        "transition_to": "M-07"
+      },
+      {
+        "paragraph_id": "M-07",
+        "section": "method",
+        "heading": "",
+        "purpose": "6개 후보 VI를 7개의 임상적 고위험 플라크 특징과의 부호 일치(sign concordance)로 비교하여 선별하는 절차(판정 기준, 평가표 작성 방법)를 서술하고, 선별 과정에서 생성된 요약 표를 제시하는 근거를 밝힌다.",
+        "claim_ids": [
+          "M2",
+          "C1.2"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.3",
+          "M1",
+          "M1.3",
+          "D_sim_outputs_LAP",
+          "D_sim_outputs_CP",
+          "D_sim_post_LAP",
+          "D_sim_post_CP",
+          "D_vi_eval",
+          "E_vi_candidates_evaluation",
+          "E_vi_selected",
+          "E_deltaPSS_better",
+          "F_vi_selection_table"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "L43",
+          "L44",
+          "L45",
+          "L46"
+        ],
+        "supports": [
+          "F_vi_selection_table"
+        ],
+        "must_not_claim": [
+          "선별 결과의 임상적 타당성(결과 섹션의 정량적 비교에 근거해 논의할 것)",
+          "선택된 지수의 성능 지표(R²·RMSE 등)를 이 절에서 언급"
+        ],
+        "transition_from": "M-06",
+        "transition_to": "M-08"
+      },
+      {
+        "paragraph_id": "M-08",
+        "section": "method",
+        "heading": "GPR 서로게이트 학습 및 Sobol 전역 민감도 분석",
+        "purpose": "최종 VI들에 대해 Gaussian Process Regression(GPR) 서로게이트를 학습한 절차(학습에 사용된 유효 시뮬레이션 쌍 수, 학습/검증 분할·하이퍼파라미터 튜닝의 일반적 접근)를 기술한다(구체적 성능 수치는 별도 표기 없음).",
+        "claim_ids": [
+          "M3",
+          "id:M3.1",
+          "C4.2"
+        ],
+        "context_node_ids": [
+          "C4",
+          "C4.1",
+          "D_gpr_model_LAP",
+          "D_gpr_model_CP",
+          "E_sim_validation",
+          "E_dataset_and_models",
+          "E_surrogate_enables_sobol",
+          "W_gpr_surrogate",
+          "R_chaichana2012"
+        ],
+        "required_edge_ids": [
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L51",
+          "L52",
+          "L56",
+          "L60"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "D_gpr_model_LAP",
+          "D_gpr_model_CP"
+        ],
+        "must_not_claim": [
+          "서로게이트의 구체적 성능(R², RMSE, 예측 오차 분포 등)",
+          "하이퍼파라미터 튜닝의 상세 최적값(이들은 보완 자료로 제시 예정)"
+        ],
+        "transition_from": "M-07",
+        "transition_to": "M-09"
+      },
+      {
+        "paragraph_id": "M-09",
+        "section": "method",
+        "heading": "",
+        "purpose": "GPR 서로게이트 상에서 수행한 Sobol 전역 민감도 분석의 방법론적 세부를 기술한다: 분산분해 기반의 제1차(S1) 및 전차(ST) 지수 정의, 군별(group)·개별 파라미터별 인덱스 산출 방법, 서로게이트를 통한 대규모 평가(약 1.5×10^4 회) 실행과 그 결과물 파일 목록을 명시한다.",
+        "claim_ids": [
+          "M4",
+          "W_sobol_theory",
+          "M3"
+        ],
+        "context_node_ids": [
+          "C3",
+          "C3.1",
+          "C3.2",
+          "C3.3",
+          "C4",
+          "C4.1",
+          "C4.2",
+          "D_gpr_model_LAP",
+          "D_gpr_model_CP",
+          "D_sobol_grp_CP_VI1",
+          "D_sobol_grp_CP_VI2",
+          "D_sobol_grp_LAP_VI1",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_CP_VI1",
+          "D_sobol_ind_CP_VI2",
+          "D_sobol_ind_LAP_VI1",
+          "D_sobol_ind_LAP_VI2",
+          "E_sim_validation",
+          "E_dataset_and_models",
+          "E_material_group_domination",
+          "E_individual_top_parameters",
+          "E_surrogate_enables_sobol",
+          "W_gpr_surrogate",
+          "F_sobol_group_fig"
+        ],
+        "required_edge_ids": [
+          "L6",
+          "L7",
+          "L8",
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L47",
+          "L48",
+          "L49",
+          "L50",
+          "L51",
+          "L52",
+          "L55",
+          "L56"
+        ],
+        "supports": [
+          "data/sobol/sobol_grp_LAP_VI1.csv",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_grp_CP_VI1.csv",
+          "data/sobol/sobol_grp_CP_VI2.csv",
+          "data/sobol/sobol_ind_LAP_VI1.csv",
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "data/sobol/sobol_ind_CP_VI1.csv",
+          "data/sobol/sobol_ind_CP_VI2.csv"
+        ],
+        "must_not_claim": [
+          "민감도 결과의 해석(어떤 그룹·파라미터가 지배적인지는 결과 섹션에서 보고)",
+          "Sobol 지수의 신뢰구간·통계적 유의성(결과에서 수치와 함께 제시)"
+        ],
+        "transition_from": "M-08",
+        "transition_to": ""
+      }
+    ]
+  },
+  "result": {
+    "section": "result",
+    "paragraphs": [
+      {
+        "paragraph_id": "R-01",
+        "section": "result",
+        "heading": "시뮬레이션 타당성 및 데이터셋 요약(LAP/CP 유효 쌍 수)",
+        "purpose": "비용효율 맥동성 FSI 파이프라인이 생성한 출력이 선행연구 경향과 정성적으로 일치함을 제시하여 시뮬레이션 기반 데이터셋의 물리적 타당성을 확인한다.",
+        "claim_ids": [
+          "E_sim_validation"
+        ],
+        "context_node_ids": [
+          "C4",
+          "C4.1",
+          "C4.2",
+          "M3",
+          "E_dataset_and_models",
+          "E_surrogate_enables_sobol",
+          "W_gpr_surrogate",
+          "R_chaichana2012"
+        ],
+        "required_edge_ids": [
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L51",
+          "L52",
+          "L56",
+          "L60"
+        ],
+        "supports": [
+          "data/cost_effective_FSI_BC/bc.md",
+          "data/input_parameter/inflow.dat",
+          "data/input_parameter/elastance.dat"
+        ],
+        "must_not_claim": [
+          "정량적 검증 지표(예: 오차, p값)를 제시하지 않음",
+          "본 연구의 FSI 셋업이 새로운 방법론적 기여임을 주장하지 않음",
+          "시뮬레이션 결과가 임상 예측력을 보장한다고 주장하지 않음"
+        ],
+        "transition_from": "",
+        "transition_to": "R-02"
+      },
+      {
+        "paragraph_id": "R-02",
+        "section": "result",
+        "heading": "",
+        "purpose": "구성된 입력–출력 데이터셋의 규모와 유효 시뮬레이션 쌍(LAP/CP 개수)을 요약하고, 본 데이터셋이 후속 surrogate 학습의 근거임을 명확히 한다.",
+        "claim_ids": [
+          "E_dataset_and_models"
+        ],
+        "context_node_ids": [
+          "C4",
+          "C4.1",
+          "C4.2",
+          "M3",
+          "E_sim_validation",
+          "E_surrogate_enables_sobol",
+          "W_gpr_surrogate"
+        ],
+        "required_edge_ids": [
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L51",
+          "L52",
+          "L56"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "데이터셋이 모든 임상 변이를 대표한다고 주장하지 않음",
+          "유효 쌍 수의 통계적 의미(예: power)를 과대해석하지 않음"
+        ],
+        "transition_from": "R-01",
+        "transition_to": "R-03"
+      },
+      {
+        "paragraph_id": "R-03",
+        "section": "result",
+        "heading": "VI 후보 검토와 임상 7기준 일치성: ΔPSS 기반 VI1·VI2의 선택 근거",
+        "purpose": "2×3 조합으로 생성한 6개 취약성지수 후보에 대해 7개 임상 고위험 기준과의 부호 일치성을 평가한 결과를 제시하고, ΔPSS 기반 후보들이 우수하여 최종적으로 VI1·VI2가 선택되었음을 보고한다.",
+        "claim_ids": [
+          "E_vi_candidates_evaluation",
+          "E_vi_selected",
+          "E_deltaPSS_better"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "C1.3",
+          "M1.3",
+          "M2",
+          "D_sim_post_LAP",
+          "D_sim_post_CP",
+          "D_vi_eval",
+          "F_vi_selection_table"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "L43",
+          "L44",
+          "L45",
+          "L46"
+        ],
+        "supports": [
+          "F_vi_selection_table"
+        ],
+        "must_not_claim": [
+          "임상적 성능(예: 민감도·특이도·임상결과 예측)을 본 평가만으로 확정하지 않음",
+          "ΔPSS 기반 지표가 모든 상황에서 절대적으로 우수하다고 단정하지 않음"
+        ],
+        "transition_from": "R-02",
+        "transition_to": "R-04"
+      },
+      {
+        "paragraph_id": "R-04",
+        "section": "result",
+        "heading": "전역 민감도 결과: 그룹별(Sobol S1·ST) 및 개별 파라미터 영향",
+        "purpose": "GPR 대리모델 위에서 계산한 그룹 수준 Sobol 1차(S1)·전차(ST) 지수를 제시하여 Material(재료물성) 그룹이 Hemo·Morpho보다 우세함을 보여준다.",
+        "claim_ids": [
+          "E_material_group_domination",
+          "C3",
+          "C3.1"
+        ],
+        "context_node_ids": [
+          "C3.2",
+          "C3.3",
+          "E_individual_top_parameters",
+          "W_sobol_theory",
+          "F_sobol_group_fig",
+          "F_sobol_ind_fig"
+        ],
+        "required_edge_ids": [
+          "L6",
+          "L7",
+          "L8",
+          "L47",
+          "L48",
+          "L49",
+          "L50",
+          "L55"
+        ],
+        "supports": [
+          "data/sobol/sobol_grp_LAP_VI1.csv",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_grp_CP_VI1.csv",
+          "data/sobol/sobol_grp_CP_VI2.csv",
+          "F_sobol_group_fig"
+        ],
+        "must_not_claim": [
+          "Sobol 결과를 근거로 인과관계(causation)를 단정하지 않음",
+          "본 표본과 모델링 범위를 벗어난 일반화(예: 모든 환자군으로 확대)를 단정하지 않음"
+        ],
+        "transition_from": "R-03",
+        "transition_to": "R-05"
+      },
+      {
+        "paragraph_id": "R-05",
+        "section": "result",
+        "heading": "",
+        "purpose": "개별 파라미터별 Sobol 지수를 제시하여 VI 분산을 가장 많이 설명하는 상위 인자(E_vessel, E_FC, SBP, PP 등)를 규명하고, 관련 시각 자료를 제공한다.",
+        "claim_ids": [
+          "E_individual_top_parameters",
+          "C3.2"
+        ],
+        "context_node_ids": [
+          "C3",
+          "C3.1",
+          "C3.3",
+          "E_material_group_domination",
+          "W_sobol_theory",
+          "F_sobol_group_fig",
+          "F_sobol_ind_fig"
+        ],
+        "required_edge_ids": [
+          "L6",
+          "L7",
+          "L8",
+          "L47",
+          "L48",
+          "L49",
+          "L50",
+          "L55"
+        ],
+        "supports": [
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "data/sobol/sobol_ind_CP_VI2.csv",
+          "data/sobol/sobol_ind_LAP_VI1.csv",
+          "data/sobol/sobol_ind_CP_VI1.csv",
+          "F_sobol_ind_fig"
+        ],
+        "must_not_claim": [
+          "상위 지표들이 임상적 위험도 임계값을 제공한다고 주장하지 않음",
+          "개별 파라미터의 영향이 모든 VI 정의/모델링 가정하에서 동일하다고 단정하지 않음"
+        ],
+        "transition_from": "R-04",
+        "transition_to": ""
+      }
+    ]
+  },
+  "discussion": {
+    "section": "discussion",
+    "paragraphs": [
+      {
+        "paragraph_id": "C-01",
+        "section": "discussion",
+        "heading": "ΔPSS(피로·진폭) 관점과 맥동성 FSI의 필요성",
+        "purpose": "Summarize evidence that ΔPSS (응력 최대진폭)–based indices outperform max‑PSS indices in sign concordance with established clinical high‑risk plaque features, motivating a fatigue/amplitude interpretation of mechanical risk.",
+        "claim_ids": [
+          "C1",
+          "C1.1",
+          "E_deltaPSS_better",
+          "E_vi_candidates_evaluation",
+          "E_vi_selected"
+        ],
+        "context_node_ids": [
+          "C1.2",
+          "C1.3",
+          "M1.3",
+          "M2",
+          "D_sim_post_LAP",
+          "D_sim_post_CP",
+          "D_vi_eval",
+          "F_vi_selection_table"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "L43",
+          "L44",
+          "L45",
+          "L46"
+        ],
+        "supports": [
+          "F_vi_selection_table",
+          "data/sobol/sobol_grp_LAP_VI1.csv"
+        ],
+        "must_not_claim": [
+          "Do not claim ΔPSS definitively predicts clinical events (e.g., rupture or ACS) without clinical validation.",
+          "Do not claim proof of causation between ΔPSS and plaque rupture beyond observed concordance."
+        ],
+        "transition_from": "",
+        "transition_to": "C-02"
+      },
+      {
+        "paragraph_id": "C-02",
+        "section": "discussion",
+        "heading": "",
+        "purpose": "Explain why ΔPSS being an amplitude (fatigue) metric implies the need for pulsatile, time‑accurate (FSI) simulations and note that a cost‑effective pulsatile FSI pipeline was used to capture these effects.",
+        "claim_ids": [
+          "C1.3",
+          "W_stress_strength",
+          "C4"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "C2",
+          "C2.1",
+          "C2.2",
+          "C4.1",
+          "C4.2",
+          "M3",
+          "D_gpr_model_LAP",
+          "D_gpr_model_CP",
+          "E_sim_validation",
+          "E_dataset_and_models",
+          "E_vi_candidates_evaluation",
+          "E_vi_selected",
+          "E_deltaPSS_better",
+          "E_surrogate_enables_sobol",
+          "W_gpr_surrogate",
+          "R_brown2016",
+          "R_choi2015",
+          "R_stefanadis2017",
+          "R_chaichana2012"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L5",
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L43",
+          "L44",
+          "L45",
+          "L46",
+          "L51",
+          "L52",
+          "L53",
+          "L54",
+          "L56",
+          "L57",
+          "L58",
+          "L59",
+          "L60"
+        ],
+        "supports": [
+          "data/cost_effective_FSI_BC/bc.md",
+          "data/input_parameter/inflow.dat",
+          "data/input_parameter/elastance.dat"
+        ],
+        "must_not_claim": [
+          "Do not claim the specific cost‑effective FSI method is novel or validated here (method is cited as prior work).",
+          "Do not assert that non‑pulsatile analyses are always invalid for any application."
+        ],
+        "transition_from": "C-01",
+        "transition_to": "C-03"
+      },
+      {
+        "paragraph_id": "C-03",
+        "section": "discussion",
+        "heading": "strength 정규화(정규화 지수 α)와 민감도 결과의 민감성",
+        "purpose": "State the rationale for normalizing stress by material strength (placing stiffness in denominator) and how this reflects inter‑individual variation in fibrous cap strength.",
+        "claim_ids": [
+          "C2",
+          "C2.2",
+          "W_stress_strength"
+        ],
+        "context_node_ids": [
+          "C2.1",
+          "R_brown2016",
+          "R_choi2015",
+          "R_stefanadis2017"
+        ],
+        "required_edge_ids": [
+          "L4",
+          "L5",
+          "L53",
+          "L54",
+          "L57",
+          "L58",
+          "L59"
+        ],
+        "supports": [
+          "W_stress_strength"
+        ],
+        "must_not_claim": [
+          "Do not claim the chosen normalization exponent(s) are the unique or universally correct biological scaling without further validation.",
+          "Do not claim measured patient E_FC distributions are provided or estimated here."
+        ],
+        "transition_from": "C-02",
+        "transition_to": "C-04"
+      },
+      {
+        "paragraph_id": "C-04",
+        "section": "discussion",
+        "heading": "",
+        "purpose": "Discuss how the choice of normalization exponent α alters sensitivity rankings (i.e., that α selection materially affects Sobol results) and point to the analyses comparing α variants that motivated selecting VI1/VI2.",
+        "claim_ids": [
+          "C2.1",
+          "C1.2",
+          "E_vi_selected"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.3",
+          "C2",
+          "C2.2",
+          "M1.3",
+          "M2",
+          "D_sim_post_LAP",
+          "D_sim_post_CP",
+          "D_vi_eval",
+          "E_vi_candidates_evaluation",
+          "E_deltaPSS_better",
+          "W_stress_strength",
+          "R_brown2016",
+          "R_choi2015",
+          "R_stefanadis2017",
+          "F_vi_selection_table"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L5",
+          "L43",
+          "L44",
+          "L45",
+          "L46",
+          "L53",
+          "L54",
+          "L57",
+          "L58",
+          "L59"
+        ],
+        "supports": [
+          "F_vi_selection_table",
+          "data/sobol/sobol_grp_CP_VI1.csv",
+          "data/sobol/sobol_grp_CP_VI2.csv"
+        ],
+        "must_not_claim": [
+          "Do not claim exhaustive exploration of all possible normalization forms or that α choices are universally generalizable beyond the tested range.",
+          "Do not claim statistical significance levels or confidence intervals that are not presented here."
+        ],
+        "transition_from": "C-03",
+        "transition_to": "C-05"
+      },
+      {
+        "paragraph_id": "C-05",
+        "section": "discussion",
+        "heading": "임상적 함의: 재료물성 우세가 시사하는 측정·위험층화 우선순위",
+        "purpose": "Present the primary implication from the Sobol analysis that material properties (Material group) dominate VI variance and identify the top individual determinants (E_vessel, E_FC, SBP, PP).",
+        "claim_ids": [
+          "C3",
+          "C3.1",
+          "C3.2",
+          "E_material_group_domination",
+          "E_individual_top_parameters"
+        ],
+        "context_node_ids": [
+          "C3.3",
+          "W_sobol_theory",
+          "F_sobol_group_fig",
+          "F_sobol_ind_fig"
+        ],
+        "required_edge_ids": [
+          "L6",
+          "L7",
+          "L8",
+          "L47",
+          "L48",
+          "L49",
+          "L50",
+          "L55"
+        ],
+        "supports": [
+          "data/sobol/sobol_grp_LAP_VI1.csv",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "F_sobol_group_fig",
+          "F_sobol_ind_fig"
+        ],
+        "must_not_claim": [
+          "Do not claim that morphology (e.g., percent stenosis) is unimportant in all clinical contexts—only that, in this VI framework and design space, material parameters explain more variance.",
+          "Do not claim direct improvement in patient outcomes from measuring stiffness without prospective clinical testing."
+        ],
+        "transition_from": "C-04",
+        "transition_to": "C-06"
+      },
+      {
+        "paragraph_id": "C-06",
+        "section": "discussion",
+        "heading": "",
+        "purpose": "Explain the practical implication that OCT or other stiffness‑measuring modalities may provide higher information value for rupture‑risk stratification than morphology alone, situating this within prior clinical/biomechanical literature.",
+        "claim_ids": [
+          "C3.3",
+          "C3"
+        ],
+        "context_node_ids": [
+          "C3.1",
+          "C3.2",
+          "E_material_group_domination",
+          "E_individual_top_parameters",
+          "W_sobol_theory",
+          "F_sobol_group_fig",
+          "F_sobol_ind_fig"
+        ],
+        "required_edge_ids": [
+          "L6",
+          "L7",
+          "L8",
+          "L47",
+          "L48",
+          "L49",
+          "L50",
+          "L55"
+        ],
+        "supports": [
+          "cite:stefanadis2017",
+          "cite:brown2016"
+        ],
+        "must_not_claim": [
+          "Do not recommend immediate changes to clinical workflow or claim regulatory/clinical endorsement.",
+          "Do not claim OCT measurements are sufficient alone to determine rupture risk."
+        ],
+        "transition_from": "C-05",
+        "transition_to": "C-07"
+      },
+      {
+        "paragraph_id": "C-07",
+        "section": "discussion",
+        "heading": "모델 가정과 한계(균일 FC 두께·이상화 기하·선형 탄성 등) 및 향후 연구",
+        "purpose": "List the main modelling assumptions and limitations (uniform FC thickness, idealized geometry, linear isotropic elasticity, omitted solver/mesh/timestep specifics, qualitative validation) and how they restrict generalizability.",
+        "claim_ids": [
+          "C4.1",
+          "C4",
+          "E_sim_validation"
+        ],
+        "context_node_ids": [
+          "C4.2",
+          "M3",
+          "D_gpr_model_LAP",
+          "D_gpr_model_CP",
+          "E_dataset_and_models",
+          "E_surrogate_enables_sobol",
+          "W_gpr_surrogate",
+          "R_chaichana2012"
+        ],
+        "required_edge_ids": [
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L51",
+          "L52",
+          "L56",
+          "L60"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "data/cost_effective_FSI_BC/bc.md"
+        ],
+        "must_not_claim": [
+          "Do not claim these limitations invalidate the qualitative findings; rather, present them as constraints on quantitative generalizability.",
+          "Do not claim that mesh/timestep/solver convergence studies were performed if they are not documented here."
+        ],
+        "transition_from": "C-06",
+        "transition_to": "C-08"
+      },
+      {
+        "paragraph_id": "C-08",
+        "section": "discussion",
+        "heading": "",
+        "purpose": "Recommend specific next steps to address limitations and strengthen evidence: patient‑specific FC/thickness distributions, nonlinear/fatigue material models, experimental calibration/validation, richer uncertainty quantification, and reporting solver/mesh convergence.",
+        "claim_ids": [
+          "C2",
+          "C4",
+          "W_gpr_surrogate"
+        ],
+        "context_node_ids": [
+          "C2.1",
+          "C2.2",
+          "C4.1",
+          "C4.2",
+          "M3",
+          "D_gpr_model_LAP",
+          "D_gpr_model_CP",
+          "E_sim_validation",
+          "E_dataset_and_models",
+          "E_surrogate_enables_sobol",
+          "W_stress_strength",
+          "R_brown2016",
+          "R_choi2015",
+          "R_stefanadis2017",
+          "R_chaichana2012"
+        ],
+        "required_edge_ids": [
+          "L4",
+          "L5",
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L51",
+          "L52",
+          "L53",
+          "L54",
+          "L56",
+          "L57",
+          "L58",
+          "L59",
+          "L60"
+        ],
+        "supports": [
+          "W_gpr_surrogate",
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "Do not promise that these future steps will necessarily confirm the current rankings; state them as necessary investigations to test robustness.",
+          "Do not claim immediate clinical applicability without prospective validation."
+        ],
+        "transition_from": "C-07",
+        "transition_to": ""
+      }
+    ]
+  },
+  "introduction": {
+    "section": "introduction",
+    "paragraphs": [
+      {
+        "paragraph_id": "I-01",
+        "section": "introduction",
+        "heading": "관상동맥 플라크 파열의 임상적 중요성",
+        "purpose": "관상동맥 죽상경화 플라크의 파열이 급성 관상동맥 증후군(ACS)의 주요 원인임을 제시하고, 이로 인한 심혈관계 사망·의료 부담의 중요성을 문헌으로 근거 제시하여 독자를 문제로 유도한다.",
+        "claim_ids": [
+          "R_stefanadis2017",
+          "R_brown2016"
+        ],
+        "context_node_ids": [
+          "C2",
+          "C2.1",
+          "C2.2",
+          "W_stress_strength",
+          "R_choi2015"
+        ],
+        "required_edge_ids": [
+          "L4",
+          "L5",
+          "L53",
+          "L54",
+          "L57",
+          "L58",
+          "L59"
+        ],
+        "supports": [
+          "cite:stefanadis2017",
+          "cite:brown2016"
+        ],
+        "must_not_claim": [
+          "본 연구의 수치적 결과(민감도 분석 결과·지수 선정 등)를 이 문단에서 주장하지 않는다",
+          "임상적 예방·치료 권고를 제시하지 않는다"
+        ],
+        "transition_from": "",
+        "transition_to": "I-02"
+      },
+      {
+        "paragraph_id": "I-02",
+        "section": "introduction",
+        "heading": "파열 결정요인의 다요인성(형태·혈류역학·재료)과 기존 지표의 한계",
+        "purpose": "플라크 파열 위험이 형태(Morphology), 혈류역학(Hemodynamics), 재료물성(Material) 세 군의 상호작용으로 결정된다는 개념을 제시하고, 관련 기계생물학적 선행연구를 인용해 근거를 제공한다.",
+        "claim_ids": [
+          "R_choi2015",
+          "R_brown2016",
+          "R_stefanadis2017"
+        ],
+        "context_node_ids": [
+          "C2",
+          "C2.1",
+          "C2.2",
+          "W_stress_strength"
+        ],
+        "required_edge_ids": [
+          "L4",
+          "L5",
+          "L53",
+          "L54",
+          "L57",
+          "L58",
+          "L59"
+        ],
+        "supports": [
+          "cite:choi2015",
+          "cite:brown2016",
+          "cite:stefanadis2017"
+        ],
+        "must_not_claim": [
+          "세 인자군의 상대적 기여도가 본 연구의 결과로서 이미 결정되었다고 주장하지 않는다",
+          "본 연구에서 사용한 구체적 수치나 모델링 설정(예: E값 범위, 샘플 수)을 이 문단에서 결과로 제시하지 않는다"
+        ],
+        "transition_from": "I-01",
+        "transition_to": "I-03"
+      },
+      {
+        "paragraph_id": "I-03",
+        "section": "introduction",
+        "heading": "",
+        "purpose": "기존 전산·역학적 지표들이 주로 응력(stress) 단일 지표에 의존해 왔고, 환자별로 다른 섬유막 강도(strength)를 무시하는 한계가 있음을 제시하여 stress/strength 비의 필요성을 물리적 근거(Warrant)와 함께 설명한다.",
+        "claim_ids": [
+          "C2",
+          "W_stress_strength",
+          "R_brown2016"
+        ],
+        "context_node_ids": [
+          "C2.1",
+          "C2.2",
+          "R_choi2015",
+          "R_stefanadis2017"
+        ],
+        "required_edge_ids": [
+          "L4",
+          "L5",
+          "L53",
+          "L54",
+          "L57",
+          "L58",
+          "L59"
+        ],
+        "supports": [
+          "W_stress_strength",
+          "cite:brown2016"
+        ],
+        "must_not_claim": [
+          "어떤 특정 정규화 지수 α(지수 값)가 최종적으로 채택되었다고 주장하지 않는다",
+          "본 연구의 실험적·시뮬레이션 결과를 인용하거나 요약하지 않는다"
+        ],
+        "transition_from": "I-02",
+        "transition_to": "I-04"
+      },
+      {
+        "paragraph_id": "I-04",
+        "section": "introduction",
+        "heading": "ΔPSS(응력 최대진폭)과 strength 정규화의 당위성 및 연구 목적",
+        "purpose": "ΔPSS(응력의 최대진폭, 피로·진폭 관점)가 stress로서 가지는 물리적/임상적 타당성(맥동성·피로 연관성)을 간단히 지적하고, 동시에 형태·혈류·재료를 넓게 변동시키며 전역 민감도 분석을 수행하는 것이 계산비용 때문에 현실적으로 어려웠음을 설명한다.",
+        "claim_ids": [
+          "C1.3",
+          "C4"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "C4.1",
+          "C4.2",
+          "M3",
+          "D_gpr_model_LAP",
+          "D_gpr_model_CP",
+          "E_sim_validation",
+          "E_dataset_and_models",
+          "E_vi_candidates_evaluation",
+          "E_vi_selected",
+          "E_deltaPSS_better",
+          "E_surrogate_enables_sobol",
+          "W_gpr_surrogate",
+          "R_chaichana2012"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L43",
+          "L44",
+          "L45",
+          "L46",
+          "L51",
+          "L52",
+          "L56",
+          "L60"
+        ],
+        "supports": [
+          "cite:brown2016",
+          "data/cost_effective_FSI_BC/bc.md"
+        ],
+        "must_not_claim": [
+          "ΔPSS 기반 지표가 본 연구에서 최종적으로 더 우수하다는 결과(정량적 우위)를 이 문단에서 단정하지 않는다",
+          "본 연구의 민감도 분석 결과(어떤 그룹이 우세한지)를 이 문단에서 주장하지 않는다"
+        ],
+        "transition_from": "I-03",
+        "transition_to": "I-05"
+      },
+      {
+        "paragraph_id": "I-05",
+        "section": "introduction",
+        "heading": "",
+        "purpose": "본 연구의 목표와 접근을 명료하게 제시한다: 비용효율적 맥동성 FSI를 사용해 ΔPSS 기반 stress/strength 취약성지수를 정의·선별하고(임상 기준과의 일치성 검토), GPR 대리모델 + Sobol 전역 민감도 분석으로 형태·혈류·재료의 상대적 영향도를 평가하겠다는 연구 목적을 최종적으로 제시한다.",
+        "claim_ids": [
+          "C4",
+          "M1",
+          "M4"
+        ],
+        "context_node_ids": [
+          "C4.1",
+          "C4.2",
+          "M1.1",
+          "M1.2",
+          "M1.3",
+          "M2",
+          "M3",
+          "D_bc_md",
+          "D_elastance",
+          "D_inflow",
+          "D_input",
+          "D_sim_outputs_LAP",
+          "D_sim_outputs_CP",
+          "D_sim_post_LAP",
+          "D_sim_post_CP",
+          "D_gpr_model_LAP",
+          "D_gpr_model_CP",
+          "D_sobol_grp_CP_VI1",
+          "D_sobol_grp_CP_VI2",
+          "D_sobol_grp_LAP_VI1",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_CP_VI1",
+          "D_sobol_ind_CP_VI2",
+          "D_sobol_ind_LAP_VI1",
+          "D_sobol_ind_LAP_VI2",
+          "E_sim_validation",
+          "E_dataset_and_models",
+          "E_surrogate_enables_sobol",
+          "W_gpr_surrogate",
+          "R_chaichana2012"
+        ],
+        "required_edge_ids": [
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L51",
+          "L52",
+          "L56",
+          "L60"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "data/cost_effective_FSI_BC/bc.md"
+        ],
+        "must_not_claim": [
+          "연구의 결론(예: 재료물성이 우세하다)을 이 문단에서 단정하지 않는다",
+          "본 문단에서 상세한 방법론적 설정(솔버 옵션·하이퍼파라미터·검증 수치 등)을 기술하지 않는다"
+        ],
+        "transition_from": "I-04",
+        "transition_to": ""
+      }
+    ]
+  },
+  "conclusion": {
+    "section": "conclusion",
+    "paragraphs": [
+      {
+        "paragraph_id": "C-01",
+        "section": "conclusion",
+        "heading": "Key findings",
+        "purpose": "Summarize the study's principal technical results: the proposed vulnerability indices (VI1, VI2) based on ΔPSS/strength and the evidence that ΔPSS‑based indices outperform max‑PSS‑based candidates in sign concordance with clinical high‑risk features.",
+        "claim_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "E_vi_selected",
+          "E_deltaPSS_better",
+          "E_vi_candidates_evaluation"
+        ],
+        "context_node_ids": [
+          "C1.3",
+          "M1.3",
+          "M2",
+          "D_sim_post_LAP",
+          "D_sim_post_CP",
+          "D_vi_eval",
+          "F_vi_selection_table"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "L43",
+          "L44",
+          "L45",
+          "L46"
+        ],
+        "supports": [
+          "F_vi_selection_table",
+          "E_vi_selected",
+          "E_deltaPSS_better"
+        ],
+        "must_not_claim": [
+          "Do not claim clinical prognostic validity or that these VIs predict patient outcomes beyond sign concordance evidence",
+          "Do not claim the VI functional form is the unique or definitive clinical metric"
+        ],
+        "transition_from": "",
+        "transition_to": "C-02"
+      },
+      {
+        "paragraph_id": "C-02",
+        "section": "conclusion",
+        "heading": "",
+        "purpose": "State the global sensitivity findings that material properties dominate VI variance and identify the top individual contributors (E_vessel, E_FC, SBP, PP), citing group and individual Sobol results and visual artifacts.",
+        "claim_ids": [
+          "C3",
+          "C3.1",
+          "C3.2",
+          "E_material_group_domination",
+          "E_individual_top_parameters",
+          "D_sobol_grp_LAP_VI1",
+          "D_sobol_ind_LAP_VI2"
+        ],
+        "context_node_ids": [
+          "C3.3",
+          "M4",
+          "D_sobol_grp_CP_VI1",
+          "D_sobol_grp_CP_VI2",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_CP_VI1",
+          "D_sobol_ind_CP_VI2",
+          "D_sobol_ind_LAP_VI1",
+          "W_sobol_theory",
+          "F_sobol_group_fig",
+          "F_sobol_ind_fig"
+        ],
+        "required_edge_ids": [
+          "L6",
+          "L7",
+          "L8",
+          "L47",
+          "L48",
+          "L49",
+          "L50",
+          "L55"
+        ],
+        "supports": [
+          "F_sobol_group_fig",
+          "F_sobol_ind_fig",
+          "data/sobol/sobol_grp_LAP_VI1.csv",
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "data/sobol/sobol_grp_CP_VI1.csv",
+          "data/sobol/sobol_ind_CP_VI1.csv"
+        ],
+        "must_not_claim": [
+          "Do not infer causation of clinical rupture events from sensitivity rankings",
+          "Do not claim these Sobol rankings generalize beyond the studied design space and model assumptions"
+        ],
+        "transition_from": "C-01",
+        "transition_to": "C-03"
+      },
+      {
+        "paragraph_id": "C-03",
+        "section": "conclusion",
+        "heading": "Implications",
+        "purpose": "Explain practical implications: (1) ΔPSS (stress amplitude) motivates pulsatile FSI for rupture assessment; (2) strength normalization is needed in VI definitions; (3) clinical risk‑stratification may gain more from stiffness characterization than morphology alone.",
+        "claim_ids": [
+          "C1.3",
+          "C2",
+          "C2.2",
+          "C3.3",
+          "W_stress_strength"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "C2.1",
+          "C3",
+          "C3.1",
+          "C3.2",
+          "E_vi_candidates_evaluation",
+          "E_vi_selected",
+          "E_deltaPSS_better",
+          "E_material_group_domination",
+          "E_individual_top_parameters",
+          "W_sobol_theory",
+          "R_brown2016",
+          "R_choi2015",
+          "R_stefanadis2017",
+          "F_sobol_group_fig"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L5",
+          "L6",
+          "L7",
+          "L8",
+          "L43",
+          "L44",
+          "L45",
+          "L46",
+          "L47",
+          "L48",
+          "L49",
+          "L50",
+          "L53",
+          "L54",
+          "L55",
+          "L57",
+          "L58",
+          "L59"
+        ],
+        "supports": [
+          "F_vi_selection_table",
+          "F_sobol_group_fig",
+          "W_stress_strength",
+          "data/input_parameter/input.csv"
+        ],
+        "must_not_claim": [
+          "Do not recommend immediate clinical adoption of the indices without further validation",
+          "Do not claim that OCT or any specific clinical measurement will necessarily reduce clinical events"
+        ],
+        "transition_from": "C-02",
+        "transition_to": "C-04"
+      },
+      {
+        "paragraph_id": "C-04",
+        "section": "conclusion",
+        "heading": "Limitations, future work and data availability",
+        "purpose": "List key study limitations (idealized geometry, uniform FC thickness, linear elastic materials, fixed solver/validation gaps), note sensitivity of results to normalization exponent α, outline next steps for validation and extension, and state data/ethics availability.",
+        "claim_ids": [
+          "C2.1",
+          "C4",
+          "E_dataset_and_models"
+        ],
+        "context_node_ids": [
+          "C2",
+          "C2.2",
+          "C4.1",
+          "C4.2",
+          "M3",
+          "D_gpr_model_LAP",
+          "D_gpr_model_CP",
+          "E_sim_validation",
+          "E_surrogate_enables_sobol",
+          "W_stress_strength",
+          "W_gpr_surrogate",
+          "R_brown2016",
+          "R_choi2015",
+          "R_stefanadis2017",
+          "R_chaichana2012"
+        ],
+        "required_edge_ids": [
+          "L4",
+          "L5",
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L51",
+          "L52",
+          "L53",
+          "L54",
+          "L56",
+          "L57",
+          "L58",
+          "L59",
+          "L60"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "data/cost_effective_FSI_BC/bc.md",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "E_dataset_and_models"
+        ],
+        "must_not_claim": [
+          "Do not claim the study is free of methodological caveats",
+          "Do not claim that the presented sensitivity results fully capture all clinical variability"
+        ],
+        "transition_from": "C-03",
+        "transition_to": ""
+      }
+    ]
+  },
+  "abstract": {
+    "section": "abstract",
+    "paragraphs": [
+      {
+        "paragraph_id": "I-01",
+        "section": "abstract",
+        "heading": "",
+        "purpose": "Provide a single unstructured abstract paragraph (≤250 words) that: motivates the problem, states the gap, summarizes the approach (cost‑effective pulsatile FSI dataset generation; VI candidate evaluation; GPR surrogate + Sobol global sensitivity), reports the principal quantitative findings (ΔPSS‑based VIs selected; material properties dominate VI variance; top determinants), and states the key implications and novelty succinctly.",
+        "claim_ids": [
+          "C4",
+          "C4.1",
+          "C4.2",
+          "C1",
+          "C1.1",
+          "C1.2",
+          "C3",
+          "C3.1",
+          "C3.2",
+          "C2"
+        ],
+        "context_node_ids": [
+          "C1.3",
+          "C2.1",
+          "C2.2",
+          "C3.3",
+          "M2",
+          "M3",
+          "D_sim_post_LAP",
+          "D_sim_post_CP",
+          "D_vi_eval",
+          "D_gpr_model_LAP",
+          "D_gpr_model_CP",
+          "E_sim_validation",
+          "E_dataset_and_models",
+          "E_vi_candidates_evaluation",
+          "E_vi_selected",
+          "E_deltaPSS_better",
+          "E_material_group_domination",
+          "E_individual_top_parameters",
+          "E_surrogate_enables_sobol",
+          "W_stress_strength",
+          "W_sobol_theory",
+          "W_gpr_surrogate",
+          "R_brown2016",
+          "R_choi2015",
+          "R_stefanadis2017",
+          "R_chaichana2012",
+          "F_sobol_group_fig",
+          "F_sobol_ind_fig",
+          "F_vi_selection_table"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L5",
+          "L6",
+          "L7",
+          "L8",
+          "L9",
+          "L10",
+          "L41",
+          "L42",
+          "L43",
+          "L44",
+          "L45",
+          "L46",
+          "L47",
+          "L48",
+          "L49",
+          "L50",
+          "L51",
+          "L52",
+          "L53",
+          "L54",
+          "L55",
+          "L56",
+          "L57",
+          "L58",
+          "L59",
+          "L60"
+        ],
+        "supports": [
+          "data/input_parameter/input.csv",
+          "data/cost_effective_FSI_BC/bc.md",
+          "data/input_parameter/inflow.dat",
+          "data/input_parameter/elastance.dat",
+          "data/sobol/sobol_grp_LAP_VI1.csv",
+          "data/sobol/sobol_grp_CP_VI1.csv",
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "data/sobol/sobol_ind_CP_VI1.csv",
+          "F_vi_selection_table",
+          "F_sobol_group_fig",
+          "F_sobol_ind_fig"
+        ],
+        "must_not_claim": [
+          "Clinical validation of the proposed VI in patient cohorts or proven predictive performance beyond sign‑concordance with established high‑risk features",
+          "That the cost‑effective FSI solver is newly developed or validated here (tool was used as a referenced pipeline)",
+          "Exact numerical solver settings, mesh/timestep convergence metrics, or quantitative surrogate performance metrics not provided elsewhere in the manuscript",
+          "Causal clinical recommendations or definitive diagnostic utility without further clinical testing"
+        ],
+        "transition_from": "",
+        "transition_to": ""
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "geometry_definition": "이상적 관상동맥 모델. LAP(저감쇠 플라크)=3 도메인(lumen, fibrous cap, lipid), CP(석회화)=4 도메인(+ calcification). 섬유막(FC) 두께는 균일 가정으로 단일 스칼라 변수(fc_av_th)로 취급. input.csv 파라미터 매핑: DOS→협착 정도, lesion_length→병변 축방향 길이, lipid_length_ratio→지질 길이비, d_fc_ca→FC–석회화 반경 오프셋, alpha/ca_axial_skewness/ca_shoulder_skewness→형상. 정확한 lumen/외벽 직경·세그먼트 길이 수치는 (모름 — 나중에 보완).",
+  "governing_equations": "유체: 비압축성 Navier–Stokes, 혈액은 Newtonian. 고체: 선형 등방 탄성. 맥동성 FSI 양방향 연성으로 계면에서 속도·traction 연속. 구체 ρ/μ 값과 ALE 등 coupling formulation은 선행 검증된 비용효율 맥동 FSI 셋업을 따름 (정확 수치는 모름 — 나중에 보완).",
+  "material_properties": "선형 등방 탄성. E_vessel·E_fc·E_lipid·E_cal은 input.csv 샘플링 변수로 설계공간에 포함(재료군), 각 도메인 균일. Poisson비·밀도 등 고정값은 (모름 — 나중에 보완).",
+  "numerical_solver": "(모름 — 선행 비용효율 FSI 논문의 solver 셋업을 인용 예정. SW/버전·시간적분·tolerance·자원은 나중에 보완)",
+  "convergence_criteria": "(모름 — 나중에 보완)",
+  "validation": "시뮬레이션의 PSS·FFR·파열위치 경향이 선행 임상·구조해석 연구와 일치함을 통해 정성적으로 타당성 확인. 정량 오차지표와 구체 인용은 (나중에 보완).",
+  "outcome_metric (detailed definitions)": "(모름 — 나중에 보완)",
+  "mesh_independence": "(모름 — 나중에 보완)",
+  "timestep_independence": "(모름 — 나중에 보완)",
+  "sensitivity_method": "최종 VI(VI1=ΔPSS/E_FC^0.5, VI2=ΔPSS/E_FC^1.0)에 GPR surrogate 학습(LAP 784/CP 727 유효쌍) 후 Sobol 1차·전차 지수로 전역 민감도. surrogate가 ~1.5만 회 평가 가능케 함. GPR 커널/하이퍼파라미터·R²/RMSE·Sobol 신뢰구간은 (나중에 보완).",
+  "statistical_analysis": "(모름 — 나중에 보완)"
+}
