@@ -39,6 +39,46 @@ def _esc(s: str) -> str:
     return s
 
 
+def _esc_fig(s: str) -> str:
+    """Stricter escape for plain figure-box text (no math passthrough): also handle $ < > { }."""
+    s = _esc(s or "")
+    for a, b in (("$", "\\$"), ("<", "\\textless "), (">", "\\textgreater "),
+                 ("{", "\\{"), ("}", "\\}")):
+        s = s.replace(a, b)
+    return s
+
+
+def _figures_block(figures) -> str:
+    """Render each PLANNED figure/table as a bordered placeholder box: the box holds a
+    description of WHAT to draw, and the caption/title sits underneath. No real images (MVP)."""
+    figs = list(figures or [])
+    if not figs:
+        return ""
+    parts = ["\\clearpage", "\\section*{Figures \\& Tables — placeholders (to be created)}"]
+    fig_n, tab_n = 0, 0
+    for f in figs:
+        is_table = (f.get("kind") == "table")
+        if is_table:
+            tab_n += 1
+            label = f"Table {tab_n}"
+        else:
+            fig_n += 1
+            label = f"Figure {fig_n}"
+        desc = _esc_fig((f.get("message") or "").strip())
+        detail = _esc_fig((f.get("generation_prompt") or "").strip()[:220])
+        cap = _esc_fig((f.get("caption_draft") or f.get("message") or "").strip())
+        sec = _esc_fig((f.get("section") or "").strip())
+        inner = (f"\\textbf{{[{label} — 여기에 이 그림을 그리세요]}}\\\\[8pt]\n{desc}"
+                 + (f"\\\\[8pt]{{\\small\\itshape {detail}}}" if detail else ""))
+        parts.append(
+            "\\begin{center}\n"
+            f"\\fbox{{\\parbox[c][5cm][c]{{0.82\\linewidth}}{{\\centering {inner}}}}}\\\\[5pt]\n"
+            f"\\textbf{{{label}.}} {cap}" + (f"\\quad{{\\small($\\rightarrow$ {sec})}}" if sec else "")
+            + "\n\\end{center}\n\\vspace{10pt}"
+        )
+    return "\n".join(parts)
+
+
 def _inline(text: str) -> str:
     """Convert one prose line to LaTeX: protect math, convert markers, escape the rest."""
     math: list[str] = []
@@ -123,8 +163,9 @@ def _frontmatter(meta: dict, sections: dict[str, str]) -> str:
 
 
 def assemble(sections: dict[str, str], reference_table=None, found_references=None,
-             meta: dict | None = None) -> str:
-    """Build the full elsarticle paper.tex from the section markdown + all cited references."""
+             meta: dict | None = None, figures=None) -> str:
+    """Build the full elsarticle paper.tex from the section markdown + all cited references.
+    `figures` (figure_spec['figures']) are rendered as end-matter placeholder boxes."""
     meta = meta or {}
     journal = _esc(meta.get("journal") or "")
     head = _PREAMBLE + (f"\n\\journal{{{journal}}}" if journal else "")
@@ -135,5 +176,8 @@ def assemble(sections: dict[str, str], reference_table=None, found_references=No
     bib = _bibliography(reference_table, found_references)
     if bib:
         parts.append(bib)
+    figblock = _figures_block(figures)
+    if figblock:
+        parts.append(figblock)
     parts.append("\\end{document}")
     return "\n\n".join(parts) + "\n"

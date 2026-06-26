@@ -14,8 +14,26 @@ _HAS_DOCX = True
 try:  # optional dependency
     from docx import Document
     from docx.shared import Pt
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
 except Exception:  # pragma: no cover - environment without python-docx
     _HAS_DOCX = False
+
+
+def _bordered_box(doc):
+    """A 1x1 bordered table used as a figure-placeholder box. Returns the cell."""
+    t = doc.add_table(rows=1, cols=1)
+    borders = OxmlElement("w:tblBorders")
+    for edge in ("top", "left", "bottom", "right"):
+        el = OxmlElement(f"w:{edge}")
+        el.set(qn("w:val"), "single")
+        el.set(qn("w:sz"), "12")
+        el.set(qn("w:space"), "0")
+        el.set(qn("w:color"), "888888")
+        borders.append(el)
+    t._tbl.tblPr.append(borders)
+    return t.cell(0, 0)
 
 
 def available() -> bool:
@@ -80,16 +98,37 @@ def write_docx(ms: ManuscriptState, path: Path) -> bool:
         _add_markdown(doc, s.markdown)
 
     if ms.figures:
-        doc.add_heading("Figures & Tables (planned)", level=1)
+        doc.add_page_break()
+        doc.add_heading("Figures & Tables — placeholders (to be created)", level=1)
+        fig_n = tab_n = 0
         for f in ms.figures:
-            p = doc.add_paragraph(style="List Bullet")
-            p.add_run(f"{f.id} ").bold = True
-            loc = f" — {f.section}" if f.section else ""
-            p.add_run(f"({f.kind}{loc}): {f.caption_draft or f.message}")
+            if f.kind == "table":
+                tab_n += 1
+                label = f"Table {tab_n}"
+            else:
+                fig_n += 1
+                label = f"Figure {fig_n}"
+            # bordered box: WHAT to draw goes inside
+            cell = _bordered_box(doc)
+            head = cell.paragraphs[0]
+            head.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            head.add_run(f"[{label} — 여기에 이 그림을 그리세요]").bold = True
+            body = cell.add_paragraph()
+            body.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            body.add_run(f.message)
             if f.generation_prompt:
-                gp = doc.add_paragraph()
-                gp.add_run("Generation prompt: ").italic = True
-                gp.add_run(f.generation_prompt)
+                gp = cell.add_paragraph()
+                gp.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                r = gp.add_run(f.generation_prompt[:220])
+                r.italic = True
+                r.font.size = Pt(9)
+            # caption / title BELOW the box
+            cap = doc.add_paragraph()
+            cap.add_run(f"{label}. ").bold = True
+            cap.add_run(f.caption_draft or f.message)
+            if f.section:
+                cap.add_run(f"  (→ {f.section})").italic = True
+            doc.add_paragraph()  # spacer
 
     if ms.references:
         doc.add_heading("References", level=1)

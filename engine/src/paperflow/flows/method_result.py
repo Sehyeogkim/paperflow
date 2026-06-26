@@ -379,19 +379,28 @@ def generate_from_plan(project_dir: str, out_dir: Path, progress=lambda m: None)
         except ValueError:
             pass
 
-    # build each section's contract honoring the CONFIRMED subheadings, then draft it
+    # build each section's contract (honoring confirmed subheadings) then draft it. Sections are
+    # independent, so run them CONCURRENTLY — wall-clock = slowest section, not the sum of 6.
+    from concurrent.futures import ThreadPoolExecutor
     section_contracts: dict[str, SectionContract] = {}
     section_md: dict[str, str] = {}
-    for sec in sections:
+
+    def _write_one(sec: str):
         try:
-            progress(f"[write] {sec}")
             hint = (struct.get(sec) or {}).get("subheadings") or []
             sc = contracts.build(ps, graph, sec, structure_hint=hint)
-            section_contracts[sec] = sc
-            section_md[sec] = writer.write_section(ps, graph, sc)
+            md = writer.write_section(ps, graph, sc)
+            progress(f"[write] {sec}")
+            return sec, sc, md
         except Exception as e:
             progress(f"[write] {sec} 실패: {str(e)[:120]}")
-            section_md[sec] = f"<!-- generation failed: {str(e)[:200]} -->\n"
+            return sec, None, f"<!-- generation failed: {str(e)[:200]} -->\n"
+
+    with ThreadPoolExecutor(max_workers=min(6, len(sections))) as ex:
+        for sec, sc, md in ex.map(_write_one, sections):
+            if sc is not None:
+                section_contracts[sec] = sc
+            section_md[sec] = md
 
     progress("[validate] 섹션별 논리 검증")
     section_md, validation_report = validator.validate_sections(

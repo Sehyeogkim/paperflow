@@ -96,4 +96,8 @@ def test_write_docx(tmp_path):
     assert "My Paper" in texts
     assert "Material dominates." in texts
     assert "step one" in texts
-    assert any("F1" in p.text for p in d.paragraphs)   # figure placeholder present
+    # figure placeholder: a "Figure N."/"Table N." caption below + a bordered box (table cell)
+    # holding the "draw this" description
+    assert ("Figure 1." in texts) or ("Table 1." in texts)
+    box_texts = "\n".join(c.text for t in d.tables for c in t._cells)
+    assert "그리세요" in box_texts

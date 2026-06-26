@@ -44,7 +44,7 @@ def write_all(out_dir: Path, *, sections: dict[str, str], graph: ClaimGraph,
     found = [r.model_dump() for r in (found_references or [])]
     (out_dir / "paper.tex").write_text(latex.assemble(
         sections, reference_table=reference_table, found_references=found,
-        meta=paper_meta or {}))
+        meta=paper_meta or {}, figures=(figure_spec or {}).get("figures", [])))
     _compile_pdf(out_dir)
 
     # canonical manuscript state -> manuscript.json + DOCX + HTML preview + grounding report
