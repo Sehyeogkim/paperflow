@@ -466,38 +466,40 @@ data/*
 
 # 8. Acceptance criteria
 
+> 완료 (2026-06-26). 괄호 = 검증 근거(test 또는 모듈). 전체 `cd engine && pytest` = 49 passed.
+
 ## Outline
 
-- [ ] 사용자가 Quick input과 Structured outline 중 하나를 선택할 수 있다.
-- [ ] Quick input 원문이 저장된다.
-- [ ] Quick input이 section별 normalized schema로 변환된다.
-- [ ] Structured outline은 LLM 없이 동일 schema로 변환된다.
-- [ ] 기존 `3_outline.md` project가 계속 동작한다.
+- [x] 사용자가 Quick input과 Structured outline 중 하나를 선택할 수 있다. (index.html `.omode` 토글)
+- [x] Quick input 원문이 저장된다. (`NormalizedOutline.raw_outline`; test_outline `raw preserved`)
+- [x] Quick input이 section별 normalized schema로 변환된다. (`normalize_quick`, LLM + 휴리스틱 fallback)
+- [x] Structured outline은 LLM 없이 동일 schema로 변환된다. (`normalize_structured`; test_structured_normalization_deterministic)
+- [x] 기존 `3_outline.md` project가 계속 동작한다. (`normalize_legacy`; test_ingest_legacy_3outline_still_works + `paperflow inspect`)
 
 ## Data
 
-- [ ] 사용자가 설명 없이 여러 data/result file을 업로드할 수 있다.
-- [ ] 파일 설명 입력은 optional이다.
-- [ ] 각 파일에 basic profile이 생성된다.
-- [ ] research documents와 core message를 이용해 파일 역할을 추론한다.
-- [ ] 결과가 Evidence Inventory에 저장된다.
-- [ ] 의미가 불명확한 파일은 질문 후보가 된다.
-- [ ] 데이터는 특정 section에 고정되지 않는다.
+- [x] 사용자가 설명 없이 여러 data/result file을 업로드할 수 있다. (test_upload_without_description)
+- [x] 파일 설명 입력은 optional이다. (test_description_optional_and_role_inferred)
+- [x] 각 파일에 basic profile이 생성된다. (`profile_data`; test_reconstruct)
+- [x] research documents와 core message를 이용해 파일 역할을 추론한다. (`enrich_evidence_inventory`, gpt-5-mini로 실증)
+- [x] 결과가 Evidence Inventory에 저장된다. (`build_evidence_inventory`)
+- [x] 의미가 불명확한 파일은 질문 후보가 된다. (confidence-driven; test_low_or_unknown_files_become_questions)
+- [x] 데이터는 특정 section에 고정되지 않는다. (`related_sections`는 hint; test_global_asset_not_section_bound)
 
 ## Questions
 
-- [ ] 현재의 ranked independent-question batch 방식을 유지한다.
-- [ ] data meaning 질문이 기존 missing-information 질문과 함께 표시된다.
-- [ ] 답변은 누적 저장된다.
-- [ ] unanswered question이 generation을 hard-block하지 않는다.
-- [ ] 답변은 final Logic Graph와 manuscript generation에 반영된다.
+- [x] 현재의 ranked independent-question batch 방식을 유지한다. (`question/loop`, test_question)
+- [x] data meaning 질문이 기존 missing-information 질문과 함께 표시된다. (`gaps.detect` 통합)
+- [x] 답변은 누적 저장된다. (`loop.save_answers` MERGE; test_answers_merge_endpoint)
+- [x] unanswered question이 generation을 hard-block하지 않는다. (hard gate 제거; test_generate_requires_plan_not_answers)
+- [x] 답변은 final Logic Graph와 manuscript generation에 반영된다. (`ps.answers` → inputs_block "AUTHOR ANSWERS")
 
 ## Regression
 
-- [ ] 기존 demo project가 실행된다.
-- [ ] 기존 CLI flow가 실행된다.
-- [ ] 기존 section-based outline 입력이 유지된다.
-- [ ] 기존 data upload가 깨지지 않는다.
+- [x] 기존 demo project가 실행된다. (gpt-5-mini full run 성공: 20개 산출물)
+- [x] 기존 CLI flow가 실행된다. (`paperflow inspect`/`run`/`reconstruct`)
+- [x] 기존 section-based outline 입력이 유지된다. (Structured mode + legacy)
+- [x] 기존 data upload가 깨지지 않는다. (upload endpoint test)
 
 ---
 
