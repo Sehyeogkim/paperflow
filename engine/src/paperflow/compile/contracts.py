@@ -23,7 +23,7 @@ def build(ps: ProjectState, graph: ClaimGraph, section: str,
         f"## TARGET SECTION\n{section}{hint}"
     )
     raw = client.call_json("reasoning", prompt("contracts"), user,
-                           step=f"contracts.{section}", max_tokens=4096)
+                           step=f"contracts.{section}", max_tokens=4096, effort="low")
     raw.setdefault("section", section)
     for p in raw.get("paragraphs", []):
         if isinstance(p, dict):
