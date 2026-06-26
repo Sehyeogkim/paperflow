@@ -10,8 +10,8 @@ from ..schemas.literature import LiteraturePaper
 from ..schemas.project_state import ProjectState
 from ..util import inputs_block, prompt
 
-_MIN_PAPERS = 8
-_MAX_PAPERS = 16
+_MIN_PAPERS = 6
+_MAX_PAPERS = 10
 
 
 def derive_queries(ps: ProjectState) -> tuple[str, str, list[str]]:

@@ -130,8 +130,10 @@ def test_schema_separates_observed_and_applicable(patched, mini_project):
     assert {c["canonical_key"] for c in clusters} == {"mesh_independence", "material_constitutive_model"}
     schema = synthesize_schema.synthesize(clusters, ps, papers, "proj", "archetype")
     mesh = next(r for r in schema.requirements if r.key == "mesh_independence")
-    assert mesh.observed_in == 3 and mesh.applicable_papers == 5      # separated
-    assert mesh.prevalence == round(3 / 5, 3)
+    # observed_in (papers reporting it) is distinct from applicable_papers (all selected papers,
+    # computed deterministically in code so prevalence has real variance, not a trivial 1.0)
+    assert mesh.observed_in == 3 and mesh.applicable_papers == len(papers)
+    assert mesh.prevalence == round(3 / len(papers), 3)
     assert mesh.requirement_level == "strongly_expected"
     assert mesh.evidence_sources == ["paper_001", "paper_003", "paper_005"]
     assert "grid independence test" in mesh.aliases                   # alias merged

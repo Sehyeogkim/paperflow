@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import sys
 
 from ..llm import client
 from ..schemas.literature import PaperExtraction
@@ -30,17 +31,27 @@ def normalize(extractions: list[PaperExtraction]) -> list[dict]:
     if not flat:
         return []
     user = "## REPORTED ITEMS (across all papers)\n" + json.dumps(flat, ensure_ascii=False)
+    # clustering is pattern-matching, not deep reasoning -> use the fast tier (much quicker than
+    # a full reasoning model on a large item list, which otherwise times out and forces fallback).
     try:
-        raw = client.call_json("reasoning", prompt("normalize_reported_items"), user,
+        raw = client.call_json("fast", prompt("normalize_reported_items"), user,
                                step="lit.normalize", max_tokens=4000)
-    except Exception:
+    except Exception as e:
+        print(f"[normalize] LLM call failed ({len(flat)} items): {type(e).__name__}: "
+              f"{str(e)[:160]}", file=sys.stderr)
         return []
     clusters: list[dict] = []
-    valid_refs = {f["ref"] for f in flat}
-    for c in (raw.get("clusters") or []):
+    # tolerant ref matching: accept "paper_1:item_1" ~ "paper_001:item_01" (pad differences)
+    def _canon(ref: str) -> str:
+        import re
+        m = re.match(r"\s*paper[_\s]*0*(\d+)\s*:\s*item[_\s]*0*(\d+)", str(ref), re.I)
+        return f"paper_{int(m.group(1)):03d}:item_{int(m.group(2)):02d}" if m else str(ref).strip()
+    valid_refs = {_canon(f["ref"]): f["ref"] for f in flat}
+    raw_clusters = raw.get("clusters") or []
+    for c in raw_clusters:
         if not isinstance(c, dict) or not c.get("canonical_key"):
             continue
-        src = [s for s in (c.get("source_items") or []) if s in valid_refs]
+        src = [valid_refs[_canon(s)] for s in (c.get("source_items") or []) if _canon(s) in valid_refs]
         if not src:
             continue
         clusters.append({
@@ -50,4 +61,7 @@ def normalize(extractions: list[PaperExtraction]) -> list[dict]:
             "applicable_to": [str(a).strip() for a in (c.get("applicable_to") or []) if str(a).strip()],
             "source_items": src,
         })
+    if raw_clusters and not clusters:
+        print(f"[normalize] LLM returned {len(raw_clusters)} clusters but none had matching "
+              f"source_items ({len(flat)} items) — check ref format", file=sys.stderr)
     return clusters

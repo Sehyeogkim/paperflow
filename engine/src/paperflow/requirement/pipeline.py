@@ -16,6 +16,7 @@ ALWAYS contains a compatible RequirementReport so the generate flow keeps workin
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 from . import (
@@ -122,6 +123,9 @@ def run(project_dir: str, ps: ProjectState, progress=lambda m: None) -> dict:
 
 
 def _finish_fallback(project_dir: str, ps: ProjectState, reason: str) -> dict:
+    # NEVER fall back silently — record WHY so the literature path can be debugged.
+    print(f"[req_pipeline] STATIC FALLBACK for {Path(project_dir).name}: {reason}", file=sys.stderr)
+    _dump(project_dir, "_fallback.json", {"requirement_source": "static_fallback", "reason": reason})
     res = fallback.run(ps, reason=reason)
     _dump(project_dir, "overall_schema.json", res["overall_schema"].model_dump())
     _dump(project_dir, "grounded_questions.json", [q.model_dump() for q in res["questions"]])

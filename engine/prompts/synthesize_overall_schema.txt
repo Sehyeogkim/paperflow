@@ -6,11 +6,9 @@ You are given:
 - the set of canonical clusters (key, category, aliases, applicable_to, and the papers that
   reported each — with each paper's content level).
 
-For EACH cluster, decide:
-- `applicability`: { required_when: [...claim/study conditions...],
-                     not_applicable_when: [...] } — when this requirement does/doesn't apply.
-- `applicable_papers`: how many of the source papers this requirement actually applies to
-  (the prevalence denominator). Never larger than the number of distinct source papers.
+For EACH cluster, decide ONLY these (keep output small — counts are computed in code, not here):
+- `required_when`: short list of claim/study conditions under which this requirement applies
+  (e.g. "peak_stress_claim", "sensitivity_analysis_claim"). Empty if always applicable.
 - `requirement_level`, exactly one of:
     mandatory          — a journal/reporting standard requires it, OR it is logically
                          necessary for the project's central claim to hold.
@@ -38,8 +36,7 @@ Return ONLY JSON:
   "requirements": [
     {
       "key": "...",
-      "applicability": {"required_when": ["..."], "not_applicable_when": ["..."]},
-      "applicable_papers": 0,
+      "required_when": ["..."],
       "requirement_level": "mandatory|strongly_expected|common|optional|unsupported",
       "reason": "..."
     }

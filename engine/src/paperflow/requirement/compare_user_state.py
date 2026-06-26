@@ -23,6 +23,8 @@ def compare(schema: OverallSchema, ps: ProjectState) -> list[RequirementStatus]:
     answers = ps.answers or {}
     user = (f"{inputs_block(ps)}\n\n## PRIOR ANSWERS\n{json.dumps(answers, ensure_ascii=False)}"
             f"\n\n## REQUIREMENTS TO CHECK\n{json.dumps(keys, ensure_ascii=False)}")
+    # coverage judgement is subtle ("a related data file exists" is NOT "the method is
+    # described") and must be consistent run-to-run -> use the full reasoning model, not mini.
     try:
         raw = client.call_json("reasoning", prompt("compare_requirement_to_user"), user,
                                step="lit.compare", max_tokens=4000)

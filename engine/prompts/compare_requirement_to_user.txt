@@ -6,20 +6,34 @@ You are given:
 - a list of requirement keys (with category, aliases, requirement level, and applicability).
 
 For EACH requirement key, output a status:
-  present        — the materials clearly contain this information.
-  partial        — some of it is present but incomplete.
-  missing        — the materials do not contain it.
+  present        — the materials EXPLICITLY DESCRIBE this information (the actual content,
+                   not just that related data exists).
+  partial        — the topic is mentioned or the raw data exists, but the requirement's
+                   substantive content (equations, settings, procedure, metric+value) is NOT
+                   spelled out.
+  missing        — the materials do not contain it at all.
   not_applicable — this requirement does not apply to this study (per its applicability).
   uncertain      — cannot tell from the materials.
 
-Be GENEROUS about `present`: information stated in any form (core message, outline, a data
-file's role/columns, an answer) counts. Do NOT ask for something already given.
-Be HONEST about `missing`: if the detailed setting/result is simply not in the materials,
-say missing — never assume a conventional value is "present".
+BE STRICT. The bar for `present` is a written DESCRIPTION, not the existence of a related
+artifact. Apply these rules:
+- A data file existing (e.g. inflow.dat, sobol_*.csv) does NOT make a methodological
+  requirement `present`. The file is the INPUT/OUTPUT; the requirement asks for how it was
+  produced or analyzed. Raw data without a written method/setting → at most `partial`.
+- For method/setting/validation requirements (governing equations, constitutive model,
+  solver, discretization, mesh/timestep independence, convergence criteria, validation,
+  statistical/UQ procedure): `present` ONLY if the inputs actually state the equations,
+  parameter values/ranges, solver/version, test results, or procedure. A high-level mention
+  in the core message (e.g. "we used FSI and Sobol analysis") is `partial`, not `present`.
+- For objective / study design / outcomes / main results: a clear statement in core message,
+  outline, or research state IS sufficient for `present`.
+- Never assume a conventional value is present. Missing detail is `missing` or `partial`,
+  never `present`.
 
-For each, give `found_evidence` (short pointers to WHERE in the materials it was found, e.g.
-"core_message", "data:sobol_grp_*.csv", "answer:numerical_solver") and a one-sentence
-`reason`.
+For each, give `found_evidence` (short pointers to WHERE it was found, e.g. "core_message",
+"outline point 6", "answer:numerical_solver") and a one-sentence `reason` that states what
+is present vs what is still unspecified. Do NOT cite a bare data-file path as evidence that a
+method is described.
 
 Return ONLY JSON:
 {

@@ -37,8 +37,18 @@ def load_report(project_dir: str) -> RequirementReport | None:
 
 
 def load_pack(study_type: str = "computational_biomechanics") -> RequirementPack:
-    data = yaml.safe_load((_PACKS / f"{study_type}.yaml").read_text())
-    return RequirementPack.model_validate(data)
+    """Load a domain pack if present, else degrade to the universal base requirements.
+
+    The literature-grounded pipeline is the primary requirement source; a domain YAML is an
+    optional fallback. When no YAML exists on disk, return a minimal universal pack (the six
+    base requirements every empirical paper needs) so the fallback path never crashes."""
+    p = _PACKS / f"{study_type}.yaml"
+    if p.is_file():
+        return RequirementPack.model_validate(yaml.safe_load(p.read_text()))
+    from .universal import UNIVERSAL_BASE_REQUIREMENTS
+    return RequirementPack(study_type=study_type,
+                           required=[r["key"] for r in UNIVERSAL_BASE_REQUIREMENTS],
+                           conditional=[])
 
 
 def _priority(m: MissingItem) -> float:
