@@ -256,6 +256,65 @@ def save(project_dir: str, rs: ResearchState, inventory: EvidenceInventory) -> N
     (m / EVIDENCE_INVENTORY_FILE).write_text(inventory.model_dump_json(indent=2))
 
 
+def _save_versioned(project_dir: str, name: str, rs: ResearchState) -> None:
+    (_main(project_dir) / name).write_text(rs.model_dump_json(indent=2))
+
+
+def _fold_answers(rs: ResearchState, answers: dict[str, str], source: str) -> ResearchState:
+    """Fold author answers into the state as author-provided facts WITH provenance, keeping
+    them distinguishable from literature-inferred facts. Unknown answers are not folded as
+    facts (they are handled at the graph level: downgrade/qualify)."""
+    from ..graph.finalize import is_unknown
+    out = rs.model_copy(deep=True)
+    for qid, ans in (answers or {}).items():
+        if not str(ans).strip():
+            continue
+        if is_unknown(str(ans)):
+            note = f"{qid}: (작성자 모름)"
+            if note not in out.unknowns:
+                out.unknowns.append(qid if qid not in out.unknowns else note)
+            continue
+        obs = f"{qid}: {str(ans).strip()}"
+        if obs not in out.key_observations:
+            out.key_observations.append(obs)
+        out.answer_provenance.append({"field": qid, "source": source, "answer_id": qid})
+        if qid in out.unknowns:
+            out.unknowns.remove(qid)
+    return out
+
+
+def reconstruct_after_requirement_answers(
+        project_dir: str, ps: ProjectState | None = None,
+        answers: dict[str, str] | None = None, use_llm: bool | None = None
+) -> tuple[ResearchState, EvidenceInventory]:
+    """Stage-1 → rebuild Research State v2 from FRESH reconstruction + requirement answers.
+    Never silently reuses a stale research_state.json. Persists v1 (pre-answer) and v2."""
+    if ps is None:
+        from ..ingest.parse_inputs import ingest
+        ps = ingest(project_dir)
+    rs_v1, inv = reconstruct(project_dir, ps, use_llm=use_llm)
+    _save_versioned(project_dir, "research_state_v1.json", rs_v1)
+    rs_v2 = _fold_answers(rs_v1, answers or {}, "author_answer_requirement")
+    rs_v2.source = "v2"
+    _save_versioned(project_dir, "research_state_v2.json", rs_v2)
+    save(project_dir, rs_v2, inv)  # research_state.json = current canonical (downstream reads it)
+    return rs_v2, inv
+
+
+def finalize_after_logic_answers(
+        project_dir: str, state_v2: ResearchState,
+        logic_answers: dict[str, str] | None = None) -> ResearchState:
+    """Stage-2 (or skip) → Final Research State, folding logic answers with provenance.
+    Persists research_state_final.json and updates research_state.json."""
+    rs_final = _fold_answers(state_v2, logic_answers or {}, "author_answer_logic")
+    rs_final.source = "final"
+    _save_versioned(project_dir, "research_state_final.json", rs_final)
+    inv = load(project_dir)[1]
+    if inv is not None:
+        save(project_dir, rs_final, inv)
+    return rs_final
+
+
 def load(project_dir: str) -> tuple[ResearchState | None, EvidenceInventory | None]:
     m = Path(project_dir) / "main"
     rs = inv = None

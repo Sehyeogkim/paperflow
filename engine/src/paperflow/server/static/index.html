@@ -777,10 +777,12 @@ function setDiagnoseStep(diag) {
 }
 function renderQuestions(diag) {
   setDiagnoseStep(diag);   // classification -> right workflow rail
+  currentStage = "requirement";
+  const ab = $("answerBtn"); if (ab) ab.textContent = "답변 제출 → 논리 구조 확인";
   // center canvas = the FULL scrollable question list
   const cls = diag.classification || "진단 완료";
-  $("canvas").innerHTML = `<div class="crumb">진단 / 추가 정보</div>
-    <div class="qhead"><div class="dock-title">❓ 추가 정보가 필요해요</div>
+  $("canvas").innerHTML = `<div class="crumb">논문 작성에 필요한 정보를 확인해주세요</div>
+    <div class="qhead"><div class="dock-title">❓ 논문 작성에 필요한 정보를 확인해주세요</div>
       <span class="badge">${cls}</span>
       <span class="qcount">${(diag.questions||[]).length}개 질문 · 확보 ${(diag.present||[]).length}개</span></div>
     <div class="dock-hint">각 칸의 회색 예시처럼 답해주세요. 모르면 '모름 / 나중에'를 누르세요. 아래로 스크롤하면 모든 질문이 보입니다.</div>
@@ -815,19 +817,77 @@ function refreshAnswerGate() {
     ? `${pending}개 미응답 — 답하거나 '모름'을 눌러주세요`
     : (tas.length ? "모든 질문 응답됨 · 생성 가능" : "");
 }
-$("answerBtn").onclick = async () => {
+// two-stage workflow: requirement answers -> (logic questions | direct generation),
+// then logic answers -> direct generation. No plan-confirmation gate. (TWO_STAGE doc)
+let currentStage = "requirement";
+$("answerBtn").onclick = submitAnswers;
+async function submitAnswers() {
   $("answerBtn").disabled = true;
+  const answers = {};
+  document.querySelectorAll("#questions textarea").forEach(ta => {
+    const v = ta.value.trim(); if (v) answers[ta.dataset.field] = v;   // '모름' included
+  });
+  const url = currentStage === "logic"
+    ? "/api/projects/answers/logic" : "/api/projects/answers/requirement";
   try {
-    const answers = {};
-    document.querySelectorAll("#questions textarea").forEach(ta => {
-      const v = ta.value.trim(); if (v) answers[ta.dataset.field] = v;  // '모름' included
-    });
-    await postJSON("/api/projects/answers", {project_dir: projectDir, answers});
-    $("answerNote").textContent = `${Object.keys(answers).length}개 저장됨 · 계획 수립`;
+    const res = await postJSON(url, {project_dir: projectDir, answers});
     $("dock").style.display = "none";
-    await startPlan();   // Stage 3: build the plan, then confirm via chat
+    runTwoStageJob(res);
   } catch (e) { $("answerNote").textContent = "오류: " + e; refreshAnswerGate(); }
-};
+}
+function runTwoStageJob(res) {
+  logLines = [];
+  const heading = currentStage === "logic" ? "논문 생성 중…" : "논리 구조를 구성하는 중…";
+  $("canvas").innerHTML = `<div class="crumb">${currentStage==='logic'?'논문 생성':'논리 구조'}</div>
+    <div class="card"><h3>${heading} <span class="badge">running</span></h3>
+    <p class="muted">답변을 연구 구조에 반영하고 Claim–Evidence 관계를 검사합니다. 우측에서 단계를 확인하세요.</p>
+    <div class="log" id="logbox"></div></div>`;
+  renderPipeline(res.steps || []);
+  const es = new EventSource(`/api/projects/answers/${res.job_id}/stream`);
+  es.onmessage = (ev) => {
+    const m = JSON.parse(ev.data);
+    if (m.type === "progress") {
+      if (m.step_id && stepIndex[m.step_id]) setStepActive(m.step_id, m.label);
+      logLine(m.raw || m.label);
+    } else if (m.type === "logic_questions") {
+      es.close(); renderLogicQuestions(m.questions || []);
+    } else if (m.type === "generating") {
+      logLine("논리 구조가 완성되었습니다 — 논문을 생성하고 있습니다.");
+    } else if (m.type === "done") {
+      markAllDone(); es.close();
+      paperReady = true; $("paperBtn").style.display = "";
+      showPaper(m);
+    } else if (m.type === "error") {
+      es.close(); showStatus("실패", "오류", m.error, "warn");
+    }
+  };
+  es.onerror = () => es.close();
+}
+function renderLogicQuestions(questions) {
+  currentStage = "logic";
+  if (!questions.length) { return; }   // safety; server only sends when gaps exist
+  $("canvas").innerHTML = `<div class="crumb">논리 구조 보완</div>
+    <div class="qhead"><div class="dock-title">🧩 논리 구조를 완성하기 위해 몇 가지만 더 확인해주세요</div>
+      <span class="qcount">${questions.length}개</span></div>
+    <div class="dock-hint">이 질문들은 Claim–Evidence 관계에 대한 것입니다(메타데이터 재수집이 아닙니다). 모르면 '모름'을 누르세요 — 해당 주장을 약화하거나 한정합니다.</div>
+    <div id="questions"></div>`;
+  const wrap = $("questions");
+  for (const q of questions) {
+    const div = document.createElement("div"); div.className = "q";
+    div.innerHTML = `<div class="qq"><span>${q.question}</span></div>`
+      + (q.why_asked ? `<div class="dock-hint" style="margin:2px 0 6px">${q.why_asked}</div>` : "");
+    const ta = document.createElement("textarea");
+    ta.placeholder = q.example ? ("예) " + q.example) : "여기에 답변…";
+    ta.dataset.field = q.id; ta.oninput = refreshAnswerGate;
+    const skip = document.createElement("button");
+    skip.className = "skipbtn"; skip.type = "button"; skip.textContent = "모름 / 나중에";
+    skip.onclick = () => { ta.value = _UNKNOWN; refreshAnswerGate(); };
+    div.append(ta, skip); wrap.appendChild(div);
+  }
+  $("answerBtn").textContent = "답변 제출 → 논문 생성";
+  $("dock").style.display = "block";
+  refreshAnswerGate();
+}
 
 // ---------- generate + live tree (STEP 0 stays done on top) ----------
 function renderPipeline(steps) {

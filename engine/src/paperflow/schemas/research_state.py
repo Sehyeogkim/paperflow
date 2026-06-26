@@ -38,5 +38,9 @@ class ResearchState(BaseModel):
     known_references: list[str] = Field(default_factory=list)  # citation keys already on hand
     unknowns: list[str] = Field(default_factory=list)          # gaps the reconstruction flagged
 
-    # provenance of how this state was built — "skeleton" | "llm_enriched"
+    # author answers folded into this state, kept distinguishable from literature-inferred facts
+    # each: {"field": ..., "source": "author_answer_requirement|author_answer_logic", "answer_id": ...}
+    answer_provenance: list[dict] = Field(default_factory=list)
+
+    # provenance of how this state was built — "skeleton" | "llm_enriched" | "v2" | "final"
     source: str = "skeleton"

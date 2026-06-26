@@ -118,3 +118,18 @@ def build(ps: ProjectState) -> ClaimGraph:
         "edges": (a.get("claim_edges") or []) + (b.get("edges") or []),
     }
     return ClaimGraph.model_validate(validate(merged))
+
+
+def build_preliminary(ps: ProjectState) -> ClaimGraph:
+    """Preliminary Logic Graph — built AFTER Stage-1 answers (TWO_STAGE_QUESTIONS §6).
+    ps must already carry Research State v2 + Evidence Inventory (rendered via inputs_block)."""
+    return build(ps)
+
+
+def build_final(preliminary: ClaimGraph, logic_questions=None,
+                logic_answers: dict | None = None) -> ClaimGraph:
+    """Final Logic Graph — deterministically applies Stage-2 logic answers to the preliminary
+    graph (unknown → downgrade/qualify/remove; real → traceable author-answer evidence) and
+    rejects untraceable numeric evidence. No extra LLM call, so artifacts stay reproducible."""
+    from ..graph.finalize import finalize
+    return finalize(preliminary, list(logic_questions or []), logic_answers or {})

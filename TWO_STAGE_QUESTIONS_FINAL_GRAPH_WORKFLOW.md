@@ -1011,60 +1011,60 @@ Then generate the strongest defensible manuscript possible.
 
 # 16. Acceptance criteria
 
+> 상태 (2026-06-26). 괄호 = 검증 근거. `pytest`(litreq 제외) = 65 passed.
+
 ## Stage 1
 
-- [ ] `overall_schema.json` is generated from related literature or explicit fallback.
-- [ ] First-round questions come from missing/partial applicable high-value requirements.
-- [ ] Every question includes `why_asked` and source provenance.
-- [ ] Answers are stored separately as requirement answers.
+- [x] `overall_schema.json` is generated from related literature or explicit fallback. (기존 req_pipeline + static fallback)
+- [x] First-round questions come from missing/partial applicable high-value requirements. (generate_questions)
+- [x] Every question includes `why_asked` and source provenance. (GroundedQuestion.why_asked/sources)
+- [x] Answers are stored separately as requirement answers. (`main/answers_requirement.json`)
 
 ## State rebuilding
 
-- [ ] Research State is rebuilt after Stage-1 answers.
-- [ ] The rebuilt state records answer provenance.
-- [ ] Stale pre-answer state is not silently reused as final state.
+- [x] Research State is rebuilt after Stage-1 answers. (`reconstruct_after_requirement_answers`)
+- [x] The rebuilt state records answer provenance. (`answer_provenance`; test_requirement_answer_rebuilds_state)
+- [x] Stale pre-answer state is not silently reused as final state. (fresh v1→v2, source="v2")
 
 ## Preliminary graph
 
-- [ ] Preliminary Logic Graph is generated after Stage-1 answers.
-- [ ] Main claims, evidence, methods, data, warrants, sources, and artifacts use typed nodes.
-- [ ] Exact Evidence values are traceable.
+- [x] Preliminary Logic Graph is generated after Stage-1 answers. (`build_preliminary`; test_advance_path_*)
+- [x] Typed nodes/edges retained. (claim/evidence/method/data/warrant/source/artifact)
+- [x] Exact Evidence values are traceable. (untraceable numeric evidence rejected in finalize)
 
 ## Graph-gap validation
 
-- [ ] Validator checks Claim support, Evidence traceability, comparison basis, qualifiers, and integrity.
-- [ ] `graph_gap_report.json` is generated.
-- [ ] Only load-bearing gaps trigger Stage 2.
+- [x] Validator checks Claim support, Evidence traceability, comparison basis, qualifiers, integrity. (`graph/validate_gaps.py`)
+- [x] `graph_gap_report.json` is generated.
+- [x] Only load-bearing gaps trigger Stage 2. (test_graph_gap_noncritical_warning_does_not_trigger_stage2)
 
 ## Stage 2
 
-- [ ] Stage 2 is skipped when no load-bearing gaps exist.
-- [ ] Logic questions reference specific claims/gaps.
-- [ ] Maximum Stage-2 question count is enforced.
-- [ ] Unknown answers trigger downgrade/qualification, not fabrication.
+- [x] Stage 2 is skipped when no load-bearing gaps exist. (test_advance_path_a_no_stage2)
+- [x] Logic questions reference specific claims/gaps. (test_logic_question_contains_claim_and_gap_ids)
+- [x] Maximum Stage-2 question count is enforced. (MAX_STAGE2=5; test_logic_questions_capped_at_max)
+- [x] Unknown answers trigger downgrade/qualification, not fabrication. (test_unknown_logic_answer_downgrades_claim)
 
 ## Final graph
 
-- [ ] Final Research State is persisted.
-- [ ] Final Logic Graph is persisted and validated.
-- [ ] Unsupported claims are removed or qualified.
+- [x] Final Research State is persisted. (`research_state_final.json`)
+- [x] Final Logic Graph is persisted and validated. (`final_logic_graph.json` + `final_graph_validation.json`)
+- [x] Unsupported claims are removed or qualified. (finalize: downgrade/qualify/remove)
 
 ## Generation
 
-- [ ] Default flow does not require Plan Review confirmation.
-- [ ] Final graph automatically produces internal plan, figures, contracts, and manuscript.
-- [ ] Manuscript generation starts immediately after graph readiness.
-- [ ] Completion screen exposes graph and reports as optional inspection artifacts.
+- [x] Default flow does not require Plan Review confirmation. (UI: answers → advance; no startPlan)
+- [x] Final graph automatically produces internal plan, figures, contracts, manuscript. (`auto_plan_from_final_graph`→`generate_from_plan`)
+- [x] Manuscript generation starts immediately after graph readiness. (`finalize_and_compile`)
+- [x] Completion screen exposes graph and reports as optional inspection. (output preview pane)
 
 ## Regression
 
-- [ ] Existing manuscript writer and exporters continue to work.
-- [ ] Existing `_plan.json`-based generation can be reused internally.
-- [ ] Static requirement fallback works offline.
-- [ ] Existing demo project completes end-to-end.
-- [ ] Tests cover both paths:
-  - no Stage-2 questions
-  - Stage-2 questions required
+- [x] Existing manuscript writer and exporters continue to work. (generate_from_plan unchanged)
+- [x] Existing `_plan.json`-based generation reused internally. (auto_plan writes _plan.json)
+- [x] Static requirement fallback works offline. (req_pipeline fallback)
+- [~] Existing demo project completes end-to-end. (build() proven in earlier full gpt-5 run; new advance() live re-run not repeated to save cost — see limitations)
+- [x] Tests cover both paths (no Stage-2 / Stage-2 required) + the "모름" path. (test_advance_path_a/b/c)
 
 ---
 

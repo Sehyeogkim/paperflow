@@ -263,6 +263,96 @@ def save_answers(body: dict) -> dict:
     return {"ok": True, "count": len(merged)}
 
 
+def _done_event(manifest, out_dir: Path) -> dict:
+    return {"type": "done",
+            "classification": manifest.classification.value if manifest.classification else None,
+            "input_tokens": manifest.total_input, "output_tokens": manifest.total_output,
+            "cached_tokens": manifest.total_cached,
+            "cache_hit_rate": round(manifest.cache_hit_rate, 4), "out_dir": str(out_dir)}
+
+
+def _merge_json(path: Path, new: dict) -> dict:
+    cur = {}
+    if path.is_file():
+        try:
+            cur = json.loads(path.read_text())
+        except Exception:
+            cur = {}
+    for k, v in (new or {}).items():
+        if str(v).strip():
+            cur[str(k)] = str(v)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(cur, ensure_ascii=False, indent=2))
+    return cur
+
+
+def _requirement_advance_job(job_id: str, project_dir: str) -> None:
+    """Stage-1 answers saved → rebuild state → preliminary graph → gap check → either ask
+    Stage-2 logic questions or generate the manuscript immediately (no plan gate)."""
+    q = _JOBS[job_id]
+    try:
+        res = mr.advance_after_requirement_answers(project_dir, progress=_progress_fn(q))
+        if res["next"] == "logic_questions":
+            q.put({"type": "logic_questions", "questions": res["questions"],
+                   "gap_report": res.get("gap_report", {})})
+        else:
+            q.put({"type": "generating", "reason": "no_load_bearing_gaps"})
+            out_dir = Path(project_dir) / "_paperflow_out"
+            manifest = mr.finalize_and_compile(project_dir, out_dir, progress=_progress_fn(q))
+            q.put(_done_event(manifest, out_dir))
+    except Exception as e:
+        q.put({"type": "error", "error": str(e)[:400]})
+    finally:
+        q.put(None)
+
+
+def _logic_advance_job(job_id: str, project_dir: str) -> None:
+    """Stage-2 answers saved → finalize state + graph → immediate manuscript generation."""
+    q = _JOBS[job_id]
+    try:
+        out_dir = Path(project_dir) / "_paperflow_out"
+        manifest = mr.finalize_and_compile(project_dir, out_dir, progress=_progress_fn(q))
+        q.put(_done_event(manifest, out_dir))
+    except Exception as e:
+        q.put({"type": "error", "error": str(e)[:400]})
+    finally:
+        q.put(None)
+
+
+@app.post("/api/projects/answers/requirement")
+def save_requirement_answers(body: dict) -> dict:
+    """Stage-1: persist requirement answers (separate store + merged answer.json), then start
+    the rebuild → preliminary-graph → gap-check → (logic questions | generation) job."""
+    project_dir = body["project_dir"]
+    answers = body.get("answers", {})
+    _merge_json(Path(project_dir) / "main" / "answers_requirement.json", answers)
+    qloop.save_answers(project_dir, answers)  # back-compat: AUTHOR ANSWERS in inputs_block
+    job_id = uuid.uuid4().hex[:12]
+    _JOBS[job_id] = queue.Queue()
+    threading.Thread(target=_requirement_advance_job, args=(job_id, project_dir),
+                     daemon=True).start()
+    return {"job_id": job_id,
+            "steps": [{"id": s, "label": l} for s, l in (mr.ADVANCE_STEPS + mr.COMPILE_STEPS)]}
+
+
+@app.post("/api/projects/answers/logic")
+def save_logic_answers(body: dict) -> dict:
+    """Stage-2: persist logic answers, then finalize graph + generate immediately."""
+    project_dir = body["project_dir"]
+    answers = body.get("answers", {})
+    _merge_json(Path(project_dir) / "main" / "answers_logic.json", answers)
+    qloop.save_answers(project_dir, answers)
+    job_id = uuid.uuid4().hex[:12]
+    _JOBS[job_id] = queue.Queue()
+    threading.Thread(target=_logic_advance_job, args=(job_id, project_dir), daemon=True).start()
+    return {"job_id": job_id, "steps": [{"id": s, "label": l} for s, l in mr.COMPILE_STEPS]}
+
+
+@app.get("/api/projects/answers/{job_id}/stream")
+def answers_stream(job_id: str) -> StreamingResponse:
+    return _sse(job_id)
+
+
 @app.post("/api/projects/questions")
 def questions(body: dict) -> dict:
     """Adaptive question batch from the CURRENT preliminary graph + reconstruction state.

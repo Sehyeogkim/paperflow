@@ -42,6 +42,13 @@ class Question(BaseModel):
     example: str = ""            # placeholder shown to the user
     value: float = 0.0           # ranking score (see question/rank.py)
     load_bearing: bool = False
+    # two-stage workflow fields (TWO_STAGE_QUESTIONS_FINAL_GRAPH_WORKFLOW.md §8.3)
+    stage: str = "requirement"   # "requirement" (Stage 1) | "logic" (Stage 2)
+    why_asked: str = ""
+    sources: list[str] = Field(default_factory=list)        # paper ids / guideline / node ids
+    gap_id: str = ""             # the graph gap this logic question resolves
+    claim_ids: list[str] = Field(default_factory=list)
+    fallback_if_unknown: str = ""  # "downgrade_claim" | "qualify_claim" | "remove_claim" | ""
 
 
 class QuestionBatch(BaseModel):

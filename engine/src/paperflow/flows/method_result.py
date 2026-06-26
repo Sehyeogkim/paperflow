@@ -200,6 +200,163 @@ def plan(project_dir: str, sections: list[str], progress=lambda m: None,
     return out
 
 
+_DEFAULT_GEN_SECTIONS = ["method", "result", "discussion", "introduction", "conclusion", "abstract"]
+
+# UI workflow trees for the two-stage flow
+ADVANCE_STEPS = [("reconstruct", "답변 반영·연구상태 재구성"),
+                 ("prelim_graph", "잠정 logic graph"), ("gap_check", "논리 빈틈 검사")]
+COMPILE_STEPS = [("finalize", "최종 logic graph"), ("guideline", "저널 가이드라인"),
+                 ("litsearch", "선행연구조사"), ("figure_plan", "Figure 설계"),
+                 ("structure", "섹션 구조"), ("write", "본문 작성"),
+                 ("validate", "논리 검증"), ("citation", "Citation"), ("output", "출력")]
+
+
+def preliminary_logic_graph_path(project_dir: str) -> Path:
+    return Path(project_dir) / "main" / "preliminary_logic_graph.json"
+
+
+def final_logic_graph_path(project_dir: str) -> Path:
+    return Path(project_dir) / "main" / "final_logic_graph.json"
+
+
+def graph_gap_report_path(project_dir: str) -> Path:
+    return Path(project_dir) / "main" / "graph_gap_report.json"
+
+
+def _load_json(p: Path):
+    if p.is_file():
+        try:
+            return json.loads(p.read_text())
+        except Exception:
+            return None
+    return None
+
+
+def _load_requirement_answers(project_dir: str) -> dict:
+    """Stage-1 answers (separate store), falling back to the merged answer.json."""
+    main = Path(project_dir) / "main"
+    d = _load_json(main / "answers_requirement.json")
+    if isinstance(d, dict) and d:
+        return {str(k): str(v) for k, v in d.items()}
+    from ..question import loop as qloop
+    return qloop.load_answers(project_dir)
+
+
+def _load_logic_answers(project_dir: str) -> dict:
+    d = _load_json(Path(project_dir) / "main" / "answers_logic.json")
+    return {str(k): str(v) for k, v in d.items()} if isinstance(d, dict) else {}
+
+
+def advance_after_requirement_answers(project_dir: str, progress=lambda m: None) -> dict:
+    """Stage-1 → rebuild Research State v2, build the Preliminary Logic Graph, validate gaps,
+    and decide whether Stage-2 logic questions are needed. (TWO_STAGE_QUESTIONS §11.2)"""
+    from ..compile import claim_graph
+    from ..graph import logic_questions, validate_gaps
+    manifest = RunManifest(project_dir=project_dir)
+    client.set_manifest(manifest)
+
+    progress("[reconstruct] 답변 반영해 연구 상태 재구성")
+    ps = ingest(project_dir)
+    req_answers = _load_requirement_answers(project_dir)
+    rs_v2, inv = build_state.reconstruct_after_requirement_answers(project_dir, ps, req_answers)
+    ps.research_state, ps.evidence_inventory = rs_v2, inv
+
+    progress("[prelim_graph] 잠정 logic graph 생성")
+    graph = claim_graph.build_preliminary(ps)
+    graph_json = graph.model_dump_json(indent=2)
+    preliminary_logic_graph_path(project_dir).write_text(graph_json)
+    prelim_graph_path(project_dir).write_text(graph_json)  # keep legacy /questions endpoint working
+
+    progress("[gap_check] 논리적 빈틈 검사")
+    report = validate_gaps.validate(graph)
+    graph_gap_report_path(project_dir).write_text(report.model_dump_json(indent=2))
+
+    if report.needs_stage2():
+        qs = logic_questions.generate(report, graph)
+        (Path(project_dir) / "main" / "questions_logic.json").write_text(
+            json.dumps([q.model_dump() for q in qs], ensure_ascii=False, indent=2))
+        progress(f"[gap_check] load-bearing gap {len(report.load_bearing_gaps)}개 → 2차 질문")
+        return {"next": "logic_questions", "questions": [q.model_dump() for q in qs],
+                "gap_report": report.model_dump(),
+                "tokens": {"input": manifest.total_input, "output": manifest.total_output}}
+    progress("[gap_check] load-bearing gap 없음 → 바로 생성")
+    return {"next": "generation", "questions": [], "gap_report": report.model_dump(),
+            "tokens": {"input": manifest.total_input, "output": manifest.total_output}}
+
+
+def auto_plan_from_final_graph(project_dir: str, ps: ProjectState, graph: ClaimGraph,
+                               sections: list[str] | None = None, progress=lambda m: None,
+                               litsearch: bool = True) -> dict:
+    """Build figure plan + section structure from an ALREADY-FINAL graph and persist _plan.json
+    (no graph build, no user confirmation). (TWO_STAGE_QUESTIONS §10.3)"""
+    sections = _order(sections or _DEFAULT_GEN_SECTIONS)
+    progress("[guideline] 저널 가이드라인 확인")
+    ps.journal_constraints = journal_guideline.fetch(ps.journal_info)
+    literature_md = ""
+    if litsearch:
+        progress("[litsearch] 선행연구조사 (OpenAlex)")
+        from ..litsearch import run as litrun
+        literature_md, found = litrun.run(ps, progress=lambda m: progress(f"[litsearch] {m}"))
+        ps.found_references = found
+    progress("[figure_plan] Figure 설계")
+    fig_spec = figure_sketch.attach_sketches(figure_plan.plan(project_dir, graph))
+    progress("[structure] 섹션 구조·소제목")
+    section_structure = structure.propose(ps, graph, sections)
+    out = {
+        "sections": sections, "classification": None,
+        "main_contribution": graph.main_contribution,
+        "claim_graph": graph.model_dump(), "figures": fig_spec,
+        "structure": section_structure,
+        "found_references": [r.model_dump() for r in ps.found_references],
+        "literature_md": literature_md, "auto": True,
+    }
+    save_plan(project_dir, out)
+    return out
+
+
+def compile_from_final_graph(project_dir: str, out_dir: Path, graph: ClaimGraph,
+                             progress=lambda m: None, litsearch: bool = True) -> RunManifest:
+    """Auto-plan from the final graph, then draft → validate → cite → export, with NO
+    plan-confirmation gate. (TWO_STAGE_QUESTIONS §10)"""
+    ps = _attach_reconstruction(project_dir, ingest(project_dir))
+    auto_plan_from_final_graph(project_dir, ps, graph, progress=progress, litsearch=litsearch)
+    return generate_from_plan(project_dir, out_dir, progress=progress)
+
+
+def finalize_and_compile(project_dir: str, out_dir: Path, progress=lambda m: None,
+                         litsearch: bool = True) -> RunManifest:
+    """Stage-2 (or skip) → Final Research State + Final Logic Graph + immediate compilation.
+    (TWO_STAGE_QUESTIONS §9-10)"""
+    from ..compile import claim_graph
+    from ..graph import validate_gaps
+    from ..schemas.claim import ClaimGraph as _CG
+    from ..schemas.question import Question
+
+    prelim_json = _load_json(preliminary_logic_graph_path(project_dir))
+    if prelim_json is None:
+        raise RuntimeError("no preliminary logic graph — run advance_after_requirement_answers first")
+    prelim = _CG.model_validate(prelim_json)
+    logic_qs = [Question.model_validate(q) for q in
+                (_load_json(Path(project_dir) / "main" / "questions_logic.json") or [])]
+    logic_answers = _load_logic_answers(project_dir)
+
+    progress("[finalize] 최종 logic graph 구성 (답변 반영·미응답 약화)")
+    final = claim_graph.build_final(prelim, logic_qs, logic_answers)
+    final_logic_graph_path(project_dir).write_text(final.model_dump_json(indent=2))
+
+    rs_v2, _ = build_state.load(project_dir)
+    if rs_v2 is not None:
+        build_state.finalize_after_logic_answers(project_dir, rs_v2, logic_answers)
+
+    final_validation = validate_gaps.validate(final)
+    (Path(project_dir) / "main" / "final_graph_validation.json").write_text(
+        final_validation.model_dump_json(indent=2))
+
+    progress("[compile] 논문 생성 시작")
+    return compile_from_final_graph(project_dir, out_dir, final, progress=progress,
+                                    litsearch=litsearch)
+
+
 def generate_from_plan(project_dir: str, out_dir: Path, progress=lambda m: None) -> RunManifest:
     """Phase 2 — draft + validate + cite + output, using the CONFIRMED plan (main/_plan.json)."""
     pl = load_plan(project_dir)
