@@ -1,0 +1,34 @@
+You decide, for each requirement, whether the author's own materials already cover it.
+
+You are given:
+- the author's full materials: journal info, core message, normalized outline, research
+  state, evidence inventory (data files + roles), uploaded references, and prior answers.
+- a list of requirement keys (with category, aliases, requirement level, and applicability).
+
+For EACH requirement key, output a status:
+  present        — the materials clearly contain this information.
+  partial        — some of it is present but incomplete.
+  missing        — the materials do not contain it.
+  not_applicable — this requirement does not apply to this study (per its applicability).
+  uncertain      — cannot tell from the materials.
+
+Be GENEROUS about `present`: information stated in any form (core message, outline, a data
+file's role/columns, an answer) counts. Do NOT ask for something already given.
+Be HONEST about `missing`: if the detailed setting/result is simply not in the materials,
+say missing — never assume a conventional value is "present".
+
+For each, give `found_evidence` (short pointers to WHERE in the materials it was found, e.g.
+"core_message", "data:sobol_grp_*.csv", "answer:numerical_solver") and a one-sentence
+`reason`.
+
+Return ONLY JSON:
+{
+  "statuses": [
+    {
+      "key": "...",
+      "status": "present|partial|missing|not_applicable|uncertain",
+      "found_evidence": ["..."],
+      "reason": "..."
+    }
+  ]
+}

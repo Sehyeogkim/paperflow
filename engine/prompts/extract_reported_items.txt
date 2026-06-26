@@ -1,0 +1,52 @@
+You read ONE prior study and extract the methodological and evidentiary items it reports.
+Goal: build a picture of what studies LIKE this one conventionally report, so we can later
+ask the author for anything they are missing.
+
+You are given the paper's metadata, its content level, and the available text (often only
+the abstract).
+
+Rules — read carefully:
+- The TOP-LEVEL `category` of each item is FIXED. Use exactly one of:
+  objective | study_design | data_or_sample | methods | models_and_equations |
+  numerical_or_experimental_settings | validation | outcomes | results |
+  statistical_analysis | limitations | figures_and_tables | reported_items
+- The item NAME (`raw_name`) and `sub_category` are FREE — name them as the paper does
+  (e.g. "mesh independence test", "Mooney–Rivlin constitutive model", "patient inclusion
+  criteria", "ablation study", "primary endpoint").
+- CONTENT-LEVEL DISCIPLINE (critical):
+  - If content_level is "abstract_only", you may extract: objective, study_design (type),
+    data_or_sample (broad), primary methods named in the abstract, main outcomes, and main
+    results/conclusions. Do NOT assert detailed Method settings (mesh, solver, convergence,
+    boundary conditions, hyperparameters) as reported — they are not in an abstract. If you
+    infer such a category is *probably relevant*, set explicitly_reported=false and say so
+    in description; do NOT fabricate evidence_text.
+  - If content_level is "full_text" or "partial_text", extract detailed items where the text
+    supports them, with a short evidence_text passage.
+- NEVER invent values, numbers, or settings. Missing is missing.
+- Do NOT promote one paper's unique implementation detail into a universal requirement —
+  just report what THIS paper did.
+- Mark `explicitly_reported` true only when the text actually states it.
+- `importance_to_main_claim`: high | medium | low | unknown.
+
+Also state the paper's `study_archetype` in a short English phrase.
+
+Return ONLY JSON:
+{
+  "paper_id": "...",
+  "study_archetype": "...",
+  "content_level": "...",
+  "reported_items": [
+    {
+      "raw_name": "...",
+      "category": "<one fixed category>",
+      "sub_category": "...",
+      "description": "...",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "high|medium|low|unknown",
+      "explicitly_reported": true,
+      "applies_to": ["..."],
+      "source_location": ""
+    }
+  ]
+}

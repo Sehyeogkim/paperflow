@@ -31,6 +31,7 @@ from ..ingest.parse_inputs import ingest
 from ..question import loop as qloop
 from ..reconstruct import build_state
 from ..requirement import detect
+from ..requirement import pipeline as req_pipeline
 from ..schemas.outline_state import NormalizedOutline
 
 app = FastAPI(title="paperflow")
@@ -212,21 +213,44 @@ def get_state(project_dir: str) -> dict:
     return {"ui_state": None, "paper_ready": paper_ready}
 
 
+def _attach_state(project_dir: str, ps):
+    """Attach research_state + evidence_inventory so the literature comparison sees rich context."""
+    try:
+        rs, inv = build_state.load(project_dir)
+        if rs is None or inv is None:
+            rs, inv = build_state.reconstruct(project_dir, ps)
+            build_state.save(project_dir, rs, inv)
+        ps.research_state, ps.evidence_inventory = rs, inv
+    except Exception:
+        pass
+    return ps
+
+
 @app.post("/api/projects/diagnose")
 def diagnose(body: dict) -> dict:
-    """Ingest + detect missing info -> questions (each with an example placeholder)."""
+    """Literature-grounded requirement derivation -> grounded questions.
+
+    Searches related work (OpenAlex), extracts what similar studies report, synthesizes a
+    project-specific requirement schema, compares it to the user's materials, and asks only
+    for high-value missing items. Falls back to the static pack if literature search fails.
+    Always persists a compatible RequirementReport so the generate flow is unchanged."""
     project_dir = body["project_dir"]
-    ps = ingest(project_dir)
-    report = detect.detect(ps)
-    detect.save_report(project_dir, report)  # reused by the generate run (no 2nd LLM call)
+    ps = _attach_state(project_dir, ingest(project_dir))
+    res = req_pipeline.run(project_dir, ps)
+    detect.save_report(project_dir, res["report"])  # reused by the generate run (no 2nd LLM call)
     questions = [
-        {"id": m.field, "field": m.field, "question": m.question,
-         "example": m.example, "reviewer_risk": m.reviewer_risk}
-        for m in report.missing if m.question
+        {"id": q.id, "field": q.id, "question": q.question,
+         "example": q.expected_answer, "reviewer_risk": q.reviewer_risk,
+         "why_asked": q.why_asked, "requirement_level": q.requirement_level,
+         "sources": q.sources, "applicability_reason": q.applicability_reason,
+         "not_found_reason": q.not_found_reason, "allow_unknown": q.allow_unknown}
+        for q in res["questions"]
     ]
     return {
-        "classification": report.classification.value if report.classification else None,
-        "present": report.present, "questions": questions, "notes": report.notes,
+        "classification": res["classification"], "present": res["present"],
+        "questions": questions, "notes": res["notes"],
+        "requirement_source": res["requirement_source"],
+        "study_archetype": res.get("study_archetype", ""),
     }
 
 
