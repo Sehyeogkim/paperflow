@@ -22,47 +22,72 @@ from . import profile_data
 RESEARCH_STATE_FILE = "research_state.json"
 EVIDENCE_INVENTORY_FILE = "evidence_inventory.json"
 
-# (keyword set, inferred_role, unit_of_analysis) — first match wins. Heuristic, deliberately
-# conservative; the LLM enrichment (when available) can override role on research_state.
-_ROLE_RULES: list[tuple[tuple[str, ...], str, str]] = [
-    (("sobol_grp", "grp", "group"), "global sensitivity result", "input-variable group"),
-    (("sobol", "sensitivity"), "global sensitivity result", "input variable"),
-    (("input", "design"), "input design space", "sample"),
-    (("inflow", "elastance", "boundary", "/bc", "bc.md"), "boundary condition", ""),
-    (("reference", ".bib", "references"), "reference list", ""),
+# (keyword set, inferred_role, unit_of_analysis, related_sections, artifact_usage). First match
+# wins. Heuristic, conservative; LLM enrichment (when available) can refine.
+_ROLE_RULES: list[tuple[tuple[str, ...], str, str, list[str], list[str]]] = [
+    (("sobol_grp", "grp", "group"), "global sensitivity result", "input-variable group",
+     ["method", "result", "discussion"], ["figure"]),
+    (("sobol", "sensitivity"), "global sensitivity result", "input variable",
+     ["method", "result", "discussion"], ["figure"]),
+    (("input", "design"), "input design space", "sample", ["method"], ["table"]),
+    (("inflow", "elastance", "boundary", "/bc", "bc.md"), "boundary condition", "",
+     ["method"], []),
+    (("reference", ".bib", "references"), "reference list", "", ["introduction", "discussion"], []),
 ]
-_KIND_ROLE = {
-    "png": "figure", "jpg": "figure", "jpeg": "figure", "svg": "figure",
-    "pdf": "reference document", "md": "supporting document", "txt": "supporting document",
-    "dat": "measurement / waveform", "json": "structured record",
+_KIND_ROLE: dict[str, tuple[str, list[str], list[str]]] = {
+    "png": ("figure", ["result"], ["figure"]), "jpg": ("figure", ["result"], ["figure"]),
+    "jpeg": ("figure", ["result"], ["figure"]), "svg": ("figure", ["result"], ["figure"]),
+    "pdf": ("reference document", ["introduction", "discussion"], []),
+    "md": ("supporting document", [], []), "txt": ("supporting document", [], []),
+    "dat": ("measurement / waveform", ["method", "result"], []),
+    "json": ("structured record", [], []),
 }
 
 
-def _infer_role(rel: str, desc: str, kind: str) -> tuple[str, str]:
+def _infer_role(rel: str, desc: str, kind: str) -> tuple[str, str, list[str], list[str], str]:
+    """(role, unit, related_sections, artifact_usage, confidence). Description present OR a
+    filename/context rule match -> high; kind-based default -> medium; nothing -> low/unknown."""
     hay = f"{rel} {desc}".lower()
-    for keys, role, unit in _ROLE_RULES:
+    for keys, role, unit, secs, arts in _ROLE_RULES:
         if any(k in hay for k in keys):
-            return role, unit
-    return _KIND_ROLE.get(kind, "data file"), ""
+            conf = "high"
+            return role, unit, list(secs), list(arts), conf
+    if kind in _KIND_ROLE:
+        role, secs, arts = _KIND_ROLE[kind]
+        return role, "", list(secs), list(arts), ("high" if desc.strip() else "medium")
+    return "unknown", "", [], [], ("high" if desc.strip() else "low")
+
+
+def _inferred_description(role: str, unit: str, columns: dict, user_desc: str) -> str:
+    if user_desc.strip():
+        return user_desc.strip()        # user statement is the source of truth (LLM may extend)
+    parts = [role] if role and role != "unknown" else []
+    if unit:
+        parts.append(f"per {unit}")
+    if columns:
+        parts.append("columns: " + ", ".join(list(columns)[:8]))
+    return "; ".join(parts)
 
 
 def build_evidence_inventory(project_dir: str, ps: ProjectState) -> EvidenceInventory:
-    """Profile every data asset and record it as research evidence (deterministic)."""
+    """Profile every data asset and record it as a GLOBAL research evidence asset (deterministic).
+    Description is optional — role/meaning is inferred from filename, columns, content, context."""
     project = Path(project_dir)
     assets: list[EvidenceAsset] = []
     for d in ps.data_assets:
         prof = profile_data.profile_file(project / d.path)
-        # surface columns as {name: dtype} from the profile when present
         columns: dict[str, str] = {}
         if isinstance(prof.get("columns"), dict):
             columns = {k: str(v) for k, v in prof["columns"].items()}
         elif prof.get("sheets"):  # xlsx: merge first sheet's columns for a quick view
             first = next(iter(prof["sheets"].values()), {})
             columns = {k: str(v) for k, v in (first.get("columns") or {}).items()}
-        role, unit = _infer_role(d.path, d.note, d.kind)
+        role, unit, secs, arts, conf = _infer_role(d.path, d.note, d.kind)
         assets.append(EvidenceAsset(
             path=d.path, kind=d.kind, user_description=d.note,
+            inferred_description=_inferred_description(role, unit, columns, d.note),
             inferred_role=role, unit_of_analysis=unit,
+            related_sections=secs, artifact_usage=arts, confidence=conf,
             columns=columns, profile=prof,
         ))
     return EvidenceInventory(assets=assets)
@@ -156,16 +181,62 @@ def enrich_research_state(ps: ProjectState, rs: ResearchState,
         return rs
 
 
+def enrich_evidence_inventory(ps: ProjectState, inventory: EvidenceInventory) -> EvidenceInventory:
+    """Optional LLM pass: infer each file's meaning/role from filename + columns + sample values
+    + project context (core message, research plan, outline, sibling files). User descriptions
+    are kept as the source of truth and only extended; conflicts are flagged as uncertainties.
+    Never raises — falls back to the deterministic inventory on any failure."""
+    from ..llm import client
+    from ..util import inputs_block, prompt
+    if not inventory.assets:
+        return inventory
+    try:
+        sys = prompt("infer_evidence")
+    except Exception:
+        return inventory
+    files = [{
+        "path": a.path, "kind": a.kind, "user_description": a.user_description,
+        "columns": list(a.columns), "profile": {k: a.profile.get(k) for k in
+                  ("rows", "numeric_ranges", "sample_row", "sheets") if k in a.profile},
+    } for a in inventory.assets]
+    user = (f"{inputs_block(ps)}\n\n## FILES TO INFER (return one object per path)\n"
+            f"{json.dumps(files, ensure_ascii=False)[:9000]}")
+    try:
+        raw = client.call_json("reasoning", sys, user, step="reconstruct.evidence", max_tokens=3500)
+    except Exception:
+        return inventory
+    by_path = {str(r.get("path")): r for r in (raw.get("files") or []) if isinstance(r, dict)}
+    for a in inventory.assets:
+        r = by_path.get(a.path)
+        if not r:
+            continue
+        if isinstance(r.get("inferred_description"), str) and r["inferred_description"].strip():
+            a.inferred_description = r["inferred_description"].strip()
+        if isinstance(r.get("inferred_role"), str) and r["inferred_role"].strip():
+            a.inferred_role = r["inferred_role"].strip()
+        if isinstance(r.get("unit_of_analysis"), str) and r["unit_of_analysis"].strip():
+            a.unit_of_analysis = r["unit_of_analysis"].strip()
+        for fld in ("related_sections", "artifact_usage", "key_observations", "uncertainties"):
+            vals = [str(x).strip() for x in (r.get(fld) or []) if str(x).strip()]
+            if vals:
+                setattr(a, fld, list(dict.fromkeys(vals)))
+        if str(r.get("confidence", "")).lower() in ("high", "medium", "low"):
+            a.confidence = str(r["confidence"]).lower()
+    return inventory
+
+
 def reconstruct(project_dir: str, ps: ProjectState | None = None,
                 use_llm: bool | None = None) -> tuple[ResearchState, EvidenceInventory]:
     """Build (research_state, evidence_inventory). use_llm=None -> auto (on if a key exists)."""
     if ps is None:
         from ..ingest.parse_inputs import ingest
         ps = ingest(project_dir)
-    inventory = build_evidence_inventory(project_dir, ps)
-    rs = build_research_state_skeleton(ps, inventory)
     if use_llm is None:
         use_llm = bool(config.available_providers())
+    inventory = build_evidence_inventory(project_dir, ps)
+    if use_llm:
+        inventory = enrich_evidence_inventory(ps, inventory)
+    rs = build_research_state_skeleton(ps, inventory)
     if use_llm:
         rs = enrich_research_state(ps, rs, inventory)
     return rs, inventory

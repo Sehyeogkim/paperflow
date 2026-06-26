@@ -13,9 +13,13 @@ from pydantic import BaseModel, Field
 class EvidenceAsset(BaseModel):
     path: str                                  # relative to project dir
     kind: str = ""                             # csv | xlsx | md | dat | pdf | png | ...
-    user_description: str = ""                 # from main/data_notes.json
-    inferred_role: str = ""                    # e.g. "global sensitivity result"
+    user_description: str = ""                 # from main/data_notes.json (OPTIONAL)
+    inferred_description: str = ""             # AI/heuristic-inferred meaning (free text)
+    inferred_role: str = ""                    # e.g. "global sensitivity result" | "unknown"
     unit_of_analysis: str = ""                 # e.g. "input-variable group"
+    related_sections: list[str] = Field(default_factory=list)  # HINT (many-to-many, not ownership)
+    artifact_usage: list[str] = Field(default_factory=list)    # e.g. ["figure", "table"]
+    confidence: str = "medium"                 # high | medium | low (role-inference certainty)
     columns: dict[str, str] = Field(default_factory=dict)   # column name -> dtype/role
     profile: dict = Field(default_factory=dict)             # rows, ranges, sheet names...
     key_observations: list[str] = Field(default_factory=list)

@@ -60,11 +60,18 @@ def detect(graph: ClaimGraph | None,
                              load_bearing=True))
 
     if evidence_inventory is not None:
+        # AI-first: a described OR confidently-inferred file is NOT asked about. Only files whose
+        # meaning stays unclear (low confidence / unknown role, no user description) become
+        # questions. (MVP_INPUT_UX_CHANGES_2026-06-26 §2.4-2.5)
         for a in evidence_inventory.assets:
-            if a.kind in ("csv", "xlsx", "xls", "dat") and not a.user_description.strip():
+            if a.user_description.strip():
+                continue
+            unclear = a.confidence == "low" or a.inferred_role in ("", "unknown")
+            if unclear:
                 gaps.append(GraphGap(kind="data_meaning_unknown", target_id=a.path,
                                      target_text=a.path,
-                                     detail=f"role guessed as '{a.inferred_role}'"))
+                                     detail=f"role guessed as '{a.inferred_role or 'unknown'}' "
+                                            f"(confidence {a.confidence})"))
 
     if research_state is not None:
         for field in research_state.unknowns:

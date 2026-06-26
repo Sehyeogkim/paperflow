@@ -4,6 +4,7 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 
 from .evidence_inventory import EvidenceInventory
+from .outline_state import NormalizedOutline
 from .research_state import ResearchState
 
 
@@ -70,6 +71,7 @@ class ProjectState(BaseModel):
     # reconstructed canonical state (minimal-input mode) — None in pure legacy mode
     research_state: ResearchState | None = None
     evidence_inventory: EvidenceInventory | None = None
+    normalized_outline: NormalizedOutline | None = None  # quick/structured/legacy → one schema
 
     @property
     def all_citation_keys(self) -> list[str]:

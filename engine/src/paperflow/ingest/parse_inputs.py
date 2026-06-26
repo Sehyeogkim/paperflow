@@ -12,6 +12,7 @@ import re
 from pathlib import Path
 
 from ..schemas.evidence_inventory import EvidenceInventory
+from ..schemas.outline_state import NormalizedOutline
 from ..schemas.project_state import (
     CoreMessage, DataAsset, JournalInfo, Outline, OutlineParagraph, ProjectState,
 )
@@ -202,12 +203,27 @@ def _read_optional(p: Path) -> str:
         return ""
 
 
+def _load_normalized_outline(main: Path, legacy: Outline) -> tuple[NormalizedOutline, Outline]:
+    """Prefer main/outline_state.json (new UI); else derive a normalized view from the legacy
+    3_outline.md so both modes converge on one schema. Returns (normalized, effective_outline)."""
+    from . import normalize_outline as no_mod
+    p = main / "outline_state.json"
+    if p.is_file():
+        try:
+            no = NormalizedOutline.model_validate_json(p.read_text())
+            return no, no_mod.to_outline(no)   # outline_state is the source of truth
+        except Exception:
+            pass
+    return no_mod.normalize_legacy(legacy), legacy
+
+
 def ingest(project_dir: str) -> ProjectState:
     project = Path(project_dir)
     main = project / "main"
     js = parse_journal_info(_read_optional(main / "0_journal_info.md"))
     cm = parse_core_message(_read_optional(main / "1_coremessage.md"))
     ol = parse_outline(_read_optional(main / "3_outline.md"))
+    normalized, ol = _load_normalized_outline(main, ol)
     rs, inv = _read_reconstruction(main)
     return ProjectState(
         project_dir=str(project),
@@ -217,4 +233,5 @@ def ingest(project_dir: str) -> ProjectState:
         answers=_read_answers(main),
         style=_read_style(main),
         research_state=rs, evidence_inventory=inv,
+        normalized_outline=normalized,
     )

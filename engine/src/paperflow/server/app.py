@@ -26,10 +26,12 @@ from .. import config
 from ..compile import plan_chat
 from ..flows import method_result as mr
 from ..flows.method_result import GEN_STEPS, PLAN_STEPS, RECONSTRUCT_STEPS
+from ..ingest import normalize_outline as no_mod
 from ..ingest.parse_inputs import ingest
 from ..question import loop as qloop
 from ..reconstruct import build_state
 from ..requirement import detect
+from ..schemas.outline_state import NormalizedOutline
 
 app = FastAPI(title="paperflow")
 
@@ -162,6 +164,40 @@ def save_inputs(body: dict) -> dict:
     if body.get("ui_state") is not None:
         (main / "_ui_state.json").write_text(json.dumps(body["ui_state"], ensure_ascii=False, indent=2))
     return {"ok": True}
+
+
+@app.post("/api/projects/outline")
+def save_outline(body: dict) -> dict:
+    """Normalize either outline mode into ONE schema, preserving the user's raw text.
+      mode=quick      -> Outline Normalizer LLM (deterministic heuristic fallback w/o key)
+      mode=structured -> deterministic per-section split
+    Persists main/outline_state.json (source of truth) + main/3_outline.md (legacy/CLI view)."""
+    project_dir = body["project_dir"]
+    main = Path(project_dir) / "main"
+    main.mkdir(parents=True, exist_ok=True)
+    mode = (body.get("mode") or "structured").lower()
+    if mode == "quick":
+        ps = ingest(project_dir)  # context (core message, plan) helps the normalizer
+        from ..util import inputs_block
+        no = no_mod.normalize_quick(body.get("raw", "") or "", context=inputs_block(ps))
+    else:
+        no = no_mod.normalize_structured(body.get("sections", {}) or {})
+    (main / "outline_state.json").write_text(no.model_dump_json(indent=2))
+    (main / "3_outline.md").write_text(no_mod.render_md(no))  # keep legacy/CLI working
+    return {"ok": True, "outline": no.model_dump()}
+
+
+@app.get("/api/projects/outline")
+def get_outline(project_dir: str) -> dict:
+    p = Path(project_dir) / "main" / "outline_state.json"
+    if p.is_file():
+        try:
+            return {"outline": NormalizedOutline.model_validate_json(p.read_text()).model_dump()}
+        except Exception:
+            pass
+    # derive from legacy 3_outline.md if present
+    ps = ingest(project_dir)
+    return {"outline": ps.normalized_outline.model_dump() if ps.normalized_outline else None}
 
 
 @app.get("/api/projects/state")

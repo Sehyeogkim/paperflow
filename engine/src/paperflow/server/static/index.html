@@ -63,6 +63,11 @@
   .savednote { font-size: .72rem; color: var(--ok); margin-top: 8px; height: 14px; }
   /* journal info structured sub-form */
   .subform { display: flex; flex-direction: column; gap: 1px; }
+  /* outline mode toggle (Quick input / Structured outline) */
+  .omode { display: inline-flex; gap: 4px; background: var(--code-bg); border: 1px solid var(--border); border-radius: 999px; padding: 4px; margin: 4px 0 14px; }
+  .omode-opt { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; font-weight: 600; color: var(--muted); padding: 6px 14px; border-radius: 999px; cursor: pointer; transition: background .15s, color .15s; }
+  .omode-opt.on { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+  .omode-opt input { accent-color: var(--accent); margin: 0; }
   .sflabel { font-size: .7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin: 13px 2px 5px; }
   .sflabel .req { color: var(--err); } .sflabel .opt { color: var(--muted); font-weight: 600; font-size: .6rem; text-transform: none; letter-spacing: 0; }
   .sfinput { width: 100%; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); font: inherit; font-size: .9rem; color: var(--ink); padding: 9px 12px; resize: vertical; line-height: 1.5; }
@@ -356,9 +361,9 @@ const FIELDS = [
   {key:"core", label:"core message", icon:"💡", coreform:true,
    hint:"이 논문이 증명하는 것. <b>One paragraph</b>와 <b>Novelty(기여)</b>가 필수 — Novelty는 claim graph의 핵심 주장이 됩니다. <b>＋</b>로 여러 개 추가하세요."},
   {key:"outline", label:"outline", icon:"🗂️", outlineform:true,
-   hint:"섹션은 고정. 각 섹션에 <b>전하고 싶은 메시지를 자유롭게</b> 적어주세요. 소제목을 미리 생각해뒀다면 <b>1. 2.</b> 처럼 줄로 나눠도 됩니다(선택). <b>Method·Result</b>만 필수, 나머지는 비워도 AI가 채웁니다."},
+   hint:"<b>Quick input</b>(자유 작성·붙여넣기)과 <b>Structured outline</b>(섹션별 작성) 중 선택하세요. 어떤 방식이든 백엔드에서 동일한 구조로 정리되고, 원문은 그대로 보존됩니다."},
   {key:"data", label:"data", icon:"📎", dataform:true,
-   hint:"실험 결과·측정값·참고자료를 올려주세요. AI가 글을 쓸 때 이 파일들을 근거로 삼습니다. <b>CSV·TXT·DAT</b>는 내용까지, <b>PDF·PNG·XLSX</b>는 파일 존재를 인식합니다. (선택 — 없어도 진행됩니다)"},
+   hint:"분석에 사용한 데이터·결과 파일을 가능한 한 모두 올려주세요. PaperFlow가 파일명·컬럼·내용·연구문서 문맥으로 각 파일의 의미를 <b>먼저 추론</b>합니다. <b>파일 설명은 선택</b> — 비워두면 AI가 추론하고, 불명확한 파일만 질문합니다."},
 ];
 const inputs = {journal:"", core:"", outline:""};
 let dataFiles = [];   // uploaded files under <project>/data/ (+ reference/)
@@ -394,6 +399,9 @@ const SECTIONS = [
   {key:"conclusion",   label:"Conclusion",   req:false},
 ];
 const outlineData = {introduction:"", method:"", result:"", discussion:"", conclusion:""};
+let outlineMode = "structured";   // "quick" | "structured"
+let outlineQuick = "";            // raw free-text for Quick input (preserved verbatim)
+const QUICK_PH = "연구의 목적, 사용한 방법, 주요 결과, 논문의 논리 흐름을 자유롭게 작성하세요.\n기존 outline이나 AI가 작성한 내용을 그대로 붙여넣어도 됩니다.";
 const SECTION_PH = {
   introduction: "이 섹션에서 전하고 싶은 메시지를 자유롭게 적어주세요.\n예) 관상동맥 질환 부담 → 파열이 핵심 → 기존 지표의 한계 → 우리 접근",
   method: "Method에서 전하고 싶은 내용을 자유롭게. 소제목을 미리 생각했다면 1. 2. 처럼 줄로 나눠도 됩니다.\n예)\n1. Cost-effective FSI 프레임워크 구성\n2. 환자 맞춤 경계조건 보정\n3. 메쉬·시간 수렴 검증",
@@ -425,7 +433,9 @@ function assembleOutlineMd() {
 function isFilled(key) {
   if (key === "journal") return !!(JF.field.trim() && JF.target.some(t => t.trim()));  // title optional
   if (key === "core") return !!(CM.paragraph.trim() && novelty.some(n => n.trim()));
-  if (key === "outline") return secHasContent("method") && secHasContent("result");  // A안: Method+Result
+  if (key === "outline") return outlineMode === "quick"
+    ? outlineQuick.trim().length > 0
+    : (secHasContent("method") && secHasContent("result"));
   if (key === "data") return dataFiles.length > 0;  // optional — never gates Create
   return !!inputs[key].trim();
 }
@@ -543,22 +553,42 @@ function openField(key) {
     return;
   }
 
-  if (f.outlineform) {  // fixed sections, one free-text message each
-    let html = `<div class="crumb">입력 / ${f.label}</div>
-      <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div><div class="subform">`;
-    for (const sec of SECTIONS) {
-      const req = sec.req ? '<span class="reqd">필수</span>' : '<span class="opt">선택</span>';
-      html += `<div class="osec"><div class="osec-h">${sec.label} ${req}<span class="fixed">고정 섹션</span></div>
-        <textarea class="osecta" id="osec_${sec.key}"></textarea></div>`;
+  if (f.outlineform) {  // two input modes -> one normalized schema in the backend
+    const toggle = `<div class="omode">
+        <label class="omode-opt ${outlineMode==='quick'?'on':''}"><input type="radio" name="omode" value="quick" ${outlineMode==='quick'?'checked':''}> Quick input</label>
+        <label class="omode-opt ${outlineMode==='structured'?'on':''}"><input type="radio" name="omode" value="structured" ${outlineMode==='structured'?'checked':''}> Structured outline</label>
+      </div>`;
+    let body;
+    if (outlineMode === "quick") {
+      body = `<textarea class="editor" id="quickInput" style="min-height:340px"></textarea>`;
+    } else {
+      body = `<div class="subform">`;
+      for (const sec of SECTIONS) {
+        const req = sec.req ? '<span class="reqd">필수</span>' : '<span class="opt">선택</span>';
+        body += `<div class="osec"><div class="osec-h">${sec.label} ${req}<span class="fixed">고정 섹션</span></div>
+          <textarea class="osecta" id="osec_${sec.key}"></textarea></div>`;
+      }
+      body += `</div>`;
     }
-    html += `</div><div class="savednote" id="savednote"></div>`;
-    $("canvas").innerHTML = html;
-    SECTIONS.forEach(sec => {
-      const ta = $("osec_" + sec.key);
-      ta.value = outlineData[sec.key];
-      ta.placeholder = SECTION_PH[sec.key];
-      ta.oninput = () => { outlineData[sec.key] = ta.value; renderNav(); refreshStep0(); note(); };
+    $("canvas").innerHTML = `<div class="crumb">입력 / ${f.label}</div>
+      <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div>
+      ${toggle}${body}<div class="savednote" id="savednote"></div>`;
+    document.querySelectorAll('input[name="omode"]').forEach(r => {
+      r.onchange = () => { outlineMode = r.value; note(); openField("outline"); };  // re-render, no data loss
     });
+    if (outlineMode === "quick") {
+      const ta = $("quickInput");
+      ta.value = outlineQuick; ta.placeholder = QUICK_PH;
+      ta.oninput = () => { outlineQuick = ta.value; renderNav(); refreshStep0(); note(); };
+      ta.focus();
+    } else {
+      SECTIONS.forEach(sec => {
+        const ta = $("osec_" + sec.key);
+        ta.value = outlineData[sec.key];
+        ta.placeholder = SECTION_PH[sec.key];
+        ta.oninput = () => { outlineData[sec.key] = ta.value; renderNav(); refreshStep0(); note(); };
+      });
+    }
     renderNav();
     return;
   }
@@ -701,8 +731,12 @@ $("createBtn").onclick = async () => {
       await postJSON("/api/projects/save", {
         project_dir: projectDir,
         journal_info_md: assembleJournalMd(), coremessage_md: assembleCoreMd(),
-        outline_md: assembleOutlineMd(), ui_state: uiState(),
+        outline_md: outlineMode === "structured" ? assembleOutlineMd() : "", ui_state: uiState(),
       });
+      // normalize the chosen outline mode into the canonical schema (preserves raw text)
+      await postJSON("/api/projects/outline", outlineMode === "quick"
+        ? {project_dir: projectDir, mode: "quick", raw: outlineQuick}
+        : {project_dir: projectDir, mode: "structured", sections: outlineData});
     }
     await runDiagnose();
   } catch (e) { showStatus("오류", "오류", String(e), "warn"); $("createBtn").disabled = false; }
@@ -1060,7 +1094,7 @@ function renderNotePanel() {
   const box = $("notepanel"); if (!box) return;
   const f = dataFiles.find(x => x.rel === selectedData);
   if (!f) {
-    box.innerHTML = `<div class="np-empty">왼쪽에서 파일을 클릭하면<br>여기에 그 파일이 무엇인지<br>자유롭게 적을 수 있어요.</div>`;
+    box.innerHTML = `<div class="np-empty">왼쪽에서 파일을 클릭하면<br>설명을 적을 수 있어요 <b>(선택)</b>.<br>비워두면 PaperFlow가 자동으로 의미를 추론합니다.</div>`;
     return;
   }
   const cols = (f.columns && f.columns.length) ? ` · ${f.columns.join(", ")}` : "";
@@ -1068,7 +1102,7 @@ function renderNotePanel() {
       <span class="np-name">${f.name}</span></div>
     <div class="np-sub">${f.rel}${cols}</div>
     <textarea class="np-ta" id="noteTa"
-      placeholder="이 파일이 무엇인지 자유롭게 적어주세요.\n예) VI=2 하중조건에서 그룹별 1차/전체 Sobol 민감도.\nResult 섹션의 '물성치가 가장 민감' 주장 근거(Fig 3)."></textarea>`;
+      placeholder="파일 설명 (선택) — 비워두면 PaperFlow가 자동으로 추론합니다.\n예) VI=2 하중조건에서 그룹별 1차/전체 Sobol 민감도.\nResult 섹션의 '물성치가 가장 민감' 주장 근거(Fig 3)."></textarea>`;
   const ta = $("noteTa");
   ta.value = f.note || "";
   ta.oninput = () => { f.note = ta.value; };          // keep locally so re-renders don't lose it
@@ -1084,12 +1118,13 @@ async function saveNote(rel, note) {
 }
 
 // ---------- structured UI state (lossless reopen) ----------
-function uiState() { return {JF, CM, novelty, outlineData}; }
+function uiState() { return {JF, CM, novelty, outlineData, outlineMode, outlineQuick}; }
 function resetState() {
   Object.assign(JF, {field:"", title:"", affiliation:"", target:[""], authors:[""], corresponding:[""]});
   Object.assign(CM, {paragraph:"", sentence:"", outscope:""}); CM.keywords = [""];
   novelty = [""];
   SECTIONS.forEach(s => outlineData[s.key] = "");
+  outlineMode = "structured"; outlineQuick = "";
 }
 function restoreState(st) {
   if (!st) { resetState(); return; }
@@ -1105,6 +1140,8 @@ function restoreState(st) {
       : Array.isArray(v) ? v.map(o => [o.heading, o.intent].filter(Boolean).join(" — ")).filter(Boolean).join("\n")
       : "";
   });
+  outlineMode = (st.outlineMode === "quick" || st.outlineMode === "structured") ? st.outlineMode : "structured";
+  outlineQuick = typeof st.outlineQuick === "string" ? st.outlineQuick : "";
 }
 
 // ---------- dashboard ----------
