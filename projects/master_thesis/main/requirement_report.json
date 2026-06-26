@@ -1,0 +1,92 @@
+{
+  "study_type": "computational_biomechanics",
+  "classification": "MISSING_CRITICAL_INFORMATION",
+  "present": [
+    "boundary_conditions",
+    "sample_definition",
+    "sobol_result_files"
+  ],
+  "missing": [
+    {
+      "field": "research_objective",
+      "why_it_matters": "Reviewers need a concise statement of the study goal and specific hypotheses to judge whether the methods and analyses are appropriate and whether the results support the claims.",
+      "reviewer_risk": "high",
+      "question": "Please provide a clear research objective (one sentence) and one-paragraph summary of the study, including the specific hypothesis or claims you test (e.g., which metrics you claim to be sensitive to which parameters).",
+      "example": "Example: \"Objective: Quantify the sensitivity of fibrous-cap peak circumferential stress (CP) and lumen area pulsatility (LAP) to plaque morphology and material properties in an idealized coronary bifurcation using FSI. Hypothesis: CP is most sensitive to fibrous cap thickness and lipid stiffness, whereas LAP is driven primarily by inlet pressure and vessel wall stiffness.\"",
+      "priority": 3.0
+    },
+    {
+      "field": "geometry_definition",
+      "why_it_matters": "The computational geometry (patient-specific vs idealized), dimensions, mesh generation strategy, and element types profoundly affect results and are required to reproduce and evaluate the study.",
+      "reviewer_risk": "high",
+      "question": "Describe the geometry used (patient-specific or idealized), its construction (dimensions, lesion location, side-branch geometry if any), mesh type (tetra/hex), element sizes, total element/node counts, and which software or meshing tool produced the mesh. If multiple geometries/cohorts were used, give the number and how they differ.",
+      "example": "Example: \"Idealized 3D coronary artery segment, 30 mm long with 3 mm inlet diameter, stenosis of 60% area reduction located 12 mm from inlet; plaque components included lipid core and fibrous cap. Mesh: unstructured tetrahedral mesh generated with Gmsh, ~250k elements, min element size 0.04 mm at cap, growth ratio 1.2.\"",
+      "priority": 3.0
+    },
+    {
+      "field": "governing_equations",
+      "why_it_matters": "Reproducibility and appropriate interpretation require explicit governing equations and assumptions (fluid and solid), e.g., incompressible Navier–Stokes, Newtonian/non-Newtonian, linear/nonlinear elasticity, FSI coupling approach.",
+      "reviewer_risk": "high",
+      "question": "State the governing equations and assumptions for fluid and solid domains, including constitutive models, incompressibility assumptions, and the FSI coupling strategy (monolithic or partitioned; ALE, immersed boundary, etc.).",
+      "example": "Example: \"Incompressible Navier–Stokes for the fluid (Newtonian, rho=1060 kg/m3, mu=0.0035 Pa·s) with ALE formulation; solid: quasi-static, linear elasticity for vessel wall and plaque components (Young's moduli specified), density 1200 kg/m3, Poisson's ratio 0.45; partitioned FSI with implicit staggered coupling and two sub-iterations per time step.\"",
+      "priority": 3.0
+    },
+    {
+      "field": "numerical_solver",
+      "why_it_matters": "The solver, numerical schemes, time integrators, coupling strategy, and solver tolerances can change outcomes and are necessary for reproducibility and for reviewers to assess numerical reliability.",
+      "reviewer_risk": "high",
+      "question": "Specify the software/platform used (commercial or in-house), fluid and solid solver details (implicit/explicit), time integration schemes, coupling algorithm and frequency, linear/nonlinear solver types and tolerances, parallelization resources, and any stabilization schemes.",
+      "example": "Example: \"Simulations run in OpenFOAM 8 coupled with CalculiX via preCICE; fluid solver: PISO, second-order spatial discretization; solid solver: implicit Newmark with beta=0.25; partitioned coupling with preCICE using Aitken relaxation, 5 coupling iterations per timestep; linear solver: GMRES with ILU preconditioner, tol=1e-8.\"",
+      "priority": 3.0
+    },
+    {
+      "field": "convergence_criteria",
+      "why_it_matters": "Reviewers need explicit iterative convergence thresholds and criteria for terminating nonlinear/linear solves and FSI coupling to judge solution accuracy and stability.",
+      "reviewer_risk": "high",
+      "question": "Give the numerical convergence criteria: residual tolerances for fluid/solid solves, maximum nonlinear iterations, convergence threshold for FSI coupling (e.g., change in interface force/displacement), and any post-checks used (mass conservation, energy balance).",
+      "example": "Example: \"Fluid residuals reduced below 1e-6 (L2 norm) per time step; solid residuals below 1e-8; maximum 50 Newton iterations per nonlinear solve; FSI coupling considered converged when relative change in interface force <1e-4 between successive coupling iterations.\"",
+      "priority": 3.0
+    },
+    {
+      "field": "validation",
+      "why_it_matters": "Validation against experimental data or established benchmarks is essential to support model credibility and to justify using the model to draw physiological or clinical conclusions.",
+      "reviewer_risk": "high",
+      "question": "Provide validation details: what experimental or literature data you compared to, which outputs were validated (pressure waveforms, flow rates, peak stresses), quantitative error metrics, and the results of those comparisons. If no direct validation was possible, justify why and state limitations.",
+      "example": "Example: \"Model validated against in-vivo coronary flow waveforms reported in figueroa2006: mean flow error <10% and phase lag <5 ms; peak systolic pressure within 8% of reference. For stress validation, compared to published FSI benchmark in zhu2022svfsi showing <5% difference in peak wall stress.\"",
+      "priority": 3.0
+    },
+    {
+      "field": "material_properties",
+      "why_it_matters": "Although parameter names are present in input files, reviewers need explicit constitutive laws (e.g., Neo-Hookean vs linear elastic), numerical values with units, density and Poisson's ratio, and spatial assignment of materials.",
+      "reviewer_risk": "medium",
+      "question": "List the material constitutive models and the numerical parameters (including units) used for each component (vessel, fibrous cap, lipid core, calcification), and state densities and Poisson's ratios. If time-varying elastance is used, provide its equation and parameter values and units.",
+      "example": "Example: \"Vessel wall: linear elastic, E_vessel = 300 kPa, nu = 0.45, rho = 1100 kg/m3. Fibrous cap: E_fc = 800 kPa. Lipid core: E_lipid = 10 kPa. Calcification: E_cal = 5 GPa. Time-varying LV elastance: E(t)=E_min+(E_max-E_min)*0.5*(1-cos(2πt/T)), with E_max=2.0 mmHg/ml, E_min=0.06 mmHg/ml, T=0.8 s.\"",
+      "priority": 2.0
+    },
+    {
+      "field": "outcome_metric",
+      "why_it_matters": "The Sobol results refer to CP and LAP groups, but reviewers must know exact definitions, units, how metrics were computed (instantaneous maxima, cycle averages, spatial vs point values), and how they were reduced to scalar quantities for sensitivity analysis.",
+      "reviewer_risk": "medium",
+      "question": "Define each outcome metric used in the sensitivity analysis (e.g., CP, LAP): precise mathematical definition, physical units, spatial/temporal sampling procedure (e.g., peak over cardiac cycle at a point vs spatial average), and any post-processing filters applied.",
+      "example": "Example: \"CP (peak circumferential stress) = maximum of circumferential Cauchy stress in the fibrous cap over the cardiac cycle, reported in kPa at the point of maximum; LAP = relative change in lumen area between end-diastole and end-systole expressed as percentage: 100*(A_max-A_min)/A_max; metrics computed after 3rd cardiac cycle to avoid start-up transients.\"",
+      "priority": 2.0
+    },
+    {
+      "field": "sensitivity_method",
+      "why_it_matters": "Sobol output files are present, but reviewers require the details of the sensitivity analysis method (sampling scheme, number of samples, parameter distributions and ranges, how indices were computed) to assess the reliability of S1 and ST values.",
+      "reviewer_risk": "medium",
+      "question": "Describe the global sensitivity analysis method: which Sobol estimator or library was used, sampling scheme (Saltelli or other), number of base samples and total model evaluations, parameter distributions and ranges (or how they map to input.csv), and whether bootstrapping/confidence intervals were computed.",
+      "example": "Example: \"Used SALib's Saltelli sampler with N=1024 base samples, resulting in 1024*(k+2)=11264 model evaluations for k=9 parameters. Parameters assumed uniform over ranges listed in input_parameter/input.csv. First-order (S1) and total-order (ST) indices computed with 1000 bootstrap resamples to produce 95% CIs.\"",
+      "priority": 2.0
+    },
+    {
+      "field": "timestep_independence",
+      "why_it_matters": "If the simulations are transient/pulsatile (elastance.dat and inflow.dat suggest pulsatile BCs), a timestep convergence study is required to ensure temporal discretization does not bias sensitivity results or peak metrics.",
+      "reviewer_risk": "medium",
+      "question": "Provide a timestep-independence study: which time steps were tested, what metrics were monitored (e.g., peak CP, mean flow), numerical results showing convergence (tabulated or plotted), and the chosen time step with justification.",
+      "example": "Example: \"Tested dt = 1e-3, 5e-4, 1e-4 s on the baseline geometry; peak CP changed by 6% between 1e-3 and 5e-4 s and by 1.2% between 5e-4 and 1e-4 s. Chosen dt = 5e-4 s as it yields <2% change from the finer step while reducing CPU time.\"",
+      "priority": 2.0
+    }
+  ],
+  "notes": "Sobol result files and input parameter table are provided, indicating a sensitivity study on transient FSI, but the manuscript lacks core modelling details (geometry, governing equations, solver, validation, and convergence studies). These missing items are critical for reproducibility and reviewer acceptance."
+}
