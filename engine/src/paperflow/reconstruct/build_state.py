@@ -161,7 +161,7 @@ def enrich_research_state(ps: ProjectState, rs: ResearchState,
     user = (f"{inputs_block(ps)}\n\n## EVIDENCE INVENTORY\n{inv_block}\n\n"
             f"## CURRENT SKELETON\n{rs.model_dump_json(indent=2)}")
     try:
-        raw = client.call_json("reasoning", sys, user, step="reconstruct.state", max_tokens=2500)
+        raw = client.call_json("reasoning", sys, user, step="reconstruct.state", max_tokens=2500, effort="low")
     except Exception:
         return rs
     # merge: LLM fills scalars + extends lists, but never deletes skeleton facts
@@ -202,7 +202,7 @@ def enrich_evidence_inventory(ps: ProjectState, inventory: EvidenceInventory) ->
     user = (f"{inputs_block(ps)}\n\n## FILES TO INFER (return one object per path)\n"
             f"{json.dumps(files, ensure_ascii=False)[:9000]}")
     try:
-        raw = client.call_json("reasoning", sys, user, step="reconstruct.evidence", max_tokens=3500)
+        raw = client.call_json("reasoning", sys, user, step="reconstruct.evidence", max_tokens=3500, effort="low")
     except Exception:
         return inventory
     by_path = {str(r.get("path")): r for r in (raw.get("files") or []) if isinstance(r, dict)}

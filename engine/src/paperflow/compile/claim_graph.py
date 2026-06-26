@@ -101,7 +101,7 @@ def validate(raw: dict) -> dict:
 def build(ps: ProjectState) -> ClaimGraph:
     ib = inputs_block(ps)
     # Pass A — claim skeleton
-    a = client.call_json("reasoning", prompt("claim_graph_a"), ib, step="claim_graph.a", max_tokens=2500)
+    a = client.call_json("reasoning", prompt("claim_graph_a"), ib, step="claim_graph.a", max_tokens=2500, effort="low")
     claims = [c for c in (a.get("claims") or []) if isinstance(c, dict) and c.get("id")]
     for c in claims:
         c["kind"] = "claim"
@@ -110,7 +110,7 @@ def build(ps: ProjectState) -> ClaimGraph:
     # Pass B — grounding for the given claims
     b = client.call_json("reasoning", prompt("claim_graph_b"),
                          f"{ib}\n\n## CLAIM SKELETON (do not restate these)\n{claim_block}",
-                         step="claim_graph.b", max_tokens=4096)
+                         step="claim_graph.b", max_tokens=4096, effort="low")
 
     merged = {
         "main_contribution": a.get("main_contribution", ""),
