@@ -171,6 +171,7 @@ def test_advance_path_a_no_stage2(mini_project, offline, monkeypatch):
 
 
 def test_advance_path_b_stage2_then_finalize(mini_project, offline, monkeypatch):
+    monkeypatch.setattr(mr, "SKIP_STAGE2", False)   # exercise the conditional Stage-2 path
     monkeypatch.setattr(claim_graph, "build_preliminary", lambda ps: _bare_claim_graph())
     (Path(mini_project) / "main" / "answers_requirement.json").write_text("{}")
     res = mr.advance_after_requirement_answers(mini_project)
@@ -195,6 +196,7 @@ def test_advance_path_b_stage2_then_finalize(mini_project, offline, monkeypatch)
 
 
 def test_advance_path_c_unknown_downgrades(mini_project, offline, monkeypatch):
+    monkeypatch.setattr(mr, "SKIP_STAGE2", False)   # exercise the conditional Stage-2 path
     monkeypatch.setattr(claim_graph, "build_preliminary", lambda ps: _bare_claim_graph())
     (Path(mini_project) / "main" / "answers_requirement.json").write_text("{}")
     res = mr.advance_after_requirement_answers(mini_project)

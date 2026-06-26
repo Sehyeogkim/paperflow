@@ -292,7 +292,12 @@ def reconstruct_after_requirement_answers(
     if ps is None:
         from ..ingest.parse_inputs import ingest
         ps = ingest(project_dir)
-    rs_v1, inv = reconstruct(project_dir, ps, use_llm=use_llm)
+    # SPEED: diagnose already built research_state.json — reuse it instead of a 2nd LLM
+    # reconstruct (~58s). Stage-1 answers are folded in deterministically below AND also reach
+    # the graph builder via inputs_block, so nothing is lost.
+    rs_v1, inv = load(project_dir)
+    if rs_v1 is None or inv is None:
+        rs_v1, inv = reconstruct(project_dir, ps, use_llm=use_llm)
     _save_versioned(project_dir, "research_state_v1.json", rs_v1)
     rs_v2 = _fold_answers(rs_v1, answers or {}, "author_answer_requirement")
     rs_v2.source = "v2"

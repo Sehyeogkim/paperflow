@@ -43,18 +43,22 @@ def _dispatch(tier, system, user, *, step="", max_tokens=4096, effort=""):
                     {"raw_name": "Mooney-Rivlin material model", "category": "models_and_equations",
                      "sub_category": "constitutive", "description": "vessel wall", "explicitly_reported": True},
                 ]}
-    if step.startswith("lit.normalize"):   # now per-category: "lit.normalize:<category>"
+    if step.startswith("lit.normalize"):   # per-category, now also judges requirement_level
         if "validation" in step:
             return {"clusters": [
                 {"canonical_key": "mesh_independence", "category": "validation",
                  "aliases": ["mesh convergence study", "grid independence test"],
                  "applicable_to": ["quantitative_numerical_simulation", "peak_field_value_claim"],
+                 "required_when": ["peak_stress_claim"], "requirement_level": "strongly_expected",
+                 "reason": "Peak stress is mesh-sensitive.",
                  "source_items": ["paper_001:item_01", "paper_003:item_01", "paper_005:item_01"]}]}
         if "models_and_equations" in step:
             return {"clusters": [
                 {"canonical_key": "material_constitutive_model", "category": "models_and_equations",
                  "aliases": ["Mooney-Rivlin material model", "hyperelastic law"],
                  "applicable_to": ["finite_element_simulation"],
+                 "required_when": ["fem_simulation"], "requirement_level": "mandatory",
+                 "reason": "Constitutive law governs stress outputs.",
                  "source_items": ["paper_001:item_02", "paper_002:item_02"]}]}
         return {"clusters": []}
     if step == "lit.synthesize":

@@ -265,6 +265,18 @@ _PREVIEW_CSS = """
 .pf-preview .g-missing{background:#C25744;color:#fff;}
 .pf-preview .pf-fig{background:#E6E0D4;border:1px dashed #D4C5B0;border-radius:6px;
   padding:10px 12px;margin:8px 0;font-size:.9rem;}
+.pf-preview .pf-figcard{margin:16px 0;}
+.pf-preview .pf-figbox{border:1.5px solid #6B5E54;border-radius:8px;padding:18px 16px;
+  text-align:center;color:#6B5E54;background:#FAF9F5;}
+.pf-preview .pf-figbox .ph{font-weight:700;color:#CC785C;}
+.pf-preview .pf-figbox .msg{margin-top:8px;font-size:.92rem;color:#2D2D2D;}
+.pf-preview .pf-figcap{margin-top:7px;font-size:.88rem;}
+.pf-preview .pf-figcap b{color:#1A1A1A;}
+.pf-preview .pf-copy{margin-top:8px;display:inline-flex;align-items:center;gap:6px;
+  background:#CC785C;color:#fff;border:none;border-radius:7px;padding:7px 13px;font-size:.8rem;
+  font-weight:700;cursor:pointer;}
+.pf-preview .pf-copy:active{transform:translateY(1px);}
+.pf-preview .pf-copy.ok{background:#7A9A6D;}
 .pf-preview .pf-warn{background:#C2574420;border-left:3px solid #C25744;padding:8px 12px;
   margin:6px 0;font-size:.85rem;}
 .pf-preview .pf-ref{font-size:.85rem;color:#6B5E54;}
@@ -290,11 +302,32 @@ def to_html(ms: ManuscriptState) -> str:
     for f in ms.figures:
         figs_for.setdefault(f.section or "", []).append(f)
     if ms.figures:
-        p.append("<h2>Figures &amp; Tables (planned)</h2>")
+        p.append("<h2>Figures &amp; Tables — placeholders (to be created)</h2>")
+        fig_n = tab_n = 0
         for f in ms.figures:
-            p.append(f'<div class="pf-fig"><strong>{html.escape(f.id)}</strong> '
-                     f'({html.escape(f.kind)}{", " + html.escape(f.section) if f.section else ""}) — '
-                     f'{html.escape(f.caption_draft or f.message)}</div>')
+            if f.kind == "table":
+                tab_n += 1
+                label = f"Table {tab_n}"
+            else:
+                fig_n += 1
+                label = f"Figure {fig_n}"
+            cap = html.escape(f.caption_draft or f.message)
+            sec = f' (→ {html.escape(f.section)})' if f.section else ""
+            prompt_txt = (f.generation_prompt or f.message or "").strip()
+            copy = ""
+            if prompt_txt:
+                attr = html.escape(prompt_txt, quote=True)
+                copy = (f'<button class="pf-copy" data-prompt="{attr}" '
+                        f'onclick="pfCopyPrompt(this)">📋 이미지 모델 prompt 복사</button>')
+            p.append(
+                f'<div class="pf-figcard"><div class="pf-figbox">'
+                f'<div class="ph">[{label} — 여기에 이 그림을 그리세요]</div>'
+                f'<div class="msg">{html.escape(f.message)}</div></div>'
+                f'<div class="pf-figcap"><b>{label}.</b> {cap}{sec}</div>{copy}</div>')
+        p.append(
+            "<script>function pfCopyPrompt(b){navigator.clipboard.writeText(b.dataset.prompt)"
+            ".then(function(){var t=b.textContent;b.textContent='✓ 복사됨';b.classList.add('ok');"
+            "setTimeout(function(){b.textContent=t;b.classList.remove('ok');},1500);});}</script>")
     if ms.references:
         p.append("<h2>References</h2><div class='pf-ref'>")
         for r in ms.references:

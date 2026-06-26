@@ -30,6 +30,7 @@ from ..schemas.overall_schema import OverallSchema
 from ..schemas.project_state import ProjectState
 from ..schemas.requirement import CompletionClass, MissingItem, RequirementReport
 from ..schemas.requirement_status import GroundedQuestion, RequirementStatus
+from ..util import inputs_block
 
 
 def _litdir(project_dir: str) -> Path:
@@ -140,14 +141,14 @@ def run(project_dir: str, ps: ProjectState, progress=lambda m: None) -> dict:
             for ex in extractions:
                 _dump(project_dir, f"{ex.paper_id}.json", ex.model_dump())
 
-            progress("[normalize] 개념 통합 (category별 병렬)")
-            clusters = normalize_items.normalize(extractions)
+            progress("[normalize] 개념 통합 + 레벨 판단 (category별 병렬)")
+            clusters = normalize_items.normalize(extractions, inputs_block(ps))
             _dump(project_dir, "normalized_items.json", clusters)
             if not clusters:
                 progress("[normalize] 클러스터 없음 → static fallback")
                 return _finish_fallback(project_dir, ps, "no clusters from extraction")
 
-            progress("[schema] 프로젝트 schema 합성")
+            progress("[schema] 프로젝트 schema 합성 (결정적)")
             schema = synthesize_schema.synthesize(clusters, ps, papers, project_id, archetype)
             _dump(project_dir, "overall_schema.json", schema.model_dump())
             _dump(project_dir, "_fingerprint.json", {"fingerprint": fp})

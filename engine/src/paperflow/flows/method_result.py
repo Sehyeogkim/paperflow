@@ -247,6 +247,9 @@ def _load_logic_answers(project_dir: str) -> dict:
     return {str(k): str(v) for k, v in d.items()} if isinstance(d, dict) else {}
 
 
+SKIP_STAGE2 = True   # speed: skip the Stage-2 logic-question round; go straight to generation
+
+
 def advance_after_requirement_answers(project_dir: str, progress=lambda m: None) -> dict:
     """Stage-1 → rebuild Research State v2, build the Preliminary Logic Graph, validate gaps,
     and decide whether Stage-2 logic questions are needed. (TWO_STAGE_QUESTIONS §11.2)"""
@@ -271,7 +274,9 @@ def advance_after_requirement_answers(project_dir: str, progress=lambda m: None)
     report = validate_gaps.validate(graph)
     graph_gap_report_path(project_dir).write_text(report.model_dump_json(indent=2))
 
-    if report.needs_stage2():
+    # SPEED TOGGLE: assume the LLM builds a complete graph -> never ask Stage-2 logic questions,
+    # go straight to generation. Flip to False to restore the conditional Stage-2 round.
+    if not SKIP_STAGE2 and report.needs_stage2():
         qs = logic_questions.generate(report, graph)
         (Path(project_dir) / "main" / "questions_logic.json").write_text(
             json.dumps([q.model_dump() for q in qs], ensure_ascii=False, indent=2))
@@ -284,31 +289,54 @@ def advance_after_requirement_answers(project_dir: str, progress=lambda m: None)
             "tokens": {"input": manifest.total_input, "output": manifest.total_output}}
 
 
+def _citations_from_stage1(project_dir: str) -> list[FoundRef]:
+    """Reuse the papers Stage-1 (diagnose) already found via OpenAlex as the citation pool —
+    avoids a 2nd OpenAlex search in generation. Returns [] if none on disk."""
+    import re as _re
+    p = Path(project_dir) / "main" / "literature" / "selected_papers.json"
+    try:
+        papers = json.loads(p.read_text())
+    except Exception:
+        return []
+    out: list[FoundRef] = []
+    seen: set[str] = set()
+    for w in papers:
+        au = (w.get("authors") or "").split(",")[0].strip() or "anon"
+        key = (_re.sub(r"[^a-z0-9]", "", au.lower())[:12] or "ref") + str(w.get("year") or "")
+        while key in seen:
+            key += "a"
+        seen.add(key)
+        out.append(FoundRef(key=key, title=w.get("title", ""), authors=w.get("authors", ""),
+                            year=w.get("year"), doi=w.get("doi", ""),
+                            abstract=(w.get("abstract") or "")[:600], topic=""))
+    return out
+
+
 def auto_plan_from_final_graph(project_dir: str, ps: ProjectState, graph: ClaimGraph,
                                sections: list[str] | None = None, progress=lambda m: None,
                                litsearch: bool = True) -> dict:
-    """Build figure plan + section structure from an ALREADY-FINAL graph and persist _plan.json
-    (no graph build, no user confirmation). (TWO_STAGE_QUESTIONS §10.3)"""
+    """Build figure plan from an ALREADY-FINAL graph and persist _plan.json (no graph build, no
+    user confirmation, no separate structure call — contracts derive subheadings). §10.3"""
     sections = _order(sections or _DEFAULT_GEN_SECTIONS)
     progress("[guideline] 저널 가이드라인 확인")
     ps.journal_constraints = journal_guideline.fetch(ps.journal_info)
-    literature_md = ""
-    if litsearch:
-        progress("[litsearch] 선행연구조사 (OpenAlex)")
+    # citations: reuse Stage-1 papers; only hit OpenAlex if Stage 1 produced nothing
+    ps.found_references = _citations_from_stage1(project_dir)
+    if not ps.found_references and litsearch:
+        progress("[litsearch] 선행연구조사 (OpenAlex fallback)")
         from ..litsearch import run as litrun
-        literature_md, found = litrun.run(ps, progress=lambda m: progress(f"[litsearch] {m}"))
-        ps.found_references = found
+        _, ps.found_references = litrun.run(ps, progress=lambda m: progress(f"[litsearch] {m}"))
+    else:
+        progress(f"[citation] Stage-1 논문 {len(ps.found_references)}편 재사용")
     progress("[figure_plan] Figure 설계")
     fig_spec = figure_sketch.attach_sketches(figure_plan.plan(project_dir, graph))
-    progress("[structure] 섹션 구조·소제목")
-    section_structure = structure.propose(ps, graph, sections)
     out = {
         "sections": sections, "classification": None,
         "main_contribution": graph.main_contribution,
         "claim_graph": graph.model_dump(), "figures": fig_spec,
-        "structure": section_structure,
+        "structure": {},   # contracts generate their own subheadings (no separate structure call)
         "found_references": [r.model_dump() for r in ps.found_references],
-        "literature_md": literature_md, "auto": True,
+        "literature_md": "", "auto": True,
     }
     save_plan(project_dir, out)
     return out

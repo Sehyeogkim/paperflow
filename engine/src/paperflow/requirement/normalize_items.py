@@ -51,19 +51,25 @@ def _trivial_clusters(flat: list[dict], category: str) -> list[dict]:
     for f in flat:
         key = _slug(f["raw_name"])
         g = groups.setdefault(key, {"canonical_key": key, "category": category,
-                                    "aliases": [], "applicable_to": [], "source_items": []})
+                                    "aliases": [], "applicable_to": [], "required_when": [],
+                                    "requirement_level": "common", "reason": "", "source_items": []})
         g["source_items"].append(f["ref"])
         if f["raw_name"] not in g["aliases"]:
             g["aliases"].append(f["raw_name"])
     return list(groups.values())
 
 
-def _cluster_batch(flat: list[dict], category: str) -> list[dict]:
-    """LLM-cluster one category's items. Falls back to trivial clusters on error."""
-    user = f"## REPORTED ITEMS (category: {category})\n" + json.dumps(flat, ensure_ascii=False)
+_VALID_LEVELS = ("mandatory", "strongly_expected", "common", "optional", "unsupported")
+
+
+def _cluster_batch(flat: list[dict], category: str, context: str) -> list[dict]:
+    """LLM-cluster one category's items AND judge requirement_level/required_when/reason (merged
+    normalize+synthesize). Falls back to trivial clusters on error."""
+    user = (f"{context}\n\n## REPORTED ITEMS (category: {category})\n"
+            + json.dumps(flat, ensure_ascii=False))
     try:
         raw = client.call_json("fast", prompt("normalize_reported_items"), user,
-                               step=f"lit.normalize:{category}", max_tokens=2000, effort="low")
+                               step=f"lit.normalize:{category}", max_tokens=2200, effort="low")
     except Exception as e:
         print(f"[normalize:{category}] LLM failed ({len(flat)} items): {type(e).__name__}: "
               f"{str(e)[:120]}", file=sys.stderr)
@@ -76,19 +82,24 @@ def _cluster_batch(flat: list[dict], category: str) -> list[dict]:
         src = [valid_refs[_canon(s)] for s in (c.get("source_items") or []) if _canon(s) in valid_refs]
         if not src:
             continue
+        level = str(c.get("requirement_level", "common"))
         clusters.append({
             "canonical_key": str(c["canonical_key"]).strip(),
             "category": str(c.get("category", category)).strip() or category,
             "aliases": [str(a).strip() for a in (c.get("aliases") or []) if str(a).strip()],
             "applicable_to": [str(a).strip() for a in (c.get("applicable_to") or []) if str(a).strip()],
+            "required_when": [str(a).strip() for a in (c.get("required_when") or []) if str(a).strip()],
+            "requirement_level": level if level in _VALID_LEVELS else "common",
+            "reason": str(c.get("reason", "")).strip(),
             "source_items": src,
         })
     return clusters or _trivial_clusters(flat, category)   # never lose a category to a bad response
 
 
-def normalize(extractions: list[PaperExtraction]) -> list[dict]:
-    """Cluster items into canonical keys, per-category in parallel. Returns [] only when there
-    are no items at all (caller treats that as a fallback trigger)."""
+def normalize(extractions: list[PaperExtraction], context: str = "") -> list[dict]:
+    """Cluster items into canonical keys + judge requirement_level, per-category in parallel.
+    `context` = the project's inputs_block (so leveling is project-aware). Returns [] only when
+    there are no items at all (caller treats that as a fallback trigger)."""
     flat = _flatten(extractions)
     if not flat:
         return []
@@ -98,7 +109,9 @@ def normalize(extractions: list[PaperExtraction]) -> list[dict]:
 
     def _work(item: tuple[str, list[dict]]) -> list[dict]:
         cat, items = item
-        return _cluster_batch(items, cat) if len(items) >= _LLM_THRESHOLD else _trivial_clusters(items, cat)
+        if len(items) >= _LLM_THRESHOLD:
+            return _cluster_batch(items, cat, context)
+        return _trivial_clusters(items, cat)
 
     clusters: list[dict] = []
     with ThreadPoolExecutor(max_workers=min(8, len(by_cat))) as ex:
