@@ -80,6 +80,18 @@ def test_save_and_load_roundtrip(mini_project):
     assert inv2 == inv
 
 
+def test_ingest_tolerates_missing_optional_outline(mini_project):
+    """Minimal-input mode: removing the optional outline must not break ingest/reconstruct."""
+    from pathlib import Path as _P
+    (_P(mini_project) / "main" / "3_outline.md").unlink()
+    ps = ingest(mini_project)               # must not raise
+    assert ps.outline.skeleton == []
+    assert ps.core_message.one_sentence     # core message still parsed
+    rs, inv = build_state.reconstruct(mini_project, ps, use_llm=False)
+    assert rs.primary_message               # research state still built from data + core msg
+    assert len(inv.assets) == 2
+
+
 def test_reconstruct_demo_project(demo_dir):
     """The real demo (9 CSVs) reconstructs without error, fully offline."""
     rs, inv = build_state.reconstruct(demo_dir, use_llm=False)

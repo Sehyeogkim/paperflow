@@ -193,12 +193,21 @@ def _read_reconstruction(main: Path) -> tuple[ResearchState | None, EvidenceInve
     return rs, inv
 
 
+def _read_optional(p: Path) -> str:
+    """Read a file, or '' if absent. Outline is optional (minimal-input mode); journal/core
+    may also be filled in later — ingest must never crash on a partial project."""
+    try:
+        return p.read_text()
+    except FileNotFoundError:
+        return ""
+
+
 def ingest(project_dir: str) -> ProjectState:
     project = Path(project_dir)
     main = project / "main"
-    js = parse_journal_info((main / "0_journal_info.md").read_text())
-    cm = parse_core_message((main / "1_coremessage.md").read_text())
-    ol = parse_outline((main / "3_outline.md").read_text())
+    js = parse_journal_info(_read_optional(main / "0_journal_info.md"))
+    cm = parse_core_message(_read_optional(main / "1_coremessage.md"))
+    ol = parse_outline(_read_optional(main / "3_outline.md"))
     rs, inv = _read_reconstruction(main)
     return ProjectState(
         project_dir=str(project),

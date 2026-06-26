@@ -144,6 +144,22 @@
   .paperbar .dl:hover { border-color: var(--accent); background: var(--highlight); }
   .paperframe { width: 100%; height: calc(100vh - 230px); min-height: 460px; border: 1px solid var(--border); border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); }
   .logdetails { margin-top: 12px; } .logdetails summary { cursor: pointer; font-size: .8rem; color: var(--muted); font-weight: 700; }
+
+  /* generated-output: file list (left) + read-only preview (right) */
+  .outwrap { display: grid; grid-template-columns: 240px 1fr; gap: 14px; height: calc(100vh - 210px); min-height: 420px; }
+  .outlist { overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 8px; box-shadow: var(--shadow); }
+  .outlist .ol-head { font-size: .66rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); font-weight: 700; padding: 6px 8px; }
+  .ofile { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; font: inherit; padding: 8px 9px; margin: 1px 0; border-radius: 8px; cursor: pointer; color: var(--body); background: transparent; border: 1px solid transparent; }
+  .ofile:hover { background: var(--highlight); }
+  .ofile.active { background: #fff; border-color: var(--border); box-shadow: var(--shadow); }
+  .ofile .ok { flex: none; font-size: .62rem; font-weight: 700; text-transform: uppercase; color: var(--code-ink); background: var(--code-bg); padding: 2px 6px; border-radius: 5px; }
+  .ofile .on { font-size: .82rem; color: var(--ink); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ofile .os { margin-left: auto; font-size: .68rem; color: var(--muted); flex: none; }
+  .outview { overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); padding: 18px 20px; }
+  .outview .pf-pre { white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, Menlo, monospace; font-size: .8rem; color: var(--code-ink); }
+  .outview .ov-empty { color: var(--muted); font-size: .86rem; padding: 30px 8px; text-align: center; }
+  .outview iframe { width: 100%; height: 100%; min-height: 380px; border: none; }
+  .outview .dlbig { display: inline-block; margin-top: 8px; font-size: .82rem; font-weight: 700; color: #fff; background: var(--accent); padding: 9px 14px; border-radius: 8px; text-decoration: none; }
   /* Stage 3: plan confirm + chat */
   .planview { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; margin: 14px 0 10px; }
   .plabel { font-size: .64rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: var(--accent); margin: 12px 0 5px; }
@@ -907,11 +923,23 @@ async function startGenerate() {
   es.onerror = () => es.close();
 }
 
-// ---------- generated-paper viewer (center = the produced journal) ----------
+// ---------- generated-paper viewer (center = files, right of it = read-only preview) ----------
 function paperUrl(kind) {
   return `/api/projects/paper?project_dir=${encodeURIComponent(projectDir)}&kind=${kind}&t=${Date.now()}`;
 }
-function showPaper(meta) {
+function outFileUrl(rel) {
+  return `/api/projects/output/file?project_dir=${encodeURIComponent(projectDir)}&rel=${encodeURIComponent(rel)}&t=${Date.now()}`;
+}
+let outFiles = [], selectedOut = null;
+// preview priority: the canonical manuscript first, then the assembled .docx/paper
+function _outRank(f) {
+  const o = {"manuscript.json":0, "manuscript_preview.html":1, "paper.docx":2};
+  if (o[f.name] != null) return o[f.name];
+  if (f.kind === "md") return 3;
+  if (f.kind === "json") return 5;
+  return 4;
+}
+async function showPaper(meta) {
   meta = meta || {};
   const toks = (meta.input_tokens != null) ? `<div class="toks">
       <span>input <b>${meta.input_tokens.toLocaleString()}</b></span>
@@ -919,16 +947,60 @@ function showPaper(meta) {
       <span>cached <b>${meta.cached_tokens.toLocaleString()}</b> (${Math.round((meta.cache_hit_rate||0)*100)}%)</span>
     </div>` : "";
   const cls = meta.classification ? `<span class="muted">분류 <b>${meta.classification}</b></span>` : "";
-  const log = logLines.length ? `<details class="logdetails"><summary>실행 로그</summary><div class="log">${logLines.join("\n")}</div></details>` : "";
-  $("canvas").innerHTML = `<div class="crumb">생성된 논문</div>
+  $("canvas").innerHTML = `<div class="crumb">생성된 논문 · 파일을 클릭하면 오른쪽에 미리보기</div>
     <h2 class="title serif">${JF.title || wtitleText()}</h2>
     <div class="paperbar">
-      <span class="badge ok">PDF</span>${cls}
-      <a class="dl" href="${paperUrl('pdf')}" target="_blank">PDF 새 탭 ↗</a>
-      <a class="dl" href="${paperUrl('tex')}" target="_blank">.tex 소스 ↗</a>
+      <span class="badge ok">완료</span>${cls}
+      <a class="dl" href="${outFileUrl('_paperflow_out/paper.docx')}">⬇ DOCX</a>
+      <a class="dl" href="${paperUrl('pdf')}" target="_blank">PDF ↗</a>
+      <a class="dl" href="${paperUrl('tex')}" target="_blank">.tex ↗</a>
     </div>${toks}
-    <iframe class="paperframe" src="${paperUrl('pdf')}#view=FitH" title="generated paper"></iframe>
-    ${log}`;
+    <div class="outwrap">
+      <div class="outlist" id="outlist"><div class="ol-head">생성된 파일</div></div>
+      <div class="outview" id="outview"><div class="ov-empty">왼쪽에서 파일을 클릭하세요.</div></div>
+    </div>`;
+  try {
+    const r = await (await fetch("/api/projects/output/list?project_dir=" + encodeURIComponent(projectDir))).json();
+    outFiles = (r.files || []).slice().sort((a,b) => _outRank(a) - _outRank(b));
+  } catch { outFiles = []; }
+  renderOutList();
+  if (outFiles.length) selectOut(outFiles[0].rel);
+}
+function renderOutList() {
+  const box = $("outlist"); if (!box) return;
+  box.innerHTML = `<div class="ol-head">생성된 파일</div>`;
+  if (!outFiles.length) { box.innerHTML += `<div class="ov-empty">생성된 파일이 없습니다.</div>`; return; }
+  outFiles.forEach(f => {
+    const b = document.createElement("button");
+    b.className = "ofile" + (f.rel === selectedOut ? " active" : "");
+    b.innerHTML = `<span class="ok">${f.kind}</span><span class="on">${f.name}</span>
+      <span class="os">${fmtSize(f.size)}</span>`;
+    b.onclick = () => selectOut(f.rel);
+    box.appendChild(b);
+  });
+}
+async function selectOut(rel) {
+  selectedOut = rel;
+  renderOutList();
+  const view = $("outview"); if (!view) return;
+  const f = outFiles.find(x => x.rel === rel) || {};
+  if (f.kind === "pdf") {
+    view.innerHTML = `<iframe src="${outFileUrl(rel)}#view=FitH" title="${f.name}"></iframe>`;
+    return;
+  }
+  if (f.kind === "docx") {
+    view.innerHTML = `<div class="ov-empty">DOCX는 브라우저에서 미리볼 수 없어요.<br>
+      <a class="dlbig" href="${outFileUrl(rel)}">⬇ ${f.name} 다운로드</a></div>`;
+    return;
+  }
+  view.innerHTML = `<div class="ov-empty">불러오는 중…</div>`;
+  try {
+    const r = await (await fetch(`/api/projects/output/preview?project_dir=${encodeURIComponent(projectDir)}&rel=${encodeURIComponent(rel)}`)).json();
+    if (r.error) { view.innerHTML = `<div class="ov-empty">미리보기를 불러올 수 없습니다.</div>`; return; }
+    view.innerHTML = r.html || `<div class="ov-empty">(빈 파일)</div>`;
+  } catch (e) {
+    view.innerHTML = `<div class="ov-empty">오류: ${e}</div>`;
+  }
 }
 function wtitleText() { const el = $("wtitle"); return el ? el.textContent : "Manuscript"; }
 

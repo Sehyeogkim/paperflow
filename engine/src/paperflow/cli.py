@@ -37,6 +37,27 @@ def inspect(project_dir: str):
 
 
 @app.command()
+def reconstruct(project_dir: str,
+                llm: bool = typer.Option(False, help="use LLM enrichment if a key exists")):
+    """Reconstruct research_state.json + evidence_inventory.json from uploaded docs/data.
+    Deterministic by default (no LLM) — pass --llm to enrich when a provider key is set."""
+    from .reconstruct import build_state
+    rs, inv = build_state.reconstruct(project_dir, use_llm=llm)
+    build_state.save(project_dir, rs, inv)
+    rprint(Panel.fit("[bold]research reconstruction[/bold]"))
+    rprint(f"[bold]source[/bold]: {rs.source}")
+    rprint(f"[bold]primary_message[/bold]: {rs.primary_message[:120]}")
+    rprint(f"[bold]possible_claims[/bold]: {len(rs.possible_claims)}  "
+           f"[bold]datasets[/bold]: {len(rs.datasets)}  "
+           f"[bold]input_vars[/bold]: {len(rs.input_variables)}")
+    rprint(f"[bold]evidence assets[/bold]: {len(inv.assets)}")
+    if rs.unknowns:
+        rprint(f"[yellow]unknowns[/yellow]: {', '.join(rs.unknowns)}")
+    out = Path(project_dir) / "main"
+    rprint(f"\nwrote → {out/'research_state.json'}, {out/'evidence_inventory.json'}")
+
+
+@app.command()
 def litsearch(project_dir: str):
     """Literature search (OpenAlex) only — find real papers + write a related-work survey."""
     from .ingest.parse_inputs import ingest
