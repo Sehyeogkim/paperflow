@@ -51,6 +51,102 @@ def _slug(name: str) -> str:
     return s or "untitled"
 
 
+# ---------------------------------------------------------------------------
+# Session layer: a project (= one paper) holds a shared `source/` (inputs+data
+# +literature) and many `sessions/<id>/` (each = one trial: chat + answers +
+# draft). A session dir is itself project_dir-shaped (main/ + data/ +
+# _paperflow_out/), so the existing diagnose/answers/generate/output endpoints
+# run on it unchanged. Legacy projects (root/main, no source/) are treated as a
+# single implicit "main" session and migrated to source/ on first new session.
+# ---------------------------------------------------------------------------
+def _new_sid() -> str:
+    return uuid.uuid4().hex[:8]
+
+
+def _source_dir(root: Path) -> Path:
+    """Shared-input dir for a project. New model: root/source. Legacy: root."""
+    return (root / "source") if (root / "source" / "main").is_dir() else root
+
+
+def _link_or_copy(target: Path, link: Path) -> None:
+    """Symlink `link` -> `target` (shared); fall back to copy if symlinks fail."""
+    if link.is_symlink() or link.exists():
+        return
+    link.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        link.symlink_to(target.resolve(), target_is_directory=target.is_dir())
+    except OSError:
+        if target.is_dir():
+            shutil.copytree(target, link, dirs_exist_ok=True)
+        else:
+            shutil.copy(target, link)
+
+
+def _run_status(d: Path) -> str:
+    out = d / "_paperflow_out"
+    if out.is_dir() and any(out.glob("*.md")):
+        return "done"
+    if (d / "main" / "answer.json").is_file():
+        return "active"
+    return "new"
+
+
+def _ensure_source(root: Path) -> Path:
+    """Return the project's source dir, migrating a legacy root/main into
+    root/source/main (copy) on first call. The legacy root stays usable as the
+    'main' session; source becomes the canonical shared input for new sessions."""
+    src = root / "source"
+    if (src / "main").is_dir():
+        return src
+    legacy_main = root / "main"
+    if legacy_main.is_dir():
+        (src / "main").mkdir(parents=True, exist_ok=True)
+        for f in legacy_main.iterdir():
+            if f.name == "answer.json":          # answers are per-session, not shared
+                continue
+            if f.is_file():
+                shutil.copy(f, src / "main" / f.name)
+        if (root / "data").exists():
+            _link_or_copy(root / "data", src / "data")
+    else:
+        (src / "main").mkdir(parents=True, exist_ok=True)
+    return src
+
+
+def _seed_session_from_source(src: Path, sdir: Path) -> None:
+    """Populate a fresh session dir from the shared source: copy input .md/.json
+    (so per-session edits don't touch source) and share data/ + literature/."""
+    (sdir / "main").mkdir(parents=True, exist_ok=True)
+    smain = src / "main"
+    for f in smain.iterdir():
+        if f.is_file() and f.suffix in (".md", ".json") and f.name != "answer.json":
+            shutil.copy(f, sdir / "main" / f.name)
+    if (src / "data").exists():
+        _link_or_copy(src / "data", sdir / "data")
+    # share ONE literature cache across sessions (first diagnose fills it, rest reuse)
+    (smain / "literature").mkdir(parents=True, exist_ok=True)
+    _link_or_copy(smain / "literature", sdir / "main" / "literature")
+
+
+def _list_sessions(root: Path) -> list[dict]:
+    out: list[dict] = []
+    sroot = root / "sessions"
+    if sroot.is_dir():
+        for d in sorted(sroot.iterdir()):
+            sj = d / "session.json"
+            if d.is_dir() and sj.is_file():
+                try:
+                    meta = json.loads(sj.read_text())
+                except Exception:
+                    meta = {"id": d.name}
+                meta.update(session_dir=str(d), status=_run_status(d))
+                out.append(meta)
+    if (root / "main").is_dir():   # legacy root run = the original single trial
+        out.insert(0, {"id": "main", "session_dir": str(root), "title": "draft (original)",
+                       "legacy": True, "status": _run_status(root), "created": ""})
+    return out
+
+
 def _write_inputs(project_dir: Path, body: dict) -> None:
     main = project_dir / "main"
     main.mkdir(parents=True, exist_ok=True)
@@ -90,8 +186,9 @@ def _txt(p: Path) -> str:
 
 
 def _project_meta(pdir: Path) -> dict:
-    """Dashboard card data: title, progress %, current step, deadline, status."""
-    main = pdir / "main"
+    """Dashboard card data: title, progress %, current step, deadline, status.
+    Inputs read from the shared source; output/answers from any session."""
+    main = _source_dir(pdir) / "main"
     meta = {}
     mp = main / "project.json"
     if mp.is_file():
@@ -108,9 +205,11 @@ def _project_meta(pdir: Path) -> dict:
     has_j = bool(ji_raw.strip())
     has_c = bool(_txt(main / "1_coremessage.md").strip())
     has_o = bool(_txt(main / "3_outline.md").strip())
-    has_ans = (main / "answer.json").is_file()
-    out = pdir / "_paperflow_out"
-    has_out = out.is_dir() and any(out.glob("*.md"))
+    # answers/output live per-session — scan legacy root + every session dir
+    run_dirs = [pdir] + ([*(pdir / "sessions").iterdir()] if (pdir / "sessions").is_dir() else [])
+    has_ans = any((d / "main" / "answer.json").is_file() for d in run_dirs)
+    has_out = any((d / "_paperflow_out").is_dir() and any((d / "_paperflow_out").glob("*.md"))
+                  for d in run_dirs)
     pct = (15 if has_j else 0) + (15 if has_c else 0) + (20 if has_o else 0) \
         + (15 if has_ans else 0) + (35 if has_out else 0)
     if has_out:
@@ -136,7 +235,7 @@ def list_projects() -> dict:
     items = []
     if _WORKSPACE.is_dir():
         for d in sorted(_WORKSPACE.iterdir()):
-            if d.is_dir() and (d / "main").is_dir():
+            if d.is_dir() and ((d / "main").is_dir() or (d / "source" / "main").is_dir()):
                 items.append(_project_meta(d))
     return {"projects": items, "providers": config.available_providers()}
 
@@ -150,6 +249,157 @@ def create_new(body: dict) -> dict:
             "created": body.get("created", "")}
     (main / "project.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2))
     return {"project_dir": str(main.parent)}
+
+
+# ---- sessions (trials) -----------------------------------------------------
+@app.get("/api/projects/sessions")
+def list_sessions(project_dir: str) -> dict:
+    """All trials of a project: legacy root run + sessions/<id>/ (newest first)."""
+    root = Path(project_dir)
+    return {"sessions": _list_sessions(root), "project_dir": str(root),
+            "source_dir": str(_source_dir(root))}
+
+
+@app.post("/api/projects/sessions")
+def create_session(body: dict) -> dict:
+    """Start a new trial: copy shared inputs from source, share data + literature,
+    and return a session_dir that the existing run endpoints operate on."""
+    root = Path(body["project_dir"])
+    src = _ensure_source(root)
+    sid = _new_sid()
+    sdir = root / "sessions" / sid
+    _seed_session_from_source(src, sdir)
+    meta = {"id": sid, "title": body.get("title") or "New trial",
+            "created": body.get("created", ""), "stage": "greet"}
+    (sdir / "session.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2))
+    return {"session_dir": str(sdir), "source_dir": str(src), "status": "new", **meta}
+
+
+def _session_meta_path(session_dir: str) -> Path:
+    return Path(session_dir) / "session.json"
+
+
+@app.post("/api/projects/sessions/meta")
+def update_session_meta(body: dict) -> dict:
+    """Patch a session's title/stage (e.g. set the title from the first message)."""
+    p = _session_meta_path(body["session_dir"])
+    meta = {}
+    if p.is_file():
+        try:
+            meta = json.loads(p.read_text())
+        except Exception:
+            meta = {}
+    for k in ("title", "stage"):
+        if k in body:
+            meta[k] = body[k]
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(meta, ensure_ascii=False, indent=2))
+    return {"ok": True, **meta}
+
+
+# ---- chat history (per session) --------------------------------------------
+@app.get("/api/projects/chat-history")
+def get_chat_history(session_dir: str) -> dict:
+    p = Path(session_dir) / "chat.json"
+    if p.is_file():
+        try:
+            return json.loads(p.read_text())
+        except Exception:
+            pass
+    return {"messages": []}
+
+
+@app.post("/api/projects/chat-history")
+def save_chat_history(body: dict) -> dict:
+    """Persist the full message thread so clicking the session restores it."""
+    sdir = Path(body["session_dir"])
+    sdir.mkdir(parents=True, exist_ok=True)
+    (sdir / "chat.json").write_text(
+        json.dumps({"messages": body.get("messages", [])}, ensure_ascii=False, indent=2))
+    return {"ok": True, "count": len(body.get("messages", []))}
+
+
+# ---- basic conversational chat (gpt-4o-mini) -------------------------------
+_CHAT_SYS = (
+    "You are paperpal, an assistant that helps researchers turn their data and ideas into a "
+    "journal manuscript. Be concise, concrete, and friendly. You can discuss the paper's "
+    "framing, methods, structure, and what's still missing. If the user asks to change the "
+    "generated draft directly, explain that draft editing is coming soon — for now they can "
+    "edit the shared source (right panel) or start a new trial and re-generate.")
+
+
+_ONBOARD_SYS = (
+    "You are paperpal's onboarding orchestrator. A researcher describes (in any language, "
+    "possibly vaguely) the paper they want to write. Your job:\n"
+    "1) Propose a short kebab-case `project_name` and a short human `session_title`.\n"
+    "2) Extract what you can for: author's `field`, `target` journal, working `title`, "
+    "`affiliation`; a one-`paragraph` core message; a list of `novelty` claims; a rough `outline`.\n"
+    "3) Judge `sufficient`: is there enough (journal direction + core message + at least a rough "
+    "outline) to draft a FIRST manuscript? \n"
+    "4) `missing`: up to 4 short, friendly questions for the most important gaps (in the user's "
+    "language).\n"
+    "5) `ask_data`: ALWAYS one friendly question asking what data/result files they have to add.\n"
+    "6) `reply`: 1-2 friendly sentences summarizing what you understood (user's language).\n"
+    "Extract ONLY what the user actually said — leave fields blank/empty if unknown. Do NOT invent "
+    "data. Return ONLY JSON with keys: project_name, session_title, reply, sufficient, missing, "
+    "ask_data, extracted{field,target,title,affiliation,paragraph,novelty,outline}.")
+
+
+@app.post("/api/projects/onboard")
+def onboard(body: dict) -> dict:
+    """Chat orchestrator: turn a free-text description into structured inputs + gap questions."""
+    from ..llm import client
+    msg = str(body.get("message", ""))
+    history = body.get("history", []) or []
+    convo = "\n".join(f"{m.get('role','user')}: {m.get('text','')}" for m in history[-6:])
+    user = (convo + f"\nuser: {msg}") if convo else msg
+    try:
+        return client.call_json("chat", _ONBOARD_SYS, user, step="onboard", max_tokens=1400)
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@app.post("/api/projects/llm-chat")
+def llm_chat(body: dict) -> dict:
+    """Default conversational reply using the cheap `chat` tier (gpt-4o-mini)."""
+    from ..llm import client
+    history = body.get("history", []) or []
+    msg = str(body.get("message", ""))
+    convo = "\n".join(f"{m.get('role','user')}: {m.get('text','')}" for m in history[-8:])
+    user = (convo + f"\nuser: {msg}\nassistant:") if convo else msg
+    try:
+        r = client.call("chat", _CHAT_SYS, user, step="chat", max_tokens=600)
+        return {"reply": r.text, "model": r.model}
+    except Exception as e:
+        return {"reply": "", "error": str(e)}
+
+
+# ---- delete (soft: move to .trash, recoverable) ----------------------------
+@app.post("/api/projects/delete")
+def delete_project(body: dict) -> dict:
+    """Move a whole project (paper) to _WORKSPACE/.trash — recoverable, not hard-deleted."""
+    root = Path(body["project_dir"]).resolve()
+    ws = _WORKSPACE.resolve()
+    if root.parent != ws or not root.is_dir():
+        return JSONResponse({"error": "bad_path"}, status_code=400)
+    trash = ws / ".trash"
+    trash.mkdir(exist_ok=True)
+    shutil.move(str(root), str(trash / f"{root.name}-{_new_sid()}"))
+    return {"ok": True}
+
+
+@app.post("/api/projects/sessions/delete")
+def delete_session(body: dict) -> dict:
+    """Move one session/<id> trial to the project's .trash. The legacy root run
+    (parent != 'sessions') is NOT deletable here — delete the project instead."""
+    sdir = Path(body["session_dir"]).resolve()
+    ws = _WORKSPACE.resolve()
+    if ws not in sdir.parents or sdir.parent.name != "sessions" or not sdir.is_dir():
+        return JSONResponse({"error": "cannot_delete"}, status_code=400)
+    trash = sdir.parents[1] / ".trash"
+    trash.mkdir(exist_ok=True)
+    shutil.move(str(sdir), str(trash / f"{sdir.name}-{_new_sid()}"))
+    return {"ok": True}
 
 
 @app.post("/api/projects/save")
