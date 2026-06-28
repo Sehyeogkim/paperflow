@@ -33,8 +33,12 @@ def test_figure_plan_emits_caption_and_prompt():
     figs = spec["figures"]
     assert figs and figs[0]["id"] == "F1"
     assert figs[0]["caption_draft"]
-    assert "publication-quality" in figs[0]["generation_prompt"]
-    assert "do not fabricate" in figs[0]["generation_prompt"]
+    # generation_prompt is the image-gen prompt — LLM-crafted when available, else the template
+    assert figs[0]["generation_prompt"].strip()
+    # the deterministic template (fallback) still carries the anti-fabrication guard
+    from paperflow.figures.plan import _caption_and_prompt
+    _, tmpl = _caption_and_prompt("figure", "msg", ["x"])
+    assert "publication-quality" in tmpl and "do not fabricate" in tmpl
 
 
 def test_build_grounding_status():

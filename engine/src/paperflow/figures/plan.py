@@ -9,6 +9,7 @@ Generation (fal.ai nanobanana pro via FAL_KEY) is a separate later stage.
 """
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 
@@ -47,6 +48,7 @@ def _from_graph(graph: ClaimGraph) -> list[dict]:
             "message": n.text,
             "section": n.section or "",
             "visualizes": shows,
+            "shown_texts": [t for t in shown_texts if t],
             "caption_draft": caption,
             "generation_prompt": gen_prompt,
             "status": "planned",
@@ -76,8 +78,33 @@ def _from_markdown(project_dir: str) -> list[dict]:
     return figures
 
 
+def _enrich_image_prompts(figures: list[dict]) -> None:
+    """Replace the template generation_prompt with an LLM-crafted, detailed image-gen system
+    prompt per figure (the thing the author pastes into nanobanana pro / GPT image). One call;
+    on any failure the deterministic template prompt is kept."""
+    if not figures:
+        return
+    from ..llm import client
+    from ..util import prompt as _prompt
+    payload = [{"id": f["id"], "kind": f.get("kind", "figure"), "message": f.get("message", ""),
+                "visualizes": [str(t) for t in (f.get("shown_texts") or [])]} for f in figures]
+    try:
+        raw = client.call_json("fast", _prompt("figure_image_prompt"),
+                               "## PLANNED VISUALS\n" + json.dumps(payload, ensure_ascii=False),
+                               step="figure.image_prompt", max_tokens=2500, effort="low")
+    except Exception:
+        return
+    by_id = {str(x.get("id")): str(x.get("image_prompt", "")).strip()
+             for x in (raw.get("figures") or []) if x.get("id")}
+    for f in figures:
+        ip = by_id.get(f["id"])
+        if ip:
+            f["generation_prompt"] = ip
+
+
 def plan(project_dir: str, graph: ClaimGraph | None = None) -> dict:
     figures = _from_graph(graph) if graph is not None else []
     if not figures:  # fallback when the graph designed no artifacts
         figures = _from_markdown(project_dir)
+    _enrich_image_prompts(figures)   # template prompt -> detailed image-gen system prompt (LLM)
     return {"generation": "deferred (fal.ai nano-banana pro)", "figures": figures}
