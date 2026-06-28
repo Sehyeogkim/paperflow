@@ -584,7 +584,7 @@ function mEssentials(m) {
     {k:"data", label:"Data", det: st.data==="ready"?`${S._dataCount} files attached`:"No files attached — claims can't be grounded yet", btn:"Attach"},
   ];
   const thin = rows.filter(r => st[r.k] !== "ready").length;
-  const el = aShell(`Here are the essentials I pulled from your description${thin?` — <b>${thin} still thin</b>`:""}. Edit anything, or proceed.
+  const el = aShell(`Here are the essentials I pulled from your description${thin?` — <b>${thin} still thin</b>. 아래 비어있는 칸을 채워주시거나 그대로 진행하세요.`:`. 좋으면 바로 진행하세요.`}
     <div class="card" id="essCard"></div>`);
   const card = el.querySelector("#essCard");
   rows.forEach(r => {
@@ -601,6 +601,18 @@ function mEssentials(m) {
     <span class="foothint">I'll search OpenAlex next.</span>`;
   foot.querySelector("#proceedBtn").onclick = () => proceedToResearch();
   card.appendChild(foot);
+  // gap questions + data ask folded INTO the same message (tied to the card above)
+  const miss = (m.missing || []).filter(Boolean);
+  if (miss.length || m.ask_data) {
+    const g = document.createElement("div");
+    g.style.cssText = "margin-top:13px;font-size:14px;line-height:1.6";
+    let html = "";
+    if (miss.length) html += `<b>채워주시면 초안이 더 정확해져요:</b><br>` + miss.map(q => `• ${esc(q)}`).join("<br>");
+    if (m.ask_data) html += (html ? "<br><br>" : "") + `📎 <b>${esc(m.ask_data)}</b>`;
+    html += `<div class="foothint" style="margin-top:8px">아래 입력창에 답하거나, 카드의 <b>Edit / Attach</b>를 누르세요.</div>`;
+    g.innerHTML = html;
+    el.querySelector(".abody").appendChild(g);
+  }
   return el;
 }
 
@@ -715,8 +727,8 @@ async function startFromDescription(text) {
   patchSession({title:o.session_title || text.slice(0,40)});
   setStage("essentials");
   pend.text = esc(o.reply || "Here's what I understood.").replace(/\n/g,"<br>"); rerender(pend);
-  addMessage({t:"essentials"});
-  addMessage({t:"gaps", missing:(o.missing||[]).filter(Boolean), ask_data:o.ask_data||"Do you have data/result files to add?"});
+  addMessage({t:"essentials", missing:(o.missing||[]).filter(Boolean),
+              ask_data:o.ask_data||"Do you have data/result files to add?"});
   await loadProjects(); await refreshSessions({project_dir:cr.project_dir}); renderProjects();
   saveChat();
 }
@@ -806,9 +818,7 @@ $("botSend").onclick = async () => {
       if (!o.error) {
         mergeExtracted(o.extracted); await saveInputs().catch(()=>{});
         pend.text = esc(o.reply || "Updated.").replace(/\n/g,"<br>"); rerender(pend);
-        addMessage({t:"essentials"});
-        if ((o.missing||[]).filter(Boolean).length || o.ask_data)
-          addMessage({t:"gaps", missing:(o.missing||[]).filter(Boolean), ask_data:o.ask_data||""});
+        addMessage({t:"essentials", missing:(o.missing||[]).filter(Boolean), ask_data:o.ask_data||""});
         return;
       }
       pend.text = "error: " + esc(o.error); rerender(pend); return;
