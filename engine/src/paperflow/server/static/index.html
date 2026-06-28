@@ -263,6 +263,24 @@ async function postJSON(url, body) {
 }
 function enc(s){ return encodeURIComponent(s); }
 
+// figure-prompt copy: the preview HTML's inline <script> never runs when injected via
+// innerHTML, so define the handler globally here (inline onclick="pfCopyPrompt(this)" finds it).
+window.pfCopyPrompt = function(btn){
+  const txt = btn.dataset.prompt || "";
+  const ok = () => { btn.textContent = "✓ 복사됨"; btn.classList.add("ok");
+    setTimeout(() => { btn.textContent = "📋 이미지 모델 prompt 복사"; btn.classList.remove("ok"); }, 1500); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(ok).catch(() => fallbackCopy(txt, ok));
+  } else fallbackCopy(txt, ok);
+};
+function fallbackCopy(txt, ok){
+  const ta = document.createElement("textarea"); ta.value = txt;
+  ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand("copy"); ok && ok(); } catch (e) { alert("복사 실패 — 수동 복사하세요"); }
+  ta.remove();
+}
+
 // ---------------- state ----------------
 const S = {
   projectRoot:null, projectName:"New paper", sourceDir:null, sessionDir:null, sessionId:null,
@@ -891,20 +909,48 @@ async function uploadFiles(files, b) {
 }
 async function renderPaperPanel(b, pdir) {
   b.innerHTML = `<div class="desc">Loading…</div>`;
-  try {
-    const r = await (await fetch("/api/projects/output/list?project_dir=" + enc(pdir))).json();
-    const files = (r.files||[]);
-    const rank = {"manuscript_preview.html":0,"manuscript.json":1,"paper.docx":2};
-    files.sort((a,c)=>(rank[a.name]??5)-(rank[c.name]??5));
-    b.innerHTML = `<div class="pkicker">Output</div><h2 style="margin-bottom:12px">${esc(S.form.title||"Manuscript")}</h2>
-      <div id="outlist"></div><div id="outview" style="margin-top:16px"></div>`;
-    const ol = b.querySelector("#outlist");
-    files.forEach(f => { const btn=document.createElement("button"); btn.className="ofile";
-      btn.innerHTML = `<span class="ok">${f.kind}</span><span class="on">${esc(f.name)}</span><span class="os">${fmtSize(f.size)}</span>`;
-      btn.onclick = () => { b.querySelectorAll(".ofile").forEach(x=>x.classList.remove("active")); btn.classList.add("active"); selectOut(f, b.querySelector("#outview"), pdir); };
-      ol.appendChild(btn); });
-    if (files.length) ol.firstChild.click();
-  } catch (e) { b.innerHTML = `<div class="desc">Could not load output: ${esc(String(e))}</div>`; }
+  let files = [];
+  try { files = (await (await fetch("/api/projects/output/list?project_dir=" + enc(pdir))).json()).files || []; }
+  catch (e) { b.innerHTML = `<div class="desc">Could not load output: ${esc(String(e))}</div>`; return; }
+  const has = n => files.find(f => f.name === n);
+  const dlA = (rel, label, name) =>
+    `<a class="dl" href="/api/projects/output/file?project_dir=${enc(pdir)}&rel=${enc(rel)}&t=${Date.now()}"`
+    + (name ? ` download="${name}"` : ` target="_blank"`) + `>${label}</a>`;
+  // download bar + readable manuscript (main) + collapsible file list
+  b.innerHTML = `<div class="pkicker">Manuscript</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 16px">
+      ${has('paper.docx') ? dlA('_paperflow_out/paper.docx','⬇ DOCX','paper.docx') : ''}
+      ${has('paper.pdf')  ? dlA('_paperflow_out/paper.pdf','PDF ↗') : ''}
+      ${has('paper.tex')  ? dlA('_paperflow_out/paper.tex','.tex ↗') : ''}
+    </div>
+    <div id="docview" class="ppaper"><div class="desc">불러오는 중…</div></div>
+    <details style="margin-top:20px;border-top:1px solid var(--line);padding-top:12px">
+      <summary style="cursor:pointer;font-size:12.5px;color:var(--muted);font-weight:600">생성 파일 ${files.length}개 (클릭해서 펼치기)</summary>
+      <div id="outlist" style="margin-top:10px"></div>
+    </details>`;
+  const docview = b.querySelector("#docview");
+  // MAIN: the readable manuscript (rendered preview, with working figure-prompt copy buttons)
+  const prev = has('manuscript_preview.html');
+  if (prev) await showOut(prev, docview, pdir);
+  else docview.innerHTML = `<div class="desc">읽기용 미리보기 파일이 없어요. 아래 파일 목록에서 .md를 보세요.</div>`;
+  // SECONDARY: every generated file, click to view in the same area
+  const ol = b.querySelector("#outlist");
+  files.forEach(f => { const btn = document.createElement("button"); btn.className = "ofile";
+    btn.innerHTML = `<span class="ok">${f.kind}</span><span class="on">${esc(f.name)}</span><span class="os">${fmtSize(f.size)}</span>`;
+    btn.onclick = () => { ol.querySelectorAll(".ofile").forEach(x=>x.classList.remove("active")); btn.classList.add("active");
+      showOut(f, docview, pdir); docview.scrollIntoView({behavior:"smooth", block:"start"}); };
+    ol.appendChild(btn); });
+}
+async function showOut(f, view, pdir) {
+  const url = `/api/projects/output/file?project_dir=${enc(pdir)}&rel=${enc(f.rel)}&t=${Date.now()}`;
+  if (f.kind === "pdf") { view.innerHTML = `<iframe src="${url}#view=FitH" style="width:100%;height:70vh;border:1px solid var(--line);border-radius:10px"></iframe>`; return; }
+  if (f.kind === "docx") { view.innerHTML = `<div class="desc">DOCX는 브라우저에서 미리볼 수 없어요. 위 ⬇ DOCX로 받으세요.<br><br></div><a class="dl" href="${url}" download="${esc(f.name)}">⬇ ${esc(f.name)} 다운로드</a>`; return; }
+  view.innerHTML = `<div class="desc">Loading…</div>`;
+  try { const r = await (await fetch(`/api/projects/output/preview?project_dir=${enc(pdir)}&rel=${enc(f.rel)}`)).json();
+    view.innerHTML = r.html || `<pre style="white-space:pre-wrap;font-size:12.5px">${esc(r.text||"(empty)")}</pre>`;
+    // belt-and-suspenders: rebind figure-prompt copy buttons (inline onclick already works via global)
+    view.querySelectorAll(".pf-copy").forEach(btn => btn.onclick = () => window.pfCopyPrompt(btn));
+  } catch { view.innerHTML = `<div class="desc">preview error</div>`; }
 }
 async function selectOut(f, view, pdir) {
   const url = `/api/projects/output/file?project_dir=${enc(pdir)}&rel=${enc(f.rel)}&t=${Date.now()}`;
