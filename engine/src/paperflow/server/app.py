@@ -321,7 +321,7 @@ def save_chat_history(body: dict) -> dict:
 
 # ---- basic conversational chat (gpt-4o-mini) -------------------------------
 _CHAT_SYS = (
-    "You are paperpal, an assistant that helps researchers turn their data and ideas into a "
+    "You are paperflow, an assistant that helps researchers turn their data and ideas into a "
     "journal manuscript. Be concise, concrete, and friendly. You can discuss the paper's "
     "framing, methods, structure, and what's still missing. If the user asks to change the "
     "generated draft directly, explain that draft editing is coming soon — for now they can "
@@ -329,7 +329,7 @@ _CHAT_SYS = (
 
 
 _ONBOARD_SYS = (
-    "You are paperpal's onboarding orchestrator. A researcher describes (in any language, "
+    "You are paperflow's onboarding orchestrator. A researcher describes (in any language, "
     "possibly vaguely) the paper they want to write. Your job:\n"
     "1) Propose a short kebab-case `project_name` and a short human `session_title`.\n"
     "2) Extract what you can for: author's `field`, `target` journal, working `title`, "

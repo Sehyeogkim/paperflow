@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>paperpal — Manuscript Compiler</title>
+<title>paperflow — Manuscript Compiler</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -205,7 +205,7 @@
   <!-- LEFT -->
   <aside class="rail" id="rail">
     <div class="top">
-      <span class="logo">paper<span class="d">·</span>pal</span>
+      <span class="logo">paper<span class="d">·</span>flow</span>
       <span class="ic">
         <button class="iconbtn" id="toggleRail" title="Collapse">⇤</button>
       </span>
@@ -237,7 +237,7 @@
           <span class="ground">Grounded ▾</span>
           <button class="send" id="botSend">↑</button>
         </div>
-        <div class="foot">paperpal grounds every claim in your data, a figure, or a verified citation.</div>
+        <div class="foot">paperflow grounds every claim in your data, a figure, or a verified citation.</div>
       </div>
     </div>
   </main>
@@ -863,7 +863,7 @@ function field(b, label, key, opt) {
   wrap.appendChild(inp); b.appendChild(wrap);
 }
 function fJournal(b) {
-  b.innerHTML = `<h2>Journal info</h2><p class="desc">Target journal + field define how paperpal frames every section.</p>`;
+  b.innerHTML = `<h2>Journal info</h2><p class="desc">Target journal + field define how paperflow frames every section.</p>`;
   field(b,"Author's field","field"); field(b,"Target journal","target");
   field(b,"Paper title","title",true); field(b,"Affiliation","affiliation",true); saveTag(b);
 }
@@ -887,7 +887,7 @@ function fOutline(b) {
   ta.oninput = () => { S.form.outlineQuick = ta.value; markSaved(b); }; b.appendChild(ta); saveTag(b);
 }
 function fData(b) {
-  b.innerHTML = `<h2>Data</h2><p class="desc">Shared across every trial of this paper. paperpal infers each file's meaning.</p>
+  b.innerHTML = `<h2>Data</h2><p class="desc">Shared across every trial of this paper. paperflow infers each file's meaning.</p>
     <label class="drop" id="drop"><span style="font-size:21px">⬆️</span>
       <span style="font-size:13.5px;font-weight:700">Drop files, or click to upload</span>
       <span style="font-size:11px;color:var(--muted)">CSV · DAT · PDF · XLSX · JSON · BIB</span>
