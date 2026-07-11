@@ -1,0 +1,257 @@
+{
+  "study_type": "computational_biomechanics",
+  "research_problem": "Most computational plaque-rupture studies use stress-only metrics and fix fibrous cap strength as a constant, failing to account for patient-specific strength uncertainty; due to high cost of pulsatile fluid–structure interaction (FSI), morphology, hemodynamics and material properties have not been varied simultaneously under realistic pulsatile FSI to identify which factor group dominates rupture vulnerability.",
+  "objective": "맥동성 FSI 출력으로부터 임상적으로 일관된 stress/strength 기반 플라크 취약성 지수를 정의하고, 가우시안 프로세스 대리모델과 Sobol 전역 민감도 분석을 사용해 형태·혈류역학·재료물성의 전역 민감도를 정량화하여 파열 위험의 주요 결정인자를 규명하는 것.",
+  "primary_message": "파열위험지표는 stress/strength 비로 정의되어야 하고, stress는 최대진폭(ΔPSS, 피로 관점)이 임상적으로 더 적합하여 맥동성(피로)을 고려한 시뮬레이션이 필요하며, 재료물성(특히 섬유막·혈관벽 탄성)이 혈류역학 및 형태학보다 파열 위험도를 더 강하게 지배한다.",
+  "study_design": "선행 검증된 비용효율 맥동 FSI를 이용해 이상적 관상동맥 플라크 모델(LAP 및 CP 표현형)에서 1,000개의 입력 설계샘플에 대해 대규모 맥동 FSI 시뮬레이션으로 입출력 데이터셋을 생성하고, 2종의 stress 지표 × 3종의 strength 시나리오(총 6개 후보 VI)를 임상 7개 고위험기준으로 선별한 뒤 선택된 VI에 대해 Gaussian process surrogate를 학습하고 Saltelli 샘플링 기반 Sobol 전역 민감도 분석을 수행하는 계산 연구.",
+  "methods": [
+    "이상적 관상동맥 플라크 기하학 구성: 저감쇠 플라크(LAP, 3도메인) 및 석회화 플라크(CP, 4도메인) 모델링",
+    "섬유막 두께를 균일 가정하고 단일 스칼라(fc_av_th)로 변동",
+    "입력 설계공간 1,000 샘플 생성(LHS 포함), 형태·혈류역학·재료 파라미터 포함(data/input_parameter/input.csv)",
+    "경계조건: 관상동맥 입구 유량(inflow.dat) Dirichlet와 시간-심근 elastance(elastance.dat) 기반 BC, 비용효율 FSI BC 명세 참조(data/cost_effective_FSI_BC/bc.md)",
+    "유체 해석: 비압축성 3D Navier–Stokes, 뉴턴유체(ρ=1060 kg/m³, μ=0.0035 Pa·s), 입구 유량 Dirichlet, 출구 무반사/저항 BC, 시간적분 BDF2",
+    "고체 해석: 유한변형 준정적 해석, 혈관벽·섬유막 거의비압축 Neo-Hookean, 핵 및 석회화는 선형탄성(지정된 E 범위)",
+    "FSI 수치방법: partitioned strong coupling(고정점 반복)으로 상대오차 1e-5 수렴, Δt=0.5 ms, 1600 step/심주기, 3주기 후 주기적 정상상태에서 통계 산출",
+    "메쉬·시간보폭 독립성 검증: 유체 메쉬 ≈1.2M cells(최소 Δx=20 μm), 고체 ≈0.45M 요소, peak PSS 변화 <2% (coarse→fine, Δt/2)",
+    "재료물성 샘플링: 문헌기반 범위(E_fc 0.1–2.0 MPa, E_vessel 0.2–1.5 MPa, E_lipid 2–15 kPa, E_cal 1–20 GPa)를 균등분포 LHS로 샘플링",
+    "출력 계산: 표면기반 peak PSS 및 심주기 진폭 ΔPSS(구면평균), FFR 및 rupture location index 산출",
+    "취약성 지수 정의: VI = stress/strength, stress로 peak PSS 및 ΔPSS(2종), strength 정규화로 E_fc^α(α 시나리오 포함) 등 3시나리오 → 총 6개 후보 VI 산출",
+    "임상타당성 선별: 7개 임상 고위험 플라크 특징과 각 VI의 sign-consistency(일치=1, 불일치=0) 점수화 및 95% BCa 부트스트랩 CI(1,000 resample)",
+    "VI 선택: VI1=ΔPSS/E_fc^0.5 및 VI2=ΔPSS/E_fc^1.0 선정(동률 시 ΔPSS 민감도 우선)",
+    "대리모델 학습: Gaussian Process Regression(ARD Matérn 5/2 + White-noise), 하이퍼파라미터 최적화 L-BFGS-B 20 restarts, 입력 z-score 정규화·출력 표준화, 5-fold CV 평가(LAP 784 / CP 727 유효쌍)",
+    "전역 민감도 분석: Saltelli 샘플링 기반 Sobol S1·ST 산출(기준 샘플링 약 15,000 base), 그룹 수준(형태/혈류/재료) 및 개별 파라미터 수준 분석"
+  ],
+  "datasets": [
+    {
+      "name": "elastance",
+      "path": "data/input_parameter/elastance.dat",
+      "description": "시간-심근 elastance 파형 — FSI 심근 경계조건 입력.",
+      "role": "elastance_time_series_bc"
+    },
+    {
+      "name": "inflow",
+      "path": "data/input_parameter/inflow.dat",
+      "description": "관상동맥 입구 유량(inflow) 파형 — FSI 맥동성 경계조건 입력.",
+      "role": "inlet_flow_time_series"
+    },
+    {
+      "name": "input",
+      "path": "data/input_parameter/input.csv",
+      "description": "1,000-sample 입력 설계공간: 형태·혈류역학·재료 3군 파라미터 (DOS, lesion_length, E_vessel, E_fc, SBP, PP 등). Method의 설계공간 근거.",
+      "role": "input_design_space_sampled_parameters"
+    },
+    {
+      "name": "sobol_grp_CP_VI1",
+      "path": "data/sobol/sobol_grp_CP_VI1.csv",
+      "description": "CP·VI1: 그룹별 Sobol S1·ST 민감도.",
+      "role": "sobol_group_sensitivity_result_CP_VI1"
+    },
+    {
+      "name": "sobol_grp_CP_VI2",
+      "path": "data/sobol/sobol_grp_CP_VI2.csv",
+      "description": "CP·VI2: 그룹별 Sobol S1·ST 민감도.",
+      "role": "sobol_group_sensitivity_result_CP_VI2"
+    },
+    {
+      "name": "sobol_grp_LAP_VI1",
+      "path": "data/sobol/sobol_grp_LAP_VI1.csv",
+      "description": "LAP·VI1: 그룹별(형태/재료/혈류역학) Sobol S1·ST 민감도.",
+      "role": "sobol_group_sensitivity_result_LAP_VI1"
+    },
+    {
+      "name": "sobol_grp_LAP_VI2",
+      "path": "data/sobol/sobol_grp_LAP_VI2.csv",
+      "description": "LAP·VI2: 그룹별(형태/재료/혈류역학) Sobol S1·ST. Material 그룹 S1≈0.75로 지배적 — Material>Hemo>Morpho 주장 근거.",
+      "role": "sobol_group_sensitivity_result_LAP_VI2"
+    },
+    {
+      "name": "sobol_ind_CP_VI1",
+      "path": "data/sobol/sobol_ind_CP_VI1.csv",
+      "description": "CP·VI1 지표: 개별 파라미터별 Sobol S1·ST 민감도.",
+      "role": "sobol_parameter_sensitivity_result_CP_VI1"
+    },
+    {
+      "name": "sobol_ind_CP_VI2",
+      "path": "data/sobol/sobol_ind_CP_VI2.csv",
+      "description": "CP(석회화 플라크)·VI2 지표: 개별 파라미터별 Sobol S1·ST 민감도.",
+      "role": "sobol_parameter_sensitivity_result_CP_VI2"
+    },
+    {
+      "name": "sobol_ind_LAP_VI1",
+      "path": "data/sobol/sobol_ind_LAP_VI1.csv",
+      "description": "LAP·VI1 지표: 개별 파라미터별 Sobol S1·ST 민감도.",
+      "role": "sobol_parameter_sensitivity_result_LAP_VI1"
+    },
+    {
+      "name": "sobol_ind_LAP_VI2",
+      "path": "data/sobol/sobol_ind_LAP_VI2.csv",
+      "description": "LAP(저감쇠 플라크)·VI2 지표: 개별 파라미터별 Sobol S1·ST 민감도. E_fc가 S1≈0.55로 1위, 상위 4인자 = E_vessel·E_FC·SBP·PP. Results의 '재료물성 지배' 핵심 근거.",
+      "role": "sobol_parameter_sensitivity_result_LAP_VI2"
+    }
+  ],
+  "input_variables": [
+    "DOS",
+    "lesion_length",
+    "lumen_axial_skewness",
+    "lipid_length_ratio",
+    "alpha",
+    "PI",
+    "d_fc_ca",
+    "fraction",
+    "ca_axial_skewness",
+    "ca_shoulder_skewness",
+    "ca_strength_ratio",
+    "fc_av_th",
+    "SBP",
+    "PP",
+    "tau",
+    "DBP",
+    "E_vessel",
+    "E_fc",
+    "E_lipid",
+    "E_cal"
+  ],
+  "outcomes": [
+    "Peak plaque structural stress (peak PSS)",
+    "Pulsatile amplitude of plaque structural stress (ΔPSS, 심주기 진폭, 구면평균)",
+    "여섯 후보 Vulnerability Indices (stress/strength) 및 선택된 VI1=ΔPSS/E_fc^0.5, VI2=ΔPSS/E_fc^1.0",
+    "각 VI의 sign-consistency 점수(7개 임상기준) 및 95% BCa 부트스트랩 신뢰구간",
+    "Gaussian process surrogate 성능: 5-fold CV R² (LAP ≈0.93, CP ≈0.90) 및 RMSE(≈0.12·σ(VI))",
+    "Sobol 전역 민감도 지표: 그룹 수준 S1·ST(형태/혈류/재료) 및 개별 파라미터 수준 S1·ST (예: E_vessel, E_fc, SBP, PP 등)",
+    "진단 분리성 지표(합성 고위험 라벨): ROC AUC(예: VI2 AUC ≈0.84, 95% CI 0.80–0.88), Youden 최적 민감도·특이도(≈0.78/≈0.76)",
+    "보조 출력: fractional flow reserve(FFR) 및 rupture location index",
+    "재료물성 분포 통계(예: E_fc 중앙값 0.7 MPa, IQR 0.4–1.1 등)",
+    "메쉬·시간 독립성 검증 결과(peak PSS 변화 <2%)"
+  ],
+  "comparisons": [
+    "Stress 정의 비교: peak PSS(최대값) vs ΔPSS(심주기 진폭, 피로 관점)",
+    "Strength 정규화 시나리오 비교: E_fc^α에서 α 값(예: 0.5 vs 1.0) 비교",
+    "6개 후보 VI의 7개 임상기준과의 sign-consistency 비교(후보 간 임상타당성 선별)",
+    "그룹별 민감도 비교: Material vs Hemodynamics vs Morphology (Material dominant 결과 근거)",
+    "개별 파라미터 영향도 순위 비교: E_vessel, E_fc, SBP, PP 등 상위 인자 대 다른 입력 변수들",
+    "플라크 표현형 비교: LAP vs CP(대리모델 성능·민감도 및 VI 진단성 차이 비교)",
+    "대리모델 기반 Sobol 결과와 원 FSI 시뮬레이션 데이터(유효쌍 LAP 784 / CP 727) 사이의 일치성(검증)"
+  ],
+  "key_observations": [
+    "발견 1: 파열위험지표 = stress/strength, stress = ΔPSS(피로 관점)가 의학적으로 적합 → 맥동성 시뮬레이션의 필요성",
+    "발견 2: 파열위험 지표 정의에 strength 정규화의 필요성",
+    "발견 3: 민감도 분석 결과 → Material dominant",
+    "파열위험지표는 stress/strength 비로 정의해야 하며, stress를 심주기 진폭(ΔPSS, 피로 관점)으로 해석하는 것이 임상적 관찰과 더 잘 일치한다",
+    "섬유막 강도로 정규화하는 취약성 지수(VI)가 임상적으로 확립된 7개 고위험 플라크 특징과 높은 일치성을 보이며(VI1 및 VI2가 7기준 모두 만족), 평균 sign-consistency = 1.00(95% BCa CI 0.99–1.00)",
+    "전역 민감도 분석에서 재료물성 그룹이 VI 변동성을 지배(Material > Hemodynamics > Morphology); 예: LAP·VI2에서 Material 그룹 S1 ≈ 0.75",
+    "개별 파라미터 수준에서 E_fc가 가장 큰 1차 민감도 기여를 보임(LAP·VI2에서 E_fc S1 ≈ 0.55); 상위 4인자는 E_vessel, E_fc, SBP, PP",
+    "GPR 대리모델은 높은 예측 정확도를 보임(5-fold CV R² ≈0.93 for LAP, ≈0.90 for CP; RMSE ≈0.12·σ(VI)) 및 예측 불확실성은 GPR posterior 분산으로 표현됨",
+    "선정된 VI2(ΔPSS/E_fc)의 합성 고위험 라벨 분리성은 양호: AUC ≈0.84 (95% CI 0.80–0.88), Youden 최적 민감도 ≈0.78, 특이도 ≈0.76",
+    "시뮬레이션 출력(PSS, FFR, rupture location index)이 선행문헌 경향과 일치하여 모델의 face validity를 뒷받침함",
+    "메쉬 및 시간보폭 독립성 확인: peak PSS 변화 <2% (coarse→fine, Δt/2)",
+    "literature_sources: (i) stress/strength 지표·한계: Holzapfel 2004(BMMB), Tang 2005(ABME). (ii) 비용효율 맥동 FSI 원논문: 본 연구실 선행 논문(인용 예정). (iii) 7가지 고위험 플라크 임상기준: Virmani 2000(Circulation), Stone 2011(PROSPECT, JACC). (iv) PSS·FFR·파열위치 경향 비교: Morris 2016(J Biomech), Sankaran 2017.",
+    "computational_modelling_surrogate_development: GPR: ARD Matern 5/2 + White-noise 커널, 하이퍼파라미터 L-BFGS-B 20 restarts. 입력 z-score 정규화, 출력(VI) 표준화. 5-fold CV에서 R²=0.93(LAP)/0.90(CP), RMSE≈0.12·σ(VI). 예측 불확실성은 GPR posterior 분산. Sobol: Saltelli 샘플링 약 15,000 base, S1·ST 수렴(재현 시 S1 변화 <0.01). 유효쌍 LAP 784 / CP 727.",
+    "material_constitutive_model: 혈관벽·섬유막: nearly-incompressible Neo-Hookean(혈관 μ=60 kPa/K=600 kPa, 섬유막 μ=120 kPa/K=1200 kPa). 저감쇠 핵: 선형탄성(E=5 kPa, ν=0.49). 석회화: 선형탄성(E=10 GPa, ν=0.3). 등방·준정적, 점탄성 미고려. 문헌: Holzapfel 2004, Li 2008.",
+    "characterize_mechanical_properties_of_plaque_components: E_fc∈[0.1,2.0] MPa, E_vessel∈[0.2,1.5] MPa, E_lipid∈[2,15] kPa, E_cal∈[1,20] GPa; 균등분포 LHS 샘플링. 출처: ex vivo 인장시험 메타분석. strength 정규화 E_FC^α의 α=0.5(루트)·1.0(선형)은 섬유막 강도 스케일 가정 두 시나리오로 보조 비교.",
+    "statistical_analysis_and_classification: 7개 임상기준에 대해 부호일치=1/불일치=0 점수화, VI별 평균 점수와 95% BCa 부트스트랩 CI(1000 resample). VI1=ΔPSS/E_fc^0.5, VI2=ΔPSS/E_fc만 평균 1.00(CI 0.99–1.00). 동률 시 ΔPSS 민감도 우선. GPR 검증 5-fold CV R²·RMSE 보고.",
+    "diagnostic_performance_metrics: 환자 결과가 없어 합성 고위험 라벨(7기준 중 ≥5 충족) 정의 후 VI 임계값 스윕: AUC(VI2)=0.84(95% CI 0.80–0.88), Youden 최적점 민감도 0.78/특이도 0.76. 순위상관 Kendall τ도 보조 보고.",
+    "tissue_material_stiffness_results: E_fc: 0.1–2.0 MPa(중앙 0.7, IQR 0.4–1.1), E_vessel: 0.2–1.5 MPa(중앙 0.8), E_lipid: 2–15 kPa, E_cal: 1–20 GPa. 분포 히스토그램·상자수염도는 보충 도표 S1. strength 정규화는 E_FC^α로 VI 분모에 매핑.",
+    "LOGIC_GAP_C1_EVIDENCE: VI 후보 6종(stress 2종 × strength 3시나리오)을 7개 임상 고위험 기준과의 부호일치로 평가한 결과, VI1=ΔPSS/E_fc^0.5와 VI2=ΔPSS/E_fc만 7기준을 모두 만족(부호일치 점수 평균 1.00, 95% BCa CI 0.99–1.00). 이 선별 결과(6개 중 2개만 전 기준 충족)가 \"파열 취약성을 stress/strength 비율로 정의해야 한다\"는 주장을 직접 지지하는 결과값이다. 근거: data/sobol/sobol_grp/ind_*_VI1/VI2.csv 및 후보 선별 표."
+  ],
+  "possible_claims": [
+    "발견 1: 파열위험지표 = stress/strength, stress = ΔPSS(피로 관점)가 의학적으로 적합 → 맥동성 시뮬레이션의 필요성",
+    "발견 2: 파열위험 지표 정의에 strength 정규화의 필요성",
+    "발견 3: 민감도 분석 결과 → Material dominant",
+    "관상동맥 플라크 파열은 ACS의 주원인이고 심혈관 사망 부담이 크다.",
+    "파열 위험은 형태·혈류역학·재료(strength) 인자가 함께 작용해 결정된다.",
+    "그러나 기존 파열위험지표는 응력(stress)만으로 정의되어 환자마다 다른 strength(물성)를 무시한다 → 정확한 지표는 stress/strength 비율이어야 한다. (strength를 고정상수 비율로 둔 선행 문헌 = 그 한계)",
+    "어느 인자군이 위험을 지배하는지 알면 임상 측정·위험층화의 우선순위가 정해진다(예: 재료 지배 시 형태보다 OCT 기반 강성 특성화가 중요). 그러나 이를 알려면 세 인자군을 '현실적 VI' 위에서 동시에·넓은 공간으로 변동시키는 민감도 분석이 필요한데, 고비용 수치해석 때문에 아무도 못 했다.",
+    "따라서 본 연구는 (선행 검증된) 비용효율 FSI를 활용해 strength 반영 현실적 VI에 대한 세 인자군 전체 공간 민감도 분석을 수행하여, ΔPSS 기반 지표의 임상 타당성과 재료물성의 지배성을 규명한다.",
+    "분석은 3단계(데이터생성→VI선정→surrogate 기반 전역 민감도 분석)로 구성된다.",
+    "데이터는 선행 논문에서 검증된 비용효율 맥동 FSI로 생성한다(도구, 인용).",
+    "두 표현형(LAP 3도메인 / CP 4도메인)을 각각 모델링하고, FC 두께는 균일 가정해 단일 스칼라 변수로 변동시킨다.",
+    "입력은 형태·혈류역학·재료 3군으로 1,000-sample 설계공간을 이룬다.",
+    "출력은 PSS·ΔPSS(구면평균)와 파열위치 지수로 측정한다.",
+    "취약성지수 VI=stress/strength로, stress 2종 × strength 3시나리오 = 6개 후보를 만든다.",
+    "6개를 7개 임상기준의 부호일치로 선별해 VI1=ΔPSS/E_FC^0.5, VI2=ΔPSS/E_FC^1.0을 채택한다.",
+    "최종 VI에 GPR surrogate를 학습하고(LAP 784 / CP 727 유효쌍), 그 위에서 Sobol 1차·전차 지수로 전역 민감도를 분석한다. (surrogate는 ~1.5만 회 평가를 가능케 하는 인프라이고, GSA가 목적.)",
+    "시뮬레이션 결과 PSS, FFR, 파열위치 모두 선행연구들의 경향성과 일치한다. (시뮬레이션 타당성)",
+    "6개 후보의 기준별 부호를 검토하면 2개만 7기준을 전부 만족한다(12의 근거).",
+    "민감도 결과 재료물성이 지배적이며 상위 4인자는 E_vessel·E_FC·수축기압·맥압이다(Material>Hemo>Morpho).",
+    "ΔPSS가 PSS보다 강한 예측인자다 → 맥동성(피로)이 중요하다.",
+    "strength 정규화가 필요하다(재료가 분모로 들어가야, α>0, alpha에 따라 민감도가 바뀜, alpha -> material property).",
+    "재료>혈류역학>형태 순의 지배성은 임상 위험 층화에 함의(형태보다 OCT 기반 강성 특성화가 정보가치 큼).",
+    "한계",
+    "파열위험지표는 stress/strength 비로 정의되어야 한다.",
+    "Stress는 심주기 진폭(ΔPSS, 피로 관점)으로 해석하는 것이 임상적으로 더 적합하므로 맥동성(피로)을 고려한 시뮬레이션이 필요하다.",
+    "섬유막 강도(또는 재료물성)로 정규화하는 것이 취약성 지수의 임상적 일관성 확보에 필요하다(예: E_fc^α, α>0).",
+    "재료물성(특히 E_vessel, E_fc)이 혈류역학·형태학보다 취약성 지수 변동을 더 강하게 결정한다(Material-dominant).",
+    "선택된 지수(VI1, VI2)는 임상적 고위험 특성과 높은 일치성을 보이며(합성 라벨에 대해 AUC≈0.84 등), 잠재적 진단 유용성이 있다.",
+    "비용효율 맥동 FSI와 대규모 설계공간 탐색을 결합한 대리모델·Sobol 분석은 고비용 FSI를 직접 반복하지 않고도 입력 영향도를 정량화하는 실용적 접근이다.",
+    "재료 지배성을 고려하면 임상에서 형태 기반 측정보다 OCT 등으로 강성(재료) 특성화의 우선순위를 재고해야 할 수 있다."
+  ],
+  "limitations": [
+    "cost-effective FSI 기법 자체의 제안/검증 (선행 논문 소관 → 인용만)",
+    "cost-effective FSI 기법 자체의 제안/검증은 본 연구의 범위 밖이며 선행 논문을 도구로 사용함(검증 인용 필요)",
+    "이상적(비환자특이적) 관상동맥 기하학 및 두 가지 전형적 플라크 표현형(LAP, CP) 사용으로 환자별 이질성 일반화에 제한이 있음",
+    "섬유막 두께를 공간적으로 균일하다고 가정하고 단일 스칼라 변수로 변동시킴(현실의 국소 비균질성 미반영)",
+    "섬유막 강도 정규화는 단순한 E_fc^α 모델(α=0.5,1.0)을 사용하였고 실제 환자의 강도 분포·파단역학은 반영되지 않음",
+    "유체는 뉴턴성 유체로, 고체는 등방·탄성(Neo-Hookean/선형)으로 가정하였으며 점탄성·이방성·성장·리모델링 등은 고려하지 않음",
+    "전역 민감도는 GPR 대리모델 위에서 계산되었으므로 원시 FSI 모델에 직접 적용된 결과와는 근사오차가 있을 수 있음",
+    "임상 검증은 7개 고위험 플라크 특징과의 sign-consistency 기반으로 제한되며 실제 환자 아웃컴 검증은 없음",
+    "경계조건 및 파라미터 범위는 본 연구에서 선택한 분포에 의존하므로 모든 생리학적 스펙트럼을 포함하지 않을 수 있음"
+  ],
+  "known_references": [],
+  "unknowns": [
+    "primary_methods_description",
+    "continuum_3d_navier_stokes_model"
+  ],
+  "answer_provenance": [
+    {
+      "field": "literature_sources",
+      "source": "author_answer_requirement",
+      "answer_id": "literature_sources"
+    },
+    {
+      "field": "computational_modelling_surrogate_development",
+      "source": "author_answer_requirement",
+      "answer_id": "computational_modelling_surrogate_development"
+    },
+    {
+      "field": "material_constitutive_model",
+      "source": "author_answer_requirement",
+      "answer_id": "material_constitutive_model"
+    },
+    {
+      "field": "characterize_mechanical_properties_of_plaque_components",
+      "source": "author_answer_requirement",
+      "answer_id": "characterize_mechanical_properties_of_plaque_components"
+    },
+    {
+      "field": "statistical_analysis_and_classification",
+      "source": "author_answer_requirement",
+      "answer_id": "statistical_analysis_and_classification"
+    },
+    {
+      "field": "diagnostic_performance_metrics",
+      "source": "author_answer_requirement",
+      "answer_id": "diagnostic_performance_metrics"
+    },
+    {
+      "field": "tissue_material_stiffness_results",
+      "source": "author_answer_requirement",
+      "answer_id": "tissue_material_stiffness_results"
+    },
+    {
+      "field": "LOGIC_GAP_C1_EVIDENCE",
+      "source": "author_answer_logic",
+      "answer_id": "LOGIC_GAP_C1_EVIDENCE"
+    },
+    {
+      "field": "LOGIC_GAP_C1_EVIDENCE",
+      "source": "author_answer_logic",
+      "answer_id": "LOGIC_GAP_C1_EVIDENCE"
+    },
+    {
+      "field": "LOGIC_GAP_C1_EVIDENCE",
+      "source": "author_answer_logic",
+      "answer_id": "LOGIC_GAP_C1_EVIDENCE"
+    }
+  ],
+  "source": "final"
+}

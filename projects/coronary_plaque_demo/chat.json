@@ -1,0 +1,13 @@
+{
+  "messages": [
+    {
+      "t": "assistant",
+      "text": "This trial already produced a manuscript. Here it is — open it on the right."
+    },
+    {
+      "t": "result",
+      "meta": {},
+      "session_dir": "/Users/jeff/project/jeff_soul/projects/paperflow/projects/coronary_plaque_demo"
+    }
+  ]
+}

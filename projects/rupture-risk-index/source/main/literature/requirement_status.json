@@ -1,0 +1,606 @@
+[
+  {
+    "key": "primary_study_objective_define_rupture_risk_index",
+    "status": "present",
+    "found_evidence": [
+      "research_state.objective",
+      "research_state.primary_message",
+      "methods (item: Define and compute the rupture-risk index as ΔPSS / strength)"
+    ],
+    "reason": "The materials explicitly state the study objective to define a rupture-risk index and define it as ΔPSS/strength.",
+    "source_requirements": [
+      "overall_schema:primary_study_objective_define_rupture_risk_index"
+    ]
+  },
+  {
+    "key": "fsi_simulation",
+    "status": "partial",
+    "found_evidence": [
+      "methods (items: Apply boundary conditions and hemodynamic loading; Perform cost-effective FSI simulations to compute ΔPSS)",
+      "outline point 2",
+      "research_state.study_design"
+    ],
+    "reason": "FSI simulations are described at a high level (cost-effective FSI to compute ΔPSS) but no solver/software, coupling scheme, numerical methods, mesh/timestep settings, or convergence tests are provided.",
+    "source_requirements": [
+      "overall_schema:fsi_simulation"
+    ]
+  },
+  {
+    "key": "parameter_sampling_of_geometries_and_materials",
+    "status": "present",
+    "found_evidence": [
+      "methods (items: Construct parametrized coronary plaque geometries; Assign material properties sampled across plausible ranges)",
+      "research_state.study_design",
+      "research_state.input_variables"
+    ],
+    "reason": "The materials explicitly describe sampling geometric parameters and material properties for the 1,000-sample cohort.",
+    "source_requirements": [
+      "overall_schema:parameter_sampling_of_geometries_and_materials"
+    ]
+  },
+  {
+    "key": "study_design_computational_fsi_modeling",
+    "status": "present",
+    "found_evidence": [
+      "research_state.study_design",
+      "methods overview",
+      "outline point 2"
+    ],
+    "reason": "A computational FSI modeling study design for a large parameter-sampled cohort is explicitly described.",
+    "source_requirements": [
+      "overall_schema:study_design_computational_fsi_modeling"
+    ]
+  },
+  {
+    "key": "literature_sources_for_parameters",
+    "status": "missing",
+    "found_evidence": [
+      "limitations (mention uncertainty in assigned material strength values if drawn from literature ranges)",
+      "methods (mention of literature ranges as a possibility)"
+    ],
+    "reason": "The materials note using literature ranges in limitations, but no specific literature sources, citations, or numerical parameter ranges are provided.",
+    "source_requirements": [
+      "overall_schema:literature_sources_for_parameters"
+    ]
+  },
+  {
+    "key": "material_strength_estimation",
+    "status": "partial",
+    "found_evidence": [
+      "methods (item: Estimate local material/rupture strength for each sample (from assigned material properties or literature ranges))",
+      "limitations (uncertainty in assigned material strength values)"
+    ],
+    "reason": "The workflow states that local material/rupture strength is estimated per sample but does not specify the estimation method, formula, spatial assignment, or source values.",
+    "source_requirements": [
+      "overall_schema:material_strength_estimation"
+    ]
+  },
+  {
+    "key": "statistical_and_sensitivity_analysis",
+    "status": "partial",
+    "found_evidence": [
+      "methods (item: Perform sensitivity analysis and multivariate/statistical analysis to identify which input variables drive variation in the rupture-risk index)",
+      "outcomes (sensitivity measures / effect sizes listed)"
+    ],
+    "reason": "The study states that sensitivity and multivariate analyses were performed but does not specify which statistical tests, sensitivity methods (e.g., Sobol, variance-based, regression), software, or significance thresholds were used.",
+    "source_requirements": [
+      "overall_schema:statistical_and_sensitivity_analysis"
+    ]
+  },
+  {
+    "key": "sensitivity_and_statistical_analysis",
+    "status": "partial",
+    "found_evidence": [
+      "methods (same items as above)",
+      "outcomes (sensitivity measures / effect sizes listed)"
+    ],
+    "reason": "Duplicate requirement for outcomes mirrors the methods description: sensitivity/statistical analyses are claimed but methods/details are not specified.",
+    "source_requirements": [
+      "overall_schema:sensitivity_and_statistical_analysis"
+    ]
+  },
+  {
+    "key": "synthetic_geometries_cohort",
+    "status": "present",
+    "found_evidence": [
+      "methods (item: Construct parametrized coronary plaque geometries for a large synthetic cohort (1,000 samples))",
+      "research_state.input_variables"
+    ],
+    "reason": "The materials explicitly describe a parametrized synthetic cohort of 1,000 plaque geometries.",
+    "source_requirements": [
+      "overall_schema:synthetic_geometries_cohort"
+    ]
+  },
+  {
+    "key": "peak_structural_stress_calculation",
+    "status": "partial",
+    "found_evidence": [
+      "methods (item: Perform cost-effective FSI simulations to compute changes in peak structural stress (ΔPSS) for each sample)",
+      "outcomes (Computed ΔPSS per sample listed)"
+    ],
+    "reason": "ΔPSS is reported as an outcome, but the exact definition of 'peak structural stress', the metric used (e.g., von Mises, principal stress), spatial/temporal aggregation, and how change is computed are not specified.",
+    "source_requirements": [
+      "overall_schema:peak_structural_stress_calculation"
+    ]
+  },
+  {
+    "key": "rupture_risk_index",
+    "status": "present",
+    "found_evidence": [
+      "methods (item: Define and compute the rupture-risk index as ΔPSS / strength)",
+      "research_state.primary_message",
+      "core_message novelty"
+    ],
+    "reason": "The rupture-risk index is explicitly defined as ΔPSS/strength in the provided materials.",
+    "source_requirements": [
+      "overall_schema:rupture_risk_index"
+    ]
+  },
+  {
+    "key": "develop_and_report_FSI_model_and_workflow",
+    "status": "partial",
+    "found_evidence": [
+      "methods list the FSI workflow steps (geometry construction, sampling, apply BCs, run simulations, compute ΔPSS)",
+      "key_observations note that a 1,000-sample FSI workflow is feasible"
+    ],
+    "reason": "A high-level workflow is described, but key reproducibility details are missing (software, pre/postprocessing steps, mesh generation, run-time/resource use, pipeline automation).",
+    "source_requirements": [
+      "overall_schema:develop_and_report_FSI_model_and_workflow"
+    ]
+  },
+  {
+    "key": "constitutive_material_modeling",
+    "status": "missing",
+    "found_evidence": [
+      "methods mention assigning material properties (plaque components and cap) sampled across plausible ranges",
+      "limitations note potential simplifications in material constitutive models"
+    ],
+    "reason": "While material properties are mentioned, no constitutive models (e.g., linear elastic, hyperelastic, anisotropic Mooney-Rivlin, parameter names/equations) are specified.",
+    "source_requirements": [
+      "overall_schema:constitutive_material_modeling"
+    ]
+  },
+  {
+    "key": "peak_structural_stress",
+    "status": "present",
+    "found_evidence": [
+      "research_state.methods bullet: 'Perform cost-effective FSI simulations to compute changes in peak structural stress (ΔPSS) for each sample'",
+      "research_state.outcomes: 'Computed ΔPSS (change in peak structural stress) per sample'",
+      "research_state.key_observations: 'The rupture-risk index (ΔPSS/strength) can be computed for each sample'"
+    ],
+    "reason": "The materials explicitly state that ΔPSS (change in peak structural stress) is computed for each sample and is a primary outcome used to form the index.",
+    "source_requirements": [
+      "overall_schema:peak_structural_stress"
+    ]
+  },
+  {
+    "key": "hemodynamic_loading_and_cfd_metrics",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.methods: 'Apply boundary conditions and hemodynamic loading for FSI simulations representative of coronary conditions'",
+      "research_state.input_variables: 'Luminal pressure / hemodynamic loading conditions'",
+      "research_state.comparisons: 'Across hemodynamic loading conditions (pressure/flow variations)'"
+    ],
+    "reason": "Hemodynamic loading is mentioned and sampled, but the materials do not specify CFD metrics (e.g., WSS, oscillatory shear), the CFD solver/settings, mesh/resolution, or the exact hemodynamic parameter ranges and how hemodynamic metrics are computed or used in analyses.",
+    "source_requirements": [
+      "overall_schema:hemodynamic_loading_and_cfd_metrics"
+    ]
+  },
+  {
+    "key": "large_sample_parameter_sampling",
+    "status": "present",
+    "found_evidence": [
+      "research_state.study_design: 'A large-sample (1,000-sample) cost-effective computational FSI study using parameter sampling of plaque geometries, material properties and hemodynamic loading'",
+      "research_state.methods bullet: 'Construct parametrized coronary plaque geometries for a large synthetic cohort (1,000 samples) using sampled geometric parameters'"
+    ],
+    "reason": "The study explicitly states a 1,000-sample parameter-sampling design and describes the classes of parameters sampled.",
+    "source_requirements": [
+      "overall_schema:large_sample_parameter_sampling"
+    ]
+  },
+  {
+    "key": "material_strength_estimate",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.methods: 'Estimate local material/rupture strength for each sample (from assigned material properties or literature ranges)'",
+      "research_state.outcomes: 'Estimated local material/rupture strength per sample'",
+      "research_state.limitations: 'Uncertainty in assigned material strength values if drawn from literature ranges rather than direct measurement'"
+    ],
+    "reason": "The approach to estimate strength is mentioned, but the materials do not report the specific strength values or ranges used, the constitutive/strength criteria (e.g., ultimate tensile strength, failure strain, tensile vs shear), nor the mapping from material property samples to local strength values.",
+    "source_requirements": [
+      "overall_schema:material_strength_estimate"
+    ]
+  },
+  {
+    "key": "incomplete_reporting_in_abstracts",
+    "status": "not_applicable",
+    "found_evidence": [
+      "Provided materials include a reconstructed research_state and methods rather than an abstract-only submission",
+      "core_message.one_paragraph and research_state provide methodological outline"
+    ],
+    "reason": "The requirement addresses studies that are abstract-only or summarize methods without detail; here a reconstructed full study methods and limitations are provided, so this requirement is not applicable.",
+    "source_requirements": [
+      "overall_schema:incomplete_reporting_in_abstracts"
+    ]
+  },
+  {
+    "key": "study_design_computational_parametric_with_clinical_comparison",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state.limitations: 'No clinical or experimental validation of the rupture-risk index within the provided materials'",
+      "research_state.methods: design describes synthetic cohort without clinical imaging comparison"
+    ],
+    "reason": "This requirement applies when claims include validation or comparison to clinical imaging; the materials explicitly state there is no clinical/experimental validation, so the requirement does not apply.",
+    "source_requirements": [
+      "overall_schema:study_design_computational_parametric_with_clinical_comparison"
+    ]
+  },
+  {
+    "key": "relationships_between_geometric_compositional_features_and_cap_stress",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.methods: 'Perform sensitivity analysis and multivariate/statistical analysis to identify which input variables drive variation in the rupture-risk index'",
+      "research_state.outcomes: 'Sensitivity measures / effect sizes for input variables on the rupture-risk index'",
+      "research_state.key_observations: 'Variation in the index can be associated with geometric, material and hemodynamic input variables (i.e., those classes of inputs are drivers)'"
+    ],
+    "reason": "The plan to perform sensitivity and multivariate analyses is described and the manuscript claims that classes of inputs drive the index, but specific relationships (e.g., effect sizes, directionality, regression coefficients, interaction terms, p-values) between particular geometric/compositional features and cap stress/index are not provided.",
+    "source_requirements": [
+      "overall_schema:relationships_between_geometric_compositional_features_and_cap_stress"
+    ]
+  },
+  {
+    "key": "study_design_review_article",
+    "status": "missing",
+    "found_evidence": [
+      "No literature review or review-article style synthesis included in research_state, core_message, or outline"
+    ],
+    "reason": "There is no provided review-article content or explicit literature-context section beyond general motivation; no systematic literature synthesis or review-style material is present.",
+    "source_requirements": [
+      "overall_schema:study_design_review_article"
+    ]
+  },
+  {
+    "key": "idealized_or_parameterized_plaque_models",
+    "status": "present",
+    "found_evidence": [
+      "research_state.methods: 'Construct parametrized coronary plaque geometries for a large synthetic cohort (1,000 samples) using sampled geometric parameters'",
+      "research_state.limitations: 'Use of parametrized/synthetic plaque geometries rather than patient-specific imaging data'"
+    ],
+    "reason": "The materials explicitly state the use of parameterized/synthetic plaque geometries and note this as a limitation.",
+    "source_requirements": [
+      "overall_schema:idealized_or_parameterized_plaque_models"
+    ]
+  },
+  {
+    "key": "comparative_evidence_and_guideline_synthesis",
+    "status": "missing",
+    "found_evidence": [
+      "No explicit comparative synthesis to guidelines or other biomarkers is provided in the materials",
+      "outline includes 'Discussion of implications for clinical practice' but no details"
+    ],
+    "reason": "Although clinical implications are mentioned, the materials lack comparative evidence against existing biomarkers, clinical guidelines, or a synthesis that would justify translation to clinical recommendations.",
+    "source_requirements": [
+      "overall_schema:comparative_evidence_and_guideline_synthesis"
+    ]
+  },
+  {
+    "key": "evaluate_hemodynamic_loading_and_predictions",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.input_variables and comparisons list hemodynamic loading as sampled and compared",
+      "research_state.methods: apply hemodynamic loading for FSI simulations"
+    ],
+    "reason": "Hemodynamic variation is sampled and comparisons across loading conditions are mentioned, but there are no details on how hemodynamic loading effects are evaluated/predicted (metrics, thresholds, or predictive performance measures).",
+    "source_requirements": [
+      "overall_schema:evaluate_hemodynamic_loading_and_predictions"
+    ]
+  },
+  {
+    "key": "clinical_imaging_datasets",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state.limitations: 'Use of parametrized/synthetic plaque geometries rather than patient-specific imaging data'",
+      "research_state does not state use of clinical imaging datasets"
+    ],
+    "reason": "The study uses synthetic parameterized models and does not include patient-specific or clinical imaging datasets; requirement applies only when patient-specific models or validation is included.",
+    "source_requirements": [
+      "overall_schema:clinical_imaging_datasets"
+    ]
+  },
+  {
+    "key": "biomarker_identification",
+    "status": "missing",
+    "found_evidence": [
+      "core_message and research_state discuss a rupture-risk index and clinical implications, but do not identify specific biomarkers or propose diagnostic thresholds",
+      "outline's discussion of clinical implications lacks detail on biomarker translation"
+    ],
+    "reason": "While the rupture-risk index is proposed as potentially clinically relevant, the materials do not identify specific biomarkers, threshold values, or how the index would be translated into a clinical biomarker or diagnostic test.",
+    "source_requirements": [
+      "overall_schema:biomarker_identification"
+    ]
+  },
+  {
+    "key": "study_design_case_study_single_subject_modeling",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state: study_design",
+      "core_message"
+    ],
+    "reason": "The study is described as a large-sample (1,000-sample) synthetic parameter-sampling FSI study rather than a single-subject or case-study modelling effort; the requirement applies only when the claim is demonstrative or a single-subject proof-of-concept.",
+    "source_requirements": [
+      "overall_schema:study_design_case_study_single_subject_modeling"
+    ]
+  },
+  {
+    "key": "clinical_prospective_studies_on_PSS",
+    "status": "missing",
+    "found_evidence": [
+      "research_state: limitations (notes no clinical or experimental validation)",
+      "research_state: primary_message"
+    ],
+    "reason": "Materials state clinical/experimental validation is not provided and there are no references or descriptions of prospective clinical studies relating PSS to outcomes.",
+    "source_requirements": [
+      "overall_schema:clinical_prospective_studies_on_PSS"
+    ]
+  },
+  {
+    "key": "models_six_computational_models_varying_cyclic_bending_anisotropy_pulsating_pressure_plaque_structure_and_axial_stretch",
+    "status": "partial",
+    "found_evidence": [
+      "research_state: methods (parameter sampling of geometries, material properties and hemodynamic loading)",
+      "outline point 2"
+    ],
+    "reason": "The materials describe parametrized geometries and sampling of geometric, material and hemodynamic inputs but do not explicitly document implementing six specific computational model variants (cyclic bending, anisotropy, pulsatile pressure, plaque structure variants, axial stretch, etc.) or their definitions.",
+    "source_requirements": [
+      "overall_schema:models_six_computational_models_varying_cyclic_bending_anisotropy_pulsating_pressure_plaque_structure_and_axial_stretch"
+    ]
+  },
+  {
+    "key": "conceptual_framework_biomechanics",
+    "status": "present",
+    "found_evidence": [
+      "research_state: primary_message",
+      "research_state: methods",
+      "core_message"
+    ],
+    "reason": "Materials explicitly state the rupture-risk index integrates mechanical loading (ΔPSS) and material strength and is used to identify drivers (geometry, material, hemodynamics), providing the conceptual biomechanics framework.",
+    "source_requirements": [
+      "overall_schema:conceptual_framework_biomechanics"
+    ]
+  },
+  {
+    "key": "clinical_associations_of_pstress",
+    "status": "missing",
+    "found_evidence": [
+      "research_state: limitations (notes no clinical or experimental validation)"
+    ],
+    "reason": "There is no presentation of clinical association data linking PSS (or ΔPSS) to clinical outcomes in the provided materials.",
+    "source_requirements": [
+      "overall_schema:clinical_associations_of_pstress"
+    ]
+  },
+  {
+    "key": "biomechanical_forces_influence_on_plaque_outcomes",
+    "status": "present",
+    "found_evidence": [
+      "research_state: key_observations",
+      "research_state: outcomes"
+    ],
+    "reason": "Materials state that variation in the rupture-risk index can be associated with geometric, material and hemodynamic input variables, indicating biomechanical forces influence plaque-related outcomes.",
+    "source_requirements": [
+      "overall_schema:biomechanical_forces_influence_on_plaque_outcomes"
+    ]
+  },
+  {
+    "key": "quantitative_relative_changes_in_stress_and_flow_under_model_variations",
+    "status": "missing",
+    "found_evidence": [
+      "research_state: methods (cost-effective FSI simulations to compute ΔPSS)",
+      "research_state: comparisons (across sampled conditions)"
+    ],
+    "reason": "Although the study states it compares across geometries, materials and loading, no quantitative results or summary statistics (e.g., percent change in PSS under model variants, effect sizes comparing index vs PSS or strength alone) are provided in the materials.",
+    "source_requirements": [
+      "overall_schema:quantitative_relative_changes_in_stress_and_flow_under_model_variations"
+    ]
+  },
+  {
+    "key": "fsi_tool_development_and_complexity_limits",
+    "status": "partial",
+    "found_evidence": [
+      "research_state: limitations (mentions potential simplifications in material constitutive models and boundary conditions)",
+      "research_state: methods (cost-effective FSI simulations)"
+    ],
+    "reason": "Limitations note simplifications inherent to cost-effective FSI, but materials do not detail the FSI tool development, numerical complexity limits, solver choices, or how complexity was traded off for sample size.",
+    "source_requirements": [
+      "overall_schema:fsi_tool_development_and_complexity_limits"
+    ]
+  },
+  {
+    "key": "literature_review_or_biomarker_summary",
+    "status": "partial",
+    "found_evidence": [
+      "outline point 1 (Intro)",
+      "research_state: study_problem"
+    ],
+    "reason": "Intro and study_problem reference lack of accepted quantitative rupture index and prior small-sample FSI studies, but no explicit literature review or summarized biomarker/clinical evidence list is provided in the materials.",
+    "source_requirements": [
+      "overall_schema:literature_review_or_biomarker_summary"
+    ]
+  },
+  {
+    "key": "pulsatile_loading_and_cyclic_bending",
+    "status": "partial",
+    "found_evidence": [
+      "research_state: methods (apply boundary conditions and hemodynamic loading for FSI simulations representative of coronary conditions)"
+    ],
+    "reason": "Materials state hemodynamic loading and FSI representative of coronary conditions but do not explicitly describe pulsatile loading, cyclic bending, or their parameterization.",
+    "source_requirements": [
+      "overall_schema:pulsatile_loading_and_cyclic_bending"
+    ]
+  },
+  {
+    "key": "study_design_guideline_document",
+    "status": "missing",
+    "found_evidence": [
+      "research_state: discussion (implications for clinical practice mentioned)"
+    ],
+    "reason": "Although clinical implications are discussed, there is no study design guideline document or explicit reference to established guideline frameworks for translation to clinical recommendations.",
+    "source_requirements": [
+      "overall_schema:study_design_guideline_document"
+    ]
+  },
+  {
+    "key": "study_design_animal_model_based_modelling",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state: methods",
+      "limitations"
+    ],
+    "reason": "The study is computational with synthetic geometries and does not claim in vivo animal-derived parameter estimation or validation; the requirement applies only when animal-model-based modelling is used.",
+    "source_requirements": [
+      "overall_schema:study_design_animal_model_based_modelling"
+    ]
+  },
+  {
+    "key": "ex_vivo_specimen",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state: limitations (explicitly states no experimental validation provided)"
+    ],
+    "reason": "No ex vivo specimens or experimental validation are described; the requirement applies only when experimental/imaging validation is offered.",
+    "source_requirements": [
+      "overall_schema:ex_vivo_specimen"
+    ]
+  },
+  {
+    "key": "animal_data_or_measurements",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state",
+      "methods"
+    ],
+    "reason": "Requirement applies only if the study uses or compares to animal experiments. The reconstructed research_state and methods describe a computational FSI study using synthetic parametrized geometries and no animal experiments or comparisons are mentioned.",
+    "source_requirements": [
+      "overall_schema:animal_data_or_measurements"
+    ]
+  },
+  {
+    "key": "target_population_description",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state",
+      "limitations"
+    ],
+    "reason": "This is optional and required only when making population-specific clinical claims. The study uses synthetic parametrized plaque geometries and does not make population-specific clinical claims in the provided materials.",
+    "source_requirements": [
+      "overall_schema:target_population_description"
+    ]
+  },
+  {
+    "key": "machine_learning_models_for_prediction",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state",
+      "methods"
+    ],
+    "reason": "Applicable only if the project uses ML for index prediction or classification. The materials describe mechanistic FSI simulations and sensitivity/statistical analysis but do not mention use of ML prediction models or surrogates.",
+    "source_requirements": [
+      "overall_schema:machine_learning_models_for_prediction"
+    ]
+  },
+  {
+    "key": "future_directions_and_roadmap",
+    "status": "present",
+    "found_evidence": [
+      "outline point 6",
+      "limitations"
+    ],
+    "reason": "The outline includes a distinct Conclusion / future directions paragraph and the limitations section lists directions (need for validation, generalizability concerns), which together constitute future directions/roadmap content.",
+    "source_requirements": [
+      "overall_schema:future_directions_and_roadmap"
+    ]
+  },
+  {
+    "key": "ml_hemodynamics_prediction",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state",
+      "methods"
+    ],
+    "reason": "This applies only if the study uses ML or surrogate models to reduce cost. The provided methods describe cost-effective FSI via parameter sampling; no surrogate ML models are described.",
+    "source_requirements": [
+      "overall_schema:ml_hemodynamics_prediction"
+    ]
+  },
+  {
+    "key": "imaging_invasiveness_operator_dependence",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state",
+      "limitations"
+    ],
+    "reason": "Required only when intravascular imaging is used for geometry or validation or when claiming generalizability to imaging-derived cohorts. The study uses parametrized/synthetic geometries and no intravascular imaging is reported.",
+    "source_requirements": [
+      "overall_schema:imaging_invasiveness_operator_dependence"
+    ]
+  },
+  {
+    "key": "guideline_update_or_clinical_recommendation_objective",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state",
+      "limitations"
+    ],
+    "reason": "This is an unsupported requirement (should not be claimed). The materials do not state an objective to update guidelines or make clinical recommendations.",
+    "source_requirements": [
+      "overall_schema:guideline_update_or_clinical_recommendation_objective"
+    ]
+  },
+  {
+    "key": "application_domain_examples",
+    "status": "not_applicable",
+    "found_evidence": [
+      "core_message",
+      "outline"
+    ],
+    "reason": "This unsupported requirement applies when providing broad context or interdisciplinary examples. The study focuses narrowly on coronary plaque rupture risk using computational FSI and does not include broad domain examples.",
+    "source_requirements": [
+      "overall_schema:application_domain_examples"
+    ]
+  },
+  {
+    "key": "aortic_haemodynamics_mouse",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state"
+    ],
+    "reason": "This unsupported item about aortic haemodynamics in mice is irrelevant to the presented coronary plaque computational study.",
+    "source_requirements": [
+      "overall_schema:aortic_haemodynamics_mouse"
+    ]
+  },
+  {
+    "key": "treatment_recommendations_unrelated",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state",
+      "limitations"
+    ],
+    "reason": "This unsupported requirement concerns making unrelated treatment recommendations. The provided materials do not contain clinical treatment recommendations.",
+    "source_requirements": [
+      "overall_schema:treatment_recommendations_unrelated"
+    ]
+  },
+  {
+    "key": "guideline_replacement_or_policy_claims",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state",
+      "limitations"
+    ],
+    "reason": "Unsupported requirement; the study does not claim to replace guidelines or make policy-level claims in the provided materials.",
+    "source_requirements": [
+      "overall_schema:guideline_replacement_or_policy_claims"
+    ]
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "key": "joshuadhutch2016",
+    "title": "Genesis and growth of extracellular-vesicle-derived microcalcification in atherosclerotic plaques",
+    "authors": "Joshua D. Hutcheson, Claudia Goettsch, Sérgio Bertazzo, Natalia Maldonado, Jessica Ruiz, Wilson Wen Bin Goh, Katsumi Yabusaki, Tyler Faits, Carlijn V. C. Bouten, G Franck, Thibaut Quillard, Peter Libby, Masanori Aikawa, Sheldon Weinbaum, Elena Aïkawa",
+    "year": 2016,
+    "doi": "10.1038/nmat4519",
+    "abstract": "",
+    "topic": ""
+  },
+  {
+    "key": "morganemenz2020",
+    "title": "Active learning numerical cost reduction for reliability analysis",
+    "authors": "Morgane Menz",
+    "year": 2020,
+    "doi": "",
+    "abstract": "Les analyses de fiabilité sur des problèmes d'ingénierie complexes impliquent souvent des temps de calcul très élevés et requièrent l'utilisation de méthodes numériques avancées pour l'estimation d'une probabilité de défaillance. Les approches d'apprentissage actif de processus gaussiens pour la fiabilité sont un moyen de fortement réduire les temps de calcul en diminuant le nombre d'appels au code de simulation numérique coûteux tout en conservant une précision d'estimation suffisante de la probabilité de défaillance. Cette thèse s'est concentrée sur l'amélioration de ces techniques autour de",
+    "topic": ""
+  },
+  {
+    "key": "frankgijsen2019",
+    "title": "Expert recommendations on the assessment of wall shear stress in human coronary arteries: existing methodologies, technical considerations, and clinical applications",
+    "authors": "Frank Gijsen, Yuki Katagiri, Peter Barlis, Christos V. Bourantas, Carlos Collet, U. Ugur Coskun, Joost Daemen, Jouke Dijkstra, Elazer R. Edelman, Paul C. Evans, Kim Van der Heiden, Rod Hose, Bon‐Kwon Koo, Rob Krams, Alison L. Marsden, Francesco Migliavacca, Yoshinobu Onuma, Andrew Ooi, Eric Poon, Habib Samady, Peter H. Stone, Kuniaki Takahashi, Dalin Tang, Vikas Thondapu, Erhan Tenekecioğlu, Lucas H. Timmins, Ryo Torii, Jolanda J. Wentzel, Patrick W. Serruys",
+    "year": 2019,
+    "doi": "10.1093/eurheartj/ehz551",
+    "abstract": "Abstract",
+    "topic": ""
+  },
+  {
+    "key": "guijuancheng1993",
+    "title": "Distribution of circumferential stress in ruptured and stable atherosclerotic lesions. A structural analysis with histopathological correlation.",
+    "authors": "Guijuan Cheng, Howard M. Loree, Roger D. Kamm, Michael C. Fishbein, R T Lee",
+    "year": 1993,
+    "doi": "10.1161/01.cir.87.4.1179",
+    "abstract": "BACKGROUND: Although rupture of an atherosclerotic plaque is considered to be the cause of most acute coronary syndromes, the mechanism of plaque rupture is controversial. METHODS AND RESULTS: To test the hypothesis that plaque rupture occurs at sites of high circumferential stress in the diseased vessel, the distribution of stress was analyzed in 24 coronary artery lesions. Histological specimens from 12 coronary artery lesions that caused lethal myocardial infarction were compared with those from 12 stable control lesions. A finite element model was used to calculate the stress distributions",
+    "topic": ""
+  },
+  {
+    "key": "mortezanagha2003",
+    "title": "From Vulnerable Plaque to Vulnerable Patient",
+    "authors": "Morteza Naghavi, Peter Libby, Erling Falk, S. Ward Casscells, Silvio Litovsky, John A. Rumberger, Juan J. Badimón, Christodoulos Stefanadis, Pedro Moreno, Gerard Pasterkamp, Zahi A. Fayad, Peter H. Stone, Sergio Waxman, Paolo Raggi, Mohammad Madjid, Alireza Zarrabi, Allen Burke, Chun Yuan, Peter J. Fitzgerald, David S. Siscovick, Chris L. de Korte, Masanori Aikawa, Juhani Airaksinen, Gerd Assmann, Christoph R. Becker, James H. Chesebro, Andrew Farb, Zorina S. Galis, Chris Jackson, Ik‐Kyung Jang, Wolfgang Köenig, Robert A. Lodder, Keith L. March, Jasenka Demirovic, Mohamad Navab, Silvia G. Priori, Mark D. Rekhter, Raymond D. Bahr, Scott M. Grundy, Roxana Mehran, Antonio Colombo, Eric Boerwinkle, Christie M. Ballantyne, William Insull, Robert S. Schwartz, Robert A. Vogel, Patrick W. Serruys, Göran K. Hansson, David P. Faxon, Sanjay Kaul, Helmut Drexler, Philip Greenland, James E. Muller, Renu Virmani, Paul M. Ridker, Douglas P. Zipes, Prediman K. Shah, James T. Willerson",
+    "year": 2003,
+    "doi": "10.1161/01.cir.0000087480.94275.97",
+    "abstract": "Atherosclerotic cardiovascular disease results in >19 million deaths annually, and coronary heart disease accounts for the majority of this toll. Despite major advances in treatment of coronary heart disease patients, a large number of victims of the disease who are apparently healthy die suddenly without prior symptoms. Available screening and diagnostic methods are insufficient to identify the victims before the event occurs. The recognition of the role of the vulnerable plaque has opened new avenues of opportunity in the field of cardiovascular medicine. This consensus document concludes th",
+    "topic": ""
+  },
+  {
+    "key": "magnusblille2007",
+    "title": "Characterization of vulnerable plaques by multiphoton microscopy",
+    "authors": "Magnus B. Lilledahl, Olav A. Haugen, Catharina de Lange Davies, Lars O. Svaasand",
+    "year": 2007,
+    "doi": "10.1117/1.2772652",
+    "abstract": "Cardiovascular disease is the primary cause of death in the United States; the majority of these deaths are caused by the rupture of vulnerable plaques. An important feature of vulnerable plaques is the thickness of the fibrous cap that covers the necrotic core. A thickness of less than 65 microm has been proposed as a value that renders the plaque prone to rupture. This work shows that multiphoton microscopy (MPM) can image the plaque with microm resolution to a depth deeper than 65 microm. The fibrous cap emits primarily second harmonic generation due to collagen, in contrast to the necrotic",
+    "topic": ""
+  },
+  {
+    "key": "morganemenz2020a",
+    "title": "Réduction du coût numérique des méthodes d’apprentissage actif pour l’analyse de fiabilité",
+    "authors": "Morgane Menz",
+    "year": 2020,
+    "doi": "",
+    "abstract": "Running a reliability analysis on engineering problems involving complex numerical models can be computationally very expensive, requiring advanced simulation methods to reduce the overall numerical cost. Gaussian process based active learning approaches for reliability analysis are thus a way to strongly decrease the computational time by reducing the number of calls to the expensive numerical model while maintaining a sufficiently accurate estimation of the probability of failure. The work of this PhD thesis is focused on two improvement paths for these methods: the characterization of the e",
+    "topic": ""
+  },
+  {
+    "key": "violetacarva2021",
+    "title": "Blood Flow Modeling in Coronary Arteries: A Review",
+    "authors": "Violeta Carvalho, Diana Pinho, Rui Lima, José Carlos Teixeira, Senhorinha Teixeira",
+    "year": 2021,
+    "doi": "10.3390/fluids6020053",
+    "abstract": "Atherosclerosis is one of the main causes of cardiovascular events, namely, myocardium infarction and cerebral stroke, responsible for a great number of deaths every year worldwide. This pathology is caused by the progressive accumulation of low-density lipoproteins, cholesterol, and other substances on the arterial wall, narrowing its lumen. To date, many hemodynamic studies have been conducted experimentally and/or numerically; however, this disease is not yet fully understood. For this reason, the research of this pathology is still ongoing, mainly, resorting to computational methods. These",
+    "topic": ""
+  },
+  {
+    "key": "zahiafayad2001",
+    "title": "Clinical Imaging of the High-Risk or Vulnerable Atherosclerotic Plaque",
+    "authors": "Zahi A. Fayad, Valentı́n Fuster",
+    "year": 2001,
+    "doi": "10.1161/hh1601.095596",
+    "abstract": "The study of atherosclerotic disease during its natural history and after therapeutic intervention will enhance our understanding of disease progression and regression and aid in selecting appropriate treatments. Several invasive and noninvasive imaging techniques are available to assess atherosclerotic vessels. Most of the standard techniques identify luminal diameter, stenosis, wall thickness, and plaque volume; however, none can characterize plaque composition and therefore identify the high-risk plaques. We will present the different imaging modalities that have been used for the direct as",
+    "topic": ""
+  },
+  {
+    "key": "guillermojte2006",
+    "title": "Optical coherence tomography for imaging the vulnerable plaque",
+    "authors": "Guillermo J. Tearney, Ik‐Kyung Jang, Brett E. Bouma",
+    "year": 2006,
+    "doi": "10.1117/1.2192697",
+    "abstract": "While our understanding of vulnerable coronary plaque is still at an early stage, the concept that certain types of plaques predispose patients to developing an acute myocardial infarction continues to be at the forefront of cardiology research. Intracoronary optical coherence tomography (OCT) has been developed to both identify and study these lesions due to its distinct resolution advantage over other imaging modalities. We review clinical research conducted at the Massachusetts General Hospital over the past five years to develop, validate, and utilize this technology to improve our underst",
+    "topic": ""
+  }
+]

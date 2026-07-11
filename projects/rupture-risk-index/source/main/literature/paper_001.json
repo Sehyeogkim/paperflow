@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_001",
+  "study_archetype": "MRI-based computational FSI modeling study of atherosclerotic plaque",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: assess effects of cyclic bending and anisotropy on plaque mechanics",
+      "category": "objective",
+      "sub_category": "primary objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: computational modelling study using MRI-derived geometry",
+      "category": "study_design",
+      "sub_category": "computational FSI modeling",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data/sample: one ex vivo human coronary plaque MRI specimen",
+      "category": "data_or_sample",
+      "sub_category": "sample source and size",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: 3D fluid-structure interaction (FSI) models incorporating cyclic bending",
+      "category": "methods",
+      "sub_category": "FSI with cyclic bending",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: anisotropic vessel wall material properties included",
+      "category": "methods",
+      "sub_category": "anisotropic constitutive behavior",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Models: six computational models varying cyclic bending, anisotropy, pulsating pressure, plaque structure, and axial stretch",
+      "category": "models_and_equations",
+      "sub_category": "model variations/conditions tested",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

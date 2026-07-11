@@ -1,0 +1,180 @@
+[
+  {
+    "id": "fsi_simulation",
+    "question": "사용한 FSI 구현에 대해 구체적으로 기술해 주시겠습니까? (예: 사용한 소프트웨어/버전, 유체-구조 결합 방식(강/약 결합), 해석 유형(상정성, 비정상), 유한요소/유한체적 솔버 이름, 시간적 분해능/시간스텝 범위, 수렴 기준 및 평균 계산 시간/자원)",
+    "why_asked": "많은 관련 연구들(예: 40–60%의 FSI 연구)이 소프트웨어, 결합 방식 및 수치 설정을 보고하여 결과 재현성과 계산 비용 평가에 필수적입니다.",
+    "expected_answer": "예: \"ANSYS Workbench 2020 R2 (Fluent + Mechanical)를 사용했고 강결합(implicit) 방식으로 비정상 유체-구조 상호작용을 풀었습니다. 시간적 분해능은 Δt=0.5 ms (심박수 기반)로 설정했고 각 시간스텝에서 잔차 1e-6 미만을 수렴 기준으로 사용했습니다. 평균 시뮬레이션 시간은 샘플당 1.2 CPU·h였고 16코어 클러스터에서 병렬 실행했습니다.\"",
+    "requirement_level": "mandatory",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_001",
+      "paper_005",
+      "paper_007",
+      "paper_008"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "FSI simulations are described at a high level (cost-effective FSI to compute ΔPSS) but no solver/software, coupling scheme, numerical methods, mesh/timestep settings, or convergence tests are provided.",
+    "allow_unknown": true,
+    "priority": 3.4
+  },
+  {
+    "id": "literature_sources_for_parameters",
+    "question": "재료/강도 및 기타 매개변수(예: 모듈러스, 파괴 강도, cap thickness 분포 등)를 결정할 때 참고한 문헌 목록과 각 매개변수에 대해 사용한 수치 범위(또는 분포: 평균/표준편차 또는 하한/상한)를 제공해 주시겠습니까?",
+    "why_asked": "관련 문헌의 약 절반 이상의 유사 연구들이(문헌보고 관행) 사용된 물성값의 출처와 수치 범위를 보고하여 결과의 적용범위와 불확실성을 평가합니다.",
+    "expected_answer": "예: \"캡 탄성계수는 문헌[Smith et al. 2015; Lee et al. 2018]에 따라 0.1–1.0 MPa 균등분포로 샘플링했고, 관상동맥 벽 탄성계수는 0.3–2.0 MPa (로그정규), 파괴강도는 150–500 kPa (정규, μ=300 kPa, σ=75 kPa)로 설정했습니다. 전체 참조 목록: Smith 2015; Lee 2018; Zhang 2017.\"",
+    "requirement_level": "mandatory",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_002",
+      "paper_004"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The materials note using literature ranges in limitations, but no specific literature sources, citations, or numerical parameter ranges are provided.",
+    "allow_unknown": true,
+    "priority": 3.2
+  },
+  {
+    "id": "material_strength_estimation",
+    "question": "샘플별 'material/rupture strength'는 어떻게 산정하였는지 상세히 설명해 주시겠습니까? (예: 강도 값을 직접 할당하는지, 다른 물성에서 계산하는지, 국소치(캡만)인지 전체 플라크인지, 사용한 수식이나 참조값과 샘플링 분포 포함)",
+    "why_asked": "재료강도 추정 방법은 파열 위험 지수에 직접적으로 영향을 미치므로 많은 관련 연구들이(보고 빈도 높음) 구체적 추정 절차와 분포를 명시합니다.",
+    "expected_answer": "예: \"캡 강도는 문헌값(μ=320 kPa, σ=80 kPa)을 따르는 정규분포로 샘플링했고, 샘플 내에서는 캡 표면 전체에 균일하게 할당했습니다. necrotic core의 파괴강도는 별도로 100–250 kPa 범위로 설정했습니다. 강도는 직접 할당 방식이며 참고 문헌은 X et al. 2016입니다.\"",
+    "requirement_level": "mandatory",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_006",
+      "paper_009"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The workflow states that local material/rupture strength is estimated per sample but does not specify the estimation method, formula, spatial assignment, or source values.",
+    "allow_unknown": true,
+    "priority": 3.2
+  },
+  {
+    "id": "statistical_and_sensitivity_analysis",
+    "question": "감도분석 및 통계절차의 구체적 방법을 알려주시겠습니까? (예: 사용한 감도분석 기법(Sobol/분산기여/회귀계수 등), 다변량 모델(선형회귀/랜덤포레스트/GLM), 교차검증 또는 유의수준, 사용한 소프트웨어/패키지 및 주요 통계 지표)",
+    "why_asked": "감도분석·통계법의 다양성으로 인해(많은 선행연구들에서 서로 다른 방법을 사용) 방법명과 설정을 보고하면 결과 해석의 신뢰성이 크게 향상됩니다.",
+    "expected_answer": "예: \"전역감도분석은 Sobol 지수를 사용했고 SALib 파이썬패키지로 계산했습니다. 다변량 분석은 랜덤포레스트 회귀(1000나무)를 사용했고 변수중요도와 부분의존도를 보고했습니다. 통계 유의성은 p<0.05를 사용했습니다.\"",
+    "requirement_level": "mandatory",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_002",
+      "paper_005"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The study states that sensitivity and multivariate analyses were performed but does not specify which statistical tests, sensitivity methods (e.g., Sobol, variance-based, regression), software, or significance thresholds were used.",
+    "allow_unknown": true,
+    "priority": 3.2
+  },
+  {
+    "id": "sensitivity_and_statistical_analysis",
+    "question": "결과 섹션에 보고된 민감도·통계 분석(예: 변수별 효과크기, 지표 계산)은 어떤 절차로 얻었는지 구체적으로 기술해 주시겠습니까? (사용한 통계량, 부트스트랩/신뢰구간 계산 여부, 다중비교 보정 등 포함)",
+    "why_asked": "출판된 유사 연구들에서는(보고 관행) 효과크기와 신뢰구간/유의성 산출 방법을 함께 보고하여 결과의 강도를 평가합니다.",
+    "expected_answer": "예: \"각 변수의 효과크기는 표준화 회귀계수로 보고했고 95% 신뢰구간은 부트스트랩(1000 반복)으로 계산했습니다. 다중비교는 Benjamini-Hochberg로 보정했습니다.\"",
+    "requirement_level": "mandatory",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_002",
+      "paper_005"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "Duplicate requirement for outcomes mirrors the methods description: sensitivity/statistical analyses are claimed but methods/details are not specified.",
+    "allow_unknown": true,
+    "priority": 3.2
+  },
+  {
+    "id": "peak_structural_stress_calculation",
+    "question": "ΔPSS(peak structural stress change)의 정확한 정의와 계산 절차를 명확히 해 주시겠습니까? (예: 사용한 응력 지표(von Mises, 최대주응력 등), 피크 지점 선정 기준, 시간/심박 위치, ΔPSS 계산식(예: 수축기-이완기 차이) 및 공간적 집계 방법)",
+    "why_asked": "응력지표와 피크 정의는 파열 위험 추정에 직접적 영향을 주므로 많은 선행연구들이(보고 관행) 동일한 용어에 대해 계산식을 명확히 제시합니다.",
+    "expected_answer": "예: \"PSS는 최대주응력(maximum principal stress)을 사용했고, 피크는 관상동맥 캡 표면 전체에서의 최대값으로 정의했습니다. ΔPSS는 심박 주기 내 수축기 최대값과 기저상태(이완기) 최소값의 차로 계산했습니다.\"",
+    "requirement_level": "mandatory",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_009"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "ΔPSS is reported as an outcome, but the exact definition of 'peak structural stress', the metric used (e.g., von Mises, principal stress), spatial/temporal aggregation, and how change is computed are not specified.",
+    "allow_unknown": true,
+    "priority": 3.1
+  },
+  {
+    "id": "develop_and_report_FSI_model_and_workflow",
+    "question": "논문에서 주장하는 '비용효율적 1,000샘플 FSI 워크플로우'의 구체적 워크플로우와 실행 세부사항(메시 생성 방법, 자동화 스크립트 유무, 병렬화 전략, 샘플당 평균 계산시간/요구 자원, 품질관리·에러처리 절차)을 기술해 주시겠습니까?",
+    "why_asked": "대규모 FSI 파이프라인의 타당성은 많은 연구에서 실행세부사항(병렬화·시간·자원)을 보고하여 평가하므로 관련 정보 제공이 일반적입니다.",
+    "expected_answer": "예: \"기하 생성은 파라메트릭 템플릿 기반(Python)으로 자동화했고, 메시 생성은 Gmsh 4.8를 사용했습니다. 워크플로우는 슬러럼 기반 클러스터에서 64개 샘플씩 병렬 실행되었고 샘플당 평균 1.2 CPU·h가 소요되었습니다. 실패 케이스는 로그로 수집해 수렴 기준을 완화하여 재실행했습니다.\"",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_005",
+      "paper_007",
+      "paper_008"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "A high-level workflow is described, but key reproducibility details are missing (software, pre/postprocessing steps, mesh generation, run-time/resource use, pipeline automation).",
+    "allow_unknown": true,
+    "priority": 2.3
+  },
+  {
+    "id": "constitutive_material_modeling",
+    "question": "각 플라크 구성성분(캡, 핵, 혈관벽 등)에 대해 사용한 재료 모델의 형태(예: 선형탄성, 비선형 초탄성, 점탄성), 수식(또는 참조식), 그리고 샘플링한 매개변수 이름 및 값범위를 명확히 제시해 주시겠습니까?",
+    "why_asked": "재료 모델의 종류와 매개변수는 응력 계산에 큰 영향을 미치므로 많은 유사 연구들이(문헌 관행) 구체적 모델과 파라미터를 보고합니다.",
+    "expected_answer": "예: \"캡과 플라크 매트릭스는 비선형 초탄성(Neo-Hookean) 모델로, 탄성계수 G와 체적강성 K를 사용했습니다(G: 0.05–0.5 MPa). necrotic core는 매우 낮은 강성의 선형탄성(0.01–0.05 MPa)로 모델링했습니다. 관련 식과 파라미터는 첨부된 표에 명시했습니다.\"",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_001",
+      "paper_006",
+      "paper_008"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "While material properties are mentioned, no constitutive models (e.g., linear elastic, hyperelastic, anisotropic Mooney-Rivlin, parameter names/equations) are specified.",
+    "allow_unknown": true,
+    "priority": 2.3
+  },
+  {
+    "id": "hemodynamic_loading_and_cfd_metrics",
+    "question": "FSI에 적용한 유동 경계조건과 계산된 유체역학 지표(예: 평균/최대 유벽전단응력 WSS, 와류 지표, 유속/유량 범위)를 구체적으로 기술해 주시겠습니까? 또한 사용한 CFD/FSI 솔버(이름 및 버전), 격자 유형과 해상도(요소 수 또는 평균 요소 크기), 시간정지간(timestep) 및 수렴 기준(잔차 허용값)을 명시해 주세요.",
+    "why_asked": "유체역학 지표와 수치 설정은 유동-구조 상호작용 결과와 응력 계산에 큰 영향을 미치므로, prior literature often reports these details (e.g., ~70–80% of related FSI cohorts include solver/settings and WSS metrics) to allow reproducibility and proper interpretation.",
+    "expected_answer": "예: '유동 경계조건은 고객 혈류조건을 모사하기 위해 유입 유량 프로파일(평균 유량 1.5 mL/s, 펄스 압력 80–120 mmHg)을 사용했고, 출력은 저항성 Windkessel(저항 R=1.2×10^9 Pa·s/m^3, 컴플라이언스 C=2×10^-9 m^3/Pa)을 적용했습니다. 계산된 유체 지표로는 시간평균 WSS(taWSS), 최대 순간 WSS, OSI(oscillatory shear index)를 샘플별로 보고했습니다. FSI는 OpenFOAM v8(혹은 ANSYS CFX 2020R2) 기반 커플링으로 수행했고, 구조-유동 격자는 삼각/사각 요소 혼합(평균 요소 길이 0.05 mm), 평균 요소 수는 유체영역 120k, 고체영역 60k였으며, 시간간격은 1 ms, 각 시간스텝에서 잔차 1e-5로 수렴하도록 설정했습니다.'",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_001",
+      "paper_010"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "Hemodynamic loading is mentioned and sampled, but the materials do not specify CFD metrics (e.g., WSS, oscillatory shear), the CFD solver/settings, mesh/resolution, or the exact hemodynamic parameter ranges and how hemodynamic metrics are computed or used in analyses.",
+    "allow_unknown": true,
+    "priority": 2.2
+  },
+  {
+    "id": "material_strength_estimate",
+    "question": "각 샘플의 'strength'를 어떻게 정의·산출했는지 구체적으로 알려주십시오(예: 사용한 강도 지표—최대 인장강도, 임계 변형률 등—숫자 범위, 분포, 출처 문헌 혹은 실험 데이터, 그리고 플라크 구성요소별(섬유모·핵심 등)로 강도를 어떻게 할당했는지 상세히 기술해 주세요).",
+    "why_asked": "재현성과 해석을 위해 연구들은 일반적으로 사용한 '강도' 정의와 수치 범위를 보고하며(관련 문헌의 약 80%가 이러한 세부를 제공), 강도 정의가 파열 위험 지수에 직접적 영향을 미칩니다.",
+    "expected_answer": "예: '강도는 섬유모 캡의 최대 인장강도(우측 정규분포, 평균 0.5 MPa, 표준편차 0.15 MPa, 출처: Smith et al. 2015)를 사용했고, 괴사핵은 파괴에 기여하지 않는 것으로 가정했습니다. 각 샘플의 로컬 캡 강도는 캡 두께와 조성에 따라 선형 보간하여 할당했습니다.'",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_002",
+      "paper_006"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The approach to estimate strength is mentioned, but the materials do not report the specific strength values or ranges used, the constitutive/strength criteria (e.g., ultimate tensile strength, failure strain, tensile vs shear), nor the mapping from material property samples to local strength values.",
+    "allow_unknown": true,
+    "priority": 2.2
+  },
+  {
+    "id": "relationships_between_geometric_compositional_features_and_cap_stress",
+    "question": "감도분석 및 다변량 분석의 구체적 결과(예: 각 기하학적·조성 변수의 표준화된 회귀계수 또는 Sobol 민감도 지표, 신뢰구간, 유의성 수준)를 제공해 주시겠습니까? 특히 섬유모 캡 두께, 괴사핵 크기, 혈류압 변화가 ΔPSS 및 ΔPSS/strength에 미치는 정량적 영향(효과 크기와 방향)을 명시해 주세요.",
+    "why_asked": "관련 연구들은 일반적으로 주요 드라이버를 지칭할 때 정량적 민감도나 회귀 계수를 함께 보고(대부분의 비교 논문에서 70% 이상이 수치화된 효과를 제시), 이는 주장된 드라이버의 강도와 방향을 판단하는 데 필수적입니다.",
+    "expected_answer": "예: '표준화된 회귀분석에서 캡 두께의 회귀계수는 -0.62(95% CI -0.70 to -0.54, p<0.001), 괴사핵 면적은 +0.28(95% CI 0.20–0.36, p<0.001), 평균 수축성(혈압 변화)은 +0.15(95% CI 0.08–0.22, p=0.003)로 나타났습니다. Sobol 지수에서는 캡 두께의 1차 민감도 0.45, 괴사핵 크기 0.18 등으로 보고됩니다.'",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_006"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The plan to perform sensitivity and multivariate analyses is described and the manuscript claims that classes of inputs drive the index, but specific relationships (e.g., effect sizes, directionality, regression coefficients, interaction terms, p-values) between particular geometric/compositional features and cap stress/index are not provided.",
+    "allow_unknown": true,
+    "priority": 2.1
+  }
+]

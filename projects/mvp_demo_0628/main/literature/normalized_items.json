@@ -1,0 +1,953 @@
+[
+  {
+    "canonical_key": "define_vulnerable_plaque_objective",
+    "category": "objective",
+    "aliases": [
+      "define concept of vulnerable plaque and vulnerable patient",
+      "Objective: define concept of vulnerable plaque and patient",
+      "Objective: evaluate intracoronary OCT to identify and study vulnerable plaque"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "sensitivity_analysis",
+      "clinical_translation_background"
+    ],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "Framing the study within the established concept of 'vulnerable plaque' is common background for plaque-rupture modelling and needed for interpretation though not a technical requirement of the simulations.",
+    "source_items": [
+      "paper_005:item_01",
+      "paper_010:item_01"
+    ]
+  },
+  {
+    "canonical_key": "investigate_stress_rupture_hypothesis",
+    "category": "objective",
+    "aliases": [
+      "Objective: test hypothesis that plaque rupture occurs at sites of high circumferential stress",
+      "objective: investigate genesis and growth of extracellular-vesicle-derived microcalcification in atherosclerotic plaques"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "peak_field_value_claim",
+      "vulnerability_index_development"
+    ],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "Testing whether elevated mechanical stress correlates with rupture is a common motivating hypothesis for plaque mechanics studies and supports using stress-based VIs, but it is background rather than a required method for this specific sensitivity-analysis workflow.",
+    "source_items": [
+      "paper_004:item_01",
+      "paper_001:item_01"
+    ]
+  },
+  {
+    "canonical_key": "reduce_computational_cost_active_learning",
+    "category": "objective",
+    "aliases": [
+      "Objective: reduce numerical cost of reliability analysis using active learning",
+      "Objective: reduce numerical cost of reliability analysis via GP active learning",
+      "Objective: reduce numerical cost of reliability analysis / improve reliability estimation"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "surrogate_modeling",
+      "large_design_space_study"
+    ],
+    "required_when": [
+      "large_number_of_FSI_simulations",
+      "use_of_GPR_surrogates_or_active_learning"
+    ],
+    "requirement_level": "common",
+    "reason": "Cost-reduction strategies (active learning/GPR) are frequently used and relevant because this project relies on a cost-effective pulsatile FSI pipeline and surrogates to permit broad global sensitivity analysis, though the specific active-learning algorithm is not central.",
+    "source_items": [
+      "paper_002:item_01",
+      "paper_007:item_01"
+    ]
+  },
+  {
+    "canonical_key": "provide_wss_assessment_guidance",
+    "category": "objective",
+    "aliases": [
+      "objective: provide expert recommendations on WSS assessment in coronary arteries",
+      "Objective: review recent numerical studies of coronary artery blood flow"
+    ],
+    "applicable_to": [
+      "hemodynamic_analysis",
+      "interpretation_of_flow_metrics"
+    ],
+    "required_when": [],
+    "requirement_level": "optional",
+    "reason": "Consensus guidance or reviews on wall shear stress (WSS) inform interpretation of hemodynamic metrics but are optional background for a mechanics-focused VI and Sobol analysis.",
+    "source_items": [
+      "paper_003:item_01",
+      "paper_008:item_01"
+    ]
+  },
+  {
+    "canonical_key": "measure_and_characterize_fc_thickness",
+    "category": "objective",
+    "aliases": [
+      "Objective: measure fibrous cap thickness and characterize plaques with multiphoton microscopy",
+      "measure fibrous cap thickness"
+    ],
+    "applicable_to": [
+      "morphological_parameterization",
+      "experimental_validation",
+      "model_input_characterization"
+    ],
+    "required_when": [
+      "nonuniform_FC_thickness_modeled",
+      "clinical_validation_against_imaging"
+    ],
+    "requirement_level": "common",
+    "reason": "Accurate fibrous cap thickness characterization underpins choices of FC thickness parameterization; the present study varies a scalar FC thickness so experimental measurement is common background but not mandatory.",
+    "source_items": [
+      "paper_006:item_01"
+    ]
+  },
+  {
+    "canonical_key": "review_imaging_modalities_for_plaque_assessment",
+    "category": "objective",
+    "aliases": [
+      "objective: review imaging modalities for plaque assessment",
+      "Objective: review imaging modalities"
+    ],
+    "applicable_to": [
+      "clinical_translation_background",
+      "data_assimilation_for_modeling"
+    ],
+    "required_when": [],
+    "requirement_level": "optional",
+    "reason": "Reviews of imaging modalities are useful context for clinical relevance and potential future validation but are not required for the computational sensitivity analysis presented.",
+    "source_items": [
+      "paper_009:item_01"
+    ]
+  },
+  {
+    "canonical_key": "experimental_mechanistic_study",
+    "category": "study_design",
+    "aliases": [
+      "experimental study on atherosclerotic plaques (mechanistic/observational)",
+      "Study type: imaging study demonstrating capability of multiphoton microscopy (MPM)"
+    ],
+    "applicable_to": [
+      "wet_lab_experimental",
+      "mechanistic_validation",
+      "imaging_validation"
+    ],
+    "required_when": [
+      "claim_requires_biophysical_experimental_validation",
+      "direct_comparison_with_ex_vivo_or_in_vivo_data"
+    ],
+    "requirement_level": "optional",
+    "reason": "Experimental/mechanistic imaging studies provide biological validation but are not required for a computational FSI–surrogate sensitivity analysis; the uploaded items are abstract-only and supporting rather than central to this project's computational claims.",
+    "source_items": [
+      "paper_001:item_02",
+      "paper_006:item_02"
+    ]
+  },
+  {
+    "canonical_key": "method_development_study",
+    "category": "study_design",
+    "aliases": [
+      "development and evaluation of Gaussian-process-based active learning methods",
+      "development/assessment of methodological improvements (two improvement paths)",
+      "method development (PhD research)"
+    ],
+    "applicable_to": [
+      "methodology_development",
+      "surrogate_modeling",
+      "active_learning"
+    ],
+    "required_when": [
+      "new_numerical_method_or_surrogate_is_proposed"
+    ],
+    "requirement_level": "common",
+    "reason": "Method-development studies are commonly reported in literature when new solvers or surrogate-training strategies are used; for this project (which uses an existing cost-effective FSI and GPR surrogates), method-development details are relevant but not mandatory.",
+    "source_items": [
+      "paper_002:item_02",
+      "paper_007:item_02"
+    ]
+  },
+  {
+    "canonical_key": "review_and_expert_recommendation",
+    "category": "study_design",
+    "aliases": [
+      "expert recommendations / review of existing methodologies",
+      "consensus document / review",
+      "literature review",
+      "review/overview",
+      "narrative review"
+    ],
+    "applicable_to": [
+      "background_and_rationale",
+      "best_practices",
+      "guideline_context"
+    ],
+    "required_when": [
+      "providing_clinical_or_methodological_context"
+    ],
+    "requirement_level": "common",
+    "reason": "Reviews and consensus documents frequently inform choice of metrics and clinical sign criteria; they are useful for justification and contextualization of VI selection but not strictly necessary to carry out the computational analysis itself.",
+    "source_items": [
+      "paper_003:item_02",
+      "paper_005:item_02",
+      "paper_008:item_02",
+      "paper_009:item_02"
+    ]
+  },
+  {
+    "canonical_key": "case_control_lesion_comparative_study",
+    "category": "study_design",
+    "aliases": [
+      "comparative study of ruptured versus stable coronary lesions",
+      "case-control (lesion-level) comparison"
+    ],
+    "applicable_to": [
+      "observational_comparative",
+      "clinical_validation",
+      "lesion_level_analysis"
+    ],
+    "required_when": [
+      "claim_requires_clinical_or_lesion_level_validation_against_patient_data"
+    ],
+    "requirement_level": "optional",
+    "reason": "Case-control lesion comparisons are important for clinical validation of VIs but are outside the scope of this computational sensitivity analysis and thus optional for the present manuscript.",
+    "source_items": [
+      "paper_004:item_02"
+    ]
+  },
+  {
+    "canonical_key": "single_center_clinical_feasibility_study",
+    "category": "study_design",
+    "aliases": [
+      "clinical research / feasibility studies conducted over five years at a single center",
+      "single-center clinical research / feasibility"
+    ],
+    "applicable_to": [
+      "clinical_feasibility",
+      "prospective_validation"
+    ],
+    "required_when": [
+      "claim_requires_prospective_patient_outcome_validation"
+    ],
+    "requirement_level": "optional",
+    "reason": "Single-center clinical feasibility studies are relevant for eventual clinical translation but are not required for a computational paper that does not claim clinical outcome validation.",
+    "source_items": [
+      "paper_010:item_02"
+    ]
+  },
+  {
+    "canonical_key": "computational_simulation_dataset",
+    "category": "data_or_sample",
+    "aliases": [
+      "expensive engineering simulation codes as black‑box functions",
+      "computational model evaluations",
+      "simulation input–output dataset",
+      "simulation pairs"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "quantitative_numerical_simulation",
+      "surrogate_modeling",
+      "global_sensitivity_analysis"
+    ],
+    "required_when": [
+      "study_uses_numerical_simulation_or_surrogates",
+      "claim_about_sensitivity_or_variance_explained"
+    ],
+    "requirement_level": "mandatory",
+    "reason": "This project constructs and analyzes a large pulsatile FSI input–output dataset and trains GPR surrogates; reporting the computational dataset and how simulations were generated is logically necessary to support the central claims and to enable reproducibility.",
+    "source_items": [
+      "paper_002:item_03"
+    ]
+  },
+  {
+    "canonical_key": "clinical_patient_sample",
+    "category": "data_or_sample",
+    "aliases": [
+      "human coronary arteries (clinical application focus)",
+      "patients undergoing intracoronary OCT",
+      "clinical patient sample"
+    ],
+    "applicable_to": [
+      "clinical_validation",
+      "observational_comparison",
+      "computational_biomechanics"
+    ],
+    "required_when": [
+      "claim_involves_direct_clinical_validation_or_outcome_prediction"
+    ],
+    "requirement_level": "optional",
+    "reason": "Patient imaging or outcome data are needed only if the study claims clinical validation beyond mechanistic/simulation evidence; this project does not perform clinical outcome validation, so such data are optional for the present manuscript.",
+    "source_items": [
+      "paper_003:item_03",
+      "paper_010:item_03"
+    ]
+  },
+  {
+    "canonical_key": "sample_size_and_grouping",
+    "category": "data_or_sample",
+    "aliases": [
+      "24 coronary artery lesions (12 ruptured, 12 control)",
+      "sample size and groups",
+      "grouped lesion datasets"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "experimental_validation",
+      "classification_or_failure_probability_estimation"
+    ],
+    "required_when": [
+      "study_reports_empirical_validation_or_classification_performance"
+    ],
+    "requirement_level": "common",
+    "reason": "When presenting empirical or experimental comparisons, explicit sample sizes and group definitions are commonly reported and inform statistical interpretation; for this simulation-focused study they are not central but commonly cited when comparing to clinical/experimental datasets.",
+    "source_items": [
+      "paper_004:item_03"
+    ]
+  },
+  {
+    "canonical_key": "tissue_types_and_imaging_depth",
+    "category": "data_or_sample",
+    "aliases": [
+      "atherosclerotic plaque tissue and extracellular vesicles",
+      "atherosclerotic plaques and healthy artery tissue (imaged to >65 µm depth)",
+      "tissue types imaged"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "experimental_characterization",
+      "imaging_validation"
+    ],
+    "required_when": [
+      "material_properties_or_geometry_are_inferred_from_imaging_or_tissue_data"
+    ],
+    "requirement_level": "optional",
+    "reason": "Detailed tissue-type descriptions and imaging depth are relevant when deriving or validating material properties and morphology from experiments or clinical imaging, but this simulation study uses idealized phenotypes and literature-derived material ranges so such specifics are helpful but not mandatory.",
+    "source_items": [
+      "paper_001:item_03",
+      "paper_006:item_03"
+    ]
+  },
+  {
+    "canonical_key": "epidemiologic_burden_statement",
+    "category": "data_or_sample",
+    "aliases": [
+      "global mortality and disease burden",
+      "epidemiologic burden statement (>19 million deaths annually)"
+    ],
+    "applicable_to": [
+      "introduction_background",
+      "motivational_context"
+    ],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "High-level epidemiologic burden statements are commonly included in introductions to motivate relevance but are not required to establish the computational claims of the paper.",
+    "source_items": [
+      "paper_005:item_03"
+    ]
+  },
+  {
+    "canonical_key": "vascular_beds_surveyed",
+    "category": "data_or_sample",
+    "aliases": [
+      "carotid, aortic, and coronary plaques (clinical imaging studies)",
+      "vascular beds considered"
+    ],
+    "applicable_to": [
+      "comparative_studies",
+      "literature_context"
+    ],
+    "required_when": [
+      "claim_extends_findings_across_vascular_beds"
+    ],
+    "requirement_level": "common",
+    "reason": "Noting which vascular beds have been studied in prior work is commonly reported to situate contributions and limitations; the present work focuses on coronary plaques but comparison to other beds is common background.",
+    "source_items": [
+      "paper_009:item_03"
+    ]
+  },
+  {
+    "canonical_key": "population_for_failure_probability_estimation",
+    "category": "data_or_sample",
+    "aliases": [
+      "use of sample population for failure probability estimation",
+      "population sample for classification-based failure probability estimation"
+    ],
+    "applicable_to": [
+      "risk_prediction",
+      "classification",
+      "statistical_estimation"
+    ],
+    "required_when": [
+      "study_reports_failure_probabilities_or_classifier_performance"
+    ],
+    "requirement_level": "unsupported",
+    "reason": "Abstract-level mentions of using sample populations for failure probability estimation are insufficient to establish concrete requirements for this simulation/sensitivity study; the present paper does not perform such classification-based population estimates.",
+    "source_items": [
+      "paper_007:item_03"
+    ]
+  },
+  {
+    "canonical_key": "literature_and_studies_surveyed",
+    "category": "data_or_sample",
+    "aliases": [
+      "recent numerical and experimental hemodynamic studies in coronary arteries",
+      "sources_surveyed",
+      "surveyed studies"
+    ],
+    "applicable_to": [
+      "introduction",
+      "method justification",
+      "comparison_of_findings"
+    ],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "Summarizing recent numerical and experimental studies is common practice to justify methodological choices (e.g., stress measures, FSI necessity) though not mandatory for the core computational claims.",
+    "source_items": [
+      "paper_008:item_03"
+    ]
+  },
+  {
+    "canonical_key": "gp_surrogate_modeling",
+    "category": "methods",
+    "aliases": [
+      "Gaussian process surrogate modeling",
+      "GPR surrogate",
+      "Gaussian process based active learning to build GP surrogate of performance function",
+      "GP surrogate for performance function"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "surrogate_based_sensitivity_analysis",
+      "sobol_on_surrogate"
+    ],
+    "required_when": [
+      "using_surrogates_for_global_sensitivity",
+      "large_number_of_expensive_simulations"
+    ],
+    "requirement_level": "mandatory",
+    "reason": "The study trains Gaussian process regression surrogates (GPR) on the simulation outputs to enable Sobol global sensitivity analysis and explicitly depends on GPR performance, so rigorous reporting of GPR surrogate modeling is necessary for the study's claims.",
+    "source_items": [
+      "paper_002:item_04",
+      "paper_007:item_04"
+    ]
+  },
+  {
+    "canonical_key": "active_learning_adaptive_sampling",
+    "category": "methods",
+    "aliases": [
+      "active learning (adaptive sampling)",
+      "adaptive sampling / acquisition function targeting limit-state",
+      "Gaussian process based active learning focused near limit-state",
+      "active learning to build GP surrogate of performance function"
+    ],
+    "applicable_to": [
+      "surrogate_construction",
+      "failure_probability_estimation",
+      "limit_state_identification"
+    ],
+    "required_when": [
+      "adaptive_sampling_is_used"
+    ],
+    "requirement_level": "optional",
+    "reason": "Active learning driven by acquisition functions is a common approach to efficiently place samples near failure boundaries but the reconstructed study uses standard GPR training on a precomputed dataset rather than reporting active-learning-based sampling, so this is optional for the present project.",
+    "source_items": [
+      "paper_002:item_05",
+      "paper_007:item_05"
+    ]
+  },
+  {
+    "canonical_key": "model_order_reduction_coupling",
+    "category": "methods",
+    "aliases": [
+      "model reduction",
+      "coupling active learning with model reduction approaches",
+      "surrogate + model reduction coupling"
+    ],
+    "applicable_to": [
+      "large_scale_simulation",
+      "surrogate_acceleration"
+    ],
+    "required_when": [
+      "computational_cost_requires_model_reduction"
+    ],
+    "requirement_level": "optional",
+    "reason": "Coupling surrogates with model-order reduction can reduce cost for very expensive solvers, but the present study uses a cost-effective FSI pipeline and does not report model reduction coupling, making this an optional technique rather than a required element.",
+    "source_items": [
+      "paper_002:item_06",
+      "paper_007:item_05"
+    ]
+  },
+  {
+    "canonical_key": "finite_element_stress_analysis",
+    "category": "methods",
+    "aliases": [
+      "finite element model to calculate circumferential stress",
+      "finite element stress analysis",
+      "PSS computation via FE/FSI"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "plaque_stress_estimation",
+      "stress_based_VI_computation"
+    ],
+    "required_when": [
+      "reporting_stress_or_VI"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "Computation of PSS/ΔPSS underlies the vulnerability indices; while the study uses an FSI solver, FE stress-analysis reporting (formulation, mesh, convergence) is strongly expected because stress outputs drive the primary claims.",
+    "source_items": [
+      "paper_004:item_04"
+    ]
+  },
+  {
+    "canonical_key": "methodological_survey_wss",
+    "category": "methods",
+    "aliases": [
+      "discussion of existing methodologies and technical considerations for WSS assessment",
+      "methodological survey and technical considerations"
+    ],
+    "applicable_to": [
+      "background_methods",
+      "hemodynamic_metric_discussion"
+    ],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "High-level methodological surveys about WSS are background material; they don't impose requirements on the computational pipeline used in this study and are represented only as literature context (abstract-only evidence).",
+    "source_items": [
+      "paper_003:item_04"
+    ]
+  },
+  {
+    "canonical_key": "blood_viscosity_and_flow_models",
+    "category": "methods",
+    "aliases": [
+      "blood viscosity models",
+      "applied physiological flow conditions",
+      "inflow driving waveform specification"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "hemodynamic_simulation",
+      "pulsatile_FSI"
+    ],
+    "required_when": [
+      "performing_pulsatile_FSI"
+    ],
+    "requirement_level": "common",
+    "reason": "Modeling blood rheology and physiological inflow/outflow conditions is commonly reported for pulsatile FSI and can affect stress/ΔPSS; the literature mentions viscosity/flow models so reporting these is commonly expected for credibility.",
+    "source_items": [
+      "paper_008:item_04"
+    ]
+  },
+  {
+    "canonical_key": "imaging_modalities_survey",
+    "category": "methods",
+    "aliases": [
+      "imaging modalities surveyed",
+      "invasive and noninvasive imaging techniques",
+      "multiphoton microscopy SHG/TPEF",
+      "intracoronary OCT imaging"
+    ],
+    "applicable_to": [
+      "clinical_translation",
+      "imaging_based_characterization"
+    ],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "Surveys of imaging modalities and specific imaging techniques (SHG/TPEF, high-resolution MRI) are background literature; they do not impose methodological requirements on the reported computational FSI/sensitivity workflow and are supported only by abstract-level mentions.",
+    "source_items": [
+      "paper_006:item_04",
+      "paper_009:item_04",
+      "paper_010:item_04",
+      "paper_001:item_04"
+    ]
+  },
+  {
+    "canonical_key": "proposed_clinical_pathological_classification",
+    "category": "methods",
+    "aliases": [
+      "proposal of classification",
+      "classification for clinical and pathological evaluation of vulnerable plaques"
+    ],
+    "applicable_to": [
+      "clinical_definition",
+      "endpoint_alignment"
+    ],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "A proposed classification scheme for vulnerable plaques is a conceptual/methods contribution in other papers and is not directly required or instantiated by the present simulation and sensitivity-analysis study; evidence is abstract-level.",
+    "source_items": [
+      "paper_005:item_04"
+    ]
+  },
+  {
+    "canonical_key": "plaque_features_reported",
+    "category": "outcomes",
+    "aliases": [
+      "plaque features assessed",
+      "luminal diameter, stenosis, wall thickness, plaque volume, plaque composition",
+      "plaque features"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "sensitivity_analysis",
+      "VI_definition"
+    ],
+    "required_when": [
+      "claims_about_morphology_or_morphology_group_importance",
+      "comparison_with_prior_studies_or_clinical_features"
+    ],
+    "requirement_level": "common",
+    "reason": "Reporting which plaque morphological features are considered is commonly done and relevant when morphology is an input group for sensitivity analysis or when comparing model outputs to prior literature, but it is not uniquely decisive for the paper's core claim about material dominance and VI formulation.",
+    "source_items": [
+      "paper_009:item_05"
+    ]
+  },
+  {
+    "canonical_key": "stress_metrics_reported",
+    "category": "outcomes",
+    "aliases": [
+      "maximum circumferential stress per lesion",
+      "high-stress regions count",
+      "PSS metrics",
+      "peak plaque structural stress"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "quantitative_numerical_simulation",
+      "peak_field_value_claim",
+      "VI_definition"
+    ],
+    "required_when": [
+      "making_claims_about_stress_based_VIs",
+      "validating_simulation_outputs_against_prior_study_stress_measures"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "Quantitative stress metrics (e.g., peak circumferential stress, counts of high-stress regions) are central comparators for any stress-based vulnerability index and for demonstrating simulation plausibility, so a reviewer will expect them to be reported.",
+    "source_items": [
+      "paper_004:item_05"
+    ]
+  },
+  {
+    "canonical_key": "wss_clinical_recommendations",
+    "category": "outcomes",
+    "aliases": [
+      "clinical applications and recommendations for WSS assessment",
+      "WSS assessment recommendations"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "hemodynamics_claims",
+      "clinical_translation_discussion"
+    ],
+    "required_when": [
+      "claims_addressing_wall_shear_stress_or_hemodynamic_measures",
+      "situating_results_vs_clinical_practice"
+    ],
+    "requirement_level": "common",
+    "reason": "When hemodynamic factors are analyzed, contextualizing findings against clinical recommendations for WSS assessment is commonly expected though not essential to the central VI/material-dominance claim.",
+    "source_items": [
+      "paper_003:item_05"
+    ]
+  },
+  {
+    "canonical_key": "vulnerability_multifactor_concept",
+    "category": "outcomes",
+    "aliases": [
+      "broader concept of vulnerability (plaque, blood, myocardium)",
+      "vulnerable plaque/blood/myocardium"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "clinical_interpretation",
+      "VI_definition"
+    ],
+    "required_when": [
+      "discussing_clinical_translation_or_limitations"
+    ],
+    "requirement_level": "common",
+    "reason": "Framing plaque rupture risk within the broader multi-factor vulnerability concept is useful for discussion and clinical interpretation, but it does not change the computational analyses underlying the paper's main claims.",
+    "source_items": [
+      "paper_005:item_05"
+    ]
+  },
+  {
+    "canonical_key": "diagnostic_image_metric_reporting",
+    "category": "outcomes",
+    "aliases": [
+      "collagen/elastin signal ratio diagnostic metric",
+      "diagnostic metric sensitivity specificity"
+    ],
+    "applicable_to": [
+      "clinical_validation",
+      "imaging_comparison"
+    ],
+    "required_when": [
+      "claims_involve_imaging-based_validation_or_clinical_correlates"
+    ],
+    "requirement_level": "optional",
+    "reason": "Imaging-derived diagnostic metrics (e.g., collagen/elastin ratios) are relevant only if the study attempts direct imaging validation; otherwise they are peripheral to the computational VI and sensitivity analysis.",
+    "source_items": [
+      "paper_006:item_05"
+    ]
+  },
+  {
+    "canonical_key": "surrogate_model_efficiency_and_accuracy",
+    "category": "outcomes",
+    "aliases": [
+      "decrease number of expensive model calls while maintaining accurate failure probability estimates",
+      "reduced model calls with maintained estimation accuracy",
+      "surrogate performance / efficiency"
+    ],
+    "applicable_to": [
+      "surrogate_modeling",
+      "sensitivity_analysis",
+      "computational_biomechanics"
+    ],
+    "required_when": [
+      "using_surrogates_for_global_sensitivity_or_uncertainty_quantification",
+      "large_number_of_model_evaluations_are_prohibitive"
+    ],
+    "requirement_level": "mandatory",
+    "reason": "Because the study trains GPR surrogates and reports Sobol indices computed on them, documenting surrogate efficiency and accuracy (reduced high-fidelity calls while preserving estimation fidelity) is logically necessary to support the validity of sensitivity results.",
+    "source_items": [
+      "paper_007:item_06"
+    ]
+  },
+  {
+    "canonical_key": "numerical_studies_synthesis",
+    "category": "outcomes",
+    "aliases": [
+      "numerical studies contribute to understanding atherosclerosis",
+      "synthesis of numerical contributions"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "introduction_discussion"
+    ],
+    "required_when": [
+      "situating_study_within_prior_numerical_research"
+    ],
+    "requirement_level": "common",
+    "reason": "Summarizing how prior numerical studies have advanced understanding provides context for the study's contribution and is commonly included though not required for the core computational claims.",
+    "source_items": [
+      "paper_008:item_05"
+    ]
+  },
+  {
+    "canonical_key": "microcalcification_genesis_and_growth",
+    "category": "outcomes",
+    "aliases": [
+      "genesis and growth patterns of extracellular-vesicle-derived microcalcifications",
+      "microcalcification progression"
+    ],
+    "applicable_to": [
+      "plaque_pathophysiology",
+      "mechanistic_discussion"
+    ],
+    "required_when": [
+      "making_specific_claims_about_microcalcifications_or_calcification_mechanisms"
+    ],
+    "requirement_level": "unsupported",
+    "reason": "This mechanistic topic is reported by an abstract-only source and is outside the core computational VI/sensitivity scope of the present study, so it should not drive reporting requirements here.",
+    "source_items": [
+      "paper_001:item_05"
+    ]
+  },
+  {
+    "canonical_key": "imaging_OCT_safety_and_resolution",
+    "category": "outcomes",
+    "aliases": [
+      "safety of intracoronary OCT",
+      "OCT morphological information"
+    ],
+    "applicable_to": [
+      "clinical_translation",
+      "imaging_validation"
+    ],
+    "required_when": [
+      "discussing_clinical_measurement_options_or_proposing_imaging_validation"
+    ],
+    "requirement_level": "optional",
+    "reason": "Notes about OCT safety and its microscopic morphological capability are relevant when discussing practical measurement methods for inputs (e.g., FC thickness) but are not necessary for the computational analysis itself.",
+    "source_items": [
+      "paper_010:item_05"
+    ]
+  },
+  {
+    "canonical_key": "peak_stress_observational_comparison",
+    "category": "results",
+    "aliases": [
+      "ruptured vs stable max stress comparison",
+      "maximum stress higher in ruptured lesions",
+      "stress magnitude clinical observation"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "stress_based_vi_comparison",
+      "validation_against_literature"
+    ],
+    "required_when": [
+      "claim_compares_PSS_vs_DeltaPSS",
+      "claim_uses_peak_stress_as_predictor"
+    ],
+    "requirement_level": "common",
+    "reason": "Observational reports that ruptured plaques show substantially higher peak stresses support using stress-based metrics as relevant predictors and are commonly cited for simulation validation, but the source evidence here is abstract-only so it is supportive rather than mandatory for the project's core claims.",
+    "source_items": [
+      "paper_004:item_06"
+    ]
+  },
+  {
+    "canonical_key": "imaging_detection_performance_multiphoton",
+    "category": "results",
+    "aliases": [
+      "MPM detection sensitivity/specificity",
+      "multiphoton microscopy performance",
+      "collagen network imaging depth/performance"
+    ],
+    "applicable_to": [
+      "experimental_imaging_support",
+      "biomechanical_property_inference",
+      "clinical_measurement_feasibility"
+    ],
+    "required_when": [
+      "claim_requires_direct_collagen_microstructure_measurement",
+      "discussion_recommends_OCT/MPM_for_stiffness_assessment"
+    ],
+    "requirement_level": "optional",
+    "reason": "Reported MPM detection performance (sensitivity/specificity and imaging depth) provides context about feasibility of imaging collagen structure for material characterization but is not required for the computational sensitivity-analysis claims.",
+    "source_items": [
+      "paper_006:item_06"
+    ]
+  },
+  {
+    "canonical_key": "clinical_imaging_feasibility_oct",
+    "category": "results",
+    "aliases": [
+      "OCT safety and morphological utility",
+      "optical coherence tomography clinical feasibility",
+      "OCT for microscopic plaque morphology"
+    ],
+    "applicable_to": [
+      "clinical_translation",
+      "measurement_prioritization",
+      "imaging-informed_modeling"
+    ],
+    "required_when": [
+      "discussion_addresses_clinical_translation_or_recommendations_for_measurement"
+    ],
+    "requirement_level": "common",
+    "reason": "Clinical reports that OCT is safe and provides detailed plaque morphology support claims about practical measurement strategies (e.g., advocating OCT-based stiffness characterization) and are commonly referenced when discussing translational implications.",
+    "source_items": [
+      "paper_010:item_06"
+    ]
+  },
+  {
+    "canonical_key": "extracellular_vesicles_microcalcification_role",
+    "category": "results",
+    "aliases": [
+      "EVs role in plaque microcalcification",
+      "biological mechanism of microcalcification via extracellular vesicles"
+    ],
+    "applicable_to": [
+      "biological_mechanisms",
+      "multiscale_modeling_context"
+    ],
+    "required_when": [
+      "claim_links_microcalcification_process_to_mechanical_behavior",
+      "discussion_addresses_biological_origins_of_calcification"
+    ],
+    "requirement_level": "unsupported",
+    "reason": "An abstract-level conclusion about extracellular vesicles driving microcalcification is biologically relevant background but is unsupported as a methodological requirement for this computational FSI–Sobol study and cannot drive reporting expectations here.",
+    "source_items": [
+      "paper_001:item_06"
+    ]
+  },
+  {
+    "canonical_key": "missing_methodological_details_in_abstracts",
+    "category": "limitations",
+    "aliases": [
+      "limitations: (likely relevant) detailed methodological settings and parameters not present in abstract",
+      "missing methodological detail in abstract"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "quantitative_numerical_simulation",
+      "surrogate_modeling",
+      "sensitivity_analysis"
+    ],
+    "required_when": [
+      "reporting_new_simulation_dataset_or_surrogate_models",
+      "methods_central_to_claims"
+    ],
+    "requirement_level": "mandatory",
+    "reason": "For a simulation- and surrogate-based study the precise methodological settings and parameters must be reported to ensure reproducibility and to support the credibility of the VI selection and Sobol results, yet several source items note such details are often absent from abstracts.",
+    "source_items": [
+      "paper_003:item_06"
+    ]
+  },
+  {
+    "canonical_key": "clinical_screening_and_diagnostic_limitations",
+    "category": "limitations",
+    "aliases": [
+      "limitations: current screening and diagnostic insufficiency",
+      "existing screening/diagnostic methods insufficient to identify at-risk individuals before events"
+    ],
+    "applicable_to": [
+      "motivation_background",
+      "translational_implication",
+      "clinical_relevance_claims"
+    ],
+    "required_when": [
+      "claiming_clinical_implications_or_prioritizing_clinical_measurements"
+    ],
+    "requirement_level": "common",
+    "reason": "The manuscript uses the insufficiency of current screening/diagnostic methods as motivation for developing VI and prioritizing measurement of material properties; this limitation is commonly reported and expected in background/implication discussion but is not a methodological requirement.",
+    "source_items": [
+      "paper_005:item_06"
+    ]
+  },
+  {
+    "canonical_key": "incomplete_disease_understanding",
+    "category": "limitations",
+    "aliases": [
+      "limitations: disease not yet fully understood (ongoing research)",
+      "knowledge_gaps"
+    ],
+    "applicable_to": [
+      "motivation_background",
+      "discussion_of_limitations",
+      "interpretation_of_results"
+    ],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "Noting that plaque rupture mechanisms and determinants are not exhaustively understood is a standard contextual limitation that frames the study's contribution and cautions interpretation of surrogate-driven sensitivity results.",
+    "source_items": [
+      "paper_008:item_06"
+    ]
+  },
+  {
+    "canonical_key": "imaging_characterization_limitations_of_plaque_composition",
+    "category": "limitations",
+    "aliases": [
+      "limitations: standard techniques cannot characterize plaque composition",
+      "inability of most standard techniques to identify high-risk plaques by composition"
+    ],
+    "applicable_to": [
+      "motivation_background",
+      "clinical_translation",
+      "measurement_prioritization"
+    ],
+    "required_when": [
+      "arguing_clinical_value_of_material_property_measurement"
+    ],
+    "requirement_level": "common",
+    "reason": "The claim that material properties (stiffness) are high-value predictors relies on noting that standard imaging techniques poorly capture composition/stiffness, a commonly cited limitation motivating the study's emphasis on material characterization.",
+    "source_items": [
+      "paper_009:item_06"
+    ]
+  }
+]

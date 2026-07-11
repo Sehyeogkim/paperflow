@@ -1,0 +1,16 @@
+{
+  "form": {
+    "field": "Agricultural Technology",
+    "target": "",
+    "title": "",
+    "affiliation": "",
+    "paragraph": "This review integrates the state of the art across three axes of precision weeding—chemical, physical, and image-AI—through the lens of detection–actuation matching. We formalize this concept with a latency-budget model and analyze 132 studies to compare efficacy, cost, and environmental impact. We highlight the bottleneck of detection versus actuation and propose design archetypes based on herbicide selectivity, using garlic and onion as a case study to identify gaps in academic validation.",
+    "novelty": [
+      "Integration of chemical, physical, and image-AI methods in precision weeding.",
+      "Introduction of a first-order latency-budget model for detection-actuation matching.",
+      "Identification of herbicide selectivity as a key determinant in system design.",
+      "Design guidelines tailored to specific crop conditions."
+    ],
+    "outlineQuick": "1. Introduction to precision weeding and its importance.\n2. Overview of the three axes: chemical, physical, and image-AI.\n3. Concept of detection-actuation matching.\n4. Analysis of the 132 studies: efficacy, cost, and environmental impact.\n5. Discussion on the bottleneck of detection versus actuation.\n6. Case study on garlic and onion.\n7. Design guidelines based on herbicide selectivity.\n8. Conclusion and future directions."
+  }
+}

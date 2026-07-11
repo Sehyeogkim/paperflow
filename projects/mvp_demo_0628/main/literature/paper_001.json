@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_001",
+  "study_archetype": "experimental investigation of biological mechanism in disease tissue",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: investigate genesis and growth of extracellular-vesicle-derived microcalcification in atherosclerotic plaques",
+      "category": "objective",
+      "sub_category": "primary objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: experimental study on atherosclerotic plaques (mechanistic/observational)",
+      "category": "study_design",
+      "sub_category": "design type",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: atherosclerotic plaque tissue and extracellular vesicles (broad sample source)",
+      "category": "data_or_sample",
+      "sub_category": "sample type",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: analysis of extracellular vesicles and microcalcification formation (imaging/biochemical methods implied)",
+      "category": "methods",
+      "sub_category": "primary methods mentioned",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: description of genesis and growth patterns of extracellular-vesicle-derived microcalcifications",
+      "category": "outcomes",
+      "sub_category": "main outcomes",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "results: conclusions about role of extracellular vesicles in plaque microcalcification",
+      "category": "results",
+      "sub_category": "main conclusion",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

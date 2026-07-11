@@ -1,0 +1,19 @@
+[
+  {
+    "id": "LOGIC_GAP_C1_EVIDENCE",
+    "gap_kind": "claim_without_evidence",
+    "target_id": "",
+    "question": "\"Plaque rupture vulnerability should be defined as a stress/strength ratio (VI = …\" 주장을 직접 지지하는 결과값(지표·수치)은 무엇인가요?",
+    "example": "지표, 값/순위, 출처 파일 또는 표",
+    "value": 10.0,
+    "load_bearing": true,
+    "stage": "logic",
+    "why_asked": "Claim 'Plaque rupture vulnerability should be defined as a stress/s' has no supporting evidence.",
+    "sources": [],
+    "gap_id": "GAP_C1_EVIDENCE",
+    "claim_ids": [
+      "C1"
+    ],
+    "fallback_if_unknown": "downgrade_claim"
+  }
+]

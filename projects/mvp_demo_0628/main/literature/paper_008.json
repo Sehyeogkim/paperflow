@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_008",
+  "study_archetype": "literature review of computational blood-flow studies in coronary arteries",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: review recent numerical studies of coronary artery blood flow",
+      "category": "objective",
+      "sub_category": "review_scope",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: literature review",
+      "category": "study_design",
+      "sub_category": "review_article",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: recent numerical and experimental hemodynamic studies in coronary arteries",
+      "category": "data_or_sample",
+      "sub_category": "sources_surveyed",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: focus on blood viscosity models and applied physiological flow conditions",
+      "category": "methods",
+      "sub_category": "topics_reviewed",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: synthesis that numerical studies contributed to better understanding of atherosclerosis",
+      "category": "outcomes",
+      "sub_category": "main_conclusion",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "limitations: disease not yet fully understood (ongoing research)",
+      "category": "limitations",
+      "sub_category": "knowledge_gaps",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

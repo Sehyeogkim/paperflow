@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_010",
+  "study_archetype": "technology review and clinical feasibility report",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: evaluate intracoronary OCT to identify and study vulnerable plaque",
+      "category": "objective",
+      "sub_category": "primary objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: clinical research / feasibility studies conducted over five years at a single center",
+      "category": "study_design",
+      "sub_category": "single-center clinical research / feasibility",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data/sample: patients undergoing intracoronary OCT",
+      "category": "data_or_sample",
+      "sub_category": "patient clinical sample (unspecified size)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: intracoronary optical coherence tomography imaging",
+      "category": "methods",
+      "sub_category": "intracoronary OCT imaging",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Outcomes: safety of intracoronary OCT and ability to provide microscopic plaque morphology",
+      "category": "outcomes",
+      "sub_category": "safety and image morphological information",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Conclusions/Results: OCT appears safe in patients and supplies abundant microscopic plaque morphology useful for identifying high-risk lesions",
+      "category": "results",
+      "sub_category": "feasibility results and conclusions",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

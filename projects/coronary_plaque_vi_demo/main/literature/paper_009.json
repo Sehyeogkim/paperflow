@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_009",
+  "study_archetype": "review of patient-specific CFD and FSI methods in vascular disease",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: review methods for obtaining accurate hemodynamic factors",
+      "category": "objective",
+      "sub_category": "review objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: review article",
+      "category": "study_design",
+      "sub_category": "narrative review",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: medical imaging modalities used (CTA, MRI, ultrasound, OCT)",
+      "category": "data_or_sample",
+      "sub_category": "imaging sources",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: pipeline steps (image processing, mesh generation, boundary conditions, solver parameters, visualization, extraction, statistical analysis)",
+      "category": "methods",
+      "sub_category": "patient-specific simulation pipeline steps",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "limitations: lack of standardization and unavoidable uncertainties in pipeline steps",
+      "category": "limitations",
+      "sub_category": "pipeline standardization and uncertainty",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "models_and_equations: use of computational fluid dynamics, finite element analysis, and fluid-structure interaction simulations",
+      "category": "models_and_equations",
+      "sub_category": "CFD, FEA, FSI",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

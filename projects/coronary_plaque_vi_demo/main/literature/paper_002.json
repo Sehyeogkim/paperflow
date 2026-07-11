@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_002",
+  "study_archetype": "development of a surrogate model for biomechanical strain estimation",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: create low-dimensional surrogate model to estimate thrombus strain during thrombectomy",
+      "category": "objective",
+      "sub_category": "surrogate model development",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: computational model / modelling study",
+      "category": "study_design",
+      "sub_category": "computational modelling study",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: thrombus mechanical behaviour (broad)",
+      "category": "data_or_sample",
+      "sub_category": "thrombus mechanical properties (broad)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": false,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: construction of low-dimensional surrogate (e.g., reduced-order model)",
+      "category": "methods",
+      "sub_category": "reduced-order / surrogate modelling",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: fast estimation of strain in thrombus during thrombectomy",
+      "category": "outcomes",
+      "sub_category": "strain estimation speed and accuracy (broad)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "results: surrogate enables rapid strain estimation (qualitative)",
+      "category": "results",
+      "sub_category": "performance claim (rapid estimation)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

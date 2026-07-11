@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_005",
+  "study_archetype": "narrative review of cardiovascular biomarkers",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: survey emerging cardiovascular risk biomarkers",
+      "category": "objective",
+      "sub_category": "review objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: present review article",
+      "category": "study_design",
+      "sub_category": "narrative review",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data/sample: discussion of traditional and recent diagnostic/therapeutic biomarkers",
+      "category": "data_or_sample",
+      "sub_category": "biomarker types summarized",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: descriptive explanation of biomarker classes (immunohistochemical, oxidative stress, inflammatory, anatomical, imaging, genetic, therapeutic)",
+      "category": "methods",
+      "sub_category": "qualitative synthesis of biomarker classes",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Outcomes: identification of many biomarkers (lipid profile, glucose, hormone levels, serum ferritin, triglyceride/HDLp ratio, lipophorin-related ratios, LDL, HDLp, apolipoproteins, sphingolipids, Omega-3 Index, ST2) as risk predictors",
+      "category": "outcomes",
+      "sub_category": "listed candidate biomarkers",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Limitations: need for new more authentic diagnostic markers and earlier-stage diagnosis emphasized",
+      "category": "limitations",
+      "sub_category": "call for improved biomarkers/earlier detection",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

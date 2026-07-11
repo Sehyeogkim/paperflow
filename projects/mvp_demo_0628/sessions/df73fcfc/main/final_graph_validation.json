@@ -1,0 +1,35 @@
+{
+  "graph_id": "preliminary_v1",
+  "load_bearing_gaps": [
+    {
+      "id": "GAP_C1_COMPARATOR",
+      "type": "missing_comparator",
+      "severity": "high",
+      "claim_ids": [
+        "C1"
+      ],
+      "related_node_ids": [],
+      "description": "Comparative claim '파열위험지표는 stress/strength로 정의되어야 하며, stress는 ΔPSS(심장주기 내 진폭·피로' has no explicit comparison basis.",
+      "information_needed": "The metric and comparator establishing the comparison.",
+      "can_degrade_to_qualifier": true
+    },
+    {
+      "id": "GAP_C2_EVIDENCE",
+      "type": "missing_evidence_to_claim",
+      "severity": "high",
+      "claim_ids": [
+        "C2"
+      ],
+      "related_node_ids": [],
+      "description": "Claim '파열위험 지표 정의에는 strength(재료물성)를 분모로 넣어 정규화하는 것이 필요하며, 정규화 지수 α에' has no supporting evidence.",
+      "information_needed": "The result metric/value that supports this claim.",
+      "can_degrade_to_qualifier": false
+    }
+  ],
+  "non_blocking_warnings": [
+    "C1: claim has no scope/limitation qualifier",
+    "C3: claim has no scope/limitation qualifier",
+    "C4: claim has no scope/limitation qualifier"
+  ],
+  "ready_for_finalization": false
+}

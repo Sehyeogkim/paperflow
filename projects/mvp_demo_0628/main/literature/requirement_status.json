@@ -1,0 +1,552 @@
+[
+  {
+    "key": "gp_surrogate_modeling",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.methods (GPR surrogate trained; LAP 784 / CP 727)",
+      "outline point 13",
+      "research_state.primary_message"
+    ],
+    "reason": "Materials state that Gaussian Process Regression surrogates were trained and give sample counts, but they do not provide the GPR model details (kernel choice, kernel hyperparameters, training/optimization procedure, cross-validation method, software/library and version, or uncertainty quantification procedure).",
+    "source_requirements": [
+      "overall_schema:gp_surrogate_modeling"
+    ]
+  },
+  {
+    "key": "computational_simulation_dataset",
+    "status": "present",
+    "found_evidence": [
+      "research_state.study_design (dataset construction, sample counts)",
+      "data/input_parameter/input.csv",
+      "data/input_parameter/elastance.dat",
+      "data/input_parameter/inflow.dat"
+    ],
+    "reason": "The materials explicitly describe the simulation dataset: the 1,000-sample design space (with input.csv listing input variables), the driving waveforms (elastance.dat, inflow.dat), and the assembled valid simulation counts (LAP 784, CP 727).",
+    "source_requirements": [
+      "overall_schema:computational_simulation_dataset"
+    ]
+  },
+  {
+    "key": "surrogate_model_efficiency_and_accuracy",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.methods (GPR surrogate trained; LAP 784 / CP 727)",
+      "research_state.outcomes (GPR surrogate performance metrics mentioned but not detailed)",
+      "outline point 13"
+    ],
+    "reason": "The materials state that GPR surrogates were trained and mention that surrogate performance metrics are reported, but do not provide concrete performance numbers (e.g., R^2, RMSE, MAE, predictive log-likelihood), uncertainty calibration checks, or timing/throughput comparisons demonstrating computational efficiency gains.",
+    "source_requirements": [
+      "overall_schema:surrogate_model_efficiency_and_accuracy"
+    ]
+  },
+  {
+    "key": "missing_methodological_details_in_abstracts",
+    "status": "partial",
+    "found_evidence": [
+      "core_message.one_paragraph (high-level methods mentioned)",
+      "outline points 6-13 (methods skeleton)"
+    ],
+    "reason": "The abstract/core message gives a high-level methods summary (cost-efficient FSI, dataset construction, GPR+Sobol) but does not explicitly state which methodological details are omitted from the abstract or list the most important missing specifics (e.g., GPR settings, FE discretization, mesh/timestep info).",
+    "source_requirements": [
+      "overall_schema:missing_methodological_details_in_abstracts"
+    ]
+  },
+  {
+    "key": "finite_element_stress_analysis",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.methods (PSS computed from FSI simulations)",
+      "data/cost_effective_FSI_BC/bc.md",
+      "outline points 7 and 10"
+    ],
+    "reason": "The study states that PSS and ΔPSS were computed from pulsatile FSI simulations using a cost-efficient solver and includes a boundary-conditions document, but does not specify finite element details (element type, mesh resolution, integration schemes, contact formulation, solver tolerances, code/library and version) or any mesh/timestep convergence tests.",
+    "source_requirements": [
+      "overall_schema:finite_element_stress_analysis"
+    ]
+  },
+  {
+    "key": "stress_metrics_reported",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.outcomes (PSS and ΔPSS spherical/surface-averaged mentioned)",
+      "outline points 10 and 11"
+    ],
+    "reason": "PSS and ΔPSS are listed as outputs and ΔPSS is described as spherical/surface-averaged stress amplitude, but there is no explicit mathematical definition/formula for PSS or ΔPSS (e.g., which stress component, how spherical averaging is computed, whether ΔPSS = max-min over cardiac cycle or amplitude of oscillation) or the spatial averaging procedure.",
+    "source_requirements": [
+      "overall_schema:stress_metrics_reported"
+    ]
+  },
+  {
+    "key": "review_and_expert_recommendation",
+    "status": "missing",
+    "found_evidence": [
+      "core_message.one_paragraph (clinical implications mentioned)",
+      "outline points 17-19 (discussion of clinical implications)"
+    ],
+    "reason": "While clinical implications are discussed, there is no explicit evidence of having solicited or incorporated external clinical review or expert recommendations (e.g., cardiologist input, imaging expert feedback) documented in the materials.",
+    "source_requirements": [
+      "overall_schema:review_and_expert_recommendation"
+    ]
+  },
+  {
+    "key": "define_vulnerable_plaque_objective",
+    "status": "present",
+    "found_evidence": [
+      "research_state.objective",
+      "core_message.one_paragraph",
+      "outline points 1-5"
+    ],
+    "reason": "The objective (definition and study of plaque rupture risk and VI) is explicitly stated in the research_state and core message.",
+    "source_requirements": [
+      "overall_schema:define_vulnerable_plaque_objective"
+    ]
+  },
+  {
+    "key": "investigate_stress_rupture_hypothesis",
+    "status": "present",
+    "found_evidence": [
+      "research_state.research_problem",
+      "core_message.novelty / key claims",
+      "outline points 3 and 17"
+    ],
+    "reason": "Materials clearly state the hypothesis that stress/strength (especially ΔPSS) better explains rupture risk and investigates this via simulations and sensitivity analysis.",
+    "source_requirements": [
+      "overall_schema:investigate_stress_rupture_hypothesis"
+    ]
+  },
+  {
+    "key": "reduce_computational_cost_active_learning",
+    "status": "partial",
+    "found_evidence": [
+      "core_message.one_paragraph (cost-effective FSI and surrogate use)",
+      "research_state.methods (cost-efficient solver used; GPR surrogates)"
+    ],
+    "reason": "The materials describe use of a cost-effective FSI solver and GPR surrogates to reduce computational cost, but do not indicate use of active learning or adaptive sampling strategies to further reduce simulations.",
+    "source_requirements": [
+      "overall_schema:reduce_computational_cost_active_learning"
+    ]
+  },
+  {
+    "key": "method_development_study",
+    "status": "not_applicable",
+    "found_evidence": [
+      "core_message.out_of_scope (method development/validation of cost-effective FSI is out of scope)",
+      "outline point 7"
+    ],
+    "reason": "Authors explicitly state that the cost-effective pulsatile FSI method is adopted from prior work and that method development/validation is out of scope, so a method-development study requirement does not apply.",
+    "source_requirements": [
+      "overall_schema:method_development_study"
+    ]
+  },
+  {
+    "key": "measure_and_characterize_fc_thickness",
+    "status": "present",
+    "found_evidence": [
+      "research_state.methods (FC thickness assumed uniform, single scalar variable)",
+      "outline point 8",
+      "data/input_parameter/input.csv (fc_av_th column)"
+    ],
+    "reason": "Materials explicitly state that fibrous cap thickness is assumed uniform and represented by a single scalar variable (fc_av_th), and input.csv contains this parameter.",
+    "source_requirements": [
+      "overall_schema:measure_and_characterize_fc_thickness"
+    ]
+  },
+  {
+    "key": "sample_size_and_grouping",
+    "status": "present",
+    "found_evidence": [
+      "research_state.methods and outcomes (LAP 784 / CP 727 valid pairs; 1,000-sample design space)",
+      "data/sobol/*.csv (Sobol results files)",
+      "data/input_parameter/input.csv"
+    ],
+    "reason": "The materials provide sample counts per phenotype, the total design space size, and Sobol results files indicating grouping; grouping into Material/Hemo/Morphology is described in methods.",
+    "source_requirements": [
+      "overall_schema:sample_size_and_grouping"
+    ]
+  },
+  {
+    "key": "epidemiologic_burden_statement",
+    "status": "present",
+    "found_evidence": [
+      "core_message.one_paragraph",
+      "research_state.primary_message",
+      "outline point 1"
+    ],
+    "reason": "The core message and introduction lines explicitly state that plaque rupture is a major cause of ACS and a substantial part of global cardiovascular mortality.",
+    "source_requirements": [
+      "overall_schema:epidemiologic_burden_statement"
+    ]
+  },
+  {
+    "key": "vascular_beds_surveyed",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state.study_design",
+      "outline"
+    ],
+    "reason": "The study is restricted to coronary artery plaque phenotypes (LAP and CP) and does not claim to extend findings across multiple vascular beds.",
+    "source_requirements": [
+      "overall_schema:vascular_beds_surveyed"
+    ]
+  },
+  {
+    "key": "literature_and_studies_surveyed",
+    "status": "partial",
+    "found_evidence": [
+      "core_message.one_paragraph",
+      "research_state.methods",
+      "outline points 2-5"
+    ],
+    "reason": "The materials mention prior studies and gaps (e.g., strength fixed, high computational cost) but do not provide a detailed surveyed literature list or synthesis of previous studies.",
+    "source_requirements": [
+      "overall_schema:literature_and_studies_surveyed"
+    ]
+  },
+  {
+    "key": "blood_viscosity_and_flow_models",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.methods",
+      "data/cost_effective_FSI_BC/bc.md",
+      "data/input_parameter/inflow.dat",
+      "outline point 7"
+    ],
+    "reason": "Pulsatile FSI and driving waveforms are documented, and a bc.md file and inflow data are provided, but there is no explicit statement of the blood viscosity value, non-Newtonian vs Newtonian assumption, or the exact flow model formulation in the supplied materials.",
+    "source_requirements": [
+      "overall_schema:blood_viscosity_and_flow_models"
+    ]
+  },
+  {
+    "key": "plaque_features_reported",
+    "status": "present",
+    "found_evidence": [
+      "data/input_parameter/input.csv",
+      "research_state.input_variables",
+      "outline points 8-10"
+    ],
+    "reason": "The design-input CSV and the input_variables list include morphological features (lesion_length, lumen_axial_skewness, lipid_length_ratio, fc_av_th, etc.) and the methods describe outputs (PSS, ΔPSS, rupture-location index).",
+    "source_requirements": [
+      "overall_schema:plaque_features_reported"
+    ]
+  },
+  {
+    "key": "wss_clinical_recommendations",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state",
+      "core_message"
+    ],
+    "reason": "The study focuses on structural stress (PSS/ΔPSS) and material properties; it does not make claims addressing wall shear stress (WSS) or clinical recommendations related to WSS.",
+    "source_requirements": [
+      "overall_schema:wss_clinical_recommendations"
+    ]
+  },
+  {
+    "key": "vulnerability_multifactor_concept",
+    "status": "present",
+    "found_evidence": [
+      "core_message.one_paragraph",
+      "research_state.key_observations",
+      "outline points 2-5"
+    ],
+    "reason": "The materials explicitly describe the multifactor concept (morphology, hemodynamics, material strength) and motivate a combined VI = stress/strength formulation.",
+    "source_requirements": [
+      "overall_schema:vulnerability_multifactor_concept"
+    ]
+  },
+  {
+    "key": "numerical_studies_synthesis",
+    "status": "partial",
+    "found_evidence": [
+      "core_message.one_paragraph",
+      "research_state.methods",
+      "outline points 4 and 7"
+    ],
+    "reason": "The manuscript references prior numerical limitations (cost, lack of simultaneous global analysis) and cites the use of a previously validated cost-effective FSI solver, but does not include a synthesized review or comparison of prior numerical studies in detail within the supplied materials.",
+    "source_requirements": [
+      "overall_schema:numerical_studies_synthesis"
+    ]
+  },
+  {
+    "key": "peak_stress_observational_comparison",
+    "status": "present",
+    "found_evidence": [
+      "core_message.one_paragraph",
+      "research_state.key_observations",
+      "outline points 10 and 17"
+    ],
+    "reason": "Materials explicitly compare PSS versus ΔPSS, claim ΔPSS is a stronger predictor, and state that ΔPSS-based VIs outperform PSS-based ones in clinical sign consistency.",
+    "source_requirements": [
+      "overall_schema:peak_stress_observational_comparison"
+    ]
+  },
+  {
+    "key": "clinical_imaging_feasibility_oct",
+    "status": "present",
+    "found_evidence": [
+      "research_state.key_observations",
+      "outline point 19",
+      "core_message.one_paragraph"
+    ],
+    "reason": "The discussion mentions OCT-based stiffness characterization as clinically valuable and ties implications to imaging feasibility for material property measurement.",
+    "source_requirements": [
+      "overall_schema:clinical_imaging_feasibility_oct"
+    ]
+  },
+  {
+    "key": "clinical_screening_and_diagnostic_limitations",
+    "status": "present",
+    "found_evidence": [
+      "research_state.limitations",
+      "core_message.one_paragraph",
+      "outline point 20"
+    ],
+    "reason": "Limitations explicitly note lack of clinical validation and idealized geometries and uniform FC thickness, which constrain clinical screening/diagnostic applicability.",
+    "source_requirements": [
+      "overall_schema:clinical_screening_and_diagnostic_limitations"
+    ]
+  },
+  {
+    "key": "incomplete_disease_understanding",
+    "status": "present",
+    "found_evidence": [
+      "research_state.limitations",
+      "core_message.one_paragraph"
+    ],
+    "reason": "Materials acknowledge conceptual and model limitations (idealized geometries, linear elasticity) that reflect incomplete understanding of disease mechanisms.",
+    "source_requirements": [
+      "overall_schema:incomplete_disease_understanding"
+    ]
+  },
+  {
+    "key": "imaging_characterization_limitations_of_plaque_composition",
+    "status": "present",
+    "found_evidence": [
+      "research_state.limitations",
+      "research_state.key_observations",
+      "outline point 19"
+    ],
+    "reason": "The materials discuss that imaging-based characterization (e.g., OCT) is limited and that material property measurement is nontrivial, noting this as a limitation and implication for clinical translation.",
+    "source_requirements": [
+      "overall_schema:imaging_characterization_limitations_of_plaque_composition"
+    ]
+  },
+  {
+    "key": "provide_wss_assessment_guidance",
+    "status": "missing",
+    "found_evidence": [
+      "research_state.methods (hemodynamics inputs listed)",
+      "outline point 9 (inputs include PI, SBP, PP)",
+      "core_message (hemodynamics is one factor)"
+    ],
+    "reason": "Materials describe hemodynamic inputs and that hemodynamics is analyzed, but there is no explicit guidance or method for wall shear stress (WSS) assessment (no WSS metric definition, computation procedure, or reporting guidance).",
+    "source_requirements": [
+      "overall_schema:provide_wss_assessment_guidance"
+    ]
+  },
+  {
+    "key": "experimental_mechanistic_study",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state.study_type: computational_biomechanics",
+      "limitations: clinical/experimental validation not performed",
+      "core_message and methods (computational FSI pipeline only)"
+    ],
+    "reason": "Requirement applies only when the claim requires biophysical experimental validation or direct comparison with ex-vivo/in-vivo data; this study is computational and explicitly lists experimental/clinical validation as out of scope.",
+    "source_requirements": [
+      "overall_schema:experimental_mechanistic_study"
+    ]
+  },
+  {
+    "key": "clinical_patient_sample",
+    "status": "not_applicable",
+    "found_evidence": [
+      "limitations: Clinical validation of selected VIs against patient outcomes is not performed",
+      "research_state.study_design: idealized phenotypes (LAP, CP), no patient data"
+    ],
+    "reason": "Requirement applies when claims involve direct clinical validation or outcome prediction; the study explicitly does not include patient samples or clinical outcome validation.",
+    "source_requirements": [
+      "overall_schema:clinical_patient_sample"
+    ]
+  },
+  {
+    "key": "tissue_types_and_imaging_depth",
+    "status": "not_applicable",
+    "found_evidence": [
+      "methods: linear elastic material models for tissue components listed",
+      "limitations: idealized geometries and linear elasticity noted"
+    ],
+    "reason": "This requirement applies when material properties or geometry are inferred from imaging/tissue data; the study uses assumed linear elastic materials and idealized geometries rather than inferring from imaging, so the requirement does not apply.",
+    "source_requirements": [
+      "overall_schema:tissue_types_and_imaging_depth"
+    ]
+  },
+  {
+    "key": "active_learning_adaptive_sampling",
+    "status": "not_applicable",
+    "found_evidence": [
+      "methods: design-of-experiments via input.csv to sample 1,000-case design space",
+      "methods: GPR surrogates trained on assembled valid samples"
+    ],
+    "reason": "Requirement applies when adaptive sampling is used; the materials describe a precomputed DOE (input.csv) and GPR surrogates but do not use an active-learning/adaptive sampling loop, so it does not apply.",
+    "source_requirements": [
+      "overall_schema:active_learning_adaptive_sampling"
+    ]
+  },
+  {
+    "key": "model_order_reduction_coupling",
+    "status": "not_applicable",
+    "found_evidence": [
+      "core_message and methods: cost-efficient pulsatile FSI solver cited (tool used)",
+      "methods: surrogate (GPR) used for sensitivity analysis rather than model-order reduction"
+    ],
+    "reason": "Requirement applies when computational cost requires model-order reduction; the study addresses cost via a cost-effective FSI solver and GPR surrogates rather than reduced-order coupling, so the requirement is not applicable.",
+    "source_requirements": [
+      "overall_schema:model_order_reduction_coupling"
+    ]
+  },
+  {
+    "key": "review_imaging_modalities_for_plaque_assessment",
+    "status": "missing",
+    "found_evidence": [
+      "outline point 19/discussion mentions OCT-based stiffness characterization as relevant",
+      "limitations note lack of clinical validation and imaging-based patient data"
+    ],
+    "reason": "While the discussion briefly mentions OCT as relevant for stiffness characterization, there is no review or survey of imaging modalities for plaque assessment (no systematic comparison, no cited modalities list or imaging guidance).",
+    "source_requirements": [
+      "overall_schema:review_imaging_modalities_for_plaque_assessment"
+    ]
+  },
+  {
+    "key": "case_control_lesion_comparative_study",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state and limitations: no patient data, idealized geometries used",
+      "study design: computational dataset using phenotype templates (LAP, CP)"
+    ],
+    "reason": "Requirement applies when claim requires lesion-level clinical validation against patient data; this computational study does not include lesion-level case-control comparisons, so it does not apply.",
+    "source_requirements": [
+      "overall_schema:case_control_lesion_comparative_study"
+    ]
+  },
+  {
+    "key": "single_center_clinical_feasibility_study",
+    "status": "not_applicable",
+    "found_evidence": [
+      "limitations: clinical validation not performed; study is computational",
+      "study_design: idealized models, no prospective patient enrollment"
+    ],
+    "reason": "Applies when prospective patient outcome validation is required; study is computational and does not perform a clinical feasibility study.",
+    "source_requirements": [
+      "overall_schema:single_center_clinical_feasibility_study"
+    ]
+  },
+  {
+    "key": "diagnostic_image_metric_reporting",
+    "status": "not_applicable",
+    "found_evidence": [
+      "study focuses on computational outputs (PSS, ΔPSS, rupture-location index, VI)",
+      "no imaging-based validation or reporting of diagnostic image metrics in materials"
+    ],
+    "reason": "This requirement applies when claims involve imaging-based validation or clinical correlates; the study does not perform imaging-based validation, so it is not applicable.",
+    "source_requirements": [
+      "overall_schema:diagnostic_image_metric_reporting"
+    ]
+  },
+  {
+    "key": "imaging_OCT_safety_and_resolution",
+    "status": "partial",
+    "found_evidence": [
+      "outline point 19/discussion: suggests OCT-based stiffness characterization as informative",
+      "key_observations/discussion mention OCT in clinical implications"
+    ],
+    "reason": "The materials recommend OCT-based stiffness characterization in the discussion, but they do not provide any details on OCT safety, achievable resolution, or practical measurement constraints—so the topic is only briefly mentioned, not described.",
+    "source_requirements": [
+      "overall_schema:imaging_OCT_safety_and_resolution"
+    ]
+  },
+  {
+    "key": "imaging_detection_performance_multiphoton",
+    "status": "not_applicable",
+    "found_evidence": [
+      "discussion mentions imaging options (e.g., OCT) but not multiphoton microscopy",
+      "study limitations note lack of microstructural collagen/fatigue modeling"
+    ],
+    "reason": "Requirement applies when claims need direct collagen microstructure measurement or when the discussion recommends OCT/MPM; the study does not recommend multiphoton performance specifically, so it is not applicable.",
+    "source_requirements": [
+      "overall_schema:imaging_detection_performance_multiphoton"
+    ]
+  },
+  {
+    "key": "imaging_modalities_survey",
+    "status": "not_applicable",
+    "found_evidence": [
+      "requirement level: unsupported by checklist (marked 'unsupported')",
+      "materials: only brief mentions of OCT in discussion, no survey"
+    ],
+    "reason": "This checklist item is marked 'unsupported' and does not apply; the manuscript contains only incidental references to imaging (e.g., OCT) and no comprehensive survey.",
+    "source_requirements": [
+      "overall_schema:imaging_modalities_survey"
+    ]
+  },
+  {
+    "key": "population_for_failure_probability_estimation",
+    "status": "not_applicable",
+    "found_evidence": [
+      "core_message",
+      "research_state"
+    ],
+    "reason": "Requirement applies only if the study reports failure probabilities or classifier performance; this study reports vulnerability indices, sensitivity analysis, and surrogate models but does not report population-level failure probabilities or classifier performance metrics.",
+    "source_requirements": [
+      "overall_schema:population_for_failure_probability_estimation"
+    ]
+  },
+  {
+    "key": "methodological_survey_wss",
+    "status": "missing",
+    "found_evidence": [
+      "outline",
+      "research_state"
+    ],
+    "reason": "No methodological survey or discussion of WSS (wall shear stress) methods or their comparative assessment is present in the core materials; WSS is not listed among computed outputs and there is no survey text in method documentation (bc.md referenced for boundary conditions only).",
+    "source_requirements": [
+      "overall_schema:methodological_survey_wss"
+    ]
+  },
+  {
+    "key": "proposed_clinical_pathological_classification",
+    "status": "missing",
+    "found_evidence": [
+      "core_message",
+      "outline"
+    ],
+    "reason": "Materials define two idealized plaque phenotypes (LAP and CP) and reference clinical sign criteria for VI selection, but do not present a new or detailed clinical–pathological classification scheme or proposal.",
+    "source_requirements": [
+      "overall_schema:proposed_clinical_pathological_classification"
+    ]
+  },
+  {
+    "key": "microcalcification_genesis_and_growth",
+    "status": "not_applicable",
+    "found_evidence": [
+      "core_message",
+      "limitations"
+    ],
+    "reason": "Requirement applies only when making specific claims about microcalcifications or calcification mechanisms; the study models calcified plaques as an idealized phenotype but does not make claims about genesis/growth mechanisms or microcalcification processes.",
+    "source_requirements": [
+      "overall_schema:microcalcification_genesis_and_growth"
+    ]
+  },
+  {
+    "key": "extracellular_vesicles_microcalcification_role",
+    "status": "not_applicable",
+    "found_evidence": [
+      "core_message",
+      "limitations"
+    ],
+    "reason": "This requirement is relevant when the discussion links microcalcification origins (e.g., extracellular vesicles) to mechanical behavior; the manuscript does not discuss biological origins of calcification or vesicle-mediated mechanisms, only treats calcification as a material domain.",
+    "source_requirements": [
+      "overall_schema:extracellular_vesicles_microcalcification_role"
+    ]
+  }
+]

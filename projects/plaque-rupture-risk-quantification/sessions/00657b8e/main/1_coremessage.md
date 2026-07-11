@@ -1,0 +1,7 @@
+## One paragraph
+비용효율 맥동성 FSI로 저감쇠 플라크(LAP)와 석회화 플라크(CP)에 대해 1,000-sample 데이터셋을 만들고, 취약성지수 VI = stress/strength를 정의했습니다. stress 2종(PSS, ΔPSS) × strength 3시나리오 = 6개 후보 중 임상 7기준을 모두 만족하는 2개(VI1=ΔPSS/E_FC^0.5, VI2=ΔPSS/E_FC^1.0)를 선정했으며, GPR 대리모델 + 소볼 민감도 분석을 적용했습니다.
+
+## Novelty
+- 발견 1: 파열위험지표는 stress/strength여야 하고, stress는 ΔPSS(피로·진폭 관점)가 임상적으로 더 적합하다 → 맥동성 FSI가 필요하다.
+- 발견 2: strength 정규화가 필요하다(정규화 지수 α에 따라 민감도가 달라진다).
+- 발견 3: 소볼 민감도 결과 재료물성이 혈류역학·형태보다 파열 위험을 지배한다 (Material > Hemo > Morpho), 상위 4인자는 E_vessel·E_FC·수축기압·맥압.

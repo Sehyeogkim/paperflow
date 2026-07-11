@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_010",
+  "study_archetype": "Review of plaque structural stress (PSS) in atherosclerosis",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: review PSS detection, determinants, and role in plaque rupture and progression",
+      "category": "objective",
+      "sub_category": "review_scope",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: narrative review of methods, imaging modalities, idealized models, and experimental studies",
+      "category": "study_design",
+      "sub_category": "narrative_review",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data or sample: prospective studies correlating peak PSS with ACS, plaque rupture, and MACE",
+      "category": "data_or_sample",
+      "sub_category": "prospective_clinical_studies",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Primary methods: calculation/modeling of plaque structural stress (PSS) incorporating plaque architecture, material properties, and haemodynamics",
+      "category": "methods",
+      "sub_category": "computational_PSS_modeling",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Main outcomes: peak PSS correlated with ACS presentation, plaque rupture, and MACE and provides prognostic information beyond imaging",
+      "category": "outcomes",
+      "sub_category": "clinical_correlations_of_PSS",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Limitations: need for additional biomarkers due to low MACE rates per plaque (implied need for improved risk stratification)",
+      "category": "limitations",
+      "sub_category": "limited_predictive_value_of_imaging_alone",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

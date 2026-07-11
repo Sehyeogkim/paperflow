@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_003",
+  "study_archetype": "computational fluid-structure interaction simulation of targeted microbubble adhesion in patient-specific AAA",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: investigate surface adhesion of drug-containing microbubbles to AAA inner wall",
+      "category": "objective",
+      "sub_category": "primary objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: fluid-structure interaction (FSI) simulation using patient CT-scan geometry",
+      "category": "study_design",
+      "sub_category": "computational patient-specific FSI",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data/sample: single patient with 40-mm diameter abdominal aortic aneurysm (CT scan)",
+      "category": "data_or_sample",
+      "sub_category": "patient CT geometry (n=1)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: simulation of ligand-receptor binding-mediated adhesion of four microbubble types and three diameters",
+      "category": "methods",
+      "sub_category": "ligand-receptor adhesion modeling; MB types and diameters compared",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Numerical/experimental setting (broad): variation of blood mechanical properties (hematocrit changes for anemia/diabetes) and artery inlet velocity",
+      "category": "numerical_or_experimental_settings",
+      "sub_category": "parameter variations: Hct and inlet velocity",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Outcomes: effect of blood flow on microbubble delivery/adherence to intended surface",
+      "category": "outcomes",
+      "sub_category": "MB delivery/adherence under hemodynamic conditions",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

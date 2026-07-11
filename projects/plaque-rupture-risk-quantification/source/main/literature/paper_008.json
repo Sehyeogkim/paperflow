@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_008",
+  "study_archetype": "computational comparison of CFD vs FSI in idealized stenotic coronary models",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: evaluate effect of arterial wall compliance on hemodynamic results",
+      "category": "objective",
+      "sub_category": "compare CFD and FSI effects on hemodynamics",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: computational modeling comparison",
+      "category": "study_design",
+      "sub_category": "CFD versus FSI simulations on idealized models",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: idealized stenotic coronary artery models",
+      "category": "data_or_sample",
+      "sub_category": "idealized geometries representing stenotic coronary arteries",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: computational fluid dynamics (CFD) and fluid-structure interaction (FSI) modeling",
+      "category": "methods",
+      "sub_category": "CFD and FSI simulation methods",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: wall shear stress distribution, time-averaged wall shear stress (TAWSS), oscillatory shear index (OSI)",
+      "category": "outcomes",
+      "sub_category": "hemodynamic metrics compared between CFD and FSI",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "results: wall compliance notably affects instantaneous WSS distribution; minor effect on TAWSS and OSI",
+      "category": "results",
+      "sub_category": "comparative findings between compliant (FSI) and rigid-wall (CFD) simulations",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

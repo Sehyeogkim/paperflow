@@ -1,0 +1,907 @@
+{
+  "main_contribution": "플라크 파열 위험은 strength로 정규화한 ΔPSS 기반 취약성지수(VI)가 더 잘 설명하며, 재료물성이 위험을 지배한다.",
+  "nodes": [
+    {
+      "id": "C1",
+      "kind": "claim",
+      "text": "파열위험지표는 stress/strength로 정의되어야 하며, stress는 ΔPSS(심장주기 내 진폭·피로 관점)가 임상적으로 더 적합하다.",
+      "parent_id": null,
+      "subtype": "",
+      "role": "contribution",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C1.1",
+      "kind": "claim",
+      "text": "ΔPSS 기반 VI가 순간 최대 PSS 기반 VI보다 임상적 기준(7개)의 부호 일치성 및 예측력에서 우수하다.",
+      "parent_id": "C1",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C1.2",
+      "kind": "claim",
+      "text": "ΔPSS의 우수성은 맥동성(피로·진폭) 효과를 반영하므로 맥동성 FSI 시뮬레이션이 필요하다.",
+      "parent_id": "C1",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "discussion",
+      "provenance": null
+    },
+    {
+      "id": "C2",
+      "kind": "claim",
+      "text": "파열위험 지표 정의에는 strength(재료물성)를 분모로 넣어 정규화하는 것이 필요하며, 정규화 지수 α에 따라 민감도와 특성이 달라진다.",
+      "parent_id": null,
+      "subtype": "",
+      "role": "contribution",
+      "represented_as": null,
+      "section": "discussion",
+      "provenance": null
+    },
+    {
+      "id": "C2.1",
+      "kind": "claim",
+      "text": "strength를 분모로 포함하는 VI 후보들(stress/strength^α) 가운데 α 값에 따라 민감도 순위와 임상기준 부합성이 변한다.",
+      "parent_id": "C2",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "discussion",
+      "provenance": null
+    },
+    {
+      "id": "C2.2",
+      "kind": "claim",
+      "text": "제안된 최종 VI 두 가지는 VI1 = ΔPSS / E_FC^{0.5} 및 VI2 = ΔPSS / E_FC^{1.0}으로, 7개 임상기준을 모두 만족한다.",
+      "parent_id": "C2",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C3",
+      "kind": "claim",
+      "text": "전역 민감도 분석(Sobol) 결과 재료물성(material)이 혈류역학·형태학보다 파열위험 분산을 더 많이 설명한다 (Material > Hemodynamics > Morphology).",
+      "parent_id": null,
+      "subtype": "",
+      "role": "contribution",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C3.1",
+      "kind": "claim",
+      "text": "그룹화된 Sobol 지수에서 Material 그룹의 1차 및 전차 지수(S1, ST)가 Hemodynamics·Morphology 그룹보다 크다(두 표현형·두 VI에서 일관됨).",
+      "parent_id": "C3",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C3.2",
+      "kind": "claim",
+      "text": "개별 입력 변수 수준에서 상위 결정인자는 E_vessel, E_FC, SBP, PP로 확인되었다(상위 4인자).",
+      "parent_id": "C3",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C4",
+      "kind": "claim",
+      "text": "비용효율적 맥동성 FSI와 Gaussian Process 대리모델을 결합하면 대규모 입력공간에서 실용적으로 전역 민감도 분석을 수행할 수 있다.",
+      "parent_id": null,
+      "subtype": "",
+      "role": "contribution",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "C4.1",
+      "kind": "claim",
+      "text": "LAP(784)와 CP(727) 유효 샘플로 학습된 GPR 대리모델은 5-fold 교차검증 기준에서 LAP VI1 R²=0.93 RMSE=0.07, CP VI1 R²=0.90 RMSE=0.09 등 우수한 예측 성능을 보였다.",
+      "parent_id": "C4",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "C4.2",
+      "kind": "claim",
+      "text": "대리모델을 이용한 Sobol 추정(1e5 샘플)은 원시 FSI 직접평가 대비 약 1000배 이상의 비용 절감으로 수초 내 평가가 가능했다.",
+      "parent_id": "C4",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M_FSI",
+      "kind": "method",
+      "text": "Cost-effective pulsatile fluid-structure interaction (FSI) pipeline used to generate simulation outputs (pressure/velocity, solid displacement/stress time series) for idealized plaque phenotypes (LAP: 3 domains; CP: 4 domains). Uses boundary conditions and driving waveforms from elastance.dat and inflow.dat. Time integration Δt=1 ms; quadratic tetrahedral solid elements (mean element size 0.05 mm); convergence tol rel-residual 1e-4.",
+      "parent_id": null,
+      "subtype": "simulation",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M_FEM",
+      "kind": "method",
+      "text": "Finite-element setup for solid domain: quadratic tetrahedral elements, mean element size 0.05 mm; mesh independence verified (PSS change 6% 0.1->0.05 mm; 2% 0.05->0.025 mm).",
+      "parent_id": "M_FSI",
+      "subtype": "preprocessing",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M_BC",
+      "kind": "method",
+      "text": "Apply boundary conditions and driving waveforms from provided files (elastance.dat, inflow.dat) and documented BCs (bc.md).",
+      "parent_id": "M_FSI",
+      "subtype": "preprocessing",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M_PSS",
+      "kind": "method",
+      "text": "Postprocess FSI time-series to compute PSS fields (maximum principal stress σ1 on fibrous cap surface) and ΔPSS = max_t σ1(t) - min_t σ1(t). Compute spherical/surface-averaged metrics using equal-area nodal partition.",
+      "parent_id": "M_FSI",
+      "subtype": "analysis",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M_DOE",
+      "kind": "method",
+      "text": "Design-of-experiments: sample input parameter space (morphology, hemodynamics, material) according to input.csv to produce simulation cases (1,000-case design space; valid pairs later filtered).",
+      "parent_id": null,
+      "subtype": "preprocessing",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M_VI_selection",
+      "kind": "method",
+      "text": "Form six candidate vulnerability indices VI = stress / strength^α (two stress measures: PSS, ΔPSS; three α scenarios) and evaluate each candidate against seven pre-specified clinical sign criteria (sign/antisign consistency). Select candidates satisfying all seven criteria.",
+      "parent_id": null,
+      "subtype": "analysis",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M_GPR",
+      "kind": "method",
+      "text": "Train Gaussian Process Regression surrogates mapping inputs → selected VI outputs. Matern 5/2 kernel with ARD length-scales, log-marginal-likelihood maximization for hyperparameters, noise alpha fixed at 1e-6, inputs/outputs z-score normalized. 5-fold cross-validation used for model assessment. Implementation: scikit-learn 1.3.0 GPR on CPU (8 cores).",
+      "parent_id": null,
+      "subtype": "analysis",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M_GPR.train",
+      "kind": "method",
+      "text": "5-fold cross-validation to compute R² and RMSE for surrogate models and calibration (coverage of 95% prediction intervals).",
+      "parent_id": "M_GPR",
+      "subtype": "validation",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M_Sobol",
+      "kind": "method",
+      "text": "Compute Sobol global sensitivity indices (first-order S1 and total ST) using Monte Carlo evaluation (1e5 samples) on trained GPR surrogates for group-level (Material/Hemo/Morpho) and individual-parameter indices.",
+      "parent_id": null,
+      "subtype": "analysis",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "D_bc",
+      "kind": "data",
+      "text": "Boundary condition and method documentation for the cost-effective FSI solver",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": "data/cost_effective_FSI_BC/bc.md"
+    },
+    {
+      "id": "D_elastance",
+      "kind": "data",
+      "text": "Elastance driving waveform time series",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": "data/input_parameter/elastance.dat"
+    },
+    {
+      "id": "D_inflow",
+      "kind": "data",
+      "text": "Inflow driving waveform time series",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": "data/input_parameter/inflow.dat"
+    },
+    {
+      "id": "D_input_csv",
+      "kind": "data",
+      "text": "Design-of-experiments input parameter table (rows = simulation cases) with morphology, hemodynamics, material columns",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": "data/input_parameter/input.csv"
+    },
+    {
+      "id": "D_sobol_grp_LAP_VI1",
+      "kind": "data",
+      "text": "Grouped Sobol indices (Material/Hemo/Morpho) for LAP, VI1",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_grp_LAP_VI1.csv"
+    },
+    {
+      "id": "D_sobol_grp_LAP_VI2",
+      "kind": "data",
+      "text": "Grouped Sobol indices (Material/Hemo/Morpho) for LAP, VI2",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_grp_LAP_VI2.csv"
+    },
+    {
+      "id": "D_sobol_grp_CP_VI1",
+      "kind": "data",
+      "text": "Grouped Sobol indices (Material/Hemo/Morpho) for CP, VI1",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_grp_CP_VI1.csv"
+    },
+    {
+      "id": "D_sobol_grp_CP_VI2",
+      "kind": "data",
+      "text": "Grouped Sobol indices (Material/Hemo/Morpho) for CP, VI2",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_grp_CP_VI2.csv"
+    },
+    {
+      "id": "D_sobol_ind_LAP_VI1",
+      "kind": "data",
+      "text": "Individual-parameter Sobol indices for LAP, VI1",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_ind_LAP_VI1.csv"
+    },
+    {
+      "id": "D_sobol_ind_LAP_VI2",
+      "kind": "data",
+      "text": "Individual-parameter Sobol indices for LAP, VI2",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_ind_LAP_VI2.csv"
+    },
+    {
+      "id": "D_sobol_ind_CP_VI1",
+      "kind": "data",
+      "text": "Individual-parameter Sobol indices for CP, VI1",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_ind_CP_VI1.csv"
+    },
+    {
+      "id": "D_sobol_ind_CP_VI2",
+      "kind": "data",
+      "text": "Individual-parameter Sobol indices for CP, VI2",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_ind_CP_VI2.csv"
+    },
+    {
+      "id": "D_trained_model_metadata",
+      "kind": "data",
+      "text": "Metadata for trained GPR surrogates (sample counts, CV metrics, training runtimes) and validity filtering (LAP: 784; CP: 727).",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "[DATA_NEEDED]"
+    },
+    {
+      "id": "E_sim_validation",
+      "kind": "evidence",
+      "text": "FSI simulation outputs (PSS fields, FFR trends, rupture-location index) are consistent with literature trends and mesh-independence tests indicate acceptable discretization error (PSS changes 6% then 2%).",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "E_VI_candidates_eval",
+      "kind": "evidence",
+      "text": "Evaluation of six candidate VIs against seven clinical sign criteria yielded two candidates (VI1, VI2) that satisfy all criteria.",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "E_GPR_performance",
+      "kind": "evidence",
+      "text": "GPR surrogate cross-validation performance: LAP VI1 R²=0.93 RMSE=0.07; CP VI1 R²=0.90 RMSE=0.09; prediction-interval coverage LAP 94%, CP 92%.",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "E_Sobol_grouped",
+      "kind": "evidence",
+      "text": "Grouped Sobol indices show Material group explains more variance (S1 and ST) than Hemodynamics or Morphology across phenotypes and selected VIs.",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "E_Sobol_individual",
+      "kind": "evidence",
+      "text": "Individual-parameter Sobol indices identify top drivers E_vessel, E_FC, SBP, PP across phenotypes and selected VIs.",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "W_sobol_theory",
+      "kind": "warrant",
+      "text": "Sobol sensitivity indices (variance-based decomposition) quantify contribution of input parameters/groups to output variance; higher S1/ST indicates greater influence.",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "discussion",
+      "provenance": null
+    },
+    {
+      "id": "W_gpr_justification",
+      "kind": "warrant",
+      "text": "Gaussian process regression with ARD Matern kernels provides smooth probabilistic surrogates and enables low-cost MC evaluation for sensitivity analysis when trained and validated appropriately.",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "discussion",
+      "provenance": null
+    },
+    {
+      "id": "W_deltaPSS_fatigue",
+      "kind": "warrant",
+      "text": "ΔPSS (stress amplitude / peak-to-peak) better captures fatigue/accumulated cyclic damage mechanisms than instantaneous peak stress, so it is a more relevant stress metric for rupture prediction under pulsatile loading.",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "discussion",
+      "provenance": null
+    },
+    {
+      "id": "F_sobol_grp_plot",
+      "kind": "artifact",
+      "text": "Bar charts or grouped plots visualizing grouped Sobol S1 and ST for LAP/CP and VI1/VI2 (derived from sobol_grp CSV files).",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": "figure",
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "F_sobol_ind_table",
+      "kind": "artifact",
+      "text": "Table of individual-parameter Sobol indices (S1, ST) showing ranking of parameters (derived from sobol_ind CSV files).",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": "table",
+      "section": "result",
+      "provenance": null
+    }
+  ],
+  "edges": [
+    {
+      "id": "L1",
+      "src": "C1.1",
+      "dst": "C1",
+      "rel": "supports",
+      "rationale": "ΔPSS 기반 VI가 PSS 기반 VI보다 임상 기준과 예측성능에서 우수함을 보여주므로 stress로 ΔPSS를 택하는 주장을 직접 지지한다.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L2",
+      "src": "C1.2",
+      "dst": "C1",
+      "rel": "supports",
+      "rationale": "ΔPSS의 해석이 맥동성(진폭/피로)에 의존하므로 맥동성 FSI의 필요성을 논증해 ΔPSS를 stress로 선택하는 근거를 보강한다.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L3",
+      "src": "C2.1",
+      "dst": "C2",
+      "rel": "supports",
+      "rationale": "정규화 지수 α에 따른 VI 거동 변화는 strength 정규화의 필요성과 그 민감성을 입증한다.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L4",
+      "src": "C2.2",
+      "dst": "C2",
+      "rel": "supports",
+      "rationale": "실제 데이터에서 α별 후보 중 두 가지(α=0.5,1.0)가 모든 임상기준을 만족한 결과는 strength 정규화의 적용 가능성과 구체적 권고를 제공한다.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L5",
+      "src": "C3.1",
+      "dst": "C3",
+      "rel": "supports",
+      "rationale": "그룹별 Sobol 지수에서 Material 우위가 관찰되어 '재료물성이 지배적'이라는 주장을 직접 지지한다.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L6",
+      "src": "C3.2",
+      "dst": "C3",
+      "rel": "supports",
+      "rationale": "개별 변수 수준에서 E_vessel·E_FC·SBP·PP가 상위 지표로 도출된 것은 어떤 입력들이 Material·Hemo 그룹 내에서 실제로 분산을 주도하는지를 명시적으로 보여준다.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L7",
+      "src": "C4.1",
+      "dst": "C4",
+      "rel": "supports",
+      "rationale": "대리모델의 교차검증 성능은 대리모델 기반 민감도 분석의 신뢰성을 보장하므로 방법론적 실현 가능성을 지지한다.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L8",
+      "src": "C4.2",
+      "dst": "C4",
+      "rel": "supports",
+      "rationale": "대리모델을 사용한 계산비용 절감과 대규모 샘플 평가 가능성은 전역 민감도 분석 수행의 실용적 근거가 된다.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L9",
+      "src": "M_BC",
+      "dst": "D_bc",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L10",
+      "src": "M_BC",
+      "dst": "D_elastance",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L11",
+      "src": "M_BC",
+      "dst": "D_inflow",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L12",
+      "src": "M_DOE",
+      "dst": "D_input_csv",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L13",
+      "src": "M_FSI",
+      "dst": "M_FEM",
+      "rel": "part_of",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L14",
+      "src": "M_FSI",
+      "dst": "M_BC",
+      "rel": "part_of",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L15",
+      "src": "M_FSI",
+      "dst": "M_PSS",
+      "rel": "part_of",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L16",
+      "src": "M_FSI",
+      "dst": "D_input_csv",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L17",
+      "src": "M_FSI",
+      "dst": "D_bc",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L18",
+      "src": "M_PSS",
+      "dst": "E_sim_validation",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L19",
+      "src": "M_VI_selection",
+      "dst": "E_VI_candidates_eval",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L20",
+      "src": "M_VI_selection",
+      "dst": "D_input_csv",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L21",
+      "src": "M_GPR",
+      "dst": "D_trained_model_metadata",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L22",
+      "src": "M_GPR.train",
+      "dst": "E_GPR_performance",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L23",
+      "src": "M_GPR.train",
+      "dst": "D_trained_model_metadata",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L24",
+      "src": "M_Sobol",
+      "dst": "D_sobol_grp_LAP_VI1",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L25",
+      "src": "M_Sobol",
+      "dst": "D_sobol_grp_LAP_VI2",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L26",
+      "src": "M_Sobol",
+      "dst": "D_sobol_grp_CP_VI1",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L27",
+      "src": "M_Sobol",
+      "dst": "D_sobol_grp_CP_VI2",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L28",
+      "src": "M_Sobol",
+      "dst": "D_sobol_ind_LAP_VI1",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L29",
+      "src": "M_Sobol",
+      "dst": "D_sobol_ind_LAP_VI2",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L30",
+      "src": "M_Sobol",
+      "dst": "D_sobol_ind_CP_VI1",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L31",
+      "src": "M_Sobol",
+      "dst": "D_sobol_ind_CP_VI2",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L32",
+      "src": "M_Sobol",
+      "dst": "D_trained_model_metadata",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L33",
+      "src": "E_Sobol_grouped",
+      "dst": "C3",
+      "rel": "supports",
+      "rationale": "Grouped Sobol CSVs show Material group S1/ST larger than Hemodynamics and Morphology across LAP/CP and VI1/VI2, indicating material dominance of output variance.",
+      "grounding_status": "grounded"
+    },
+    {
+      "id": "L34",
+      "src": "E_Sobol_grouped",
+      "dst": "C3.1",
+      "rel": "supports",
+      "rationale": "Group-level Sobol indices directly quantify S1 and ST for Material vs other groups in the provided grouped Sobol data.",
+      "grounding_status": "grounded"
+    },
+    {
+      "id": "L35",
+      "src": "E_Sobol_individual",
+      "dst": "C3.2",
+      "rel": "supports",
+      "rationale": "Individual-parameter Sobol CSVs identify E_vessel, E_FC, SBP, PP as the highest S1/ST contributors across phenotypes and VIs.",
+      "grounding_status": "grounded"
+    },
+    {
+      "id": "L36",
+      "src": "E_GPR_performance",
+      "dst": "C4.1",
+      "rel": "supports",
+      "rationale": "Reported 5-fold CV metrics (R², RMSE, calibration) demonstrate surrogate predictive performance for LAP and CP models as required for surrogate-based sensitivity analysis.",
+      "grounding_status": "partial"
+    },
+    {
+      "id": "L37",
+      "src": "E_VI_candidates_eval",
+      "dst": "C2.2",
+      "rel": "supports",
+      "rationale": "Candidate-evaluation method produced two VIs (VI1 and VI2) that satisfied all seven clinical sign criteria according to the selection procedure.",
+      "grounding_status": "partial"
+    },
+    {
+      "id": "L38",
+      "src": "D_input_csv",
+      "dst": "M_VI_selection",
+      "rel": "derived_from",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L39",
+      "src": "W_sobol_theory",
+      "dst": "C3",
+      "rel": "justifies",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L40",
+      "src": "W_gpr_justification",
+      "dst": "C4",
+      "rel": "justifies",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L41",
+      "src": "W_deltaPSS_fatigue",
+      "dst": "C1",
+      "rel": "justifies",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L42",
+      "src": "E_sim_validation",
+      "dst": "C1.2",
+      "rel": "supports",
+      "rationale": "Simulation outputs including time-resolved stress fields and mesh-independence validation support the need to capture pulsatile/fatigue effects (ΔPSS) via pulsatile FSI.",
+      "grounding_status": "partial"
+    },
+    {
+      "id": "L43",
+      "src": "E_sim_validation",
+      "dst": "C1",
+      "rel": "supports",
+      "rationale": "Postprocessed PSS and ΔPSS fields from FSI simulations provide the stress measures used to construct VI candidates.",
+      "grounding_status": "partial"
+    },
+    {
+      "id": "L44",
+      "src": "E_VI_candidates_eval",
+      "dst": "C1.1",
+      "rel": "supports",
+      "rationale": "Evaluation of candidate VIs against seven clinical criteria found ΔPSS-based candidates perform better than alternatives in sign-consistency and selection, supporting ΔPSS superiority.",
+      "grounding_status": "partial"
+    },
+    {
+      "id": "L45",
+      "src": "W_deltaPSS_fatigue",
+      "dst": "C1.1",
+      "rel": "justifies",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L46",
+      "src": "D_input_csv",
+      "dst": "M_FSI",
+      "rel": "derived_from",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L47",
+      "src": "D_elastance",
+      "dst": "M_FSI",
+      "rel": "derived_from",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L48",
+      "src": "D_inflow",
+      "dst": "M_FSI",
+      "rel": "derived_from",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L49",
+      "src": "E_GPR_performance",
+      "dst": "C4",
+      "rel": "supports",
+      "rationale": "Reported GPR cross-validation metrics and calibration support the claim that GPR surrogates were effective for downstream Sobol analysis.",
+      "grounding_status": "partial"
+    },
+    {
+      "id": "L50",
+      "src": "E_Sobol_grouped",
+      "dst": "C3.1",
+      "rel": "supports",
+      "rationale": "Grouped Sobol data directly show Material group's S1/ST exceed those of other groups in provided CSVs for both phenotypes and VIs.",
+      "grounding_status": "grounded"
+    },
+    {
+      "id": "L51",
+      "src": "E_Sobol_individual",
+      "dst": "C3",
+      "rel": "supports",
+      "rationale": "Individual Sobol indices show which parameters (E_vessel, E_FC, SBP, PP) drive variance, supporting material dominance claim.",
+      "grounding_status": "grounded"
+    },
+    {
+      "id": "L52",
+      "src": "E_VI_candidates_eval",
+      "dst": "C2.1",
+      "rel": "supports",
+      "rationale": "Candidate-evaluation results demonstrate that varying α changes candidate behavior and selection outcome, indicating sensitivity of VI properties to strength-normalization exponent.",
+      "grounding_status": "partial"
+    }
+  ]
+}

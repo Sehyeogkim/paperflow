@@ -1,0 +1,122 @@
+[
+  {
+    "paper_id": "paper_001",
+    "title": "A low dimensional surrogate model for a fast estimation of strain in the thrombus during a thrombectomy procedure",
+    "doi": "10.1016/j.jmbbm.2022.105577",
+    "year": 2022,
+    "authors": "Sara Bridio, Giulia Luraghi, Francesco Migliavacca, Sanjay Pant, Alberto García‐González, José Félix Rodríguez Matas",
+    "abstract": "",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 10
+  },
+  {
+    "paper_id": "paper_002",
+    "title": "In vivo Raman spectral pathology of human atherosclerosis and vulnerable plaque",
+    "doi": "10.1117/1.2190967",
+    "year": 2006,
+    "authors": "Jason T. Motz, Maryann Fitzmaurice, Arnold Miller, Saumil Gandhi, Abigail S. Haka, Luis H. Galindo, Ramachandra R. Dasari, John R. Kramer, Michael S. Feld",
+    "abstract": "The rupture of vulnerable atherosclerotic plaque accounts for the majority of clinically significant acute cardiovascular events. Because stability of these culprit lesions is directly related to chemical and morphological composition, Raman spectroscopy may be a useful technique for their study. Recent developments in optical fiber probe technology have allowed for the real-time in vivo Raman spectroscopic characterization of human atherosclerotic plaque demonstrated in this work. We spectroscopically examine 74 sites during carotid endarterectomy and femoral artery bypass surgeries. Of these, 34 are surgically biopsied and examined histologically. Excellent signal-to-noise ratio spectra are obtained in only 1 s and fit with an established model, demonstrating accurate tissue characterization. We also report the first evidence that Raman spectroscopy has the potential to identify vulnerable plaque, achieving a sensitivity and specificity of 79 and 85%, respectively. These initial findings indicate that Raman spectroscopy has the potential to be a clinically relevant diagnostic tool for studying cardiovascular disease.",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 151
+  },
+  {
+    "paper_id": "paper_003",
+    "title": "Application of Patient-Specific Computational Fluid Dynamics in Coronary and Intra-Cardiac Flow Simulations: Challenges and Opportunities",
+    "doi": "10.3389/fphys.2018.00742",
+    "year": 2018,
+    "authors": "Liang Zhong, Junmei Zhang, Boyang Su, Ru‐San Tan, John Carson Allen, Ghassan S. Kassab",
+    "abstract": "The emergence of new cardiac diagnostics and therapeutics of the heart has given rise to the challenging field of virtual design and testing of technologies in a patient-specific environment. Given the recent advances in medical imaging, computational power and mathematical algorithms, patient-specific cardiac models can be produced from cardiac images faster, and more efficiently than ever before. The emergence of patient-specific computational fluid dynamics (CFD) has paved the way for the new field of computer-aided diagnostics. This article provides a review of CFD methods, challenges and opportunities in coronary and intra-cardiac flow simulations. It includes a review of market products and clinical trials. Key components of patient-specific CFD are covered briefly which include image segmentation, geometry reconstruction, mesh generation, fluid-structure interaction, and solver techniques.",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 127
+  },
+  {
+    "paper_id": "paper_004",
+    "title": "Seismic vulnerability of reinforced concrete buildings considering aging and soil-structure interaction effects",
+    "doi": "10.12681/eadd/36621",
+    "year": 2015,
+    "authors": "Γκόλφω-Σωτηρία Καραπέτρου",
+    "abstract": "Σε χώρες υψηλής σεισμικής επικινδυνότητας ενδέχεται κατά τη διάρκεια ενός ισχυρού σεισμού να εμφανιστούν σοβαρές βλάβες σε κτιριακές και όχι μόνο δομές, οι οποίες ιδιαίτερα στην περίπτωση κτιρίων υψηλής σπουδαιότητας μπορεί να οδηγήσουν σε σημαντικές απώλειες τόσο σε κοινωνικό όσο και σε οικονομικό επίπεδο. Δεδομένου του σημαντικού διακυβεύματος, πολλές επιστημονικές μελέτες έχουν επικεντρωθεί στην ανάπτυξη μεθοδολογιών για την αποτίμηση της σεισμικής τρωτότητας κτιρίων από οπλισμένο σκυρόδεμα. Η συνήθης πρακτική των μεθοδολογιών αυτών είναι η θεώρηση της τρωτότητας ως «αμετάβλητης» στο χρόνο αγνοώντας οποιοδήποτε φαινόμενο γήρανσης. Έτσι δεν λαμβάνονται υπόψη παράγοντες που σχετίζονται με τις συνθήκες του περιβάλλοντος των κατασκευών οι οποίοι ωστόσο είναι δυνατόν να προκαλέσουν σημαντικές φθορές σε αυτές με αποτέλεσμα τη μείωση της λειτουργικότητας και της αντοχής τους. Ένας από τους πιο σημαντικούς παράγοντες της κατηγορίας αυτής με σημαντικές επιδράσεις στα κτίρια οπλισμένου σκυροδέματος, αποτελεί το φαινόμενο της διάβρωσης του χάλυβα του οπλισμού λόγω της διείσδυσης των χλωριόντων της ατμόσφαιρας. Επίσης σημαντική επίδραση στη σεισμική τρωτότητα των κτιρίων ασκεί και το φαινόμ",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 3
+  },
+  {
+    "paper_id": "paper_005",
+    "title": "Emerging Risk Biomarkers in Cardiovascular Diseases and Disorders",
+    "doi": "10.1155/2015/971453",
+    "year": 2015,
+    "authors": "Ravi Kant Upadhyay",
+    "abstract": "Present review article highlights various cardiovascular risk prediction biomarkers by incorporating both traditional risk factors to be used as diagnostic markers and recent technologically generated diagnostic and therapeutic markers. This paper explains traditional biomarkers such as lipid profile, glucose, and hormone level and physiological biomarkers based on measurement of levels of important biomolecules such as serum ferritin, triglyceride to HDLp (high density lipoproteins) ratio, lipophorin-cholesterol ratio, lipid-lipophorin ratio, LDL cholesterol level, HDLp and apolipoprotein levels, lipophorins and LTPs ratio, sphingolipids, Omega-3 Index, and ST2 level. In addition, immunohistochemical, oxidative stress, inflammatory, anatomical, imaging, genetic, and therapeutic biomarkers have been explained in detail with their investigational specifications. Many of these biomarkers, alone or in combination, can play important role in prediction of risks, its types, and status of morbidity. As emerging risks are found to be affiliated with minor and microlevel factors and its diagnosis at an earlier stage could find CVD, hence, there is an urgent need of new more authentic, appr",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 360
+  },
+  {
+    "paper_id": "paper_006",
+    "title": "Guidelines for mechanistic modeling and analysis in cardiovascular research",
+    "doi": "10.1152/ajpheart.00766.2023",
+    "year": 2024,
+    "authors": "Mitchel J. Colebank, Pim J. A. Oomen, Colleen M. Witzenburg, Anna Grosberg, Daniel Beard, Dirk Husmeier, Mette S. Olufsen, Naomi C. Chesler",
+    "abstract": "Computational, or in silico, models are an effective, noninvasive tool for investigating cardiovascular function. These models can be used in the analysis of experimental and clinical data to identify possible mechanisms of (ab)normal cardiovascular physiology. Recent advances in computing power and data management have led to innovative and complex modeling frameworks that simulate cardiovascular function across multiple scales. While commonly used in multiple disciplines, there is a lack of concise guidelines for the implementation of computer models in cardiovascular research. In line with recent calls for more reproducible research, it is imperative that scientists adhere to credible practices when developing and applying computational models to their research. The goal of this manuscript is to provide a consensus document that identifies best practices for in silico computational modeling in cardiovascular research. These guidelines provide the necessary methods for mechanistic model development, model analysis, and formal model calibration using fundamentals from statistics. We outline rigorous practices for computational, mechanistic modeling in cardiovascular research and d",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 10
+  },
+  {
+    "paper_id": "paper_007",
+    "title": "An Anatomically Detailed Arterial Network Model for One-Dimensional Computational Hemodynamics",
+    "doi": "10.1109/tbme.2014.2364522",
+    "year": 2014,
+    "authors": "Pablo J. Blanco, Sansuke M. Watanabe, M. Passos, Pedro A. Lemos, Raúl A. Feijóo",
+    "abstract": "Simulation platforms are increasingly becoming complementary tools for cutting-edge cardiovascular research. The interplay among structural properties of the arterial wall, morphometry, anatomy, wave propagation phenomena, and ultimately, cardiovascular diseases continues to be poorly understood. Accurate models are powerful tools to shed light on these open problems. We developed an anatomically detailed computational model of the arterial vasculature to conduct 1-D blood flow simulations to serve as simulation infrastructure to aid cardiovascular research. An average arterial vasculature of a man was outlined in 3-D space to serve as geometrical substrate for the mathematical model. The architecture of this model comprises almost every arterial vessel acknowledged in the medical/anatomical literature, with a resolution down to the luminal area of perforator arteries. Over 2000 arterial vessels compose the model. Anatomical, physiological, and mechanical considerations were employed for the set up of model parameters and to determine criteria for blood flow distribution. Computational fluid dynamics was used to simulate blood flow and wave propagation phenomena in such arterial ne",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 160
+  },
+  {
+    "paper_id": "paper_008",
+    "title": "Comparison of CFD and FSI Simulations of Blood Flow in Stenotic Coronary Arteries",
+    "doi": "10.5772/intechopen.102089",
+    "year": 2022,
+    "authors": "Violeta Carvalho, D. Lopes, João Silva, H. Puga, Rui Lima, José Carlos Teixeira, Senhorinha Teixeira",
+    "abstract": "Cardiovascular diseases are amongst the main causes of death worldwide, and the main underlying pathological process is atherosclerosis. Over the years, fatty materials are accumulated in the arterial which consequently hinders the blood flow. Due to the great mortality rate of this disease, hemodynamic studies within stenotic arteries have been of great clinical interest, and computational methods have played an important role. Commonly, computational fluid dynamics methods, where only the blood flow behavior is considered, however, the study of both blood and artery walls’ interaction is of foremost importance. In this regard, in the present study, both computational fluid dynamics and fluid-structure interaction modeling analysis were performed in order to evaluate if the arterial wall compliance affects considerably the hemodynamic results obtained in idealized stenotic coronary models. From the overall results, it was observed that the influence of wall compliance was noteworthy on wall shear stress distribution, but its effect on the time-averaged wall shear stress and on the oscillatory shear index was minor.",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 16
+  },
+  {
+    "paper_id": "paper_009",
+    "title": "Proarrhythmic risk and determinants of cardiac autonomic dysfunction in collagen-induced arthritis rats",
+    "doi": "10.1186/s12891-016-1347-6",
+    "year": 2016,
+    "authors": "Ting‐Tse Lin, Yen‐Ling Sung, Chih-En Wu, Hong Zhang, Yen‐Bin Liu, Shien‐Fong Lin",
+    "abstract": "BACKGROUNDS: Patients with rheumatoid arthritis (RA) have increased risk of sudden cardiac death (SCD), which is two-fold higher than general population. The driving cause of SCD was considered due to lift-threatening arrhythmia where systemic inflammation acts as the pathophysiological basis linking RA to autonomicdysfunction. METHODS: To assess the sympathetic over-activity of \"inflammatory reflex\", we measured heart rate variability (HRV) in a rat collagen-induced arthritis (CIA) model, whose arthritis is induced in Lewis rats by intradermal injection of emulsion of type II collagen. Single-lead electrocardiogram (ECG) was recorded for 30 min every two days. Time and frequency-domain parameters, detrended fluctuation analysis (DFA), deceleration (DC) and acceleration capacity (AC) were analyzed. RESULTS: Compared with 9 control rats, many of HRV parameters of 9 CIA rats revealed significant different. At the beginning of arthritis, LF/HF was significant higher than controls (1st week: 2.41 ± 0.7 vs. 1.76 ± 0.6, p < 0.05; 2nd week: 2.24 ± 0.5 vs. 1.58 ± 0.5, p < 0.05) indicating intensive inflammatory reflex at the initial phase of inflammation but no significant difference was o",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 12
+  },
+  {
+    "paper_id": "paper_010",
+    "title": "Plaque Structural Stress: Detection, Determinants and Role in Atherosclerotic Plaque Rupture and Progression",
+    "doi": "10.3389/fcvm.2022.875413",
+    "year": 2022,
+    "authors": "Sophie Gu, Martin R. Bennett",
+    "abstract": "Atherosclerosis remains a major cause of death worldwide, with most myocardial infarctions being due to rupture or erosion of coronary plaques. Although several imaging modalities can identify features that confer risk, major adverse cardiovascular event (MACE) rates attributable to each plaque are low, such that additional biomarkers are required to improve risk stratification at plaque and patient level. Coronary arteries are exposed to continual mechanical forces, and plaque rupture occurs when plaque structural stress (PSS) exceeds its mechanical strength. Prospective studies have shown that peak PSS is correlated with acute coronary syndrome (ACS) presentation, plaque rupture, and MACE, and provides additional prognostic information to imaging. In addition, PSS incorporates multiple variables, including plaque architecture, plaque material properties, and haemodynamic data into a defined solution, providing a more detailed overview of higher-risk lesions. We review the methods for calculation and determinants of PSS, imaging modalities used for modeling PSS, and idealized models that explore structural and geometric components that affect PSS. We also discuss current experimen",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 17
+  }
+]

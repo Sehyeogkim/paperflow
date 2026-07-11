@@ -1,0 +1,869 @@
+{
+  "main_contribution": "We define plaque vulnerability indices (VI) as stress/strength ratios, show that pulsatile amplitude of plaque structural stress (ΔPSS) is the clinically appropriate stress metric, demonstrate the need to normalize by fibrous-cap strength, and quantify via surrogate-based Sobol analysis that material properties (especially E_vessel and E_fc) dominate VI variability.",
+  "nodes": [
+    {
+      "id": "C1",
+      "kind": "claim",
+      "text": "Vulnerability index (VI) should be defined as stress/strength and stress is best interpreted as the pulsatile amplitude ΔPSS (fatigue perspective), implying the need for pulsatile FSI simulations.",
+      "parent_id": null,
+      "subtype": "",
+      "role": "contribution",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C1.1",
+      "kind": "claim",
+      "text": "ΔPSS (심주기 진폭, fatigue view) is a stronger/clinically more consistent predictor than peak PSS.",
+      "parent_id": "C1",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C1.2",
+      "kind": "claim",
+      "text": "Capturing ΔPSS requires pulsatile (time-resolved) FSI; quasi-static or steady simulations cannot represent fatigue-related amplitudes.",
+      "parent_id": "C1",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "C2",
+      "kind": "claim",
+      "text": "Vulnerability indices must normalize stress by fibrous-cap strength (E_fc^α); strength-normalization choice materially affects VI behavior.",
+      "parent_id": null,
+      "subtype": "",
+      "role": "contribution",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C2.1",
+      "kind": "claim",
+      "text": "Including E_fc^α in the denominator yields VIs with greater agreement to established clinical high-risk plaque features than stress-only metrics.",
+      "parent_id": "C2",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C2.2",
+      "kind": "claim",
+      "text": "The exponent α (e.g., 0.5 vs 1.0) modulates sensitivity of VI to material properties and thus influences sensitivity rankings.",
+      "parent_id": "C2",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "discussion",
+      "provenance": null
+    },
+    {
+      "id": "C3",
+      "kind": "claim",
+      "text": "Material properties dominate VI variability (Material > Hemodynamics > Morphology); key determinants are vessel wall stiffness, fibrous-cap stiffness, systolic blood pressure and pulse pressure.",
+      "parent_id": null,
+      "subtype": "",
+      "role": "contribution",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C3.1",
+      "kind": "claim",
+      "text": "Group-level Sobol indices show the material-property group has the largest first-order contribution (e.g., S1 ≈ 0.75 for LAP·VI2).",
+      "parent_id": "C3",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C3.2",
+      "kind": "claim",
+      "text": "Individual-parameter Sobol results identify E_vessel and E_fc as the top contributors, followed by SBP and PP (e.g., E_fc S1 ≈ 0.55 for LAP·VI2).",
+      "parent_id": "C3",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C4",
+      "kind": "claim",
+      "text": "Two selected VIs (VI1=ΔPSS/E_fc^0.5, VI2=ΔPSS/E_fc^1.0) satisfy all seven established clinical high-risk plaque criteria and show promising diagnostic separation (surrogate-evaluated).",
+      "parent_id": null,
+      "subtype": "",
+      "role": "contribution",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C4.1",
+      "kind": "claim",
+      "text": "VI1 and VI2 achieved mean sign-consistency scores of 1.00 against seven clinical high-risk criteria (95% BCa CI 0.99–1.00).",
+      "parent_id": "C4",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "C4.2",
+      "kind": "claim",
+      "text": "VI2 demonstrates diagnostic separation on a synthetic high-risk label (AUC ≈ 0.84; Youden sensitivity ≈0.78, specificity ≈0.76) when evaluated via the GPR surrogate.",
+      "parent_id": "C4",
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "M1",
+      "kind": "method",
+      "text": "Pulsatile partitioned strong-coupling FSI simulation of idealized coronary artery plaque models (LAP and CP) using BDF2 time integration, Δt=0.5 ms, 1600 steps/cardiac cycle, 3 cycles to periodic steady state; Neo-Hookean vessel/fibrous cap and linear-elastic core/calcification; boundary conditions from inflow/elastance time series; mesh/time independence verified",
+      "parent_id": null,
+      "subtype": "simulation",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M1.1",
+      "kind": "method",
+      "text": "Mesh and time-step independence study: fluid mesh ~1.2M cells (min Δx=20 μm), solid mesh ~0.45M elements; coarse→fine and Δt/2 tests with peak PSS change <2%",
+      "parent_id": "M1",
+      "subtype": "validation",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M1.2",
+      "kind": "method",
+      "text": "Input design-space sampling and case generation: 1,000 LHS/other sampled parameter sets across morphology, hemodynamics, materials (columns per data/input_parameter/input.csv)",
+      "parent_id": "M1",
+      "subtype": "preprocessing",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M1.3",
+      "kind": "method",
+      "text": "Postprocessing of FSI results to compute peak PSS, pulsatile amplitude ΔPSS (spherical average), FFR surrogate outputs and rupture-location index for each simulation case",
+      "parent_id": "M1",
+      "subtype": "analysis",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M1.4",
+      "kind": "method",
+      "text": "Apply BC/inputs: inlet flow Dirichlet from data/input_parameter/inflow.dat, myocardium elastance BC data/input_parameter/elastance.dat, BC specification per data/cost_effective_FSI_BC/bc.md",
+      "parent_id": "M1",
+      "subtype": "setup",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M2",
+      "kind": "method",
+      "text": "Gaussian process regression surrogate modelling (ARD Matérn 5/2 + White noise kernel), input z-score normalization, output standardization, hyperparameter optimization with L-BFGS-B (20 restarts), 5-fold CV",
+      "parent_id": null,
+      "subtype": "analysis",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M3",
+      "kind": "method",
+      "text": "Global sensitivity analysis using Saltelli sampling and Sobol index estimation (S1, ST) on the trained GPR surrogate (~15,000 base samples) with group- and parameter-level aggregation and convergence checks",
+      "parent_id": null,
+      "subtype": "statistical_analysis",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "M4",
+      "kind": "method",
+      "text": "Vulnerability index candidate generation and clinical sign-consistency screening: compute six candidate VIs (stress: peak PSS, ΔPSS × strength normalization scenarios E_fc^α for α variants) and score against seven established clinical high-risk plaque criteria using sign-consistency (1/0) and 95% BCa bootstrap CIs (1,000 resamples)",
+      "parent_id": null,
+      "subtype": "analysis",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": null
+    },
+    {
+      "id": "D_inflow",
+      "kind": "data",
+      "text": "Inlet flow time series (coronary inflow waveform)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": "data/input_parameter/inflow.dat"
+    },
+    {
+      "id": "D_elastance",
+      "kind": "data",
+      "text": "Cardiac elastance time series (myocardial BC)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": "data/input_parameter/elastance.dat"
+    },
+    {
+      "id": "D_bc_md",
+      "kind": "data",
+      "text": "Boundary-condition specification for cost-effective pulsatile FSI",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": "data/cost_effective_FSI_BC/bc.md"
+    },
+    {
+      "id": "D_input",
+      "kind": "data",
+      "text": "1,000-sample input design space (morphology, hemodynamics, materials) rows per simulation case",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "method",
+      "provenance": "data/input_parameter/input.csv"
+    },
+    {
+      "id": "D_sobol_grp_LAP_VI2",
+      "kind": "data",
+      "text": "Group-level Sobol sensitivity results for LAP·VI2 (groups: morphology/hemodynamics/materials) with S1 and ST",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_grp_LAP_VI2.csv"
+    },
+    {
+      "id": "D_sobol_ind_LAP_VI2",
+      "kind": "data",
+      "text": "Individual-parameter Sobol sensitivity for LAP·VI2 (parameter-level S1, ST, display names)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_ind_LAP_VI2.csv"
+    },
+    {
+      "id": "D_sobol_grp_LAP_VI1",
+      "kind": "data",
+      "text": "Group-level Sobol sensitivity results for LAP·VI1",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_grp_LAP_VI1.csv"
+    },
+    {
+      "id": "D_sobol_ind_LAP_VI1",
+      "kind": "data",
+      "text": "Individual-parameter Sobol sensitivity for LAP·VI1",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_ind_LAP_VI1.csv"
+    },
+    {
+      "id": "D_sobol_grp_CP_VI2",
+      "kind": "data",
+      "text": "Group-level Sobol sensitivity results for CP·VI2",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_grp_CP_VI2.csv"
+    },
+    {
+      "id": "D_sobol_ind_CP_VI2",
+      "kind": "data",
+      "text": "Individual-parameter Sobol sensitivity for CP·VI2",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_ind_CP_VI2.csv"
+    },
+    {
+      "id": "D_sobol_grp_CP_VI1",
+      "kind": "data",
+      "text": "Group-level Sobol sensitivity results for CP·VI1",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_grp_CP_VI1.csv"
+    },
+    {
+      "id": "D_sobol_ind_CP_VI1",
+      "kind": "data",
+      "text": "Individual-parameter Sobol sensitivity for CP·VI1",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": "data/sobol/sobol_ind_CP_VI1.csv"
+    },
+    {
+      "id": "E_material_dominant_group",
+      "kind": "evidence",
+      "text": "Group-level Sobol results show the material-property group has the largest first-order contribution to VI variance for LAP·VI2 (material S1 ≈ 0.75) and similar dominance in CP results",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "E_individual_parameters",
+      "kind": "evidence",
+      "text": "Individual-parameter Sobol indicates E_fc and E_vessel are top contributors, followed by SBP and PP (e.g., E_fc S1 ≈ 0.55 for LAP·VI2)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "E_VI_candidates_screening",
+      "kind": "evidence",
+      "text": "Screening of six candidate VIs against seven clinical high-risk plaque criteria yielded two VIs (VI1=ΔPSS/E_fc^0.5, VI2=ΔPSS/E_fc^1.0) that satisfy all seven criteria with mean sign-consistency ≈1.00 (95% BCa CI 0.99–1.00)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "E_VI_diagnostic_VI2",
+      "kind": "evidence",
+      "text": "GPR surrogate evaluation of VI2 shows diagnostic separation on synthetic high-risk label: AUC ≈0.84 (95% CI 0.80–0.88), Youden sensitivity ≈0.78, specificity ≈0.76",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "E_deltaPSS_vs_peakPSS",
+      "kind": "evidence",
+      "text": "Comparative analysis indicates ΔPSS (pulsatile amplitude) yields better alignment with clinical high-risk features and contributes more to selected VI performance than peak PSS",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "E_gpr_performance",
+      "kind": "evidence",
+      "text": "GPR surrogate cross-validation performance: 5-fold CV R² ≈0.93 (LAP) and ≈0.90 (CP), RMSE ≈0.12·σ(VI); posterior variance used as prediction uncertainty",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "F_sobol_group",
+      "kind": "artifact",
+      "text": "Figure: Group-level Sobol S1 and ST bars for LAP and CP for VI1 and VI2 (material vs hemo vs morpho)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": "figure",
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "F_sobol_individual",
+      "kind": "artifact",
+      "text": "Figure: Individual-parameter Sobol S1 bars (e.g., E_fc, E_vessel, SBP, PP) for LAP·VI2",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": "figure",
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "F_VI_selection_table",
+      "kind": "artifact",
+      "text": "Table: Candidate VI sign-consistency scores against seven clinical high-risk plaque criteria with bootstrap CIs; highlights VI1 and VI2 achieving full consistency",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": "table",
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "F_ROC_VI2",
+      "kind": "artifact",
+      "text": "Figure: ROC curve of VI2 on synthetic high-risk label (AUC ≈0.84)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": "figure",
+      "section": "result",
+      "provenance": null
+    },
+    {
+      "id": "W1",
+      "kind": "warrant",
+      "text": "Fatigue/failure mechanics principle: cyclic amplitude of stress (Δ-stress) is a key driver of fatigue damage accumulation and failure risk in materials, therefore ΔPSS better reflects fatigue-driven plaque rupture propensity than single-time peak stress",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "discussion",
+      "provenance": null
+    },
+    {
+      "id": "W2",
+      "kind": "warrant",
+      "text": "Normalization principle: risk metrics that compare load to local strength (stress/strength) provide a physically meaningful, dimensionless measure of failure likelihood across varying material properties",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "discussion",
+      "provenance": null
+    },
+    {
+      "id": "W3",
+      "kind": "warrant",
+      "text": "Sobol sensitivity theory: first-order (S1) indices quantify main effect contributions of input factors to output variance; group/parameter-level aggregation supports ranking of factor groups and parameters",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "methods",
+      "provenance": null
+    },
+    {
+      "id": "R_Holzapfel2004",
+      "kind": "source",
+      "text": "Holzapfel 2004 (mechanical modeling limitations / stress-strength discussions)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "introduction",
+      "provenance": "Holzapfel2004"
+    },
+    {
+      "id": "R_Virmani2000",
+      "kind": "source",
+      "text": "Virmani 2000 (seven clinical high-risk plaque criteria)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "introduction",
+      "provenance": "Virmani2000"
+    },
+    {
+      "id": "R_Stone2011",
+      "kind": "source",
+      "text": "Stone 2011 (PROSPECT, JACC; clinical plaque risk features)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "introduction",
+      "provenance": "Stone2011"
+    },
+    {
+      "id": "R_Morris2016",
+      "kind": "source",
+      "text": "Morris 2016 (PSS/FFR / rupture-location trend comparisons)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "introduction",
+      "provenance": "Morris2016"
+    },
+    {
+      "id": "R_Sankaran2017",
+      "kind": "source",
+      "text": "Sankaran 2017 (PSS/FFR comparisons)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": "introduction",
+      "provenance": "Sankaran2017"
+    }
+  ],
+  "edges": [
+    {
+      "id": "L1",
+      "src": "C1.1",
+      "dst": "C1",
+      "rel": "supports",
+      "rationale": "Shows the stress metric choice (ΔPSS) yields better clinical consistency, justifying stress interpreted as pulsatile amplitude in the VI definition.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L2",
+      "src": "C1.2",
+      "dst": "C1",
+      "rel": "supports",
+      "rationale": "Explains why time-resolved FSI is necessary to compute ΔPSS and thus to implement the proposed stress/strength VI.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L3",
+      "src": "C2.1",
+      "dst": "C2",
+      "rel": "supports",
+      "rationale": "Empirical agreement with seven clinical criteria demonstrates that normalizing by E_fc yields clinically consistent VIs, motivating strength normalization.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L4",
+      "src": "C2.2",
+      "dst": "C2",
+      "rel": "supports",
+      "rationale": "Highlights that the specific normalization exponent α affects VI sensitivity to materials, supporting the claim that normalization choice matters.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L5",
+      "src": "C3.1",
+      "dst": "C3",
+      "rel": "supports",
+      "rationale": "Group-level Sobol S1 values quantify that material inputs explain the largest fraction of VI variance, supporting material dominance.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L6",
+      "src": "C3.2",
+      "dst": "C3",
+      "rel": "supports",
+      "rationale": "Individual-parameter Sobol rankings identify the specific dominant parameters (E_vessel, E_fc, SBP, PP), substantiating which material and hemodynamic variables drive VI.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L7",
+      "src": "C4.1",
+      "dst": "C4",
+      "rel": "supports",
+      "rationale": "Demonstrates that the selected VIs meet all clinical high-risk feature criteria, supporting their clinical plausibility.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L8",
+      "src": "C4.2",
+      "dst": "C4",
+      "rel": "supports",
+      "rationale": "Provides surrogate-evaluated diagnostic-performance evidence that the selected VI (especially VI2) can separate high-risk cases, supporting practical utility.",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L9",
+      "src": "M1.2",
+      "dst": "D_input",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L10",
+      "src": "M1.4",
+      "dst": "D_inflow",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L11",
+      "src": "M1.4",
+      "dst": "D_elastance",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L12",
+      "src": "M1.4",
+      "dst": "D_bc_md",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L13",
+      "src": "M1",
+      "dst": "E_deltaPSS_vs_peakPSS",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L14",
+      "src": "M1",
+      "dst": "E_gpr_performance",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L15",
+      "src": "M2",
+      "dst": "E_gpr_performance",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L16",
+      "src": "M3",
+      "dst": "E_material_dominant_group",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L17",
+      "src": "M3",
+      "dst": "E_individual_parameters",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L18",
+      "src": "M4",
+      "dst": "E_VI_candidates_screening",
+      "rel": "produces",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L19",
+      "src": "M2",
+      "dst": "D_sobol_grp_LAP_VI2",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L20",
+      "src": "M3",
+      "dst": "D_sobol_grp_LAP_VI2",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L21",
+      "src": "M3",
+      "dst": "D_sobol_ind_LAP_VI2",
+      "rel": "uses",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L22",
+      "src": "E_material_dominant_group",
+      "dst": "D_sobol_grp_LAP_VI2",
+      "rel": "derived_from",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L23",
+      "src": "E_individual_parameters",
+      "dst": "D_sobol_ind_LAP_VI2",
+      "rel": "derived_from",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L24",
+      "src": "E_material_dominant_group",
+      "dst": "C3",
+      "rel": "supports",
+      "rationale": "Group-level Sobol results (data/sobol/sobol_grp_LAP_VI2.csv) show material group S1 is the largest contributor (≈0.75) for LAP·VI2, supporting that materials dominate VI variability",
+      "grounding_status": "grounded"
+    },
+    {
+      "id": "L25",
+      "src": "E_individual_parameters",
+      "dst": "C3.2",
+      "rel": "supports",
+      "rationale": "Individual-parameter Sobol (data/sobol/sobol_ind_LAP_VI2.csv) ranks E_fc and E_vessel highest (E_fc S1 ≈0.55), with SBP and PP next, supporting parameter-level dominance",
+      "grounding_status": "grounded"
+    },
+    {
+      "id": "L26",
+      "src": "E_material_dominant_group",
+      "dst": "C3.1",
+      "rel": "supports",
+      "rationale": "Group Sobol data for LAP·VI2 (data/sobol/sobol_grp_LAP_VI2.csv) show material group's first-order index ≈0.75, supporting the group-level dominance statement",
+      "grounding_status": "grounded"
+    },
+    {
+      "id": "L27",
+      "src": "E_VI_candidates_screening",
+      "dst": "C4",
+      "rel": "supports",
+      "rationale": "Screening results from candidate VI sign-consistency scoring (method M4) identify VI1 and VI2 as the only candidates satisfying all seven clinical criteria, supporting selection of these VIs",
+      "grounding_status": "partial"
+    },
+    {
+      "id": "L28",
+      "src": "E_VI_candidates_screening",
+      "dst": "C4.1",
+      "rel": "supports",
+      "rationale": "Bootstrapped sign-consistency scoring reported mean=1.00 and 95% BCa CI 0.99–1.00 for VI1 and VI2, supporting the claim of full agreement with seven clinical criteria",
+      "grounding_status": "partial"
+    },
+    {
+      "id": "L29",
+      "src": "E_VI_diagnostic_VI2",
+      "dst": "C4.2",
+      "rel": "supports",
+      "rationale": "GPR surrogate evaluation produced ROC AUC ≈0.84 and Youden sensitivity/specificity ≈0.78/0.76 for VI2 on synthetic high-risk labels, supporting diagnostic separation claim",
+      "grounding_status": "missing"
+    },
+    {
+      "id": "L30",
+      "src": "E_deltaPSS_vs_peakPSS",
+      "dst": "C1.1",
+      "rel": "supports",
+      "rationale": "Comparative postprocessing of FSI outputs indicates ΔPSS aligns better with clinical high-risk features and with selected VIs than peak PSS, supporting ΔPSS as a stronger predictor",
+      "grounding_status": "partial"
+    },
+    {
+      "id": "L31",
+      "src": "E_deltaPSS_vs_peakPSS",
+      "dst": "C1",
+      "rel": "supports",
+      "rationale": "Evidence that ΔPSS-based VIs (derived from pulsatile FSI outputs) outperform peak-stress metrics under clinical sign-consistency screening supports defining VI as stress/strength with stress=ΔPSS and implies necessity of pulsatile simulations",
+      "grounding_status": "partial"
+    },
+    {
+      "id": "L32",
+      "src": "W1",
+      "dst": "C1",
+      "rel": "justifies",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L33",
+      "src": "W2",
+      "dst": "C2",
+      "rel": "justifies",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L34",
+      "src": "W3",
+      "dst": "C3.1",
+      "rel": "justifies",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L35",
+      "src": "R_Holzapfel2004",
+      "dst": "W2",
+      "rel": "justifies",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L36",
+      "src": "F_sobol_group",
+      "dst": "E_material_dominant_group",
+      "rel": "visualizes",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L37",
+      "src": "F_sobol_individual",
+      "dst": "E_individual_parameters",
+      "rel": "visualizes",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L38",
+      "src": "F_VI_selection_table",
+      "dst": "E_VI_candidates_screening",
+      "rel": "visualizes",
+      "rationale": "",
+      "grounding_status": "unverified"
+    },
+    {
+      "id": "L39",
+      "src": "F_ROC_VI2",
+      "dst": "E_VI_diagnostic_VI2",
+      "rel": "visualizes",
+      "rationale": "",
+      "grounding_status": "unverified"
+    }
+  ]
+}

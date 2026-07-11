@@ -1,0 +1,122 @@
+[
+  {
+    "paper_id": "paper_001",
+    "title": "3D MRI-Based Anisotropic FSI Models With Cyclic Bending for Human Coronary Atherosclerotic Plaque Mechanical Analysis",
+    "doi": "10.1115/1.3127253",
+    "year": 2009,
+    "authors": "Dalin Tang, Chun Yang, Shunichi KOBAYASHI, Jie Zheng, Pamela K. Woodard, Zhongzhao Teng, Kristen L. Billiar, Richard G. Bach, David N. Ku",
+    "abstract": "Heart attack and stroke are often caused by atherosclerotic plaque rupture, which happens without warning most of the time. Magnetic resonance imaging (MRI)-based atherosclerotic plaque models with fluid-structure interactions (FSIs) have been introduced to perform flow and stress/strain analysis and identify possible mechanical and morphological indices for accurate plaque vulnerability assessment. For coronary arteries, cyclic bending associated with heart motion and anisotropy of the vessel walls may have significant influence on flow and stress/strain distributions in the plaque. FSI models with cyclic bending and anisotropic vessel properties for coronary plaques are lacking in the current literature. In this paper, cyclic bending and anisotropic vessel properties were added to 3D FSI coronary plaque models so that the models would be more realistic for more accurate computational flow and stress/strain predictions. Six computational models using one ex vivo MRI human coronary plaque specimen data were constructed to assess the effects of cyclic bending, anisotropic vessel properties, pulsating pressure, plaque structure, and axial stretch on plaque stress/strain distributions",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 95
+  },
+  {
+    "paper_id": "paper_002",
+    "title": "Role of biomechanical forces in the natural history of coronary atherosclerosis",
+    "doi": "10.1038/nrcardio.2015.203",
+    "year": 2016,
+    "authors": "Adam J. Brown, Zhongzhao Teng, Paul C. Evans, Jonathan H. Gillard, Habib Samady, Martin R. Bennett",
+    "abstract": "",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 265
+  },
+  {
+    "paper_id": "paper_003",
+    "title": "Treatment of Aspergillosis: Clinical Practice Guidelines of the Infectious Diseases Society of America",
+    "doi": "10.1086/525258",
+    "year": 2008,
+    "authors": "Thomas J. Walsh, Elias Anaissie, David W. Denning, Raoul Herbrecht, Dimitrios P. Kontoyiannis, Kieren A. Marr, Vicki A. Morrison, Brahm H. Segal, William J. Steinbach, David A. Stevens, Jo‐Anne van Burik, John R. Wingard, Thomas F. Patterson",
+    "abstract": "Aspergillus species have emerged as an important cause of life-threatening infections in immunocompromised patients. This expanding population is composed of patients with prolonged neutropenia, advanced HIV infection, and inherited immunodeficiency and patients who have undergone allogeneic hematopoietic stem cell transplantation (HSCT) and/or lung transplantation. This document constitutes the guidelines of the Infectious Diseases Society of America for treatment of aspergillosis and replaces the practice guidelines for Aspergillus published in 2000 The objective of these",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 2703
+  },
+  {
+    "paper_id": "paper_004",
+    "title": "Vulnerable Atherosclerotic Plaque: Is There a Molecular Signature?",
+    "doi": "10.3390/ijms232113638",
+    "year": 2022,
+    "authors": "Roxana Mihaela Chiorescu, Mihaela Mocan, Andreea-Ioana Inceu, Andreea Paula Buda, Dan Blendea, Sonia I. Vlaicu",
+    "abstract": "Atherosclerosis and its clinical manifestations, coronary and cerebral artery diseases, are the most common cause of death worldwide. The main pathophysiological mechanism for these complications is the rupture of vulnerable atherosclerotic plaques and subsequent thrombosis. Pathological studies of the vulnerable lesions showed that more frequently, plaques rich in lipids and with a high level of inflammation, responsible for mild or moderate stenosis, are more prone to rupture, leading to acute events. Identifying the vulnerable plaques helps to stratify patients at risk of developing acute vascular events. Traditional imaging methods based on plaque appearance and size are not reliable in prediction the risk of rupture. Intravascular imaging is a novel technique able to identify vulnerable lesions, but it is invasive and an operator-dependent technique. This review aims to summarize the current data from literature regarding the main biomarkers involved in the attempt to diagnose vulnerable atherosclerotic lesions. These biomarkers could be the base for risk stratification and development of the new therapeutic drugs in the treatment of patients with vulnerable atherosclerotic pl",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 50
+  },
+  {
+    "paper_id": "paper_005",
+    "title": "Computational Fluid–Structure Interaction in Microfluidics",
+    "doi": "10.3390/mi15070897",
+    "year": 2024,
+    "authors": "Hafiz Muhammad Musharaf, Uditha Roshan, Amith Mudugamuwa, Quang Thang Trịnh, Jun Zhang, Nam‐Trung Nguyen",
+    "abstract": "Micro elastofluidics is a transformative branch of microfluidics, leveraging the fluid-structure interaction (FSI) at the microscale to enhance the functionality and efficiency of various microdevices. This review paper elucidates the critical role of advanced computational FSI methods in the field of micro elastofluidics. By focusing on the interplay between fluid mechanics and structural responses, these computational methods facilitate the intricate design and optimisation of microdevices such as microvalves, micropumps, and micromixers, which rely on the precise control of fluidic and structural dynamics. In addition, these computational tools extend to the development of biomedical devices, enabling precise particle manipulation and enhancing therapeutic outcomes in cardiovascular applications. Furthermore, this paper addresses the current challenges in computational FSI and highlights the necessity for further development of tools to tackle complex, time-dependent models under microfluidic environments and varying conditions. Our review highlights the expanding potential of FSI in micro elastofluidics, offering a roadmap for future research and development in this promising a",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 17
+  },
+  {
+    "paper_id": "paper_006",
+    "title": "Necrotic core thickness and positive arterial remodeling index: emergent biomechanical factors for evaluating the risk of plaque rupture",
+    "doi": "10.1152/ajpheart.00005.2008",
+    "year": 2008,
+    "authors": "Jacques Ohayon, Gérard Finet, Ahmed M. Gharib, Daniel A. Herzka, Philippe Tracqui, Julie Héroux, Gilles Rioufol, Melanie Kotys, Abdalla Elagha, Roderic I. Pettigrew",
+    "abstract": "Fibrous cap thickness is often considered as diagnostic of the degree of plaque instability. Necrotic core area (Core(area)) and the arterial remodeling index (Remod(index)), on the other hand, are difficult to use as clinical morphological indexes: literature data show a wide dispersion of Core(area) thresholds above which plaque becomes unstable. Although histopathology shows a strong correlation between Core(area) and Remod(index), it remains unclear how these interact and affect peak cap stress (Cap(stress)), a known predictor of rupture. The aim of this study was to investigate the change in plaque vulnerability as a function of necrotic core size and plaque morphology. Cap(stress) value was calculated on 5,500 idealized atherosclerotic vessel models that had the original feature of mimicking the positive arterial remodeling process described by Glagov. Twenty-four nonruptured plaques acquired by intravascular ultrasound on patients were used to test the performance of the associated idealized morphological models. Taking advantage of the extensive simulations, we investigated the effects of anatomical plaque features on Cap(stress). It was found that: 1) at the early stages o",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 243
+  },
+  {
+    "paper_id": "paper_007",
+    "title": "An Animal-Specific FSI Model of the Abdominal Aorta in Anesthetized Mice",
+    "doi": "10.1007/s10439-015-1310-y",
+    "year": 2015,
+    "authors": "Bram Trachet, Joris Bols, Joris Degroote, Benedict Verhegghe, Nikolaos Stergiopulos, Jan Vierendeels, Patrick Segers",
+    "abstract": "",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 35
+  },
+  {
+    "paper_id": "paper_008",
+    "title": "<i>In Vivo</i> IVUS-Based 3-D Fluid–Structure Interaction Models With Cyclic Bending and Anisotropic Vessel Properties for Human Atherosclerotic Coronary Plaque Mechanical Analysis",
+    "doi": "10.1109/tbme.2009.2025658",
+    "year": 2009,
+    "authors": "Chun Yang, Richard G. Bach, Zheng Jie, Issam El Naqa, Pamela K. Woodard, Zhongzhao Teng, Kristen L. Billiar, Dalin Tang",
+    "abstract": "In this paper, a modeling approach combining in vivo intravascular ultrasound (IVUS) imaging, computational modeling, angiography, and mechanical testing is proposed to perform mechanical analysis for human coronary atherosclerotic plaques for potential more accurate plaque vulnerability assessment. A 44-slice in vivo IVUS dataset of a coronary plaque was acquired from one patient, and four 3-D models with fluid-structure interactions (FSIs) based on the data were constructed to quantify effects of anisotropic vessel properties and cyclic bending of the coronary plaque on flow and plaque stress/strain conditions. Compared to the isotropic model (model 1, no bending, no axial stretch), maximum stress- P(1) (maximum principal stress) values on the cut surface with maximum bending (where applicable) from model 2 (anisotropic, no bending, no stretch), model 3 (anisotropic, with bending, no stretch), and model 4 (anisotropic with bending and stretch) were, respectively, 63%, 126%, and 345% higher than that from model 1. Effects of cyclic bending on flow behaviors were modest (5%-15%). Our preliminary results indicated that in vivo IVUS-based FSI models with cyclic bending and anisotropi",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 106
+  },
+  {
+    "paper_id": "paper_009",
+    "title": "Plaque Structural Stress: Detection, Determinants and Role in Atherosclerotic Plaque Rupture and Progression",
+    "doi": "10.3389/fcvm.2022.875413",
+    "year": 2022,
+    "authors": "Sophie Gu, Martin R. Bennett",
+    "abstract": "Atherosclerosis remains a major cause of death worldwide, with most myocardial infarctions being due to rupture or erosion of coronary plaques. Although several imaging modalities can identify features that confer risk, major adverse cardiovascular event (MACE) rates attributable to each plaque are low, such that additional biomarkers are required to improve risk stratification at plaque and patient level. Coronary arteries are exposed to continual mechanical forces, and plaque rupture occurs when plaque structural stress (PSS) exceeds its mechanical strength. Prospective studies have shown that peak PSS is correlated with acute coronary syndrome (ACS) presentation, plaque rupture, and MACE, and provides additional prognostic information to imaging. In addition, PSS incorporates multiple variables, including plaque architecture, plaque material properties, and haemodynamic data into a defined solution, providing a more detailed overview of higher-risk lesions. We review the methods for calculation and determinants of PSS, imaging modalities used for modeling PSS, and idealized models that explore structural and geometric components that affect PSS. We also discuss current experimen",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 17
+  },
+  {
+    "paper_id": "paper_010",
+    "title": "Machine learning-based prediction of hemodynamic parameters in left coronary artery bifurcation: A CFD approach",
+    "doi": "10.1016/j.heliyon.2025.e41973",
+    "year": 2025,
+    "authors": "Sara Malek, Arshia Eskandari, Mahkame Sharbatdar",
+    "abstract": "Coronary artery disease (CAD) is a leading cause of global mortality, often involving the development of atherosclerotic plaques in coronary arteries, particularly at bifurcation sites. Percutaneous coronary intervention (PCI) of bifurcation lesions presents challenges, necessitating accurate assessment of hemodynamic parameters such as wall shear stress (WSS) and oscillatory shear index (OSI) to predict acute coronary syndrome (ACS) risk. Computational fluid dynamics (CFD) provides valuable insights but is computationally intensive, prompting exploration of machine learning (ML) models for efficient hemodynamics prediction. This study aims to bridge the gap in understanding the influence of stenosis severity and location on hemodynamics in the left coronary artery (LCA) bifurcation by integrating ML algorithms with comprehensive CFD simulations, thereby enhancing non-invasive prediction of complex hemodynamics. An extensive dataset of 6858 synthetic LCA geometries with varying plaque severities and locations was generated for analysis. Hemodynamic parameters (TAWSS and OSI) were computed using CFD simulations and utilized for ML model training. Fourteen ML algorithms were employed",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 7
+  }
+]

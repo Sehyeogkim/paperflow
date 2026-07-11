@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.14); border-radius: 999px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  .pp ::placeholder { color: #9b9a96; }
+  .pp textarea:focus, .pp input:focus { outline: none; }
+  .pp .sess:hover { background: #ECEBE7 !important; }
+  .pp .chip:hover { background: #F2F1ED !important; }
+  .pp .sendbtn:hover { opacity: .85; }
+</style>
+</helmet>
+
+<div class="pp" style="height:100vh; display:flex; font-family:'Hanken Grotesk',system-ui,sans-serif; color:#1f1f1e; background:#fff; --ink:#1f1f1e; --muted:#8a8984; --line:#ECEBE7; --sidebar:#F7F6F3; --accent:#3E63B8; --accent-soft:#EAF0FA;">
+
+  <!-- ===================== LEFT : Projects ===================== -->
+  <sc-if value="{{ sidebarOpen }}" hint-placeholder-val="{{ true }}">
+    <aside style="flex:none; width:272px; background:var(--sidebar); border-right:1px solid var(--line); display:flex; flex-direction:column; min-height:0;">
+      <div style="flex:none; display:flex; align-items:center; gap:9px; padding:14px 12px 8px;">
+        <span style="font-family:'Newsreader',Georgia,serif; font-size:19px; font-weight:600; color:var(--ink); letter-spacing:-.02em;">paper<span style="color:var(--accent);">·</span>pal</span>
+        <span style="margin-left:auto; display:flex; gap:2px;">
+          <span style="width:30px; height:30px; border-radius:8px; display:grid; place-items:center; color:var(--muted); cursor:pointer; font-size:15px;">⌕</span>
+          <button onClick="{{ onToggleSidebar }}" title="Collapse sidebar" style="width:30px; height:30px; border-radius:8px; display:grid; place-items:center; color:var(--muted); background:transparent; border:none; cursor:pointer; font-size:16px;">⇤</button>
+        </span>
+      </div>
+
+      <div style="flex:none; padding:6px 10px 2px;"></div>
+
+      <div style="flex:1; overflow-y:auto; padding:6px 8px 10px;">
+        <div style="display:flex; align-items:center; gap:6px; padding:10px 8px 6px;">
+          <span style="font-size:13px; font-weight:700; color:var(--ink);">Projects</span>
+          <span style="font-size:11px; color:var(--muted);">▾</span>
+          <span style="margin-left:auto; display:flex; gap:2px; color:var(--muted);">
+            <button onClick="{{ onNewProject }}" title="New project" style="width:26px; height:26px; border-radius:7px; display:grid; place-items:center; background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:15px;">＋</button>
+            <span style="width:26px; height:26px; border-radius:7px; display:grid; place-items:center; cursor:pointer; font-size:15px;">⋯</span>
+          </span>
+        </div>
+
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+          <button onClick="{{ p.onClick }}" class="sess" style="{{ p.style }}">
+            <span style="flex:none; font-size:14px;">{{ p.folder }}</span>
+            <span style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:left;">{{ p.name }}</span>
+            <span style="{{ p.caretStyle }}">›</span>
+          </button>
+          <sc-if value="{{ p.expanded }}">
+            <div style="display:flex; flex-direction:column; gap:1px; margin:1px 0 6px;">
+              <button onClick="{{ p.onSource }}" class="sess" style="{{ p.sourceStyle }}">
+                <span style="flex:none; font-size:13px;">🗂️</span>
+                <span style="flex:1; text-align:left;">source</span>
+                <span style="flex:none; font-size:9.5px; font-weight:700; color:var(--accent); background:var(--accent-soft); padding:2px 7px; border-radius:999px;">shared</span>
+              </button>
+              <sc-for list="{{ p.sessions }}" as="ss" hint-placeholder-count="3">
+                <button onClick="{{ ss.onClick }}" class="sess" style="{{ ss.style }}">
+                  <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ ss.title }}</span>
+                  <span style="{{ ss.tagStyle }}">{{ ss.tag }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </sc-for>
+
+        <button style="font-family:inherit; font-size:12.5px; color:var(--muted); background:transparent; border:none; padding:8px 10px; cursor:pointer;">Show more</button>
+      </div>
+
+      <div style="flex:none; border-top:1px solid var(--line); padding:11px 12px; display:flex; align-items:center; gap:10px;">
+        <span style="width:28px; height:28px; border-radius:50%; background:#3E63B8; color:#fff; display:grid; place-items:center; font-size:12px; font-weight:700;">JK</span>
+        <span style="font-size:13px; font-weight:600; color:var(--ink);">Jeff Kim</span>
+        <span style="margin-left:auto; font-size:10px; font-weight:700; color:var(--accent); background:var(--accent-soft); padding:3px 8px; border-radius:999px;">Pro</span>
+      </div>
+    </aside>
+  </sc-if>
+
+  <!-- ===================== CENTER : chat ===================== -->
+  <main style="flex:1; display:flex; flex-direction:column; min-width:0; min-height:0; position:relative;">
+    <div style="flex:none; height:52px; display:flex; align-items:center; gap:10px; padding:0 22px; border-bottom:1px solid transparent;">
+      <sc-if value="{{ sidebarClosed }}">
+        <button onClick="{{ onToggleSidebar }}" title="Open sidebar" style="flex:none; width:30px; height:30px; border-radius:8px; display:grid; place-items:center; color:var(--muted); background:transparent; border:1px solid var(--line); cursor:pointer; font-size:16px; margin-right:2px;">⇥</button>
+      </sc-if>
+      <span style="font-size:14px; font-weight:600; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;">{{ headerTitle }}</span>
+      <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); padding:3px 9px; border-radius:999px;">{{ headerStage }}</span>
+      <span style="margin-left:auto; font-size:12.5px; color:var(--muted); cursor:pointer;">Share</span>
+    </div>
+
+    <!-- SOURCE STORE (project shared data) -->
+    <sc-if value="{{ isSourceView }}">
+      <div style="flex:1; overflow-y:auto; min-height:0;">
+        <div style="max-width:760px; margin:0 auto; padding:30px 26px 40px;">
+          <div style="display:flex; align-items:center; gap:13px; margin-bottom:20px;">
+            <span style="font-size:24px;">🗂️</span>
+            <h1 style="font-family:'Newsreader',Georgia,serif; font-size:26px; font-weight:600; color:var(--ink); margin:0;">{{ sourceProject }}</h1>
+            <span style="margin-left:auto; font-size:12.5px; font-weight:600; color:var(--muted); border:1px solid var(--line); border-radius:8px; padding:6px 12px; cursor:pointer;">⤴ Share</span>
+          </div>
+
+          <div style="display:flex; align-items:flex-end; gap:10px; background:#fff; border:1px solid #DEDDD8; border-radius:18px; padding:10px 12px 10px 16px; box-shadow:0 4px 18px -14px rgba(0,0,0,.2); margin-bottom:18px;">
+            <span style="flex:none; width:28px; height:28px; border-radius:50%; border:1px solid var(--line); color:var(--muted); display:grid; place-items:center; font-size:16px; cursor:pointer;">＋</span>
+            <span style="flex:1; font-size:14.5px; color:var(--muted); padding:5px 0;">New chat in {{ sourceProject }}</span>
+            <span style="flex:none; display:flex; align-items:center; gap:5px; font-size:12px; font-weight:600; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:5px 10px; cursor:pointer;">Grounded ▾</span>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:18px;">
+            <button onClick="{{ onTabChats }}" style="{{ tabChatsStyle }}">Chats</button>
+            <button onClick="{{ onTabSources }}" style="{{ tabSourcesStyle }}">Sources</button>
+            <span style="margin-left:auto; font-size:12.5px; color:var(--muted); cursor:pointer;">Newest ▾</span>
+          </div>
+
+          <!-- Sources tab -->
+          <sc-if value="{{ srcTabSources }}" hint-placeholder-val="{{ true }}">
+            <sc-if value="{{ hasSources }}">
+              <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px;">
+                <sc-for list="{{ sourceFiles }}" as="f" hint-placeholder-count="3">
+                  <div style="display:flex; align-items:center; gap:12px; padding:12px 15px; background:#fff; border:1px solid var(--line); border-radius:12px;">
+                    <span style="flex:none; width:34px; height:34px; border-radius:9px; background:#F2F1ED; display:grid; place-items:center; font-size:13px;">{{ f.icon }}</span>
+                    <div style="flex:1; min-width:0;">
+                      <div style="font-size:13.5px; font-weight:600; color:var(--ink);">{{ f.name }}</div>
+                      <div style="font-size:12px; color:var(--muted); margin-top:1px;">{{ f.meta }}</div>
+                    </div>
+                    <span style="flex:none; font-size:10px; font-weight:700; color:var(--accent); background:var(--accent-soft); padding:3px 8px; border-radius:999px;">shared</span>
+                    <span style="flex:none; color:var(--muted); font-size:15px; cursor:pointer;">⋯</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <div style="border:1.5px dashed #D6D5CF; border-radius:18px; padding:38px 24px; text-align:center; background:#FCFBF9;">
+              <div style="display:flex; justify-content:center; gap:8px; margin-bottom:16px;">
+                <span style="width:46px; height:46px; border-radius:12px; background:#fff; border:1px solid var(--line); display:grid; place-items:center; font-size:18px; box-shadow:0 2px 8px -4px rgba(0,0,0,.12);">☁</span>
+                <span style="width:46px; height:46px; border-radius:12px; background:#fff; border:1px solid var(--line); display:grid; place-items:center; font-size:18px; box-shadow:0 2px 8px -4px rgba(0,0,0,.12); transform:translateY(-4px);">🔗</span>
+                <span style="width:46px; height:46px; border-radius:12px; background:#fff; border:1px solid var(--line); display:grid; place-items:center; font-size:18px; box-shadow:0 2px 8px -4px rgba(0,0,0,.12);">📎</span>
+              </div>
+              <div style="font-size:16px; font-weight:600; color:var(--ink); margin-bottom:6px;">Give paperpal more context</div>
+              <div style="font-size:13.5px; color:var(--muted); line-height:1.6; max-width:420px; margin:0 auto 18px;">Upload data &amp; result files, link a drive, or connect a reference manager. Every session in this project draws on the same sources.</div>
+              <button style="font-family:inherit; font-size:13.5px; font-weight:700; color:#fff; background:var(--ink); border:none; border-radius:999px; padding:10px 22px; cursor:pointer;">Add sources</button>
+            </div>
+          </sc-if>
+
+          <!-- Chats tab -->
+          <sc-if value="{{ srcTabChats }}">
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <sc-for list="{{ projChats }}" as="c" hint-placeholder-count="3">
+                <div style="display:flex; align-items:center; gap:12px; padding:13px 15px; background:#fff; border:1px solid var(--line); border-radius:12px; cursor:pointer;">
+                  <span style="flex:none; width:30px; height:30px; border-radius:8px; background:#F2F1ED; display:grid; place-items:center; font-size:13px;">💬</span>
+                  <div style="flex:1; min-width:0;"><div style="font-size:13.5px; font-weight:600; color:var(--ink);">{{ c.title }}</div><div style="font-size:12px; color:var(--muted); margin-top:1px;">{{ c.meta }}</div></div>
+                  <span style="{{ c.tagStyle }}">{{ c.tag }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- EMPTY / GREETING -->
+    <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 24px 60px; min-height:0;">
+        <h1 style="font-family:'Newsreader',Georgia,serif; font-size:30px; font-weight:500; color:var(--ink); letter-spacing:-.01em; margin:0 0 26px;">Tell me about your journal.</h1>
+        <div style="width:100%; max-width:720px;">
+          <div style="display:flex; align-items:flex-end; gap:10px; background:#fff; border:1px solid #DEDDD8; border-radius:26px; padding:11px 12px 11px 16px; box-shadow:0 8px 30px -16px rgba(0,0,0,.25);">
+            <span style="flex:none; width:30px; height:30px; border-radius:50%; border:1px solid var(--line); color:var(--muted); display:grid; place-items:center; font-size:17px; cursor:pointer;">＋</span>
+            <textarea value="{{ input }}" onInput="{{ onInput }}" onKeyDown="{{ onKey }}" rows="1" placeholder="Describe the paper you want to write — topic, what you found, the data you have…" style="flex:1; border:none; resize:none; font-family:inherit; font-size:15px; color:var(--ink); line-height:1.5; max-height:140px; padding:5px 0;"></textarea>
+            <span style="flex:none; display:flex; align-items:center; gap:5px; font-size:12.5px; font-weight:600; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:5px 10px; cursor:pointer;">Grounded ▾</span>
+            <button onClick="{{ onSend }}" class="sendbtn" style="flex:none; width:34px; height:34px; border-radius:50%; background:var(--ink); color:#fff; border:none; cursor:pointer; display:grid; place-items:center; font-size:15px;">↑</button>
+          </div>
+          <div style="display:flex; gap:9px; justify-content:center; margin-top:16px; flex-wrap:wrap;">
+            <sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="3">
+              <button onClick="{{ s.onClick }}" class="chip" style="display:flex; align-items:center; gap:7px; font-family:inherit; font-size:13px; color:#5b5a56; background:#fff; border:1px solid var(--line); border-radius:999px; padding:8px 14px; cursor:pointer;">{{ s.icon }} {{ s.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- CONVERSATION -->
+    <sc-if value="{{ hasThread }}">
+      <div ref="{{ threadRef }}" style="flex:1; overflow-y:auto; min-height:0;">
+        <div style="max-width:760px; margin:0 auto; padding:26px 24px 30px; display:flex; flex-direction:column; gap:22px;">
+          <sc-for list="{{ messages }}" as="m" hint-placeholder-count="3">
+
+            <!-- user bubble -->
+            <sc-if value="{{ m.isUser }}">
+              <div style="display:flex; justify-content:flex-end;">
+                <div style="max-width:80%; font-size:15px; line-height:1.6; color:var(--ink); background:#F1F0EC; border-radius:20px; padding:11px 16px;">{{ m.text }}</div>
+              </div>
+            </sc-if>
+
+            <!-- assistant text -->
+            <sc-if value="{{ m.isAssistant }}">
+              <div style="display:flex; gap:13px;">
+                <span style="flex:none; width:28px; height:28px; border-radius:50%; background:#fff; border:1px solid var(--line); display:grid; place-items:center; font-size:13px;">✦</span>
+                <div style="flex:1; font-size:15px; line-height:1.7; color:var(--ink); padding-top:2px;">{{ m.text }}</div>
+              </div>
+            </sc-if>
+
+            <!-- ESSENTIALS card (Q1) -->
+            <sc-if value="{{ m.isEssentials }}">
+              <div style="display:flex; gap:13px;">
+                <span style="flex:none; width:28px; height:28px; border-radius:50%; background:#fff; border:1px solid var(--line); display:grid; place-items:center; font-size:13px;">✦</span>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-size:15px; line-height:1.7; color:var(--ink); margin-bottom:12px;">Before I draft anything, let's lock the essentials. I pulled what I could from your description — <b>2 are still thin</b>. Fill the gaps or tell me to proceed.</div>
+                  <div style="border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#fff;">
+                    <sc-for list="{{ essentials }}" as="e" hint-placeholder-count="4">
+                      <div style="display:flex; align-items:flex-start; gap:11px; padding:13px 16px; border-bottom:1px solid var(--line);">
+                        <span style="{{ e.dotStyle }}"></span>
+                        <div style="flex:1; min-width:0;">
+                          <div style="font-size:13.5px; font-weight:600; color:var(--ink);">{{ e.label }} <span style="{{ e.tagStyle }}">{{ e.tag }}</span></div>
+                          <div style="font-size:13px; color:var(--muted); line-height:1.5; margin-top:2px;">{{ e.detail }}</div>
+                        </div>
+                        <button onClick="{{ e.onClick }}" style="flex:none; font-family:inherit; font-size:12.5px; font-weight:600; color:{{ e.btnColor }}; background:transparent; border:1px solid var(--line); border-radius:8px; padding:6px 11px; cursor:pointer;">{{ e.btnLabel }}</button>
+                      </div>
+                    </sc-for>
+                    <div style="display:flex; align-items:center; gap:10px; padding:12px 16px; background:#FBFAF8;">
+                      <button onClick="{{ onProceed }}" style="font-family:inherit; font-size:13px; font-weight:700; color:#fff; background:var(--ink); border:none; border-radius:9px; padding:9px 16px; cursor:pointer;">Looks right — research prior work →</button>
+                      <span style="font-size:12px; color:var(--muted);">I'll search OpenAlex next.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <!-- OPENALEX search card -->
+            <sc-if value="{{ m.isSearch }}">
+              <div style="display:flex; gap:13px;">
+                <span style="flex:none; width:28px; height:28px; border-radius:50%; background:#fff; border:1px solid var(--line); display:grid; place-items:center; font-size:13px;">✦</span>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-size:15px; line-height:1.7; color:var(--ink); margin-bottom:12px;">{{ m.text }}</div>
+                  <div style="border:1px solid var(--line); border-radius:16px; background:#fff; overflow:hidden;">
+                    <div style="display:flex; align-items:center; gap:9px; padding:12px 16px; border-bottom:1px solid var(--line); background:#FBFAF8;">
+                      <span style="font-size:13px;">🔎</span>
+                      <span style="font-size:13px; font-weight:600; color:var(--ink);">OpenAlex</span>
+                      <span style="font-size:12.5px; color:var(--muted);">{{ m.searchMeta }}</span>
+                      <span style="{{ m.searchBadgeStyle }}">{{ m.searchBadge }}</span>
+                    </div>
+                    <sc-for list="{{ m.refs }}" as="r" hint-placeholder-count="3">
+                      <div style="display:flex; align-items:flex-start; gap:11px; padding:11px 16px; border-bottom:1px solid var(--line);">
+                        <span style="flex:none; font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:700; color:var(--accent); background:var(--accent-soft); padding:2px 7px; border-radius:5px; margin-top:1px;">{{ r.key }}</span>
+                        <div style="flex:1; min-width:0;">
+                          <div style="font-size:13.5px; color:var(--ink); line-height:1.45;">{{ r.title }}</div>
+                          <div style="font-size:12px; color:var(--muted); margin-top:1px;">{{ r.meta }}</div>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <!-- QUESTIONS card (Q2: reasoning) -->
+            <sc-if value="{{ m.isQuestions }}">
+              <div style="display:flex; gap:13px;">
+                <span style="flex:none; width:28px; height:28px; border-radius:50%; background:#fff; border:1px solid var(--line); display:grid; place-items:center; font-size:13px;">✦</span>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-size:15px; line-height:1.7; color:var(--ink); margin-bottom:4px;">Now the reasoning. These shape the <b>claim graph</b>, the figures, and how each section argues — answer in your words, or skip to let me decide.</div>
+                  <div style="display:flex; flex-direction:column; gap:11px; margin-top:12px;">
+                    <sc-for list="{{ q2 }}" as="q" hint-placeholder-count="3">
+                      <div style="border:1px solid var(--line); border-radius:14px; background:#fff; padding:13px 15px;">
+                        <div style="display:flex; gap:8px; align-items:baseline; margin-bottom:3px;">
+                          <span style="{{ q.kindStyle }}">{{ q.kind }}</span>
+                          <span style="font-size:14px; font-weight:600; color:var(--ink); line-height:1.45;">{{ q.question }}</span>
+                        </div>
+                        <div style="font-size:12.5px; color:var(--muted); margin:0 0 9px;">{{ q.why }}</div>
+                        <textarea value="{{ q.value }}" onInput="{{ q.onInput }}" placeholder="{{ q.ph }}" style="width:100%; border:1px solid var(--line); border-radius:9px; background:#FBFAF8; font-family:inherit; font-size:13.5px; color:var(--ink); padding:9px 11px; resize:vertical; min-height:40px; line-height:1.5;"></textarea>
+                        <button onClick="{{ q.onSkip }}" style="margin-top:7px; font-family:inherit; font-size:12px; color:var(--muted); background:transparent; border:1px dashed var(--line); padding:4px 10px; border-radius:7px; cursor:pointer;">Let me decide</button>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:11px; margin-top:13px;">
+                    <button onClick="{{ onGenerate }}" disabled="{{ genDisabled }}" style="{{ genBtnStyle }}">Generate the paper →</button>
+                    <span style="font-size:12.5px; color:{{ genNoteColor }};">{{ genNote }}</span>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <!-- GENERATING -->
+            <sc-if value="{{ m.isGenerating }}">
+              <div style="display:flex; gap:13px;">
+                <span style="flex:none; width:28px; height:28px; border-radius:50%; background:#fff; border:1px solid var(--line); display:grid; place-items:center; font-size:13px;">✦</span>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-size:15px; line-height:1.7; color:var(--ink); margin-bottom:10px;">Compiling — grounding every claim, placing citations, rendering figures.</div>
+                  <div style="background:#1c1c1b; color:#dcd9d2; border-radius:12px; padding:13px 15px; font-family:ui-monospace,Menlo,monospace; font-size:12.5px; line-height:1.8; white-space:pre-wrap;">{{ genLog }}</div>
+                </div>
+              </div>
+            </sc-if>
+
+            <!-- RESULT -->
+            <sc-if value="{{ m.isResult }}">
+              <div style="display:flex; gap:13px;">
+                <span style="flex:none; width:28px; height:28px; border-radius:50%; background:#fff; border:1px solid var(--line); display:grid; place-items:center; font-size:13px;">✦</span>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-size:15px; line-height:1.7; color:var(--ink); margin-bottom:12px;">Done — <b>6 sections</b>, 12 citations (2 double-verified), 2 figures. Here's the manuscript.</div>
+                  <div style="border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#fff;">
+                    <div style="padding:20px 22px 16px; border-bottom:1px solid var(--line);">
+                      <div style="font-family:'Newsreader',Georgia,serif; font-size:19px; font-weight:600; color:var(--ink); line-height:1.3;">A rupture-risk index for coronary plaque: definition and sensitivity analysis</div>
+                      <div style="font-size:13px; color:var(--muted); margin-top:5px;">Jeff Kim · Advisor · KAIST — Methods/Results-driven</div>
+                      <p style="font-size:13.5px; line-height:1.7; color:#3a3a38; margin:12px 0 0;">We define a rupture-risk index (ΔPSS / strength) and quantify its sensitivity across 1,000 plaque samples via cost-effective pulsatile FSI; a Sobol analysis ranks material properties above hemodynamic and morphological factors…</p>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:9px; padding:13px 16px; background:#FBFAF8; flex-wrap:wrap;">
+                      <button onClick="{{ onOpenPaper }}" style="font-family:inherit; font-size:13px; font-weight:700; color:#fff; background:var(--ink); border:none; border-radius:9px; padding:9px 15px; cursor:pointer;">Open full draft</button>
+                      <span style="font-size:12.5px; font-weight:600; color:var(--accent); border:1px solid var(--line); padding:7px 12px; border-radius:8px; cursor:pointer;">⬇ DOCX</span>
+                      <span style="font-size:12.5px; font-weight:600; color:var(--accent); border:1px solid var(--line); padding:7px 12px; border-radius:8px; cursor:pointer;">PDF</span>
+                      <span style="font-size:12.5px; font-weight:600; color:var(--accent); border:1px solid var(--line); padding:7px 12px; border-radius:8px; cursor:pointer;">.tex</span>
+                      <span style="margin-left:auto; font-size:12px; color:var(--muted);">Want changes? Just tell me below.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- bottom composer -->
+      <div style="flex:none; padding:8px 24px 20px;">
+        <div style="max-width:760px; margin:0 auto;">
+          <div style="display:flex; align-items:flex-end; gap:10px; background:#fff; border:1px solid #DEDDD8; border-radius:26px; padding:10px 12px 10px 16px; box-shadow:0 6px 22px -16px rgba(0,0,0,.22);">
+            <span style="flex:none; width:30px; height:30px; border-radius:50%; border:1px solid var(--line); color:var(--muted); display:grid; place-items:center; font-size:17px; cursor:pointer;">＋</span>
+            <textarea value="{{ input }}" onInput="{{ onInput }}" onKeyDown="{{ onKey }}" rows="1" placeholder="{{ composerPlaceholder }}" style="flex:1; border:none; resize:none; font-family:inherit; font-size:15px; color:var(--ink); line-height:1.5; max-height:140px; padding:5px 0;"></textarea>
+            <span style="flex:none; display:flex; align-items:center; gap:5px; font-size:12.5px; font-weight:600; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:5px 10px; cursor:pointer;">Grounded ▾</span>
+            <button onClick="{{ onSend }}" class="sendbtn" style="flex:none; width:34px; height:34px; border-radius:50%; background:var(--ink); color:#fff; border:none; cursor:pointer; display:grid; place-items:center; font-size:15px;">↑</button>
+          </div>
+          <div style="text-align:center; font-size:11px; color:var(--muted); margin-top:8px;">paperpal grounds every claim in your data, a figure, or a verified citation.</div>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+
+  <!-- ===================== RIGHT : split panel (Cowork-style) ===================== -->
+  <sc-if value="{{ panelOpen }}">
+    <aside style="flex:none; width:46%; min-width:380px; max-width:680px; border-left:1px solid var(--line); background:#fff; display:flex; flex-direction:column; min-height:0;">
+      <div style="flex:none; display:flex; align-items:center; gap:10px; padding:11px 14px; border-bottom:1px solid var(--line);">
+        <span style="display:flex; gap:2px;">
+          <span style="width:30px; height:28px; border-radius:7px; display:grid; place-items:center; color:var(--ink); background:#F2F1ED; font-size:13px;">◉</span>
+          <span style="width:30px; height:28px; border-radius:7px; display:grid; place-items:center; color:var(--muted); font-size:13px;">&lt;/&gt;</span>
+        </span>
+        <span style="font-size:13.5px; font-weight:600; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ panelTitle }}</span>
+        <span style="{{ panelTagStyle }}">{{ panelTag }}</span>
+        <span style="margin-left:auto; display:flex; align-items:center; gap:4px;">
+          <span style="width:30px; height:30px; border-radius:8px; display:grid; place-items:center; color:var(--muted); font-size:14px; cursor:pointer;">⤢</span>
+          <button onClick="{{ onClosePanel }}" style="width:30px; height:30px; border-radius:8px; display:grid; place-items:center; color:var(--muted); background:transparent; border:none; font-size:16px; cursor:pointer;">✕</button>
+        </span>
+      </div>
+
+      <div style="flex:1; overflow-y:auto; padding:22px 26px 30px;">
+
+        <!-- JOURNAL -->
+        <sc-if value="{{ pJournal }}" hint-placeholder-val="{{ true }}">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:4px;">Input · journal info</div>
+          <h2 style="font-family:'Newsreader',Georgia,serif; font-size:22px; font-weight:600; color:var(--ink); margin:0 0 6px;">Journal info</h2>
+          <p style="font-size:13px; color:var(--muted); line-height:1.6; margin:0 0 16px;">Add a guidelines URL to a target journal and paperpal auto-reads its word &amp; figure limits.</p>
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin:14px 1px 6px;">Author's field <span style="color:#b5503c;">*</span></label>
+          <input value="{{ fField }}" onInput="{{ onFField }}" style="width:100%; border:1px solid var(--line); border-radius:9px; background:#FBFAF8; font-family:inherit; font-size:14px; color:var(--ink); padding:10px 12px;">
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin:14px 1px 6px;">Target journal <span style="color:#b5503c;">*</span></label>
+          <input value="{{ fTarget }}" onInput="{{ onFTarget }}" style="width:100%; border:1px solid var(--line); border-radius:9px; background:#FBFAF8; font-family:inherit; font-size:14px; color:var(--ink); padding:10px 12px;">
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin:14px 1px 6px;">Paper title <span style="font-weight:600; text-transform:none; letter-spacing:0;">· optional</span></label>
+          <input value="{{ fTitle }}" onInput="{{ onFTitle }}" placeholder="Leave blank and the AI proposes one" style="width:100%; border:1px solid var(--line); border-radius:9px; background:#FBFAF8; font-family:inherit; font-size:14px; color:var(--ink); padding:10px 12px;">
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin:14px 1px 6px;">Affiliation <span style="font-weight:600; text-transform:none; letter-spacing:0;">· optional</span></label>
+          <input value="{{ fAffil }}" onInput="{{ onFAffil }}" style="width:100%; border:1px solid var(--line); border-radius:9px; background:#FBFAF8; font-family:inherit; font-size:14px; color:var(--ink); padding:10px 12px;">
+        </sc-if>
+
+        <!-- CORE -->
+        <sc-if value="{{ pCore }}">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:4px;">Input · core message</div>
+          <h2 style="font-family:'Newsreader',Georgia,serif; font-size:22px; font-weight:600; color:var(--ink); margin:0 0 6px;">Core message + novelty</h2>
+          <p style="font-size:13px; color:var(--muted); line-height:1.6; margin:0 0 16px;">One paragraph and each novelty become the core claims of the graph.</p>
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin:8px 1px 6px;">One paragraph <span style="color:#b5503c;">*</span></label>
+          <textarea value="{{ fPara }}" onInput="{{ onFPara }}" rows="4" style="width:100%; border:1px solid var(--line); border-radius:9px; background:#FBFAF8; font-family:inherit; font-size:14px; color:var(--ink); padding:11px 12px; resize:vertical; line-height:1.6;"></textarea>
+          <label style="display:block; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin:14px 1px 6px;">Novelty <span style="color:#b5503c;">*</span></label>
+          <div style="display:flex; flex-direction:column; gap:7px;">
+            <sc-for list="{{ novelty }}" as="n" hint-placeholder-count="3">
+              <div style="display:flex; gap:8px; align-items:center;"><span style="flex:none; font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:700; color:var(--accent);">{{ n.num }}</span><div style="flex:1; font-size:13.5px; color:var(--ink); background:#FBFAF8; border:1px solid var(--line); border-radius:8px; padding:9px 11px;">{{ n.text }}</div></div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- OUTLINE -->
+        <sc-if value="{{ pOutline }}">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:4px;">Input · outline</div>
+          <h2 style="font-family:'Newsreader',Georgia,serif; font-size:22px; font-weight:600; color:var(--ink); margin:0 0 6px;">Outline</h2>
+          <p style="font-size:13px; color:var(--muted); line-height:1.6; margin:0 0 16px;">Method &amp; Result are required — Intro / Discussion / Conclusion are optional and can come after.</p>
+          <sc-for list="{{ sections }}" as="s" hint-placeholder-count="5">
+            <div style="margin:0 0 12px;">
+              <div style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; color:var(--ink); padding:8px 11px; background:#F2F1ED; border:1px solid var(--line); border-radius:9px 9px 0 0;">{{ s.label }}<span style="{{ s.reqStyle }}">{{ s.req }}</span></div>
+              <textarea value="{{ s.value }}" onInput="{{ s.onInput }}" placeholder="{{ s.ph }}" style="width:100%; border:1px solid var(--line); border-top:none; border-radius:0 0 9px 9px; background:#FBFAF8; font-family:inherit; font-size:13.5px; color:var(--ink); padding:10px 11px; resize:vertical; min-height:70px; line-height:1.55;"></textarea>
+            </div>
+          </sc-for>
+        </sc-if>
+
+        <!-- DATA -->
+        <sc-if value="{{ pData }}">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:4px;">Input · data</div>
+          <h2 style="font-family:'Newsreader',Georgia,serif; font-size:22px; font-weight:600; color:var(--ink); margin:0 0 6px;">Data</h2>
+          <p style="font-size:13px; color:var(--muted); line-height:1.6; margin:0 0 16px;">Upload the files behind your analysis. paperpal infers each file's meaning; descriptions are optional.</p>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; text-align:center; padding:26px 18px; border:2px dashed var(--line); border-radius:13px; background:#FBFAF8; cursor:pointer; margin-bottom:14px;">
+            <span style="font-size:21px;">⬆️</span>
+            <span style="font-size:13.5px; font-weight:700; color:var(--ink);">Drop files, or click to upload</span>
+            <span style="font-size:11px; color:var(--muted);">CSV · DAT · PDF · XLSX · JSON · BIB</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:7px;">
+            <sc-for list="{{ dataFiles }}" as="f" hint-placeholder-count="3">
+              <div style="display:flex; align-items:center; gap:10px; padding:9px 11px; background:#fff; border:1px solid var(--line); border-radius:9px;"><span style="flex:none; font-family:ui-monospace,Menlo,monospace; font-size:9px; font-weight:700; text-transform:uppercase; color:var(--accent); background:var(--accent-soft); padding:3px 7px; border-radius:5px;">{{ f.kind }}</span><span style="flex:1; font-size:13px; font-weight:600; color:var(--ink);">{{ f.name }}</span><span style="font-size:11.5px; color:var(--muted);">{{ f.meta }}</span></div>
+            </sc-for>
+            <div style="font-size:12px; color:#b5503c; padding:4px 2px;">⚠ Empty so far — attach files so claims can be grounded.</div>
+          </div>
+        </sc-if>
+
+        <!-- PAPER preview -->
+        <sc-if value="{{ pPaper }}">
+          <h1 style="font-family:'Newsreader',Georgia,serif; font-size:24px; font-weight:600; color:var(--ink); line-height:1.3; margin:0 0 8px;">A rupture-risk index for coronary plaque: definition and sensitivity analysis</h1>
+          <div style="font-size:13px; color:var(--muted); margin-bottom:18px;">Jeff Kim · Advisor · KAIST, Dept. of Mechanical Engineering</div>
+          <h2 style="font-family:'Newsreader',Georgia,serif; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--ink); margin:0 0 8px;">Abstract</h2>
+          <p style="font-size:14px; line-height:1.85; color:#2c2c2a; margin:0 0 20px;">We define a rupture-risk index as the ratio of peak structural stress range (ΔPSS) to material strength, and quantify its sensitivity across 1,000 lipid-rich and calcified plaque samples using a cost-effective pulsatile FSI framework. A global Sobol analysis ranks material properties above hemodynamic and morphological factors.</p>
+          <h2 style="font-family:'Newsreader',Georgia,serif; font-size:17px; font-weight:600; color:var(--ink); margin:0 0 10px;">2. Method</h2>
+          <h3 style="font-family:'Newsreader',Georgia,serif; font-size:14px; font-weight:600; color:#333; margin:0 0 6px;">2.1 Cost-effective pulsatile FSI</h3>
+          <p style="font-size:14px; line-height:1.85; color:#2c2c2a; margin:0 0 16px;">A snapshot-based fluid–structure coupling, validated in prior work [<span style="color:var(--accent);">12</span>], keeps a 1,000-sample parametric study tractable while reproducing wall-stress fields.</p>
+          <h3 style="font-family:'Newsreader',Georgia,serif; font-size:14px; font-weight:600; color:#333; margin:0 0 6px;">2.2 Parametric dataset</h3>
+          <p style="font-size:14px; line-height:1.85; color:#2c2c2a; margin:0;">Lipid-rich and calcified phenotypes were sampled across the ranges in geometry_params.csv; the index is stress / strength, with stress taken as ΔPSS (Fig. 6).</p>
+        </sc-if>
+
+      </div>
+    </aside>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:820}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.threadRef = React.createRef();
+    this.state = {
+      phase: 'greet',        // greet | essentials | search | questions | generating | done
+      input: '',
+      messages: [],
+      activeTrial: 't3',
+      q2: { a: '', b: '', c: '' },
+      genLog: '',
+      panel: { open: false, kind: null },
+      sidebarOpen: true,
+      expandedProject: 'p1',
+      activeSession: 's3',
+      view: 'chat',          // 'chat' | 'source'
+      sourceProject: 'Coronary plaque — rupture index',
+      srcTab: 'sources',     // 'sources' | 'chats'
+      form: {
+        field: 'Computational biomechanics',
+        target: 'Journal of Biomechanics — https://www.elsevier.com/author-guidelines',
+        title: '',
+        affil: 'KAIST, Dept. of Mechanical Engineering',
+        para: 'We define a rupture-risk index (ΔPSS / strength) for coronary plaque and quantify its sensitivity across 1,000 lipid-rich and calcified samples using a cost-effective pulsatile FSI framework.',
+        intro: '',
+        method: '1. Cost-effective FSI framework\n2. Patient-specific boundary-condition tuning\n3. Mesh & time-step convergence',
+        result: '1. Sobol sensitivity: material > hemodynamic > morphological (Fig 3)\n2. ΔPSS explains rupture risk better than static PSS',
+        discussion: '',
+        conclusion: '',
+      },
+    };
+    this._t = null;
+    this._uid = 0;
+  }
+  uid() { return 'm' + (++this._uid); }
+
+  scrollBottom() {
+    requestAnimationFrame(() => { const el = this.threadRef.current; if (el) el.scrollTop = el.scrollHeight; });
+  }
+  push(msg, cb) {
+    this.setState(st => ({ messages: [...st.messages, { id: this.uid(), ...msg }] }), cb);
+    this.scrollBottom();
+  }
+  replaceLast(patch) {
+    this.setState(st => { const m = [...st.messages]; m[m.length - 1] = { ...m[m.length - 1], ...patch }; return { messages: m }; });
+    this.scrollBottom();
+  }
+
+  newTrial() { clearTimeout(this._t); this.setState({ phase: 'greet', input: '', messages: [], q2: { a: '', b: '', c: '' }, genLog: '', panel: { open: false, kind: null } }); }
+
+  // ---- split panel (Cowork-style) ----
+  togglePanel(kind) {
+    this.setState(st => (st.panel.open && st.panel.kind === kind)
+      ? { panel: { open: false, kind: null } }
+      : { panel: { open: true, kind } });
+  }
+  openPanel(kind) { this.setState({ panel: { open: true, kind } }); }
+  closePanel() { this.setState({ panel: { open: false, kind: null } }); }
+  setForm(k, v) { this.setState(st => ({ form: { ...st.form, [k]: v } })); }
+
+  // ---- composer send ----
+  send() {
+    const v = (this.state.input || '').trim();
+    if (!v && this.state.phase !== 'greet') return;
+    if (this.state.phase === 'greet') { this.startFromDescription(v || this.defaultDescription()); return; }
+    // any later free message → user msg + light ack
+    this.push({ kind: 'user', text: v });
+    this.setState({ input: '' });
+    this._t = setTimeout(() => this.push({ kind: 'assistant', text: 'Got it — I’ll fold that in. Use the cards above to keep moving, or tell me what to change.' }), 600);
+  }
+  defaultDescription() {
+    return 'I ran a 1,000-sample FSI study on coronary plaque rupture risk. I want to define a rupture-risk index and show what drives it, aimed at the Journal of Biomechanics.';
+  }
+  startFromDescription(text) {
+    this.push({ kind: 'user', text });
+    this.setState({ input: '', phase: 'essentials' });
+    this._t = setTimeout(() => this.push({ kind: 'essentials' }), 650);
+  }
+
+  // ---- essentials -> openalex ----
+  proceedToSearch() {
+    this.setState({ phase: 'search' });
+    this.push({ kind: 'search', text: 'Searching prior work to ground your claims and find gaps…', searchMeta: 'querying…', searchBadge: 'running', searchBadgeStyle: this.badge('run'), refs: [] });
+    this._t = setTimeout(() => {
+      this.replaceLast({
+        text: 'Searched prior work via OpenAlex. 12 of 1,240 works are directly relevant — these anchor your Introduction and the novelty contrast.',
+        searchMeta: '1,240 works scanned · 12 relevant', searchBadge: '✓ done', searchBadgeStyle: this.badge('ok'),
+        refs: [
+          { key: '@milzi2021', title: 'ΔPSS as a fatigue-driven marker of plaque rupture', meta: 'Milzi et al., 2021 · cited 142' },
+          { key: '@westerhof', title: 'Windkessel boundary conditions for arterial FSI', meta: 'Westerhof, 2009 · cited 2,310' },
+          { key: '@kim_snap', title: 'Snapshot-based cost-effective pulsatile FSI', meta: 'Kim et al., 2023 · cited 38' },
+        ],
+      });
+      this._t = setTimeout(() => { this.setState({ phase: 'questions' }); this.push({ kind: 'questions' }); }, 700);
+    }, 1700);
+  }
+
+  // ---- generate ----
+  generate() {
+    this.setState({ phase: 'generating' });
+    this.push({ kind: 'generating', genLog: '' });
+    const lines = ['› drafting Method & Result (grounded)…', '  ✓ Method 2.1–2.2, Result 3.1', '› placing + verifying citations…', '  ✓ 12 citations, 2 double-verified', '› rendering figures (Fig 3, Fig 6)…', '› assembling DOCX / PDF / .tex…', '✓ paper.docx ready'];
+    const tick = (i) => {
+      this.replaceLast({ genLog: lines.slice(0, i).join('\n') });
+      if (i >= lines.length) { this._t = setTimeout(() => { this.setState({ phase: 'done' }); this.push({ kind: 'result' }); }, 500); return; }
+      this._t = setTimeout(() => tick(i + 1), 430);
+    };
+    tick(1);
+  }
+
+  badge(kind) {
+    const base = 'margin-left:auto; font-size:10.5px; font-weight:700; padding:2px 9px; border-radius:999px; ';
+    if (kind === 'ok') return base + 'color:#3f7d57; background:#E7F0EA;';
+    return base + 'color:#3E63B8; background:#EAF0FA;';
+  }
+
+  renderVals() {
+    const s = this.state;
+    const chatView = s.view !== 'source';
+    const emptyBase = s.phase === 'greet' && s.messages.length === 0;
+    const isEmpty = chatView && emptyBase;
+
+    // ---- Projects (each project = a paper; sessions inside = trials) ----
+    const projDefs = [
+      { id: 'p1', name: 'Coronary plaque — rupture index', sessions: [
+        { id: 's3', title: 'Draft from data', tag: 'live' },
+        { id: 's2', title: 'Q1 → Q2 reasoning flow', tag: '' },
+        { id: 's1', title: 'Baseline outline & figures', tag: '' },
+      ] },
+      { id: 'p2', name: 'Pulsatility journal', sessions: [
+        { id: 'p2a', title: 'Windkessel boundary tuning', tag: '' },
+        { id: 'p2b', title: 'RCR convention check', tag: '' },
+      ] },
+      { id: 'p3', name: 'Snapshot FSI validation', sessions: [
+        { id: 'p3a', title: 'Cost-effective FSI note', tag: 'done' },
+      ] },
+      { id: 'p4', name: 'Master’s thesis', sessions: [
+        { id: 'p4a', title: 'Chapter 3 — methods', tag: '' },
+      ] },
+    ];
+    const projects = projDefs.map(p => {
+      const expanded = s.expandedProject === p.id;
+      return {
+        name: p.name, folder: expanded ? '📂' : '📁', expanded,
+        onClick: () => this.setState(st => ({ expandedProject: st.expandedProject === p.id ? null : p.id })),
+        onSource: () => this.setState({ view: 'source', sourceProject: p.name, srcTab: 'sources', panel: { open: false, kind: null } }),
+        sourceStyle: 'display:flex; align-items:center; gap:9px; width:100%; font-family:inherit; font-size:13px; font-weight:' + (s.view === 'source' && s.sourceProject === p.name ? '600' : '500') + '; color:' + (s.view === 'source' && s.sourceProject === p.name ? '#1f1f1e' : '#56544f') + '; background:' + (s.view === 'source' && s.sourceProject === p.name ? '#E4E2DC' : 'transparent') + '; border:none; border-radius:8px; padding:7px 10px 7px 16px; margin:1px 0; cursor:pointer;',
+        style: 'display:flex; align-items:center; gap:9px; width:100%; font-family:inherit; font-size:13.5px; font-weight:' + (expanded ? '600' : '500') + '; color:var(--ink); background:' + (expanded ? '#ECEBE7' : 'transparent') + '; border:none; border-radius:9px; padding:9px 10px; margin:1px 0; cursor:pointer;',
+        caretStyle: 'flex:none; color:var(--muted); font-size:13px; transform:rotate(' + (expanded ? '90deg' : '0deg') + '); transition:transform .15s;',
+        sessions: p.sessions.map(ss => ({
+          title: ss.title, tag: ss.tag === 'live' ? 'live' : ss.tag,
+          onClick: () => this.setState({ activeSession: ss.id, view: 'chat' }),
+          style: 'display:flex; align-items:center; gap:8px; width:100%; text-align:left; font-family:inherit; font-size:13px; color:' + (s.activeSession === ss.id ? '#1f1f1e' : '#56544f') + '; background:' + (s.activeSession === ss.id ? '#E4E2DC' : 'transparent') + '; border:none; border-radius:8px; padding:7px 10px 7px 30px; margin:1px 0; cursor:pointer; font-weight:' + (s.activeSession === ss.id ? '600' : '500') + ';',
+          tagStyle: ss.tag ? ('margin-left:auto; flex:none; font-size:9.5px; font-weight:700; color:' + (ss.tag === 'done' ? '#3f7d57' : ss.tag === 'live' ? '#3E63B8' : '#9b9a96') + '; background:' + (ss.tag === 'done' ? '#E7F0EA' : ss.tag === 'live' ? '#EAF0FA' : '#EFEEEA') + '; padding:2px 7px; border-radius:999px;') : 'display:none;',
+        })),
+      };
+    });
+
+    // suggestions
+    const suggestions = [
+      { icon: '📊', label: 'Start from my data', seed: 'I have result files from a parametric study and want to turn them into a paper.' },
+      { icon: '🗂️', label: 'I have an outline', seed: 'I already have an outline and core message — help me draft and ground it.' },
+      { icon: '🔁', label: 'Reconstruct a past study', seed: 'Reconstruct a past study of mine into a publishable manuscript.' },
+    ].map(x => ({ icon: x.icon, label: x.label, onClick: () => this.startFromDescription(x.seed) }));
+
+    // essentials
+    const essDefs = [
+      { kind: 'journal', label: 'Journal info', tag: 'ok', detail: 'Journal of Biomechanics · field set', btn: 'Edit' },
+      { kind: 'core', label: 'Core message + novelty', tag: 'ok', detail: '3 novelty claims detected', btn: 'Edit' },
+      { kind: 'outline', label: 'Outline', tag: 'thin', detail: 'Method & Result only — Intro/Discussion empty', btn: 'Fill in' },
+      { kind: 'data', label: 'Data', tag: 'gap', detail: 'No files attached — claims can’t be grounded yet', btn: 'Attach' },
+    ];
+    const essentials = essDefs.map(e => {
+      const c = e.tag === 'ok' ? '#3f7d57' : e.tag === 'thin' ? '#b08a2e' : '#b5503c';
+      const bg = e.tag === 'ok' ? '#E7F0EA' : e.tag === 'thin' ? '#F4ECD8' : '#F6E3DD';
+      const active = s.panel.open && s.panel.kind === e.kind;
+      return {
+        label: e.label, detail: e.detail,
+        tag: e.tag === 'ok' ? 'ready' : e.tag === 'thin' ? 'thin' : 'missing',
+        tagStyle: 'font-size:10px; font-weight:700; color:' + c + '; background:' + bg + '; padding:1px 7px; border-radius:999px; margin-left:4px;',
+        dotStyle: 'flex:none; width:9px; height:9px; border-radius:50%; margin-top:5px; background:' + c + ';',
+        btnLabel: active ? 'Close' : e.btn, btnColor: e.tag === 'ok' ? '#56544f' : '#1f1f1e',
+        onClick: () => this.togglePanel(e.kind),
+      };
+    });
+
+    // q2 reasoning
+    const q2Defs = [
+      { id: 'a', kind: 'claim graph', question: 'Novelty C1 — “ΔPSS beats static PSS”. Is that your finding (Fig 6) or cited from prior work?', why: 'Sets whether it’s a result or background, and which node grounds it.', ph: 'e.g. Our finding — Fig 6 separates ruptured vs stable' },
+      { id: 'b', kind: 'figure', question: 'The sensitivity figure — group factors as material/hemodynamic/morphological, or rank each individually?', why: 'Decides Fig 3’s structure and the Result narrative.', ph: 'e.g. Grouped, then a ranked inset' },
+      { id: 'c', kind: 'claim graph', question: 'Claim C3 “material dominates” — grounded by S₁(E_vessel) or S_total?', why: 'Picks the evidence edge for the strongest claim.', ph: 'e.g. S₁(E_vessel), the top first-order index' },
+    ];
+    const q2 = q2Defs.map(q => ({
+      kind: q.kind, question: q.question, why: q.why, ph: q.ph,
+      kindStyle: 'flex:none; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:#3E63B8; background:#EAF0FA; padding:2px 7px; border-radius:5px;',
+      value: s.q2[q.id],
+      onInput: (e) => { const v = e.target.value; this.setState(st => ({ q2: { ...st.q2, [q.id]: v } })); },
+      onSkip: () => this.setState(st => ({ q2: { ...st.q2, [q.id]: '(You decide)' } })),
+    }));
+    const pending = Object.values(s.q2).filter(v => !String(v).trim()).length;
+
+    // messages mapping
+    const messages = s.messages.map(m => ({
+      text: m.text,
+      isUser: m.kind === 'user',
+      isAssistant: m.kind === 'assistant',
+      isEssentials: m.kind === 'essentials',
+      isSearch: m.kind === 'search',
+      isQuestions: m.kind === 'questions',
+      isGenerating: m.kind === 'generating',
+      isResult: m.kind === 'result',
+      searchMeta: m.searchMeta, searchBadge: m.searchBadge, searchBadgeStyle: m.searchBadgeStyle, refs: m.refs || [],
+      genLog: m.genLog,
+    }));
+
+    const stageLabel = { greet: 'new trial', essentials: 'essentials', search: 'prior work', questions: 'reasoning', generating: 'compiling', done: 'draft ready' }[s.phase];
+
+    return {
+      threadRef: this.threadRef,
+      isEmpty,
+      hasThread: chatView && !emptyBase,
+      isSourceView: !chatView,
+      sourceProject: s.sourceProject,
+      srcTabSources: s.srcTab === 'sources',
+      srcTabChats: s.srcTab === 'chats',
+      onTabChats: () => this.setState({ srcTab: 'chats' }),
+      onTabSources: () => this.setState({ srcTab: 'sources' }),
+      tabChatsStyle: 'font-family:inherit; font-size:13.5px; font-weight:600; border:none; border-radius:999px; padding:7px 16px; cursor:pointer; color:' + (s.srcTab === 'chats' ? '#1f1f1e' : '#8a8984') + '; background:' + (s.srcTab === 'chats' ? '#ECEBE7' : 'transparent') + ';',
+      tabSourcesStyle: 'font-family:inherit; font-size:13.5px; font-weight:600; border:none; border-radius:999px; padding:7px 16px; cursor:pointer; color:' + (s.srcTab === 'sources' ? '#1f1f1e' : '#8a8984') + '; background:' + (s.srcTab === 'sources' ? '#ECEBE7' : 'transparent') + ';',
+      hasSources: true,
+      sourceFiles: [
+        { icon: '📊', name: 'sobol_indices.csv', meta: 'CSV · 4.1 KB · added by trial 2' },
+        { icon: '📊', name: 'geometry_params.csv', meta: 'CSV · 18 KB · added by trial 1' },
+        { icon: '📑', name: 'references.bib', meta: 'BibTeX · 12 entries' },
+      ],
+      projChats: [
+        { title: 'Draft from data', meta: 'Last opened 2h ago', tag: 'live', tagStyle: 'flex:none; font-size:9.5px; font-weight:700; color:#3E63B8; background:#EAF0FA; padding:3px 8px; border-radius:999px;' },
+        { title: 'Q1 → Q2 reasoning flow', meta: 'Yesterday', tag: '', tagStyle: 'display:none;' },
+        { title: 'Baseline outline & figures', meta: '3 days ago', tag: '', tagStyle: 'display:none;' },
+      ],
+      headerTitle: 'Coronary plaque — rupture index',
+      headerStage: 'trial 3 · ' + stageLabel,
+
+      projects,
+      sidebarOpen: s.sidebarOpen,
+      sidebarClosed: !s.sidebarOpen,
+      onToggleSidebar: () => this.setState(st => ({ sidebarOpen: !st.sidebarOpen })),
+      onNewSession: () => this.newTrial(),
+      onNewProject: () => {},
+      suggestions,
+
+      input: s.input,
+      onInput: (e) => this.setState({ input: e.target.value }),
+      onKey: (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); this.send(); } },
+      onSend: () => this.send(),
+      composerPlaceholder: s.phase === 'done' ? 'Ask for a change — e.g. tighten the abstract…' : 'Reply, or add detail…',
+
+      messages,
+      essentials,
+      onProceed: () => this.proceedToSearch(),
+
+      q2,
+      genDisabled: pending > 0,
+      genBtnStyle: 'font-family:inherit; font-size:13px; font-weight:700; color:#fff; background:' + (pending > 0 ? '#bdbcb6' : 'var(--ink)') + '; border:none; border-radius:9px; padding:9px 16px; cursor:' + (pending > 0 ? 'not-allowed' : 'pointer') + ';',
+      genNote: pending > 0 ? (pending + ' to answer (or skip)') : 'All set — I’ll ground everything as I write.',
+      genNoteColor: pending > 0 ? '#8a8984' : '#3f7d57',
+      onGenerate: () => this.generate(),
+
+      // ---- split panel ----
+      panelOpen: s.panel.open,
+      onClosePanel: () => this.closePanel(),
+      onOpenPaper: () => this.openPanel('paper'),
+      panelTitle: ({ journal: 'journal info', core: 'core message', outline: 'outline', data: 'data', paper: 'Manuscript — draft' })[s.panel.kind] || '',
+      panelTag: s.panel.kind === 'paper' ? 'read-only' : 'editing',
+      panelTagStyle: 'font-size:10px; font-weight:700; color:var(--muted); background:#F2F1ED; padding:2px 8px; border-radius:999px;',
+      pJournal: s.panel.kind === 'journal',
+      pCore: s.panel.kind === 'core',
+      pOutline: s.panel.kind === 'outline',
+      pData: s.panel.kind === 'data',
+      pPaper: s.panel.kind === 'paper',
+      fField: s.form.field, onFField: (e) => this.setForm('field', e.target.value),
+      fTarget: s.form.target, onFTarget: (e) => this.setForm('target', e.target.value),
+      fTitle: s.form.title, onFTitle: (e) => this.setForm('title', e.target.value),
+      fAffil: s.form.affil, onFAffil: (e) => this.setForm('affil', e.target.value),
+      fPara: s.form.para, onFPara: (e) => this.setForm('para', e.target.value),
+      novelty: [
+        { num: '1.', text: 'ΔPSS explains rupture risk better than static peak stress' },
+        { num: '2.', text: 'A rupture-risk index must be normalized by material strength' },
+        { num: '3.', text: 'Solid-domain material properties dominate rupture-risk sensitivity' },
+      ],
+      sections: [
+        { key: 'intro', label: 'Introduction', req: 'optional', reqStyle: 'font-size:9.5px; font-weight:700; color:var(--muted); margin-left:auto;', value: s.form.intro, ph: 'Disease burden → rupture is key → limits of existing indices → our approach', onInput: (e) => this.setForm('intro', e.target.value) },
+        { key: 'method', label: 'Method', req: 'required', reqStyle: 'font-size:9.5px; font-weight:700; color:#b5503c; margin-left:auto;', value: s.form.method, ph: 'What you want to convey…', onInput: (e) => this.setForm('method', e.target.value) },
+        { key: 'result', label: 'Result', req: 'required', reqStyle: 'font-size:9.5px; font-weight:700; color:#b5503c; margin-left:auto;', value: s.form.result, ph: 'What you want to convey…', onInput: (e) => this.setForm('result', e.target.value) },
+        { key: 'discussion', label: 'Discussion', req: 'optional', reqStyle: 'font-size:9.5px; font-weight:700; color:var(--muted); margin-left:auto;', value: s.form.discussion, ph: 'Meaning & limits, comparison to prior work', onInput: (e) => this.setForm('discussion', e.target.value) },
+        { key: 'conclusion', label: 'Conclusion', req: 'optional', reqStyle: 'font-size:9.5px; font-weight:700; color:var(--muted); margin-left:auto;', value: s.form.conclusion, ph: 'Key contribution + clinical implication (no overclaiming)', onInput: (e) => this.setForm('conclusion', e.target.value) },
+      ],
+      dataFiles: [
+        { kind: 'csv', name: 'sobol_indices.csv', meta: '4.1 KB' },
+        { kind: 'csv', name: 'geometry_params.csv', meta: '18 KB' },
+        { kind: 'bib', name: 'references.bib', meta: '12 entries' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

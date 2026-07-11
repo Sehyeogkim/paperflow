@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_002",
+  "study_archetype": "in vivo clinical diagnostic feasibility study",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "study population and setting",
+      "category": "data_or_sample",
+      "sub_category": "human patients undergoing carotid endarterectomy and femoral artery bypass surgeries",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "number of measurement sites",
+      "category": "data_or_sample",
+      "sub_category": "74 in vivo Raman measurement sites",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "histological reference standard subset",
+      "category": "data_or_sample",
+      "sub_category": "34 surgically biopsied sites examined histologically",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "primary method/technology",
+      "category": "methods",
+      "sub_category": "in vivo Raman spectroscopy via optical fiber probe",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "diagnostic performance",
+      "category": "outcomes",
+      "sub_category": "sensitivity and specificity for identifying vulnerable plaque (79% and 85%)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "spectral acquisition performance",
+      "category": "numerical_or_experimental_settings",
+      "sub_category": "signal-to-noise ratio sufficient spectra obtained in 1 second",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_004",
+  "study_archetype": "comparative finite-element structural analysis with histopathological correlation",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: test hypothesis that plaque rupture occurs at sites of high circumferential stress",
+      "category": "objective",
+      "sub_category": "primary hypothesis",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: comparative study of ruptured versus stable coronary lesions",
+      "category": "study_design",
+      "sub_category": "case-control (lesion-level) comparison",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: 24 coronary artery lesions (12 lethal myocardial infarction ruptured lesions, 12 stable control lesions)",
+      "category": "data_or_sample",
+      "sub_category": "sample size and groups",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: finite element model to calculate circumferential stress at mean intraluminal pressure of 110 mm Hg",
+      "category": "methods",
+      "sub_category": "finite element stress analysis",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: maximum circumferential stress per lesion and number of high-stress regions (>2250 mm Hg)",
+      "category": "outcomes",
+      "sub_category": "stress metrics",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "results: ruptured vs stable maximum stress 4091 +/- 1199 vs 1444 +/- 485 mm Hg (p < 0.0001); 12/12 ruptured lesions had 31 regions >2250 mm Hg vs 1/12 controls; 7/12 ruptures occurred at region of maximum stress (partial reporting)",
+      "category": "results",
+      "sub_category": "primary quantitative findings",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

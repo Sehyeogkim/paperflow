@@ -1,0 +1,54 @@
+{
+  "claims": [
+    {
+      "id": "C1",
+      "text": "파열위험지표는 stress/strength로 정의되어야 하며, stress는 ΔPSS(심장주기 내 진폭·피로 관점)가 임상적으로 더 적합하다.",
+      "status": "grounded",
+      "evidence_ids": [
+        "E_sim_validation"
+      ],
+      "data_ids": [],
+      "reference_ids": [
+        "W_deltaPSS_fatigue"
+      ]
+    },
+    {
+      "id": "C2",
+      "text": "파열위험 지표 정의에는 strength(재료물성)를 분모로 넣어 정규화하는 것이 필요하며, 정규화 지수 α에 따라 민감도와 특성이 달라진다.",
+      "status": "missing",
+      "evidence_ids": [],
+      "data_ids": [],
+      "reference_ids": []
+    },
+    {
+      "id": "C3",
+      "text": "전역 민감도 분석(Sobol) 결과 재료물성(material)이 혈류역학·형태학보다 파열위험 분산을 더 많이 설명한다 (Material > Hemodynamics > Morphology).",
+      "status": "grounded",
+      "evidence_ids": [
+        "E_Sobol_grouped",
+        "E_Sobol_individual"
+      ],
+      "data_ids": [],
+      "reference_ids": [
+        "W_sobol_theory"
+      ]
+    },
+    {
+      "id": "C4",
+      "text": "비용효율적 맥동성 FSI와 Gaussian Process 대리모델을 결합하면 대규모 입력공간에서 실용적으로 전역 민감도 분석을 수행할 수 있다.",
+      "status": "grounded",
+      "evidence_ids": [
+        "E_GPR_performance"
+      ],
+      "data_ids": [],
+      "reference_ids": [
+        "W_gpr_justification"
+      ]
+    }
+  ],
+  "warnings": [
+    "claim_without_evidence: 파열위험 지표 정의에는 strength(재료물성)를 분모로 넣어 정규화하는 것이 필요하며, 정규화 지수 α에 따라 민감도와 특성이 달라진다.",
+    "evidence_without_provenance: Grouped Sobol indices show Material group explains more variance (S1 and ST) than Hemodynamics or Morphology across phenotypes and selected VIs.",
+    "evidence_without_provenance: Individual-parameter Sobol indices identify top drivers E_vessel, E_FC, SBP, PP across phenotypes and selected VIs."
+  ]
+}

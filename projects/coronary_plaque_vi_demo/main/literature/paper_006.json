@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_006",
+  "study_archetype": "prospective clinical imaging trial comparing PET tracers for plaque identification",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "primary endpoint: comparison of 18F-NaF tissue-to-background ratios between culprit and non-culprit coronary plaques in AMI patients",
+      "category": "objective",
+      "sub_category": "primary endpoint",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study design: prospective clinical trial with two patient groups (myocardial infarction and stable angina)",
+      "category": "study_design",
+      "sub_category": "prospective clinical trial; cohort groups",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: patient numbers – 40 myocardial infarction, 40 stable angina (PET-CT and invasive coronary angiography)",
+      "category": "data_or_sample",
+      "sub_category": "patient cohort size and procedures",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: imaging modalities used – combined PET-CT with 18F-NaF and 18F-FDG; invasive coronary angiography; comparisons with carotid histology and intravascular ultrasound",
+      "category": "methods",
+      "sub_category": "imaging and comparative validation methods",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: reported main quantitative result – higher median maximum tissue-to-background ratio for culprit vs non-culprit plaques (example values given in abstract)",
+      "category": "outcomes",
+      "sub_category": "primary quantitative imaging outcome (TBR comparison)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "validation: ex vivo and other-modal validation – 18F-NaF compared with carotid endarterectomy histology and intravascular ultrasound",
+      "category": "validation",
+      "sub_category": "histological and IVUS validation of tracer uptake",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

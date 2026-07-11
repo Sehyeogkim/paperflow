@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_002",
+  "study_archetype": "review / perspective on mechanisms",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: role of biomechanical forces in coronary atherosclerosis",
+      "category": "objective",
+      "sub_category": "review objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: narrative review",
+      "category": "study_design",
+      "sub_category": "review article",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data/sample: discussion of coronary atherosclerosis literature",
+      "category": "data_or_sample",
+      "sub_category": "literature sources",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Primary methods: synthesis of biomechanical and clinical evidence",
+      "category": "methods",
+      "sub_category": "conceptual synthesis",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Main outcomes: conceptual framework linking biomechanical forces to disease natural history",
+      "category": "outcomes",
+      "sub_category": "theoretical conclusions",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Main results/conclusions: biomechanical forces influence plaque development and clinical events",
+      "category": "results",
+      "sub_category": "conclusions",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

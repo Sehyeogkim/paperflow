@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_010",
+  "study_archetype": "CFD dataset generation with ML prediction of hemodynamic indices",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: predict hemodynamic parameters (TAWSS and OSI) using ML trained on CFD",
+      "category": "objective",
+      "sub_category": "primary aim",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: synthetic geometry generation and CFD-to-ML pipeline",
+      "category": "study_design",
+      "sub_category": "computational study (synthetic dataset + ML)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: dataset of 6858 synthetic left coronary artery (LCA) geometries with varying plaque severities and locations",
+      "category": "data_or_sample",
+      "sub_category": "synthetic geometries",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: CFD simulations to compute time-averaged wall shear stress (TAWSS) and oscillatory shear index (OSI)",
+      "category": "methods",
+      "sub_category": "CFD-derived hemodynamic metrics",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: fourteen machine learning algorithms employed for prediction",
+      "category": "methods",
+      "sub_category": "ML algorithms (n=14)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: ML models trained to predict complex hemodynamics non-invasively (TAWSS and OSI)",
+      "category": "outcomes",
+      "sub_category": "ML prediction performance (general)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

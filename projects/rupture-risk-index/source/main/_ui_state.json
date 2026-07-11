@@ -1,0 +1,15 @@
+{
+  "form": {
+    "field": "Cardiology/Computational Biology",
+    "target": "Computers in Biology and Medicine",
+    "title": "",
+    "affiliation": "",
+    "paragraph": "This study aims to define a rupture-risk index based on a 1,000-sample cost-effective FSI study focused on coronary plaque rupture risk. The goal is to identify the factors that drive this index, providing insights into the mechanisms behind plaque rupture.",
+    "novelty": [
+      "Introduction of a new rupture-risk index (ΔPSS / strength)",
+      "Cost-effective approach using a large sample size (1,000 samples)",
+      "Focus on the drivers of coronary plaque rupture risk"
+    ],
+    "outlineQuick": "1. Introduction to coronary plaque rupture and its significance\n2. Overview of the FSI study methodology\n3. Definition of the rupture-risk index\n4. Analysis of factors driving the rupture-risk index\n5. Discussion of implications for clinical practice\n6. Conclusion and future directions"
+  }
+}

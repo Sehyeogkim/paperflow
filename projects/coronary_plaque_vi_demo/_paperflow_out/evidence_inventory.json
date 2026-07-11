@@ -1,0 +1,696 @@
+{
+  "assets": [
+    {
+      "path": "data/cost_effective_FSI_BC/bc.md",
+      "kind": "md",
+      "user_description": "비용효율 맥동성 FSI의 경계조건(BC) 설정 설명 — Method 시뮬레이션 셋업 근거.",
+      "inferred_description": "Text document specifying the boundary condition (BC) implementation and choices for the cost‑effective pulsatile FSI simulations (inlet/outlet BC treatment, coupling BCs, non‑reflecting / resistance outlet implementation and any BC tuning used to obtain physiologic pressure/flow). Serves as the simulation setup reference for the Methods and reproducibility.",
+      "inferred_role": "simulation_boundary_condition_spec",
+      "unit_of_analysis": "document / simulation setup description",
+      "related_sections": [
+        "method",
+        "supplementary"
+      ],
+      "artifact_usage": [
+        "table",
+        "method"
+      ],
+      "confidence": "high",
+      "columns": {},
+      "profile": {
+        "kind": "text",
+        "lines": 46,
+        "chars": 1182,
+        "head": "### ideal coronary \nParameter\tValue\tUnit\nRa\t78827.25\tdynes·s/cm⁵\nC_cor\t0.396E-6\tcm⁵/dynes\nR_a-mic\t128094.28\tdynes·s/cm⁵\nC_myo\t3.20E-05\tcm⁵/dynes\nRv\t19706.81\tdynes·s/cm⁵\nRv-mic\t19706.81\tdynes·s/cm⁵\n\n\n### total CA, Heary Inlet\nParameter\tValue\tUnit\nCO\t5.0\tL/min\ntcycle\t1.0\ts\ntsys\t0.33\ts"
+      },
+      "key_observations": [
+        "Provides BC rationale and settings used by the cost‑effective pulsatile FSI solver referenced in Methods.",
+        "Supports reproducibility of FSI runs (inlet waveform, outlet resistance/no‑reflection, coupling assumptions)."
+      ],
+      "uncertainties": []
+    },
+    {
+      "path": "data/input_parameter/elastance.dat",
+      "kind": "dat",
+      "user_description": "시간-심근 elastance 파형 — FSI 심근 경계조건 입력.",
+      "inferred_description": "Time series file of cardiac elastance vs cardiac phase/time used to drive the myocardial / downstream boundary condition in the pulsatile FSI setup (one row per time sample across the cardiac cycle).",
+      "inferred_role": "elastance_time_series_bc",
+      "unit_of_analysis": "one time sample (point in cardiac cycle)",
+      "related_sections": [
+        "method"
+      ],
+      "artifact_usage": [
+        "figure",
+        "method"
+      ],
+      "confidence": "high",
+      "columns": {},
+      "profile": {
+        "kind": "text",
+        "lines": 1385,
+        "chars": 45705,
+        "head": "  0.0000000e+000  7.8935972e-002\n  2.5000000e-003  7.9531081e-002\n  5.0000000e-003  8.0179957e-002\n  7.5000000e-003  8.0884088e-002\n  1.0000000e-002  8.1644909e-002\n  1.2500000e-002  8.2463808e-002\n  1.5000000e-002  8.3342113e-002\n  1.7500000e-002  8.4281097e-002\n  2.0000000e-002  8.5281973e-002\n  2.2500000e-002  8.6345889e-002\n  2.5000000e-002  8.7473926e-002\n  2.7500000e-002  8.8667099e-002\n  3.0000000e-002  8.9926351e-002\n  3.2500000e-002  9.1252550e-002\n  3.5000000e-002  9.2646491e-002"
+      },
+      "key_observations": [
+        "Provides the temporal elastance waveform used as an input BC to produce physiologic pressure/flow coupling in the FSI runs.",
+        "Used together with inflow.dat and BC spec to reproduce pulsatile conditions."
+      ],
+      "uncertainties": []
+    },
+    {
+      "path": "data/input_parameter/inflow.dat",
+      "kind": "dat",
+      "user_description": "관상동맥 입구 유량(inflow) 파형 — FSI 맥동성 경계조건 입력.",
+      "inferred_description": "Time series file of coronary inlet volumetric flow vs time (cardiac cycle) used as the Dirichlet inflow boundary condition for the 3D Navier–Stokes FSI simulations.",
+      "inferred_role": "inlet_flow_time_series",
+      "unit_of_analysis": "one time sample (point in cardiac cycle)",
+      "related_sections": [
+        "method"
+      ],
+      "artifact_usage": [
+        "figure",
+        "method"
+      ],
+      "confidence": "high",
+      "columns": {},
+      "profile": {
+        "kind": "text",
+        "lines": 1001,
+        "chars": 16411,
+        "head": "0.00000 0.67117\n0.00100 0.71306\n0.00200 0.75713\n0.00300 0.80337\n0.00400 0.85178\n0.00500 0.90236\n0.00600 0.95511\n0.00700 1.01004\n0.00800 1.06756\n0.00900 1.12727\n0.01000 1.18914\n0.01100 1.25318\n0.01200 1.31940\n0.01300 1.38779\n0.01400 1.45836"
+      },
+      "key_observations": [
+        "Defines the pulsatile inflow waveform applied at the coronary model inlet for all simulations.",
+        "Together with elastance.dat and bc.md, establishes the hemodynamic forcing for ΔPSS and PSS computation."
+      ],
+      "uncertainties": []
+    },
+    {
+      "path": "data/input_parameter/input.csv",
+      "kind": "csv",
+      "user_description": "1,000-sample 입력 설계공간: 형태·혈류역학·재료 3군 파라미터 (DOS, lesion_length, E_vessel, E_fc, SBP, PP 등). Method의 설계공간 근거.",
+      "inferred_description": "Design‑of‑experiments table of 1,000 simulation cases (rows), each row encoding one sampled combination of morphology, hemodynamic and material parameters used as FSI inputs (columns include DOS, lesion_length, fc_av_th, SBP, PP, E_vessel, E_fc, E_lipid, E_cal, etc.). Serves as the primary input design space for data generation and surrogate training.",
+      "inferred_role": "input_design_space_sampled_parameters",
+      "unit_of_analysis": "one simulation case / parameter set (row)",
+      "related_sections": [
+        "method",
+        "result",
+        "supplementary"
+      ],
+      "artifact_usage": [
+        "table",
+        "supplementary"
+      ],
+      "confidence": "high",
+      "columns": {
+        "DOS": "float",
+        "lesion_length": "float",
+        "lumen_axial_skewness": "float",
+        "lipid_length_ratio": "float",
+        "alpha": "float",
+        "PI": "float",
+        "d_fc_ca": "float",
+        "fraction": "float",
+        "ca_axial_skewness": "float",
+        "ca_shoulder_skewness": "float",
+        "ca_strength_ratio": "float",
+        "fc_av_th": "float",
+        "SBP": "float",
+        "PP": "float",
+        "tau": "float",
+        "DBP": "float",
+        "E_vessel": "int",
+        "E_fc": "int",
+        "E_lipid": "int",
+        "E_cal": "int"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 1000,
+        "columns": {
+          "DOS": "float",
+          "lesion_length": "float",
+          "lumen_axial_skewness": "float",
+          "lipid_length_ratio": "float",
+          "alpha": "float",
+          "PI": "float",
+          "d_fc_ca": "float",
+          "fraction": "float",
+          "ca_axial_skewness": "float",
+          "ca_shoulder_skewness": "float",
+          "ca_strength_ratio": "float",
+          "fc_av_th": "float",
+          "SBP": "float",
+          "PP": "float",
+          "tau": "float",
+          "DBP": "float",
+          "E_vessel": "int",
+          "E_fc": "int",
+          "E_lipid": "int",
+          "E_cal": "int"
+        },
+        "numeric_ranges": {
+          "DOS": [
+            0.2507,
+            0.7479
+          ],
+          "lesion_length": [
+            1.0269,
+            2.9957
+          ],
+          "lumen_axial_skewness": [
+            -0.4979,
+            0.4994
+          ],
+          "lipid_length_ratio": [
+            0.5005,
+            0.7997
+          ],
+          "alpha": [
+            120.3,
+            269.3
+          ],
+          "PI": [
+            0.901,
+            1.199
+          ],
+          "d_fc_ca": [
+            0.0051,
+            0.02
+          ],
+          "fraction": [
+            0.1049,
+            0.7959
+          ],
+          "ca_axial_skewness": [
+            0.0031,
+            0.7985
+          ],
+          "ca_shoulder_skewness": [
+            0.0001,
+            0.7974
+          ],
+          "ca_strength_ratio": [
+            0.122,
+            7.7614
+          ],
+          "fc_av_th": [
+            0.01,
+            0.01
+          ],
+          "SBP": [
+            100.87,
+            169.94
+          ],
+          "PP": [
+            35.24,
+            79.99
+          ],
+          "tau": [
+            0.0141,
+            0.49864
+          ],
+          "DBP": [
+            41.64,
+            129.66
+          ],
+          "E_vessel": [
+            1140509.0,
+            13898610.0
+          ],
+          "E_fc": [
+            4007995.0,
+            22918092.0
+          ],
+          "E_lipid": [
+            20501.0,
+            997305.0
+          ],
+          "E_cal": [
+            8069298794.0,
+            249798996858.0
+          ]
+        },
+        "sample_row": {
+          "DOS": "0.4767",
+          "lesion_length": "1.6932",
+          "lumen_axial_skewness": "0.417",
+          "lipid_length_ratio": "0.7298",
+          "alpha": "156.7",
+          "PI": "1.022",
+          "d_fc_ca": "0.0079",
+          "fraction": "0.2698",
+          "ca_axial_skewness": "0.3292",
+          "ca_shoulder_skewness": "0.5611",
+          "ca_strength_ratio": "2.3442",
+          "fc_av_th": "0.01",
+          "SBP": "160.82",
+          "PP": "66.59",
+          "tau": "0.14879",
+          "DBP": "94.23",
+          "E_vessel": "13794939",
+          "E_fc": "19837661",
+          "E_lipid": "878370",
+          "E_cal": "143396539569"
+        },
+        "truncated": true
+      },
+      "key_observations": [
+        "Contains the 1,000 LHS (and/or DOE) samples spanning morphology, hemodynamics and material properties used to run the cost‑effective FSI simulations.",
+        "Columns match the described input_variable list in Methods (e.g., DOS, lesion_length, fc_av_th, SBP, PP, E_vessel, E_fc, E_lipid, E_cal).",
+        "Sample/value ranges indicate broad physiologic/material coverage used for GPR training and Sobol analysis."
+      ],
+      "uncertainties": [
+        "Numeric ranges for E_vessel, E_fc, E_lipid, E_cal in the provided profile appear to be large integers (Pa or raw units) — it is unclear whether these are expressed in consistent units (MPa vs Pa) relative to the Methods text (which cites MPa, kPa, GPa). Recommend confirming unit scaling conventions recorded in the file vs manuscript."
+      ]
+    },
+    {
+      "path": "data/sobol/sobol_grp_CP_VI1.csv",
+      "kind": "csv",
+      "user_description": "CP·VI1: 그룹별 Sobol S1·ST 민감도.",
+      "inferred_description": "Group‑level Sobol sensitivity results (first‑order S1 and total effect ST) computed for the CP phenotype using vulnerability index candidate VI1. Each row reports a factor group (Morphology, Hemodynamics, Material) and its S1 and ST values — used to support claims about relative group contributions.",
+      "inferred_role": "sobol_group_sensitivity_result_CP_VI1",
+      "unit_of_analysis": "one factor group (row)",
+      "related_sections": [
+        "result",
+        "discussion",
+        "method"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "group": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 3,
+        "columns": {
+          "group": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            0.15145456790848685,
+            0.5087122894884933
+          ],
+          "ST": [
+            0.2442776326656704,
+            0.6259271505110576
+          ]
+        },
+        "sample_row": {
+          "group": "Morphology",
+          "S1": "0.15145456790848685",
+          "ST": "0.2442776326656704"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "Provides the partitioned Sobol S1 and ST values at the group level for CP·VI1 used to compare Material/Hemodynamics/Morphology contributions.",
+        "Supports group‑level sensitivity conclusions for CP under the VI1 definition."
+      ],
+      "uncertainties": []
+    },
+    {
+      "path": "data/sobol/sobol_grp_CP_VI2.csv",
+      "kind": "csv",
+      "user_description": "CP·VI2: 그룹별 Sobol S1·ST 민감도.",
+      "inferred_description": "Group‑level Sobol sensitivity table (S1 and ST) for the CP phenotype using vulnerability index candidate VI2. Used to quantify and compare the contribution of Morphology, Hemodynamics and Material groups to VI2 variability in CP models.",
+      "inferred_role": "sobol_group_sensitivity_result_CP_VI2",
+      "unit_of_analysis": "one factor group (row)",
+      "related_sections": [
+        "result",
+        "discussion"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "group": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 3,
+        "columns": {
+          "group": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            0.0437505506934874,
+            0.7967778987247732
+          ],
+          "ST": [
+            0.08924334397107396,
+            0.8358889185491081
+          ]
+        },
+        "sample_row": {
+          "group": "Morphology",
+          "S1": "0.0437505506934874",
+          "ST": "0.08924334397107396"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "Reports S1/ST per input group for CP·VI2 and enables group ranking for CP under the VI2 definition."
+      ],
+      "uncertainties": []
+    },
+    {
+      "path": "data/sobol/sobol_grp_LAP_VI1.csv",
+      "kind": "csv",
+      "user_description": "LAP·VI1: 그룹별(형태/재료/혈류역학) Sobol S1·ST 민감도.",
+      "inferred_description": "Group‑level Sobol sensitivity results (S1 and ST) for the LAP phenotype using vulnerability index VI1. Captures how much variability in LAP·VI1 is explained by morphology, hemodynamics and material groups.",
+      "inferred_role": "sobol_group_sensitivity_result_LAP_VI1",
+      "unit_of_analysis": "one factor group (row)",
+      "related_sections": [
+        "result",
+        "discussion"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "group": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 3,
+        "columns": {
+          "group": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            0.15084277960801465,
+            0.501286013821807
+          ],
+          "ST": [
+            0.24698767143679934,
+            0.6023101737614719
+          ]
+        },
+        "sample_row": {
+          "group": "Morphology",
+          "S1": "0.15084277960801465",
+          "ST": "0.2827357082026276"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "Provides group S1/ST values for LAP·VI1 to support comparisons across VI candidates and phenotypes."
+      ],
+      "uncertainties": []
+    },
+    {
+      "path": "data/sobol/sobol_grp_LAP_VI2.csv",
+      "kind": "csv",
+      "user_description": "LAP·VI2: 그룹별(형태/재료/혈류역학) Sobol S1·ST. Material 그룹 S1≈0.75로 지배적 — Material>Hemo>Morpho 주장 근거.",
+      "inferred_description": "Group‑level Sobol sensitivity results (S1 and ST) for the LAP phenotype using vulnerability index VI2. Shows that the Material group has a dominant first‑order contribution (S1≈0.75) relative to Hemodynamics and Morphology, supporting the claim 'Material > Hemo > Morpho'.",
+      "inferred_role": "sobol_group_sensitivity_result_LAP_VI2",
+      "unit_of_analysis": "one factor group (row)",
+      "related_sections": [
+        "result",
+        "discussion"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "group": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 3,
+        "columns": {
+          "group": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            0.07101564000174668,
+            0.7506966098655802
+          ],
+          "ST": [
+            0.11720173985933734,
+            0.7965081701408067
+          ]
+        },
+        "sample_row": {
+          "group": "Morphology",
+          "S1": "0.07101564000174668",
+          "ST": "0.13486512424408015"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "Material group S1 around 0.75 indicates strong dominance of material properties for LAP·VI2 variability.",
+        "Group ST values give information on interaction contributions as well."
+      ],
+      "uncertainties": []
+    },
+    {
+      "path": "data/sobol/sobol_ind_CP_VI1.csv",
+      "kind": "csv",
+      "user_description": "CP·VI1 지표: 개별 파라미터별 Sobol S1·ST 민감도.",
+      "inferred_description": "Parameter‑level Sobol sensitivity results (first‑order S1 and total ST) for individual input parameters in CP phenotype evaluated with VI1. Each row corresponds to a single input parameter (e.g., E_fc, SBP) and its S1/ST values — used to rank parameter importance for CP·VI1.",
+      "inferred_role": "sobol_parameter_sensitivity_result_CP_VI1",
+      "unit_of_analysis": "one input parameter (row)",
+      "related_sections": [
+        "result",
+        "discussion",
+        "supplementary"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "parameter": "text",
+        "display_name": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 14,
+        "columns": {
+          "parameter": "text",
+          "display_name": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            -0.0020628712362619913,
+            0.31536745507105857
+          ],
+          "ST": [
+            1.5825702114021227e-10,
+            0.4287926475516295
+          ]
+        },
+        "sample_row": {
+          "parameter": "DOS",
+          "display_name": "DOS",
+          "S1": "0.050998828572254615",
+          "ST": "0.08852993994718819"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "Contains individual parameter S1 and ST enabling ranking of parameters for CP under VI1.",
+        "Numeric ranges indicate some parameters contribute non‑negligibly while others have near‑zero S1."
+      ],
+      "uncertainties": []
+    },
+    {
+      "path": "data/sobol/sobol_ind_CP_VI2.csv",
+      "kind": "csv",
+      "user_description": "CP(석회화 플라크)·VI2 지표: 개별 파라미터별 Sobol S1·ST 민감도.",
+      "inferred_description": "Parameter‑level Sobol sensitivity results (S1 and ST) for individual input parameters in CP phenotype evaluated with VI2. Used to identify which specific parameters (material, hemodynamic, morphology) drive CP·VI2 variability.",
+      "inferred_role": "sobol_parameter_sensitivity_result_CP_VI2",
+      "unit_of_analysis": "one input parameter (row)",
+      "related_sections": [
+        "result",
+        "discussion"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "parameter": "text",
+        "display_name": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 14,
+        "columns": {
+          "parameter": "text",
+          "display_name": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            -1.316469145813798e-9,
+            0.6272396200605556
+          ],
+          "ST": [
+            9.785591570057206e-17,
+            0.6340939312313216
+          ]
+        },
+        "sample_row": {
+          "parameter": "DOS",
+          "display_name": "DOS",
+          "S1": "0.01821305451924902",
+          "ST": "0.029629104139830748"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "Shows per‑parameter importance for CP·VI2; ranges include near‑zero to substantial S1 values indicating differentiated importance across inputs."
+      ],
+      "uncertainties": []
+    },
+    {
+      "path": "data/sobol/sobol_ind_LAP_VI1.csv",
+      "kind": "csv",
+      "user_description": "LAP·VI1 지표: 개별 파라미터별 Sobol S1·ST 민감도.",
+      "inferred_description": "Parameter‑level Sobol sensitivity results (S1 and ST) for individual inputs in LAP phenotype for VI1. Provides the S1 and ST values per parameter used for ranking effects in LAP·VI1.",
+      "inferred_role": "sobol_parameter_sensitivity_result_LAP_VI1",
+      "unit_of_analysis": "one input parameter (row)",
+      "related_sections": [
+        "result",
+        "discussion",
+        "supplementary"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "parameter": "text",
+        "display_name": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 12,
+        "columns": {
+          "parameter": "text",
+          "display_name": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            0.0009316298489435725,
+            0.3068211191558551
+          ],
+          "ST": [
+            0.0010592150568327244,
+            0.40823694412671824
+          ]
+        },
+        "sample_row": {
+          "parameter": "DOS",
+          "display_name": "DOS",
+          "S1": "0.002479380740172285",
+          "ST": "0.05424249973456474"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "Parameter S1/ST entries allow identification of modestly influential parameters for LAP·VI1.",
+        "Useful for cross‑comparing parameter importance across VI definitions and phenotypes."
+      ],
+      "uncertainties": []
+    },
+    {
+      "path": "data/sobol/sobol_ind_LAP_VI2.csv",
+      "kind": "csv",
+      "user_description": "LAP(저감쇠 플라크)·VI2 지표: 개별 파라미터별 Sobol S1·ST 민감도. E_fc가 S1≈0.55로 1위, 상위 4인자 = E_vessel·E_FC·SBP·PP. Results의 '재료물성 지배' 핵심 근거.",
+      "inferred_description": "Parameter‑level Sobol sensitivity table (S1 and ST) for LAP phenotype using the selected vulnerability index VI2. Contains per‑parameter first‑order and total Sobol indices; shows E_fc has the largest first‑order effect (S1 ≈ 0.55) and top four drivers are E_vessel, E_fc, SBP, PP — the core evidence for the 'material dominance' result.",
+      "inferred_role": "sobol_parameter_sensitivity_result_LAP_VI2",
+      "unit_of_analysis": "one input parameter (row)",
+      "related_sections": [
+        "result",
+        "discussion"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "parameter": "text",
+        "display_name": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 12,
+        "columns": {
+          "parameter": "text",
+          "display_name": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            0.0005356759060444509,
+            0.5503271567987186
+          ],
+          "ST": [
+            0.0006121616232192089,
+            0.5750852121099204
+          ]
+        },
+        "sample_row": {
+          "parameter": "DOS",
+          "display_name": "DOS",
+          "S1": "0.002047199288339986",
+          "ST": "0.025928585350271493"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "E_fc is the leading first‑order contributor (S1 ≈ 0.55) for LAP·VI2; E_vessel, SBP and PP are also among the top contributors — directly supporting the claim that material properties and systolic/pressure variables dominate VI variability.",
+        "ST values indicate interaction magnitudes and complement S1 for interpreting non‑additive effects."
+      ],
+      "uncertainties": []
+    }
+  ]
+}

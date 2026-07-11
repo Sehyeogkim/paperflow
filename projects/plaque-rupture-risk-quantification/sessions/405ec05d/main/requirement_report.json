@@ -1,0 +1,110 @@
+{
+  "study_type": "computational_biomechanics",
+  "classification": "EXPERT_REVIEW_REQUIRED",
+  "present": [
+    "research_objective",
+    "study_subject_or_sample",
+    "primary_method",
+    "primary_outcome",
+    "main_result"
+  ],
+  "missing": [
+    {
+      "field": "VI_and_ΔPSS_definition",
+      "why_it_matters": "The paper's central claims compare stress metrics (ΔPSS) and define new vulnerability indices (VIs). Without precise mathematical definitions and how strength normalization is applied, the results cannot be reproduced or critically evaluated.",
+      "reviewer_risk": "high",
+      "question": "Provide the explicit mathematical definitions of the vulnerability index(es) and ΔPSS used in the study. State exactly how ΔPSS is computed from simulation outputs and how 'strength' is defined and applied in the normalization (including any exponents or scaling factors).",
+      "example": "Example answer: 'ΔPSS(x) = max_t PSS(x,t) − min_t PSS(x,t) over one cardiac cycle at location x; ΔPSS_cap = max_{x in cap_region} ΔPSS(x). VI1 = ΔPSS_cap / σ_failure_cap where σ_failure_cap = σ_ref * ca_strength_ratio^0.5. VI2 = log(1 + ΔPSS_cap) / (fc_av_th) (unitless).'",
+      "priority": 3.0
+    },
+    {
+      "field": "ΔPSS_spatio-temporal_aggregation",
+      "why_it_matters": "ΔPSS can be reported at a point, as a max over a region, or averaged. The selection affects rankings and Sobol sensitivity; reviewers need the exact aggregation (node-level, cap-maximum, mean over top X%).",
+      "reviewer_risk": "high",
+      "question": "State precisely how ΔPSS is aggregated spatially and temporally to produce the stress input to the VI calculation (e.g., nodal max in cap region, mean over top 5% nodes, time window used).",
+      "example": "Example answer: 'We computed ΔPSS at each mesh node over the final cardiac cycle; ΔPSS_cap was taken as the 99th percentile of ΔPSS across nodes in the fibrous cap region to reduce sensitivity to single-node noise.'",
+      "priority": 3.0
+    },
+    {
+      "field": "FSI_model_formulation_and_solver",
+      "why_it_matters": "Reproducibility/validity of FSI results depends on governing equations, constitutive assumptions, solver, coupling scheme, and software versions. Reviewers will reject vague descriptions.",
+      "reviewer_risk": "high",
+      "question": "Provide the FSI model formulation (fluid and solid governing equations), constitutive law(s) for each material, coupling strategy (monolithic or partitioned; implicit/explicit), numerical solvers and versions used, and any solver tolerances/relaxation settings.",
+      "example": "Example answer: 'Fluid: incompressible Navier–Stokes (Newtonian), ρ=1060 kg/m3, μ=0.0035 Pa·s. Solid: linear elastic isotropic for vessel/plaque components with Young's moduli from input.csv and ν=0.45. Two-way partitioned implicit coupling implemented in ANSYS Fluent R2020R2 + Mechanical via System Coupling; residual tolerance 1e-5 for velocity/pressure and displacement.'",
+      "priority": 3.0
+    },
+    {
+      "field": "material_models_and_parameters_detail",
+      "why_it_matters": "Input.csv lists E_vessel, E_fc, E_lipid, E_cal but not Poisson ratios, densities, failure criteria, or units/ranges. Material model choices strongly affect stress/ΔPSS and thus the central conclusions.",
+      "reviewer_risk": "high",
+      "question": "Specify for each material (vessel wall, fibrous cap, lipid core, calcification): constitutive model (linear elastic, hyperelastic, viscoelastic), Poisson's ratio, density, units of E values, and how 'strength' values/distributions used in normalization were chosen or sampled.",
+      "example": "Example answer: 'All soft tissues modeled as linear elastic isotropic with ν=0.45, ρ=1100 kg/m3. Young's moduli (E_vessel, E_fc, E_lipid, E_cal) in kPa. Cap strength sampled from a log-normal distribution with median 300 kPa and SD 50 kPa; ca_strength_ratio multiplies this baseline.'",
+      "priority": 3.0
+    },
+    {
+      "field": "sampling_method_and_parameter_distributions",
+      "why_it_matters": "1000 samples are provided but the sampling strategy (Monte Carlo, latin hypercube, stratified), parameter ranges/priors, and random seed are required to understand coverage and reproducibility of sensitivity results.",
+      "reviewer_risk": "medium-high",
+      "question": "Describe how the 1000 input cases were generated: sampling method, exact ranges or distributions for each input parameter, and random seed for reproducibility. Also indicate whether correlations between inputs were imposed.",
+      "example": "Example answer: 'We used Latin hypercube sampling with 1000 samples across parameter ranges in Table 1 (e.g., E_fc: 50–600 kPa, SBP: 90–160 mmHg), no inter-parameter correlations, random seed=42.'",
+      "priority": 2.0
+    },
+    {
+      "field": "Sobol_analysis_details",
+      "why_it_matters": "Sobol indices are central to claim 3. Reviewers need the exact algorithm (Saltelli vs Jansen), number of base samples, total model evaluations, treatment of parameter groups, confidence intervals/bootstrap approach and software used to compute indices.",
+      "reviewer_risk": "medium",
+      "question": "Provide full details of the Sobol sensitivity analysis: algorithm/implementation used, base sample size (N), total model runs, how group indices were formed, number of bootstrap/resamples for CIs, and the software/package (and version).",
+      "example": "Example answer: 'Saltelli's method via SALib v1.4.5 with N=2,000 base samples (total runs 2,000*(k+2)), bootstrap 1,000 resamples to compute 95% CIs. Groups were defined as: geometry, hemodynamics, materials (see Supplementary Table S2).' ",
+      "priority": 2.0
+    },
+    {
+      "field": "mesh_and_mesh_independence",
+      "why_it_matters": "Spatial resolution affects PSS/ΔPSS. Reviewers will expect mesh element types, typical cell counts, and a mesh refinement study showing convergence of the reported metrics.",
+      "reviewer_risk": "medium",
+      "question": "Provide mesh details (element types for fluid and solid, typical element/node counts per model) and a mesh-independence study showing how ΔPSS (or VI) changes with mesh refinement and the mesh chosen for the 1,000-sample runs.",
+      "example": "Example answer: 'Tetrahedral meshes with prism layers at walls; final fluid mesh ~300k elements, solid mesh ~50k elements. Mesh study (50k, 200k, 800k fluid elements) showed ΔPSS change <2% between 200k and 800k; we used ~300k in production.'",
+      "priority": 2.0
+    },
+    {
+      "field": "time_stepping_and_cycle_convergence",
+      "why_it_matters": "Transient FSI outputs depend on time-step and number of cardiac cycles simulated. Reviewers need dt, number of cycles, which cycle was analyzed, and a time-step sensitivity check.",
+      "reviewer_risk": "medium",
+      "question": "Report the time-step size(s) used, number of cardiac cycles simulated per case, which cycle was used for analysis, and results of a time-step sensitivity test (showing ΔPSS/VI convergence).",
+      "example": "Example answer: 'dt=1 ms, 4 cardiac cycles simulated; we report results from cycle 4. Time-step test with dt=0.5, 1.0, 2.0 ms yielded ΔPSS variation <1.5% between 0.5 and 1.0 ms.'",
+      "priority": 2.0
+    },
+    {
+      "field": "definitions_of_CP_LAP_and_VI1_VI2_labels",
+      "why_it_matters": "Data files name outputs CP/LAP and VI1/VI2, but the manuscript must define these abbreviations and what distinguishes the two VIs and the two normalization approaches.",
+      "reviewer_risk": "medium",
+      "question": "Define the abbreviations CP and LAP and explicitly state how VI1 differs from VI2 (what each normalization represents and why both were analyzed).",
+      "example": "Example answer: 'CP = Cap-based normalization (uses cap failure strength), LAP = Lipid-core area-based normalization (uses area-weighted strength). VI1 uses cap-strength normalization; VI2 uses lesion-average material strength normalized by lipid fraction.'",
+      "priority": 2.0
+    },
+    {
+      "field": "model_verification_and_validation",
+      "why_it_matters": "A computational FSI study needs verification or validation (benchmarks or literature comparison) to justify that predicted PSS/ΔPSS values are credible; otherwise claims about clinical suitability are weak.",
+      "reviewer_risk": "medium",
+      "question": "Provide model verification/validation evidence: either a benchmark FSI case, grid/time convergence results, or comparison of PSS/ΔPSS magnitudes with published experimental or computational studies.",
+      "example": "Example answer: 'We validated the FSI pipeline against the XXX benchmark (ref) showing <8% difference in peak wall shear/stress, and compared ΔPSS ranges to values reported in Smith et al. 2018, showing similar magnitudes (mean ΔPSS 150±40 kPa).' ",
+      "priority": 2.0
+    },
+    {
+      "field": "units_and_column_descriptions_for_input_csv_and_sobol_files",
+      "why_it_matters": "Input and sensitivity files must have clear units and definitions for each column to interpret sensitivity magnitudes and parameter relevance.",
+      "reviewer_risk": "medium",
+      "question": "Provide a table or text listing each column in input.csv and the Sobol files with a one-line description and units (e.g., SBP: systolic blood pressure, mmHg; E_fc: fibrous cap Young's modulus, kPa).",
+      "example": "Example answer: 'Table: SBP (mmHg), DBP (mmHg), PP (mmHg), PI (unitless), E_vessel (kPa), E_fc (kPa), E_lipid (kPa), E_cal (kPa), lesion_length (mm), DOS (percent diameter stenosis, %), ... Sobol S1/ST are unitless sensitivity indices with 95% bootstrap CIs reported in Supplementary.'",
+      "priority": 2.0
+    },
+    {
+      "field": "boundary_conditions_summary_and_units",
+      "why_it_matters": "bc.md, inflow.dat, and elastance.dat are provided, but the manuscript needs a concise, human-readable summary of boundary conditions and units so readers can assess physiological realism.",
+      "reviewer_risk": "low",
+      "question": "Confirm and summarize the boundary conditions used (inlet flow waveform, outlet pressure/Lumped-parameter models, wall constraints), and state units for inflow/elastance time series and for columns in input.csv (e.g., pressures in mmHg, moduli in kPa).",
+      "example": "Example answer: 'Inlet flow in inflow.dat is in mL/s over 100 time points per cycle; outlet was a three-element Windkessel with parameters tuned to SBP/DBP using elastance.dat (units mmHg). All pressures in input.csv are mmHg; moduli are in kPa.'",
+      "priority": 1.0
+    }
+  ],
+  "notes": "The provided dataset (input.csv) and Sobol outputs demonstrate that core simulations and sensitivity calculations were performed. However, crucial methodological details (explicit VI/ΔPSS definitions, FSI formulation/solver, material models, sampling/Sobol procedure, and mesh/time convergence/validation) are missing and needed before Methods+Results are defensible for review."
+}

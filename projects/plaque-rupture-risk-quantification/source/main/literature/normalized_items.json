@@ -1,0 +1,855 @@
+[
+  {
+    "canonical_key": "primary_objective",
+    "category": "objective",
+    "aliases": [
+      "primary objective",
+      "primary_objective",
+      "primary_objective (study-specific)"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "quantitative_numerical_simulation",
+      "experimental_study",
+      "review"
+    ],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "Most papers explicitly state a primary objective; for this project the primary objective is routinely reported and contextualizes methods/results but is not a distinct methodological requirement.",
+    "source_items": [
+      "paper_001:item_01",
+      "paper_004:item_01",
+      "paper_007:item_01",
+      "paper_009:item_01"
+    ]
+  },
+  {
+    "canonical_key": "review_scope",
+    "category": "objective",
+    "aliases": [
+      "review objective",
+      "review_scope",
+      "review PSS detection, determinants, and role"
+    ],
+    "applicable_to": [
+      "review",
+      "background_literature"
+    ],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "Several items are literature-review objectives; stating review scope is commonly reported when a paper is a review and helps motivate this study's framing of PSS/ΔPSS relevance.",
+    "source_items": [
+      "paper_003:item_01",
+      "paper_005:item_01",
+      "paper_010:item_01"
+    ]
+  },
+  {
+    "canonical_key": "consensus_guidelines_for_in_silico_modeling",
+    "category": "objective",
+    "aliases": [
+      "consensus guidelines",
+      "guidelines for mechanistic model development and analysis"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "model_development",
+      "regulatory_or_best_practices"
+    ],
+    "required_when": [],
+    "requirement_level": "strongly_expected",
+    "reason": "Consensus guidance papers emphasize best practices for in silico cardiovascular modeling; adherence or explicit discussion of such guidelines is strongly expected for credibility in this domain and relevant to this project's FSI and surrogate workflow.",
+    "source_items": [
+      "paper_006:item_01"
+    ]
+  },
+  {
+    "canonical_key": "reproducibility_and_credibility_motivation",
+    "category": "objective",
+    "aliases": [
+      "improve reproducibility and credibility",
+      "motivation: need for reproducible credible practices"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "model_validation",
+      "surrogate_modeling"
+    ],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "Papers call out reproducibility and credibility as motivations; for this project these are common reporting expectations (e.g., input files, BCs, surrogate details) though not a single mandatory item.",
+    "source_items": [
+      "paper_006:item_06"
+    ]
+  },
+  {
+    "canonical_key": "compare_cfd_vs_fsi_effects",
+    "category": "objective",
+    "aliases": [
+      "compare CFD and FSI effects on hemodynamics",
+      "evaluate effect of arterial wall compliance on hemodynamic results"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "hemodynamics",
+      "FSI_vs_CFD_comparison"
+    ],
+    "required_when": [
+      "claim_requires_pulsatility_or_FSI"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "Because the central claim argues ΔPSS (pulsatile/F SI-dependent) is important, explicit comparison or justification of FSI versus static CFD/rigid-wall assumptions is strongly expected to support that methodological choice.",
+    "source_items": [
+      "paper_008:item_01"
+    ]
+  },
+  {
+    "canonical_key": "surrogate_model_development_and_validation",
+    "category": "objective",
+    "aliases": [
+      "low-dimensional surrogate model",
+      "surrogate model for mapping inputs to outputs",
+      "GPR surrogate development"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "sensitivity_analysis",
+      "uncertainty_quantification"
+    ],
+    "required_when": [
+      "uses_surrogate_for_sobol_or_global_sensitivity"
+    ],
+    "requirement_level": "mandatory",
+    "reason": "This project uses Gaussian Process Regression surrogates to perform Sobol global sensitivity analysis over FSI outputs; describing surrogate construction, training/validation, and performance is necessary to make the sensitivity results credible.",
+    "source_items": [
+      "paper_001:item_01"
+    ]
+  },
+  {
+    "canonical_key": "methodological_review_objective",
+    "category": "objective",
+    "aliases": [
+      "review CFD methods, challenges and opportunities",
+      "review objective (methods)"
+    ],
+    "applicable_to": [
+      "review",
+      "methodology_synthesis"
+    ],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "Methodology-focused reviews are common in the literature; referencing broader method reviews helps motivate choices (e.g., pulsatile FSI, surrogate techniques) but is not strictly required.",
+    "source_items": [
+      "paper_003:item_01"
+    ]
+  },
+  {
+    "canonical_key": "computational_simulation_and_surrogate_modeling",
+    "category": "study_design",
+    "aliases": [
+      "computational modeling / surrogate modeling study",
+      "computational model development and simulation study",
+      "computational modeling comparison",
+      "methodological/assessment study (development/application of vulnerability methodology)",
+      "CFD versus FSI simulations on idealized models",
+      "model development / simulation"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "quantitative_numerical_simulation",
+      "surrogate_model_based_sensitivity_analysis",
+      "peak_field_value_claim"
+    ],
+    "required_when": [
+      "study uses numerical FSI to derive stress metrics",
+      "global sensitivity analysis performed using surrogate models"
+    ],
+    "requirement_level": "mandatory",
+    "reason": "The project is built on cost-efficient pulsatile FSI simulations and training GPR surrogates for Sobol global sensitivity analysis, so explicit computational simulation and surrogate-modeling design and validation are logically required and expected by reviewers.",
+    "source_items": [
+      "paper_001:item_02",
+      "paper_004:item_02",
+      "paper_007:item_02",
+      "paper_008:item_02"
+    ]
+  },
+  {
+    "canonical_key": "narrative_or_systematic_review_designation",
+    "category": "study_design",
+    "aliases": [
+      "Study design: review article",
+      "Study design: present review article",
+      "Study design: narrative review of methods, imaging modalities, idealized models, and experimental studies",
+      "Study design: review article (narrative review)"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "contextual_background"
+    ],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "Reviews are frequently cited to motivate methodological choices and place new computational methods in context; they are useful but not required for this project's central simulation and sensitivity-analysis claims.",
+    "source_items": [
+      "paper_003:item_02",
+      "paper_005:item_02",
+      "paper_010:item_02"
+    ]
+  },
+  {
+    "canonical_key": "guideline_or_consensus_document",
+    "category": "study_design",
+    "aliases": [
+      "Study design: consensus/recommendation paper",
+      "consensus/recommendation paper",
+      "guideline/consensus document"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "clinical_sign_consistency_evaluation"
+    ],
+    "required_when": [
+      "selecting or screening vulnerability indices against clinical sign/criteria"
+    ],
+    "requirement_level": "optional",
+    "reason": "Consensus or guideline documents can justify the clinical sign/criteria used to filter candidate VIs, but the project can proceed with clearly stated clinical rules even if formal guideline citation is absent.",
+    "source_items": [
+      "paper_006:item_02"
+    ]
+  },
+  {
+    "canonical_key": "experimental_animal_study_design",
+    "category": "study_design",
+    "aliases": [
+      "Study design: experimental animal study",
+      "animal experimental (case-control style)"
+    ],
+    "applicable_to": [
+      "preclinical_validation",
+      "biomechanical_experimentation"
+    ],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "Animal experimental designs are reported in the literature corpus but are not relevant to this purely computational FSI + surrogate sensitivity analysis project and therefore do not drive reporting requirements here.",
+    "source_items": [
+      "paper_009:item_02"
+    ]
+  },
+  {
+    "canonical_key": "simulation_input_design_matrix",
+    "category": "data_or_sample",
+    "aliases": [
+      "input design matrix",
+      "simulation inputs",
+      "input.csv",
+      "design_of_experiments"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "surrogate_modeling",
+      "global_sensitivity_analysis"
+    ],
+    "required_when": [],
+    "requirement_level": "mandatory",
+    "reason": "A 1,000-sample input design spanning morphology, hemodynamics, and material parameters is central and logically necessary for training the GPR surrogate and conducting Sobol global sensitivity analysis in this computational study.",
+    "source_items": [
+      "paper_001:item_03",
+      "paper_006:item_04"
+    ]
+  },
+  {
+    "canonical_key": "anatomical_template_or_geometries",
+    "category": "data_or_sample",
+    "aliases": [
+      "idealized geometries",
+      "anatomical template",
+      "plaque phenotype models",
+      "LAP and CP geometries"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "morphology_comparison"
+    ],
+    "required_when": [
+      "any_geometry-dependent_simulation"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "Clear description of the anatomical templates or idealized plaque geometries (LAP and CP) is expected because morphology is an input factor and affects stress outputs and sensitivity analysis interpretation.",
+    "source_items": [
+      "paper_007:item_03",
+      "paper_008:item_03",
+      "paper_007:item_05"
+    ]
+  },
+  {
+    "canonical_key": "boundary_and_time_waveforms",
+    "category": "data_or_sample",
+    "aliases": [
+      "inflow waveform",
+      "cardiac elastance waveform",
+      "boundary conditions waveforms"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "pulsatile_FSI",
+      "fatigue_metric_calculation"
+    ],
+    "required_when": [],
+    "requirement_level": "mandatory",
+    "reason": "Pulsatile FSI and ΔPSS computation require explicit inflow and elastance waveforms (boundary/time inputs); these are necessary for reproducing time-resolved stress and fatigue/amplitude metrics.",
+    "source_items": [
+      "paper_001:item_03",
+      "paper_006:item_04"
+    ]
+  },
+  {
+    "canonical_key": "clinical_evidence_linking_stress_metrics_to_outcomes",
+    "category": "data_or_sample",
+    "aliases": [
+      "prospective clinical studies",
+      "PSS correlated with ACS/MACE",
+      "clinical sign-consistency references"
+    ],
+    "applicable_to": [
+      "model_validation",
+      "clinical_claims",
+      "stress_metric_selection"
+    ],
+    "required_when": [
+      "asserting_clinical_relevance_of_VI"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "Using prior prospective clinical studies that relate stress metrics (e.g., PSS) to clinical outcomes supports the claim that chosen stress measures and VI candidates are clinically plausible and is expected when making clinical relevance claims.",
+    "source_items": [
+      "paper_010:item_03",
+      "paper_002:item_01"
+    ]
+  },
+  {
+    "canonical_key": "histological_or_ex_vivo_validation_data",
+    "category": "data_or_sample",
+    "aliases": [
+      "histological reference standard",
+      "biopsy-correlated measurements",
+      "ex vivo material validation"
+    ],
+    "applicable_to": [
+      "model_validation",
+      "material_property_characterization",
+      "clinical_claims"
+    ],
+    "required_when": [
+      "claiming_patient-specific_material_accuracy",
+      "direct_validation_against_tissue"
+    ],
+    "requirement_level": "optional",
+    "reason": "Histological or surgically obtained tissue data strengthen claims about material/biochemical composition and support validation of material models, but are not strictly necessary for the presented computational sensitivity-analysis over a parameter space.",
+    "source_items": [
+      "paper_002:item_03",
+      "paper_002:item_02"
+    ]
+  },
+  {
+    "canonical_key": "experimental_and_clinical_reference_datasets",
+    "category": "data_or_sample",
+    "aliases": [
+      "experimental data",
+      "clinical datasets",
+      "measurements used for model basis"
+    ],
+    "applicable_to": [
+      "model_validation",
+      "parameter_choice",
+      "comparative_evidence"
+    ],
+    "required_when": [
+      "claiming_consistency_with_prior_observations"
+    ],
+    "requirement_level": "common",
+    "reason": "Referencing experimental or clinical datasets is common to contextualize and compare simulation trends (PSS, rupture-location), and many similar studies report such datasets to justify model plausibility.",
+    "source_items": [
+      "paper_006:item_04",
+      "paper_005:item_03",
+      "paper_001:item_03"
+    ]
+  },
+  {
+    "canonical_key": "literature_and_market_review_for_context",
+    "category": "data_or_sample",
+    "aliases": [
+      "market products and clinical trials review",
+      "biomarker review",
+      "prior art summary"
+    ],
+    "applicable_to": [
+      "introduction",
+      "clinical_translation_discussion"
+    ],
+    "required_when": [
+      "positioning_for_clinical_translation"
+    ],
+    "requirement_level": "common",
+    "reason": "High-level literature or market reviews are frequently included to motivate clinical relevance and translational context, but they are not essential for the computational analyses themselves.",
+    "source_items": [
+      "paper_003:item_06",
+      "paper_005:item_03"
+    ]
+  },
+  {
+    "canonical_key": "animal_model_or_preclinical_studies",
+    "category": "data_or_sample",
+    "aliases": [
+      "animal study samples",
+      "CIA rat arthritis model",
+      "preclinical sample descriptions"
+    ],
+    "applicable_to": [
+      "background_evidence"
+    ],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "Abstract-only reports of unrelated animal-model data (e.g., arthritis rat study) are not relevant supporting evidence for coronary plaque FSI simulations and therefore do not provide useful actionable requirements for this project.",
+    "source_items": [
+      "paper_009:item_03"
+    ]
+  },
+  {
+    "canonical_key": "fsi_simulation_methods",
+    "category": "methods",
+    "aliases": [
+      "fluid-structure interaction and solver techniques",
+      "CFD and FSI simulation methods",
+      "1-D blood flow CFD / wave propagation simulation"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "stress_field_computation",
+      "peak_field_value_claim"
+    ],
+    "required_when": [],
+    "requirement_level": "mandatory",
+    "reason": "The central claim depends on time-resolved pulsatile FSI outputs (PSS and ΔPSS) so detailed FSI/CFD solver methods are logically necessary and repeatedly appear in the literature.",
+    "source_items": [
+      "paper_003:item_05",
+      "paper_007:item_04",
+      "paper_008:item_04"
+    ]
+  },
+  {
+    "canonical_key": "computational_pss_modeling",
+    "category": "methods",
+    "aliases": [
+      "calculation/modeling of plaque structural stress (PSS)",
+      "PSS modeling"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "stress_metric_comparison",
+      "vulnerability_index_definition"
+    ],
+    "required_when": [],
+    "requirement_level": "mandatory",
+    "reason": "The study's primary outcomes (PSS and ΔPSS) and the selection of VI candidates rely on established computational PSS modeling practices reported in prior work.",
+    "source_items": [
+      "paper_010:item_04"
+    ]
+  },
+  {
+    "canonical_key": "geometry_reconstruction_and_mesh_generation",
+    "category": "methods",
+    "aliases": [
+      "geometry reconstruction and mesh generation",
+      "image segmentation"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "morphology_variation_studies"
+    ],
+    "required_when": [
+      "models are built from imaging data",
+      "high-fidelity local stress predictions are claimed"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "Accurate geometry reconstruction and meshing are critical for credible stress computations and are commonly reported; even with parametric phenotypes, mesh/gen reconstruction details are expected by reviewers.",
+    "source_items": [
+      "paper_003:item_04",
+      "paper_003:item_03"
+    ]
+  },
+  {
+    "canonical_key": "surrogate_modeling_and_reduced_order",
+    "category": "methods",
+    "aliases": [
+      "construction and use of a low-dimensional surrogate (reduced-order) model",
+      "GPR surrogate",
+      "reduced-order model"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "global_sensitivity_analysis",
+      "computational_cost_reduction"
+    ],
+    "required_when": [
+      "global sensitivity analysis over large design spaces is performed"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "The project uses GPR surrogates to enable Sobol analysis over 1,000 samples; surrogate model construction and validation are therefore expected and commonly reported in similar studies.",
+    "source_items": [
+      "paper_001:item_04"
+    ]
+  },
+  {
+    "canonical_key": "model_development_and_statistical_calibration",
+    "category": "methods",
+    "aliases": [
+      "mechanistic modeling, model analysis, statistical calibration",
+      "formal model calibration"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "surrogate_modeling",
+      "model_validation_claims"
+    ],
+    "required_when": [
+      "model outputs are compared to prior literature or used for clinical-compatibility claims"
+    ],
+    "requirement_level": "common",
+    "reason": "Mechanistic model building and any statistical calibration/validation steps are frequently reported and support claims about model plausibility, though exact calibration may not be mandatory for this computational-exploratory analysis.",
+    "source_items": [
+      "paper_006:item_03"
+    ]
+  },
+  {
+    "canonical_key": "aging_and_exogenous_domain_methods",
+    "category": "methods",
+    "aliases": [
+      "inclusion of aging effects",
+      "soil-structure interaction",
+      "other-domain-specific vulnerability methods"
+    ],
+    "applicable_to": [],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "These items come from other application domains (e.g., civil engineering) and are not relevant to coronary plaque FSI studies, so they should not drive requirements for this project.",
+    "source_items": [
+      "paper_004:item_04",
+      "paper_004:item_05"
+    ]
+  },
+  {
+    "canonical_key": "physiological_measurement_methods",
+    "category": "methods",
+    "aliases": [
+      "physiological measurement and HRV analyses",
+      "single-lead ECG HRV"
+    ],
+    "applicable_to": [],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "Physiological measurement methods like HRV analyses are unrelated to the computational FSI/sensitivity analysis focus of this study and thus unsupported as project requirements.",
+    "source_items": [
+      "paper_009:item_04"
+    ]
+  },
+  {
+    "canonical_key": "in_vivo_optical_and_biomarker_methods",
+    "category": "methods",
+    "aliases": [
+      "in vivo Raman spectroscopy via optical fiber probe",
+      "qualitative synthesis of biomarker classes"
+    ],
+    "applicable_to": [],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "In vivo optical/biomarker measurement methods are out of scope for this purely computational study and therefore do not inform required reporting for the present work.",
+    "source_items": [
+      "paper_002:item_04",
+      "paper_005:item_04"
+    ]
+  },
+  {
+    "canonical_key": "clinical_correlation_of_PSS",
+    "category": "outcomes",
+    "aliases": [
+      "clinical_correlations_of_PSS",
+      "PSS clinical correlation",
+      "peak PSS correlated with ACS/MACE"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "peak_field_value_claim",
+      "clinical_relevance_claim"
+    ],
+    "required_when": [
+      "making clinical relevance or prognostic claims about stress metrics"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "Literature links peak wall stress (PSS) to clinical events (ACS, rupture, MACE), so when the study compares stress metrics or claims clinical relevance the manuscript should cite or discuss these correlations to justify metric choice and interpretation.",
+    "source_items": [
+      "paper_010:item_05"
+    ]
+  },
+  {
+    "canonical_key": "hemodynamic_metrics_wss_osi",
+    "category": "outcomes",
+    "aliases": [
+      "TAWSS_OSI",
+      "wall_shear_stress_distribution",
+      "hemodynamic_metrics_compared_between_CFD_and_FSI"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "hemodynamics_comparison_studies"
+    ],
+    "required_when": [
+      "making claims about hemodynamic contributions or comparing CFD/FSI hemodynamic outputs"
+    ],
+    "requirement_level": "common",
+    "reason": "Prior papers commonly report WSS metrics (TAWSS, OSI) when assessing hemodynamic contributions; while this study focuses on wall stress (PSS/ΔPSS), reporting or acknowledging standard WSS metrics is frequently done and useful for context.",
+    "source_items": [
+      "paper_008:item_05"
+    ]
+  },
+  {
+    "canonical_key": "computational_modeling_best_practices",
+    "category": "outcomes",
+    "aliases": [
+      "best_practices_for_rigorous_reproducible_modeling",
+      "modeling_reproducibility_guidelines"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "surrogate_modeling",
+      "sensitivity_analysis"
+    ],
+    "required_when": [
+      "reporting computational methods, surrogate models, or sensitivity analyses"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "Community best-practice guidance for reproducible computational cardiovascular modeling is widely cited and reviewers expect adherence (or explicit deviations) for credibility of simulation- and surrogate-based sensitivity analyses.",
+    "source_items": [
+      "paper_006:item_05"
+    ]
+  },
+  {
+    "canonical_key": "diagnostic_performance_metrics",
+    "category": "outcomes",
+    "aliases": [
+      "sensitivity_and_specificity",
+      "diagnostic_performance"
+    ],
+    "applicable_to": [
+      "clinical_validation_studies",
+      "computational_biomarkers_evaluation"
+    ],
+    "required_when": [
+      "claiming diagnostic accuracy or proposing a marker for clinical classification"
+    ],
+    "requirement_level": "optional",
+    "reason": "When a computationally derived index is proposed for clinical diagnosis, reporting sensitivity/specificity is appropriate, but this study does not perform patient-level diagnostic validation so such metrics are not mandatory here.",
+    "source_items": [
+      "paper_002:item_05"
+    ]
+  },
+  {
+    "canonical_key": "listed_biomarkers_as_outcomes",
+    "category": "outcomes",
+    "aliases": [
+      "candidate_biomarkers_list",
+      "biomarker_risk_predictors"
+    ],
+    "applicable_to": [
+      "biomarker_studies",
+      "multimodal_risk_prediction"
+    ],
+    "required_when": [
+      "claiming biochemical or blood-biomarker based risk prediction"
+    ],
+    "requirement_level": "unsupported",
+    "reason": "A long list of serum biomarkers is reported in abstracts of clinical studies, but these are unrelated to the present simulation-only sensitivity analysis and lack direct relevance or supporting data here.",
+    "source_items": [
+      "paper_005:item_05"
+    ]
+  },
+  {
+    "canonical_key": "aging_and_material_strength_effects",
+    "category": "outcomes",
+    "aliases": [
+      "effects_of_aging_on_vulnerability",
+      "damage_vulnerability_with_aging_SSI"
+    ],
+    "applicable_to": [
+      "material_parameter_studies",
+      "aging_effects"
+    ],
+    "required_when": [
+      "including aging, structural stiffness changes, or solid-state interactions (SSI) in the input design"
+    ],
+    "requirement_level": "optional",
+    "reason": "Some studies claim increased vulnerability when aging/SSI are considered; if the present design varies age-related or damage-related material parameters this factor should be considered, but it is not central unless explicitly modeled.",
+    "source_items": [
+      "paper_004:item_06"
+    ]
+  },
+  {
+    "canonical_key": "in_procedure_strain_estimation",
+    "category": "outcomes",
+    "aliases": [
+      "fast_strain_estimation_in_thrombus",
+      "procedural_strain_estimation"
+    ],
+    "applicable_to": [
+      "interventional_procedure_studies",
+      "real-time_estimation"
+    ],
+    "required_when": [
+      "studying intra-procedural estimation or real-time strain monitoring"
+    ],
+    "requirement_level": "unsupported",
+    "reason": "A reported outcome about fast intra-procedural strain estimation is abstract-level and not relevant to this off-line global sensitivity simulation study.",
+    "source_items": [
+      "paper_001:item_05"
+    ]
+  },
+  {
+    "canonical_key": "HRV_and_biological_rhythm_outcomes",
+    "category": "outcomes",
+    "aliases": [
+      "heart_rate_variability_outcomes",
+      "LF_HF_changes_over_time"
+    ],
+    "applicable_to": [
+      "animal_studies",
+      "physiological_rhythm_studies"
+    ],
+    "required_when": [
+      "the study addresses autonomic function or HRV changes"
+    ],
+    "requirement_level": "unsupported",
+    "reason": "HRV parameter comparisons are from an animal physiology study and are unrelated to plaque FSI simulations and VI sensitivity analysis, so they do not apply to this project.",
+    "source_items": [
+      "paper_009:item_05"
+    ]
+  },
+  {
+    "canonical_key": "surrogate_model_for_outputs",
+    "category": "results",
+    "aliases": [
+      "surrogate model provides fast strain estimates",
+      "GPR surrogate",
+      "surrogate model for VI"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "global_sensitivity_analysis",
+      "surrogate_based_sobol_analysis",
+      "computational_biomechanics"
+    ],
+    "required_when": [
+      "performing_global_sensitivity_analysis_on_expensive_simulations",
+      "computational_budget_limits_full_model_evaluations"
+    ],
+    "requirement_level": "mandatory",
+    "reason": "A surrogate (here GPR) is logically necessary to compute Sobol indices over a 1,000-sample design when each sample requires costly pulsatile FSI; the literature item explicitly reports surrogate speed/utility supporting this practice.",
+    "source_items": [
+      "paper_001:item_06"
+    ]
+  },
+  {
+    "canonical_key": "wall_compliance_effects_on_hemodynamics",
+    "category": "results",
+    "aliases": [
+      "wall compliance notably affects instantaneous WSS distribution",
+      "comparative compliant (FSI) vs rigid-wall (CFD) findings",
+      "FSI vs rigid-wall hemodynamic differences"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "hemodynamic_analysis",
+      "pulsatile_FSI_studies",
+      "claims_about_importance_of_pulsatility_or_FSI"
+    ],
+    "required_when": [
+      "claiming_that_pulsatile_FSI_is_necessary_or_more_realistic_than_static_or_rigid_models",
+      "assessing stress metrics_sensitive_to wall motion or compliance"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "Reporting how wall compliance alters hemodynamic metrics (e.g., instantaneous WSS) is important to justify using pulsatile FSI and to show that rigid-wall models would miss relevant effects; the literature item provides direct comparative evidence.",
+    "source_items": [
+      "paper_008:item_06"
+    ]
+  },
+  {
+    "canonical_key": "rodent_LF_HF_autonomic_metric_result",
+    "category": "results",
+    "aliases": [
+      "LF/HF ratio significantly higher in CIA rats",
+      "primary results: LF/HF in animal study"
+    ],
+    "applicable_to": [
+      "experimental_autonomic_studies",
+      "preclinical_biomedical_research"
+    ],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "An LF/HF autonomic result from a rodent study is unrelated to human coronary plaque FSI, so it does not inform requirements for this computational biomechanics project and should not drive reporting expectations here.",
+    "source_items": [
+      "paper_009:item_06"
+    ]
+  },
+  {
+    "canonical_key": "spectral_acquisition_performance",
+    "category": "numerical_or_experimental_settings",
+    "aliases": [
+      "spectral acquisition performance"
+    ],
+    "applicable_to": [],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "",
+    "source_items": [
+      "paper_002:item_06"
+    ]
+  },
+  {
+    "canonical_key": "limitations_need_for_new_more_authentic_diagnostic_markers_and_earlier_stage_diagnosis_emphasized",
+    "category": "limitations",
+    "aliases": [
+      "Limitations: need for new more authentic diagnostic markers and earlier-stage diagnosis emphasized"
+    ],
+    "applicable_to": [],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "",
+    "source_items": [
+      "paper_005:item_06"
+    ]
+  },
+  {
+    "canonical_key": "limitations_need_for_additional_biomarkers_due_to_low_mace_rates_per_plaque_implied_need_for_improved_risk_stratification",
+    "category": "limitations",
+    "aliases": [
+      "Limitations: need for additional biomarkers due to low MACE rates per plaque (implied need for improved risk stratification)"
+    ],
+    "applicable_to": [],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "",
+    "source_items": [
+      "paper_010:item_06"
+    ]
+  },
+  {
+    "canonical_key": "model_parameters_anatomical_physiological_and_mechanical_considerations_used_to_set_parameters_and_flow_distribution_criteria",
+    "category": "models_and_equations",
+    "aliases": [
+      "model_parameters: anatomical, physiological, and mechanical considerations used to set parameters and flow distribution criteria"
+    ],
+    "applicable_to": [],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "",
+    "source_items": [
+      "paper_007:item_06"
+    ]
+  }
+]

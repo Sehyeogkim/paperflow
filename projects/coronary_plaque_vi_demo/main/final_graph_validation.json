@@ -1,0 +1,35 @@
+{
+  "graph_id": "preliminary_v1",
+  "load_bearing_gaps": [
+    {
+      "id": "GAP_C2_EVIDENCE",
+      "type": "missing_evidence_to_claim",
+      "severity": "high",
+      "claim_ids": [
+        "C2"
+      ],
+      "related_node_ids": [],
+      "description": "Claim 'Vulnerability indices must normalize stress by fibrous-cap s' has no supporting evidence.",
+      "information_needed": "The result metric/value that supports this claim.",
+      "can_degrade_to_qualifier": false
+    },
+    {
+      "id": "GAP_C3_COMPARATOR",
+      "type": "missing_comparator",
+      "severity": "high",
+      "claim_ids": [
+        "C3"
+      ],
+      "related_node_ids": [],
+      "description": "Comparative claim 'Material properties dominate VI variability (Material > Hemo' has no explicit comparison basis.",
+      "information_needed": "The metric and comparator establishing the comparison.",
+      "can_degrade_to_qualifier": true
+    }
+  ],
+  "non_blocking_warnings": [
+    "C1: claim has no scope/limitation qualifier",
+    "C3: claim has no scope/limitation qualifier",
+    "C4: claim has no scope/limitation qualifier"
+  ],
+  "ready_for_finalization": false
+}

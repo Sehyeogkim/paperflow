@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_007",
+  "study_archetype": "methodological PhD work on Gaussian process active learning for reliability analysis",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: reduce numerical cost of reliability analysis via GP active learning",
+      "category": "objective",
+      "sub_category": "reduce computational cost / improve reliability estimation",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: development/assessment of methodological improvements (two improvement paths)",
+      "category": "study_design",
+      "sub_category": "method development (PhD research)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data or sample: use of sample population for failure probability estimation (classification of a sample)",
+      "category": "data_or_sample",
+      "sub_category": "population sample for classification-based failure probability estimation",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: Gaussian process based active learning to build GP surrogate of performance function",
+      "category": "methods",
+      "sub_category": "Gaussian process surrogate with active learning focused near limit state",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: two improvement paths — (1) characterization/inclusion of estimation errors in learning algorithm, (2) coupling active learning with model order reduction",
+      "category": "methods",
+      "sub_category": "error characterization and model order reduction coupling",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Outcomes: aim to decrease number of expensive model calls while maintaining accurate failure probability estimates",
+      "category": "outcomes",
+      "sub_category": "reduced model calls with maintained estimation accuracy",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

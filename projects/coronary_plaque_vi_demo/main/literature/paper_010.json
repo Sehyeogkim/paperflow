@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_010",
+  "study_archetype": "computational model development for cardiovascular intervention",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: develop plaque model for computational stent test-bed",
+      "category": "objective",
+      "sub_category": "model development for stent angioplasty simulations",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: computational modelling study",
+      "category": "study_design",
+      "sub_category": "in silico simulation",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data or sample: atherosclerotic plaque representation",
+      "category": "data_or_sample",
+      "sub_category": "plaque geometry/composition (broad)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: finite element / computational mechanics methods (unspecified)",
+      "category": "methods",
+      "sub_category": "FE simulation for angioplasty (named broadly)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": false,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Outcomes: model intended for use in test-bed to assess stent angioplasty",
+      "category": "outcomes",
+      "sub_category": "computational test-bed applicability",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Limitations: methodological/details likely relevant but not available in abstract",
+      "category": "limitations",
+      "sub_category": "missing detailed methodological settings",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": false,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

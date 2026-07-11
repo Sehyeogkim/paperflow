@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_005",
+  "study_archetype": "review of computational FSI methods in microfluidics",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: role of computational FSI in micro elastofluidics",
+      "category": "objective",
+      "sub_category": "review objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: review paper",
+      "category": "study_design",
+      "sub_category": "literature review",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: examples of microdevices (microvalves, micropumps, micromixers) and biomedical devices",
+      "category": "data_or_sample",
+      "sub_category": "application domains discussed",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: advanced computational FSI methods (general, not specified)",
+      "category": "methods",
+      "sub_category": "computational FSI techniques (unspecified)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "limitations: current challenges in computational FSI for time-dependent, complex microfluidic models",
+      "category": "limitations",
+      "sub_category": "need for further tool development",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: roadmap and highlighted potential for future research and development",
+      "category": "outcomes",
+      "sub_category": "future directions and potential",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

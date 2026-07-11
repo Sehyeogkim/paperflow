@@ -180,7 +180,9 @@
   .addbtn { margin-top:8px; font:inherit; font-size:12.5px; font-weight:600; color:var(--accent); background:transparent;
     border:1px dashed var(--line); border-radius:8px; padding:6px 12px; cursor:pointer; }
   .drop { display:flex; flex-direction:column; align-items:center; gap:5px; text-align:center; padding:26px 18px;
-    border:2px dashed var(--line); border-radius:13px; background:var(--soft); cursor:pointer; margin-bottom:14px; }
+    border:2px dashed var(--line); border-radius:13px; background:var(--soft); cursor:pointer; margin-bottom:14px;
+    transition:border-color .12s ease, background .12s ease; }
+  .drop.dragover { border-color:var(--accent, #cc785c); background:#f3ebe5; }
   .frow { display:flex; align-items:center; gap:10px; padding:9px 11px; background:#fff; border:1px solid var(--line);
     border-radius:9px; margin-bottom:7px; }
   .fkind { flex:none; font-family:ui-monospace,Menlo,monospace; font-size:9px; font-weight:700; text-transform:uppercase;
@@ -888,13 +890,20 @@ function fOutline(b) {
 }
 function fData(b) {
   b.innerHTML = `<h2>Data</h2><p class="desc">Shared across every trial of this paper. paperflow infers each file's meaning.</p>
-    <label class="drop" id="drop"><span style="font-size:21px">⬆️</span>
+    <div class="drop" id="drop"><span style="font-size:21px">⬆️</span>
       <span style="font-size:13.5px;font-weight:700">Drop files, or click to upload</span>
       <span style="font-size:11px;color:var(--muted)">CSV · DAT · PDF · XLSX · JSON · BIB</span>
-      <input type="file" id="fileInput" multiple style="display:none"></label><div id="filelist"></div>`;
-  const inp = b.querySelector("#fileInput");
-  b.querySelector("#drop").onclick = () => inp.click();
+      <input type="file" id="fileInput" multiple style="display:none"></div><div id="filelist"></div>`;
+  const inp = b.querySelector("#fileInput"), drop = b.querySelector("#drop");
+  // single trigger: clicking the zone opens the picker once (guard against the
+  // hidden input's own click bubbling back up and re-opening it).
+  drop.onclick = (e) => { if (e.target !== inp) inp.click(); };
   inp.onchange = () => uploadFiles(inp.files, b);
+  // real drag-and-drop (the zone advertises "Drop files")
+  drop.ondragover = (e) => { e.preventDefault(); drop.classList.add("dragover"); };
+  drop.ondragleave = () => drop.classList.remove("dragover");
+  drop.ondrop = (e) => { e.preventDefault(); drop.classList.remove("dragover");
+    if (e.dataTransfer && e.dataTransfer.files.length) uploadFiles(e.dataTransfer.files, b); };
   loadDataFiles(b);
 }
 async function loadDataFiles(b) {

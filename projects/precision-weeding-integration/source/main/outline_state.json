@@ -1,0 +1,40 @@
+{
+  "input_mode": "quick",
+  "raw_outline": "1. Introduction to precision weeding and its importance.\n2. Overview of the three axes: chemical, physical, and image-AI.\n3. Concept of detection-actuation matching.\n4. Analysis of the 132 studies: efficacy, cost, and environmental impact.\n5. Discussion on the bottleneck of detection versus actuation.\n6. Case study on garlic and onion.\n7. Design guidelines based on herbicide selectivity.\n8. Conclusion and future directions.",
+  "sections": {
+    "introduction": [
+      "Introduction to precision weeding and its importance.",
+      "Overview of the three axes: chemical, physical, and image-AI."
+    ],
+    "method": [
+      "Concept of detection-actuation matching."
+    ],
+    "result": [
+      "Analysis of the 132 studies: efficacy, cost, and environmental impact.",
+      "Case study on garlic and onion."
+    ],
+    "discussion": [
+      "Discussion on the bottleneck of detection versus actuation.",
+      "Design guidelines based on herbicide selectivity."
+    ],
+    "conclusion": [
+      "Conclusion and future directions."
+    ],
+    "abstract": []
+  },
+  "claim_candidates": [
+    "Discussion on the bottleneck of detection versus actuation.",
+    "Design guidelines based on herbicide selectivity."
+  ],
+  "method_notes": [
+    "Concept of detection-actuation matching.",
+    "Analysis of the 132 studies: efficacy, cost, and environmental impact.",
+    "Case study on garlic and onion."
+  ],
+  "result_notes": [
+    "Analysis of the 132 studies: efficacy, cost, and environmental impact.",
+    "Discussion on the bottleneck of detection versus actuation.",
+    "Case study on garlic and onion."
+  ],
+  "unclassified_notes": []
+}
