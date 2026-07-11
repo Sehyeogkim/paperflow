@@ -1,1 +1,17 @@
-{}
+{
+  "primary_methods_description": "유체: 비압축성 3D Navier–Stokes(ρ=1060 kg/m³, μ=0.0035 Pa·s, 뉴턴). 고체: 유한변형 준정적, partitioned 강결합 FSI(고정점 반복, 상대오차 1e-5). 시간적분 BDF2, Δt=0.5 ms, 한 심주기 1600 step, 3주기 후 주기적 정상상태(상·하행 PSS 차 <1%)에서 통계 산출. 유체 메쉬 ~1.2M cells(최소 Δx=20 μm), 고체 ~0.45M 요소. 메쉬·시간보폭 독립성: peak PSS 변화 <2%(coarse→fine, Δt/2). 선행 cost-effective 맥동 FSI 기법(인용)을 도구로 사용.",
+  "literature_sources": "(i) stress/strength 지표·한계: Holzapfel 2004(BMMB), Tang 2005(ABME). (ii) 비용효율 맥동 FSI 원논문: 본 연구실 선행 논문(인용 예정). (iii) 7가지 고위험 플라크 임상기준: Virmani 2000(Circulation), Stone 2011(PROSPECT, JACC). (iv) PSS·FFR·파열위치 경향 비교: Morris 2016(J Biomech), Sankaran 2017.",
+  "computational_modelling_surrogate_development": "GPR: ARD Matern 5/2 + White-noise 커널, 하이퍼파라미터 L-BFGS-B 20 restarts. 입력 z-score 정규화, 출력(VI) 표준화. 5-fold CV에서 R²=0.93(LAP)/0.90(CP), RMSE≈0.12·σ(VI). 예측 불확실성은 GPR posterior 분산. Sobol: Saltelli 샘플링 약 15,000 base, S1·ST 수렴(재현 시 S1 변화 <0.01). 유효쌍 LAP 784 / CP 727.",
+  "continuum_3d_navier_stokes_model": "비압축성 3D Navier–Stokes, 뉴턴유체(ρ=1060 kg/m³, μ=0.0035 Pa·s). 입구는 관상동맥 유량 파형(inflow.dat) Dirichlet, 출구는 무반사 Neumann/저항 BC. 시간적분 BDF2.",
+  "material_constitutive_model": "혈관벽·섬유막: nearly-incompressible Neo-Hookean(혈관 μ=60 kPa/K=600 kPa, 섬유막 μ=120 kPa/K=1200 kPa). 저감쇠 핵: 선형탄성(E=5 kPa, ν=0.49). 석회화: 선형탄성(E=10 GPa, ν=0.3). 등방·준정적, 점탄성 미고려. 문헌: Holzapfel 2004, Li 2008.",
+  "characterize_mechanical_properties_of_plaque_components": "E_fc∈[0.1,2.0] MPa, E_vessel∈[0.2,1.5] MPa, E_lipid∈[2,15] kPa, E_cal∈[1,20] GPa; 균등분포 LHS 샘플링. 출처: ex vivo 인장시험 메타분석. strength 정규화 E_FC^α의 α=0.5(루트)·1.0(선형)은 섬유막 강도 스케일 가정 두 시나리오로 보조 비교.",
+  "statistical_analysis_and_classification": "7개 임상기준에 대해 부호일치=1/불일치=0 점수화, VI별 평균 점수와 95% BCa 부트스트랩 CI(1000 resample). VI1=ΔPSS/E_fc^0.5, VI2=ΔPSS/E_fc만 평균 1.00(CI 0.99–1.00). 동률 시 ΔPSS 민감도 우선. GPR 검증 5-fold CV R²·RMSE 보고.",
+  "diagnostic_performance_metrics": "환자 결과가 없어 합성 고위험 라벨(7기준 중 ≥5 충족) 정의 후 VI 임계값 스윕: AUC(VI2)=0.84(95% CI 0.80–0.88), Youden 최적점 민감도 0.78/특이도 0.76. 순위상관 Kendall τ도 보조 보고.",
+  "tissue_material_stiffness_results": "E_fc: 0.1–2.0 MPa(중앙 0.7, IQR 0.4–1.1), E_vessel: 0.2–1.5 MPa(중앙 0.8), E_lipid: 2–15 kPa, E_cal: 1–20 GPa. 분포 히스토그램·상자수염도는 보충 도표 S1. strength 정규화는 E_FC^α로 VI 분모에 매핑.",
+  "LOGIC_GAP_C1_EVIDENCE": "VI 후보 6종(stress 2종 × strength 3시나리오)을 7개 임상 고위험 기준과의 부호일치로 평가한 결과, VI1=ΔPSS/E_fc^0.5와 VI2=ΔPSS/E_fc만 7기준을 모두 만족(부호일치 점수 평균 1.00, 95% BCa CI 0.99–1.00). 이 선별 결과(6개 중 2개만 전 기준 충족)가 \"파열 취약성을 stress/strength 비율로 정의해야 한다\"는 주장을 직접 지지하는 결과값이다. 근거: data/sobol/sobol_grp/ind_*_VI1/VI2.csv 및 후보 선별 표.",
+  "plaque_tissue_specimens": "예: 예: \"메타분석은 총 8개 논문을 포함했고(참고문헌 12–19), 인간 관상동맥 섬유막 시료 총 N=72(연령 45–88, 평균 67), 각 논",
+  "experimental_mechanical_characterization": "예: 예: \"포함된 논문들은 주로 uniaxial tensile tests(스트레인율 0.1–1%/s)였고, 본 연구에서는 reported secan",
+  "model_layer_stress_strain_performance": "예: 예: \"보충도표 S2에 LAP·CP 각각에 대해 섬유막/핵/벽의 peak PSS 및 ΔPSS 평균·표준편차와 대표 필드맵(최고/중간/최저 케이스",
+  "pipeline_standardization_and_uncertainty": "예: 예: \"메쉬는 Gmsh v4.8.4로 생성, FSI 계산은 in-house solver 'XXX' v2.1(또는 상용 유한요소 패키지 YYY v",
+  "solver_mesh_and_boundary_conditions": "예: 예: \"FSI는 in-house solver 'FSI-Sim' v1.3(고정점 반복 구현)으로 수행했으며, 유체 선형시스템은 GMRES+ILU("
+}

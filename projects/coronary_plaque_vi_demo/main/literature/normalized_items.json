@@ -1,0 +1,1054 @@
+[
+  {
+    "canonical_key": "represent_collagen_fibre_orientations",
+    "category": "objective",
+    "aliases": [
+      "represent dispersed collagen fibre orientations in arterial layers",
+      "Objective: represent dispersed collagen fibre orientations in arterial layers"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "material_constitutive_modeling"
+    ],
+    "required_when": [
+      "explicitly modeling anisotropic collagen fibre behavior or using fiber-dependent constitutive laws"
+    ],
+    "requirement_level": "optional",
+    "reason": "Modeling dispersed collagen fiber orientations is relevant when using anisotropic constitutive laws, but this study uses isotropic neo-Hookean vessel/cap models so explicit fiber orientation representation is not required.",
+    "source_items": [
+      "paper_001:item_01"
+    ]
+  },
+  {
+    "canonical_key": "develop_low_dimensional_surrogate_model",
+    "category": "objective",
+    "aliases": [
+      "create low-dimensional surrogate model to estimate thrombus strain during thrombectomy",
+      "Objective: develop low-dimensional surrogate model"
+    ],
+    "applicable_to": [
+      "surrogate_modeling",
+      "quantitative_numerical_simulation",
+      "sensitivity_analysis"
+    ],
+    "required_when": [
+      "performing global sensitivity analysis or large-scale parameter sweeps where full-order FSI evaluation is computationally prohibitive"
+    ],
+    "requirement_level": "mandatory",
+    "reason": "This project uses a GPR surrogate to enable Sobol global sensitivity analysis over many evaluations, so development and validation of a surrogate model is essential to the central claims.",
+    "source_items": [
+      "paper_002:item_01"
+    ]
+  },
+  {
+    "canonical_key": "investigate_surface_adhesion_microbubbles",
+    "category": "objective",
+    "aliases": [
+      "investigate surface adhesion of drug-containing microbubbles to AAA inner wall",
+      "Objective: investigate surface adhesion of drug-containing microbubbles to AAA inner wall"
+    ],
+    "applicable_to": [
+      "computational_biomechanics"
+    ],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "Microbubble adhesion to AAA wall is a distinct application area not relevant to coronary plaque rupture modeling or the study's claims.",
+    "source_items": [
+      "paper_003:item_01"
+    ]
+  },
+  {
+    "canonical_key": "characterize_compressive_mechanical_properties_of_plaques",
+    "category": "objective",
+    "aliases": [
+      "characterize compressive mechanical properties of atherosclerotic plaques",
+      "Objective: characterize compressive mechanical properties of atherosclerotic plaques"
+    ],
+    "applicable_to": [
+      "material_characterization",
+      "quantitative_numerical_simulation"
+    ],
+    "required_when": [
+      "using literature-derived material ranges or justifying sampled material parameter distributions"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "Accurate material property characterization underpins the study's material-dominance claim and the sampled E ranges; reviewers will expect clear provenance and justification of plaque mechanical properties.",
+    "source_items": [
+      "paper_004:item_01"
+    ]
+  },
+  {
+    "canonical_key": "assess_role_of_ccta_in_vulnerable_plaque_detection",
+    "category": "objective",
+    "aliases": [
+      "evaluate role of CCTA in identifying vulnerable plaques and risk prediction",
+      "Objective: evaluate role of CCTA in identifying vulnerable plaques and risk prediction"
+    ],
+    "applicable_to": [
+      "clinical_imaging_comparison",
+      "plaque_vulnerability_index_development"
+    ],
+    "required_when": [
+      "comparing computational VI results to imaging-derived biomarkers or discussing clinical translation"
+    ],
+    "requirement_level": "common",
+    "reason": "Discussion of imaging modalities like CCTA is commonly included when arguing clinical relevance of computational VIs, but it is not central to the computational sensitivity analysis itself.",
+    "source_items": [
+      "paper_005:item_01"
+    ]
+  },
+  {
+    "canonical_key": "primary_endpoint_clinical_tbr_comparison",
+    "category": "objective",
+    "aliases": [
+      "comparison of 18F-NaF tissue-to-background ratios between culprit and non-culprit coronary plaques",
+      "primary endpoint: comparison of 18F-NaF tissue-to-background ratios"
+    ],
+    "applicable_to": [
+      "clinical_validation",
+      "diagnostic_performance_metrics"
+    ],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "This clinical PET imaging endpoint is unrelated to the computational methodology and surrogate-based sensitivity analysis of this project.",
+    "source_items": [
+      "paper_006:item_01"
+    ]
+  },
+  {
+    "canonical_key": "provide_recommendations_on_wss_assessment",
+    "category": "objective",
+    "aliases": [
+      "provide expert recommendations on WSS assessment in coronary arteries",
+      "Objective: provide expert recommendations on WSS assessment"
+    ],
+    "applicable_to": [
+      "hemodynamic_analysis",
+      "quantitative_numerical_simulation"
+    ],
+    "required_when": [
+      "interpreting wall shear stress (WSS) related outputs or relating hemodynamic indices to vulnerability"
+    ],
+    "requirement_level": "common",
+    "reason": "Guidance on WSS assessment is relevant when discussing hemodynamic factors; although this study focuses on structural stress, hemodynamic boundary conditions and related literature are commonly referenced.",
+    "source_items": [
+      "paper_007:item_01"
+    ]
+  },
+  {
+    "canonical_key": "model_synaptic_mechanobiology_and_biomarker_kinetics",
+    "category": "objective",
+    "aliases": [
+      "model synaptic mechanobiology and biomarker kinetics for acute and repeated injury",
+      "Objective: model synaptic mechanobiology and biomarker kinetics"
+    ],
+    "applicable_to": [
+      "computational_biomechanics"
+    ],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "Synaptic mechanobiology and biomarker kinetics fall outside coronary plaque mechanics and the study's objectives.",
+    "source_items": [
+      "paper_008:item_01"
+    ]
+  },
+  {
+    "canonical_key": "review_methods_for_obtaining_accurate_hemodynamic_factors",
+    "category": "objective",
+    "aliases": [
+      "review methods for obtaining accurate hemodynamic factors",
+      "Objective: review methods for obtaining accurate hemodynamic factors"
+    ],
+    "applicable_to": [
+      "hemodynamic_analysis",
+      "boundary_condition_specification"
+    ],
+    "required_when": [
+      "justifying selection of inlet/outlet BCs or hemodynamic parameter ranges"
+    ],
+    "requirement_level": "common",
+    "reason": "Reviews of hemodynamic methods inform choices of boundary conditions and inflow/outflow models; the project should reference such methods when motivating BC choices but it is not a new review.",
+    "source_items": [
+      "paper_009:item_01"
+    ]
+  },
+  {
+    "canonical_key": "develop_plaque_model_for_stent_testbed",
+    "category": "objective",
+    "aliases": [
+      "develop plaque model for computational stent test-bed",
+      "Objective: develop plaque model for computational stent test-bed"
+    ],
+    "applicable_to": [
+      "model_development",
+      "device_simulation"
+    ],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "Developing a plaque model for stent testing is a different application than vulnerability index sensitivity analysis and is not required for this project's central claims.",
+    "source_items": [
+      "paper_010:item_01"
+    ]
+  },
+  {
+    "canonical_key": "computational_modelling_study",
+    "category": "study_design",
+    "aliases": [
+      "computational model / modelling study",
+      "computational/mathematical modeling study",
+      "computational modelling study",
+      "in silico simulation",
+      "modelling study",
+      "Study design: computational model / modelling study",
+      "Study design: computational/mathematical modeling study",
+      "Study design: computational modelling study",
+      "Study design: computational modelling study"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "quantitative_numerical_simulation",
+      "surrogate_modeling_and_gsa",
+      "peak_field_value_claim"
+    ],
+    "required_when": [],
+    "requirement_level": "mandatory",
+    "reason": "The project is a computational in-silico FSI study with surrogate modeling and Sobol GSA, so clear reporting that this is a computational modelling study (methods/design) is essential and expected by related literature.",
+    "source_items": [
+      "paper_002:item_02",
+      "paper_008:item_02",
+      "paper_010:item_02"
+    ]
+  },
+  {
+    "canonical_key": "computational_patient_specific_fsi",
+    "category": "study_design",
+    "aliases": [
+      "fluid-structure interaction (FSI) simulation using patient CT-scan geometry",
+      "computational patient-specific FSI",
+      "Study design: fluid-structure interaction (FSI) simulation using patient CT-scan geometry"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "patient_specific_modeling",
+      "quantitative_numerical_simulation"
+    ],
+    "required_when": [
+      "claims_infer_patient_level_predictive_performance",
+      "validation_against_patient_outcomes_or_images"
+    ],
+    "requirement_level": "optional",
+    "reason": "Patient-specific FSI is relevant when claims require patient-level prediction or clinical validation, but this project uses idealized geometries so patient-specific FSI is not mandatory here though reviewers may request it for translational claims.",
+    "source_items": [
+      "paper_003:item_02"
+    ]
+  },
+  {
+    "canonical_key": "experimental_mechanical_testing_indentation",
+    "category": "study_design",
+    "aliases": [
+      "indentation test to assess local anisotropic behaviour",
+      "experimental mechanical testing (indentation)",
+      "Study design: indentation test to assess local anisotropic behaviour"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "material_characterization",
+      "multiscale_modeling"
+    ],
+    "required_when": [
+      "claims_use_patient_specific_material_properties",
+      "claims_model_local_anisotropy_or_spatially_varying_strength"
+    ],
+    "requirement_level": "optional",
+    "reason": "Local experimental mechanical testing is important when the study requires spatially resolved anisotropic material data, but this computational study uses literature-based isotropic elastic ranges so direct indentation experiments are not required for the core claims.",
+    "source_items": [
+      "paper_004:item_02"
+    ]
+  },
+  {
+    "canonical_key": "narrative_review_article",
+    "category": "study_design",
+    "aliases": [
+      "review/discussion of recent trials and imaging advances",
+      "review article",
+      "narrative review / perspective",
+      "Study design: review/discussion of recent trials and imaging advances",
+      "Study design: review article"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "background_and_context"
+    ],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "Narrative reviews are commonly cited to provide clinical and methodological context; including or referencing reviews is common practice but not essential to the computational methods themselves.",
+    "source_items": [
+      "paper_005:item_02",
+      "paper_009:item_02"
+    ]
+  },
+  {
+    "canonical_key": "prospective_clinical_trial",
+    "category": "study_design",
+    "aliases": [
+      "prospective clinical trial with two patient groups (myocardial infarction and stable angina)",
+      "prospective clinical trial; cohort groups",
+      "Study design: prospective clinical trial with two patient groups (myocardial infarction and stable angina)"
+    ],
+    "applicable_to": [
+      "clinical_validation",
+      "outcome_based_claims"
+    ],
+    "required_when": [
+      "claims_are_validated_against_patient_outcomes",
+      "asserts_diagnostic_performance_on_real_patients"
+    ],
+    "requirement_level": "unsupported",
+    "reason": "Prospective clinical trials are outside this computational study's scope and no patient outcome data are used; such trials are only required when making or validating patient-level diagnostic claims.",
+    "source_items": [
+      "paper_006:item_02"
+    ]
+  },
+  {
+    "canonical_key": "expert_recommendations_consensus",
+    "category": "study_design",
+    "aliases": [
+      "expert recommendations / consensus review",
+      "Study type: expert recommendations / consensus review"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "guideline_context"
+    ],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "Consensus or expert recommendation articles are often used to justify clinical criteria or interpretability of indices; they are commonly cited for contextualizing clinical relevance but not required for the computational workflow.",
+    "source_items": [
+      "paper_007:item_02"
+    ]
+  },
+  {
+    "canonical_key": "histological_fibre_dispersion",
+    "category": "data_or_sample",
+    "aliases": [
+      "morphological observations via polarized light microscopy indicating fibre dispersion"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "material_modeling",
+      "anisotropic_constitutive_laws"
+    ],
+    "required_when": [
+      "model_includes_fibre_directionality_or_anisotropy"
+    ],
+    "requirement_level": "optional",
+    "reason": "Fibre dispersion / histology data are useful when modelling anisotropic fibre-reinforced tissue; this study used isotropic Neo‑Hookean models so such data are not required but would be relevant if anisotropy is later introduced.",
+    "source_items": [
+      "paper_001:item_03"
+    ]
+  },
+  {
+    "canonical_key": "thrombus_mechanical_properties",
+    "category": "data_or_sample",
+    "aliases": [
+      "thrombus mechanical behaviour (broad)"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "plaque_rupture_mechanics"
+    ],
+    "required_when": [
+      "modeling_includes_thrombus_component_or_thrombus_interaction"
+    ],
+    "requirement_level": "optional",
+    "reason": "Mechanical properties of thrombus matter if thrombus is explicitly modelled and affects stress distributions; the present work does not appear to model thrombus explicitly so this is optional for the current project.",
+    "source_items": [
+      "paper_002:item_03"
+    ]
+  },
+  {
+    "canonical_key": "single_patient_ct_geometry",
+    "category": "data_or_sample",
+    "aliases": [
+      "single patient with 40-mm diameter abdominal aortic aneurysm (CT scan)",
+      "patient CT geometry (n=1)"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "patient_specific_simulation"
+    ],
+    "required_when": [
+      "study_claims_patient_specific_predictions"
+    ],
+    "requirement_level": "unsupported",
+    "reason": "A single-case CT geometry is relevant only for patient-specific claims; this study uses idealized coronary models rather than single-patient CT, so single‑patient CT evidence from abstracts does not drive requirements here.",
+    "source_items": [
+      "paper_003:item_03"
+    ]
+  },
+  {
+    "canonical_key": "plaque_tissue_specimens",
+    "category": "data_or_sample",
+    "aliases": [
+      "atherosclerotic plaque tissue samples (local measurements)",
+      "biological tissue specimens"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "material_property_characterization",
+      "validation_against_ex_vivo_data"
+    ],
+    "required_when": [
+      "material_property_ranges_are_derived_from_ex_vivo_measurements"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "This project samples material ranges from ex‑vivo tensile test meta‑analysis to set E ranges for plaque components, so reporting provenance and characteristics of tissue specimens is important and a reviewer would expect it.",
+    "source_items": [
+      "paper_004:item_03"
+    ]
+  },
+  {
+    "canonical_key": "population_reference_description",
+    "category": "data_or_sample",
+    "aliases": [
+      "asymptomatic individuals and patients from recent trials (broadly referenced)",
+      "population referenced (asymptomatic and trial populations)"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "clinical_translation",
+      "diagnostic_performance_assessment"
+    ],
+    "required_when": [
+      "study_infers_clinical_relevance_or_constructs_synthetic_high_risk_labels"
+    ],
+    "requirement_level": "common",
+    "reason": "When deriving or interpreting synthetic clinical labels and discussing clinical relevance, stating which populations/trials informed criteria is commonly reported and helps contextualize applicability; the authors reference clinical studies, so population description is commonly expected.",
+    "source_items": [
+      "paper_005:item_03"
+    ]
+  },
+  {
+    "canonical_key": "patient_cohort_and_procedures",
+    "category": "data_or_sample",
+    "aliases": [
+      "patient numbers – 40 myocardial infarction, 40 stable angina (PET-CT and invasive coronary angiography)",
+      "patient cohort size and procedures"
+    ],
+    "applicable_to": [
+      "clinical_validation",
+      "diagnostic_performance_assessment"
+    ],
+    "required_when": [
+      "reporting_patient_based_outcomes_or_validation"
+    ],
+    "requirement_level": "unsupported",
+    "reason": "Cohort size and clinical procedures are required for clinical validation claims, but this computational study provides no patient outcome validation, so concrete patient‑cohort reporting from abstracts is not applicable to the present work.",
+    "source_items": [
+      "paper_006:item_03"
+    ]
+  },
+  {
+    "canonical_key": "target_biological_system_coronary_artery",
+    "category": "data_or_sample",
+    "aliases": [
+      "human coronary artery assessment (clinical focus)",
+      "target biological system"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "model_validation",
+      "clinical_relevance"
+    ],
+    "required_when": [],
+    "requirement_level": "mandatory",
+    "reason": "Stating the target biological system (human coronary artery) is essential and logically necessary for interpreting model geometry, boundary conditions and clinical implications of plaque vulnerability claims.",
+    "source_items": [
+      "paper_007:item_04"
+    ]
+  },
+  {
+    "canonical_key": "modeling_unit_scale",
+    "category": "data_or_sample",
+    "aliases": [
+      "single synaptic structure as modeling unit",
+      "modelled entity"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "multiscale_modeling"
+    ],
+    "required_when": [
+      "study_claims_results_at_the_same_physical_scale"
+    ],
+    "requirement_level": "unsupported",
+    "reason": "An item describing a synaptic modeling unit is domain-mismatched to coronary plaque simulation; scale/unit specification is important generally, but this specific reported item is irrelevant to the present project.",
+    "source_items": [
+      "paper_008:item_03"
+    ]
+  },
+  {
+    "canonical_key": "imaging_modalities_used",
+    "category": "data_or_sample",
+    "aliases": [
+      "medical imaging modalities used (CTA, MRI, ultrasound, OCT)",
+      "imaging sources"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "geometry_reconstruction",
+      "clinical_translation"
+    ],
+    "required_when": [
+      "geometry_is_patient_specific_or_imaging-derived"
+    ],
+    "requirement_level": "common",
+    "reason": "Reporting which imaging modalities inform geometry/composition is commonly expected for studies linking simulations to clinical practice; authors use idealized geometries but cite imaging sources for clinical criteria, so modality description is commonly relevant.",
+    "source_items": [
+      "paper_009:item_03"
+    ]
+  },
+  {
+    "canonical_key": "plaque_geometry_and_composition_representation",
+    "category": "data_or_sample",
+    "aliases": [
+      "atherosclerotic plaque representation",
+      "plaque geometry/composition (broad)"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "numerical_simulation",
+      "sensitivity_analysis"
+    ],
+    "required_when": [],
+    "requirement_level": "mandatory",
+    "reason": "Explicit description of plaque geometry and component representation (LAP vs CP, domain partitioning) is central to the modelling and to interpreting VI and Sobol results, so it is mandatory for this study's claims.",
+    "source_items": [
+      "paper_010:item_03"
+    ]
+  },
+  {
+    "canonical_key": "material_constitutive_model",
+    "category": "methods",
+    "aliases": [
+      "hyperelastic constitutive modeling incorporating fibre orientation distributions",
+      "structural hyperelastic model with dispersed fibre orientations",
+      "FE material model"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "quantitative_numerical_simulation",
+      "fsi_simulation",
+      "material_sensitivity_analysis"
+    ],
+    "required_when": [
+      "any claim depends on stress/strain fields from continuum mechanics simulations",
+      "sensitivity analysis includes material property variation"
+    ],
+    "requirement_level": "mandatory",
+    "reason": "The central claim compares stress (PSS/ΔPSS) normalized by strength and performs Sobol sensitivity over material parameters, so explicit constitutive model choices (and their assumptions) are logically necessary and affect credibility.",
+    "source_items": [
+      "paper_001:item_04"
+    ]
+  },
+  {
+    "canonical_key": "surrogate_model_development",
+    "category": "methods",
+    "aliases": [
+      "reduced-order / surrogate modelling",
+      "construction of low-dimensional surrogate",
+      "Gaussian process surrogate / GPR"
+    ],
+    "applicable_to": [
+      "surrogate_development",
+      "global_sensitivity_analysis",
+      "computational_numerical_simulation"
+    ],
+    "required_when": [
+      "global sensitivity analysis or extensive sampling is performed without running full-order model for every sample"
+    ],
+    "requirement_level": "mandatory",
+    "reason": "The study's Sobol analysis and broad sampling rely on a GPR surrogate to evaluate many parameter combinations; surrogate modelling methodology, validation (CV R², RMSE) and uncertainty quantification are therefore essential.",
+    "source_items": [
+      "paper_002:item_04"
+    ]
+  },
+  {
+    "canonical_key": "simulation_pipeline_and_processing_steps",
+    "category": "methods",
+    "aliases": [
+      "patient-specific simulation pipeline steps",
+      "image processing, mesh generation, boundary conditions, solver parameters, visualization, extraction, statistical analysis",
+      "FE simulation pipeline"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "fsi_simulation",
+      "simulation_data_generation"
+    ],
+    "required_when": [
+      "reporting of numerical experiments and generation of PSS/ΔPSS outputs"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "Reproducibility and credibility of PSS/ΔPSS results depend on the simulation pipeline (meshing, BCs, solver parameters, post-processing), and reviewers will expect these details though the project uses an established FSI tool.",
+    "source_items": [
+      "paper_009:item_04",
+      "paper_010:item_04"
+    ]
+  },
+  {
+    "canonical_key": "experimental_mechanical_characterization",
+    "category": "methods",
+    "aliases": [
+      "mechanical indentation",
+      "indentation testing (to probe local anisotropic compressive response)",
+      "ex vivo tensile / indentation testing"
+    ],
+    "applicable_to": [
+      "material_property_estimation",
+      "model_parameterization",
+      "validation_against_ex_vivo_data"
+    ],
+    "required_when": [
+      "material parameter ranges or strength normalization are claimed to be grounded in experimental data"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "The study samples material ranges and invokes strength normalization; while it uses literature meta-analysis, authors should cite or reference mechanical characterization methods (e.g., indentation/tensile) that underpin chosen ranges.",
+    "source_items": [
+      "paper_004:item_04"
+    ]
+  },
+  {
+    "canonical_key": "imaging_based_plaque_characterization",
+    "category": "methods",
+    "aliases": [
+      "CCTA plaque characterization",
+      "combined PET-CT / 18F-NaF / 18F-FDG imaging",
+      "intravascular imaging and comparative validation methods"
+    ],
+    "applicable_to": [
+      "clinical_validation",
+      "phenotype_definition",
+      "morphology_parameterization"
+    ],
+    "required_when": [
+      "claims tie simulated plaque phenotypes to clinically observable imaging features or use imaging-derived criteria for VI validation"
+    ],
+    "requirement_level": "common",
+    "reason": "The paper's VI selection references seven clinically established high-risk plaque features (from imaging/histology literature), so imaging characterization is commonly reported as background/validation context though this computational study uses idealized geometries.",
+    "source_items": [
+      "paper_005:item_04",
+      "paper_006:item_04"
+    ]
+  },
+  {
+    "canonical_key": "mechanobiology_and_multiphysics_components",
+    "category": "methods",
+    "aliases": [
+      "mechanobiology model components",
+      "ligand-receptor adhesion modeling",
+      "integrated dynamics of cell adhesion with deformation mechanics"
+    ],
+    "applicable_to": [
+      "mechanobiology_models",
+      "detailed_multiphysics_simulation"
+    ],
+    "required_when": [
+      "claims rely on biochemical or cell-scale adhesion mechanisms affecting rupture"
+    ],
+    "requirement_level": "unsupported",
+    "reason": "The current project focuses on continuum FSI stress/strength metrics and global sensitivity of morphology/hemodynamics/materials; mechanobiology adhesion models reported in abstracts are outside this study's scope and not evidenced as used here.",
+    "source_items": [
+      "paper_003:item_04",
+      "paper_008:item_04"
+    ]
+  },
+  {
+    "canonical_key": "scope_and_topics_overview",
+    "category": "methods",
+    "aliases": [
+      "topics covered",
+      "Scope: existing methodologies, technical considerations, clinical applications"
+    ],
+    "applicable_to": [
+      "review_and_context",
+      "study_rationale"
+    ],
+    "required_when": [],
+    "requirement_level": "optional",
+    "reason": "High-level scope statements help position the work but are not required for the technical claims; they're useful for introduction/background.",
+    "source_items": [
+      "paper_007:item_03"
+    ]
+  },
+  {
+    "canonical_key": "model_layer_stress_strain_performance",
+    "category": "outcomes",
+    "aliases": [
+      "ability of model to capture stress-strain response of layers with dispersed fibres",
+      "model performance on stress-strain behavior"
+    ],
+    "applicable_to": [
+      "computational_numerical_simulation",
+      "fsi_simulation",
+      "material_modeling"
+    ],
+    "required_when": [
+      "claims_about_plaque_stress_distribution",
+      "use_of_layered_constitutive_models"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "Accurate representation/validation of layer-wise stress–strain behavior is important for credibility of stress-based plaque vulnerability claims and is commonly expected for computational biomechanics simulations.",
+    "source_items": [
+      "paper_001:item_05"
+    ]
+  },
+  {
+    "canonical_key": "fast_strain_estimation_performance",
+    "category": "outcomes",
+    "aliases": [
+      "fast estimation of strain in thrombus during thrombectomy",
+      "strain estimation speed and accuracy (broad)"
+    ],
+    "applicable_to": [
+      "real_time_estimation",
+      "device_interaction_simulation"
+    ],
+    "required_when": [
+      "claims_about_real_time_prediction_or_device_guidance"
+    ],
+    "requirement_level": "unsupported",
+    "reason": "Claims about fast strain estimation are specific to real-time/device contexts not central to this study's FSI-based global sensitivity and VI-definition objectives and are only present as abstract-level reports in the inventory.",
+    "source_items": [
+      "paper_002:item_05"
+    ]
+  },
+  {
+    "canonical_key": "hemodynamic_effects_on_targeted_delivery",
+    "category": "outcomes",
+    "aliases": [
+      "effect of blood flow on microbubble delivery/adherence to intended surface",
+      "MB delivery/adherence under hemodynamic conditions"
+    ],
+    "applicable_to": [
+      "hemodynamics_study",
+      "particle_transport_simulation"
+    ],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "Microbubble delivery under flow is unrelated to plaque rupture VI and global sensitivity analysis in this project and appears only as abstract-level evidence in the inventory.",
+    "source_items": [
+      "paper_003:item_06"
+    ]
+  },
+  {
+    "canonical_key": "compressive_mechanical_properties_and_anisotropy_metrics",
+    "category": "outcomes",
+    "aliases": [
+      "measures of compressive mechanical properties and anisotropy",
+      "mechanical property metrics (e.g., stiffness, anisotropy)"
+    ],
+    "applicable_to": [
+      "material_characterization",
+      "constitutive_modeling",
+      "computational_numerical_simulation"
+    ],
+    "required_when": [
+      "use_of_solid_material_models_or_claims_on_material_dominance"
+    ],
+    "requirement_level": "common",
+    "reason": "Reporting compressive/anisotropic mechanical metrics is commonly done when material properties are central to the study (as here) but the present work uses isotropic elastic models so full anisotropy metrics are not mandatory.",
+    "source_items": [
+      "paper_004:item_05"
+    ]
+  },
+  {
+    "canonical_key": "clinical_prognostic_value_of_CAC_CCTA",
+    "category": "outcomes",
+    "aliases": [
+      "prognostic value of CAC score and CCTA-derived adverse plaque characteristics for myocardial infarction, stroke, and all-cause mortality",
+      "clinical event prediction (MI, stroke, mortality)"
+    ],
+    "applicable_to": [
+      "clinical_outcome_studies",
+      "imaging_validation"
+    ],
+    "required_when": [
+      "claims_about_clinical_predictive_value_or_patient_outcomes"
+    ],
+    "requirement_level": "unsupported",
+    "reason": "Large-scale clinical prognostic metrics are outside the scope of this computational FSI/surrogate sensitivity study and the inventory items are abstract-level clinical findings not directly applicable here.",
+    "source_items": [
+      "paper_005:item_05"
+    ]
+  },
+  {
+    "canonical_key": "imaging_TBR_primary_outcome",
+    "category": "outcomes",
+    "aliases": [
+      "higher median maximum tissue-to-background ratio for culprit vs non-culprit plaques",
+      "primary quantitative imaging outcome (TBR comparison)"
+    ],
+    "applicable_to": [
+      "molecular_imaging_studies",
+      "imaging_biomarker_evaluation"
+    ],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "TBR imaging outcomes are not relevant to the mechanical VI definition and GPR/Sobol analysis in this computational biomechanics project and are only present as abstract-level evidence.",
+    "source_items": [
+      "paper_006:item_05"
+    ]
+  },
+  {
+    "canonical_key": "wss_assessment_recommendations",
+    "category": "outcomes",
+    "aliases": [
+      "recommendations for assessment of wall shear stress (WSS)",
+      "consensus recommendations"
+    ],
+    "applicable_to": [
+      "hemodynamics_study",
+      "computational_numerical_simulation"
+    ],
+    "required_when": [
+      "reporting_hemodynamic_metrics_or_comparing_to_prior_WSS_work"
+    ],
+    "requirement_level": "common",
+    "reason": "Guidance on WSS assessment is commonly cited in hemodynamic studies and relevant if the manuscript reports or compares WSS-based metrics, though it is not central to the stress/strength VI claims which focus on structural stress.",
+    "source_items": [
+      "paper_007:item_05"
+    ]
+  },
+  {
+    "canonical_key": "simulated_repeated_blast_injury_outcomes",
+    "category": "outcomes",
+    "aliases": [
+      "simulations of synaptic injury responses to repeated blast loads",
+      "simulated outcomes"
+    ],
+    "applicable_to": [
+      "blast_injury_simulation",
+      "neuromechanics"
+    ],
+    "required_when": [],
+    "requirement_level": "unsupported",
+    "reason": "Blast-induced synaptic injury simulations are unrelated to coronary plaque FSI, surrogates, and Sobol sensitivity analysis addressed in this study and are only included as abstract-level items.",
+    "source_items": [
+      "paper_008:item_06"
+    ]
+  },
+  {
+    "canonical_key": "computational_test_bed_for_device_assessment",
+    "category": "outcomes",
+    "aliases": [
+      "model intended for use in test-bed to assess stent angioplasty",
+      "computational test-bed applicability"
+    ],
+    "applicable_to": [
+      "device_simulation",
+      "computational_testbed_development"
+    ],
+    "required_when": [
+      "claims_about_device_assessment_or_preclinical_testbeds"
+    ],
+    "requirement_level": "optional",
+    "reason": "Using computational models as test-beds for device assessment is a valid outcome in related literature but is only relevant to this project if device-assessment claims are made; otherwise it is peripheral.",
+    "source_items": [
+      "paper_010:item_05"
+    ]
+  },
+  {
+    "canonical_key": "fiber_dispersion_limitations",
+    "category": "limitations",
+    "aliases": [
+      "ignore fibre dispersion",
+      "fibre dispersion missing",
+      "adventitial/intimal response not captured"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "quantitative_numerical_simulation",
+      "material_modeling"
+    ],
+    "required_when": [
+      "using isotropic or homogenized material models",
+      "making conclusions about wall/fibrous-cap mechanical response"
+    ],
+    "requirement_level": "optional",
+    "reason": "Neglecting fiber dispersion (anisotropy) can affect local stress predictions and thus is a relevant limitation for plaque mechanics studies, but the present study uses isotropic Neo-Hookean models and correctly frames this as a limitation rather than a mandatory methodological omission.",
+    "source_items": [
+      "paper_001:item_06"
+    ]
+  },
+  {
+    "canonical_key": "missing_methodological_details_in_abstracts",
+    "category": "limitations",
+    "aliases": [
+      "missing methodological settings",
+      "detailed experimental settings not available",
+      "abstract-only missing details"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "general_research_reporting",
+      "meta-analysis_and_literature_review"
+    ],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "Several reported items note that abstracts omit important methodological details; for this project thorough methods are provided, but documenting complete methods is a common expectation in the literature and affects reproducibility.",
+    "source_items": [
+      "paper_004:item_06",
+      "paper_010:item_06"
+    ]
+  },
+  {
+    "canonical_key": "pipeline_standardization_and_uncertainty",
+    "category": "limitations",
+    "aliases": [
+      "pipeline standardization issues",
+      "unavoidable uncertainties in pipeline steps",
+      "standardization and uncertainty limitations"
+    ],
+    "applicable_to": [
+      "computational_biomechanics",
+      "surrogate_modeling",
+      "global_sensitivity_analysis",
+      "quantitative_numerical_simulation"
+    ],
+    "required_when": [
+      "performing large-scale surrogate-based sensitivity analysis",
+      "drawing clinical-translation implications from computational pipelines"
+    ],
+    "requirement_level": "strongly_expected",
+    "reason": "Uncertainties and lack of standardization across pipeline steps (modeling choices, sampling, surrogate approximation) materially affect sensitivity and diagnostic claims; the literature flags this and the project appropriately addresses uncertainty (bootstraps, GPR posterior variance, Sobol convergence), so transparency and standardization are strongly expected.",
+    "source_items": [
+      "paper_009:item_05"
+    ]
+  },
+  {
+    "canonical_key": "results_surrogate_enables_rapid_strain_estimation_qualitative",
+    "category": "results",
+    "aliases": [
+      "results: surrogate enables rapid strain estimation (qualitative)"
+    ],
+    "applicable_to": [],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "",
+    "source_items": [
+      "paper_002:item_06"
+    ]
+  },
+  {
+    "canonical_key": "results_conclusion_ccta_and_cac_scoring_provide_incremental_prognostic_information_beyond_traditional_risk_factors_and_may_guide_revascularization_decisions",
+    "category": "results",
+    "aliases": [
+      "results/conclusion: CCTA and CAC scoring provide incremental prognostic information beyond traditional risk factors and may guide revascularization decisions"
+    ],
+    "applicable_to": [],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "",
+    "source_items": [
+      "paper_005:item_06"
+    ]
+  },
+  {
+    "canonical_key": "solver_mesh_and_boundary_conditions",
+    "category": "numerical_or_experimental_settings",
+    "aliases": [
+      "solver settings",
+      "mesh settings",
+      "boundary conditions",
+      "detailed CFD/measurement parameters"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "computational_biomechanics",
+      "pulsatile_FSI_simulation"
+    ],
+    "required_when": [],
+    "requirement_level": "strongly_expected",
+    "reason": "Detailed solver, mesh and boundary-condition specifications are routinely reported in similar computational FSI studies and materially affect stress/VI results and reproducibility; reviewers will expect these details even though the authors supply them elsewhere in the project.",
+    "source_items": [
+      "paper_007:item_06"
+    ]
+  },
+  {
+    "canonical_key": "temporal_resolution_and_time_stepping",
+    "category": "numerical_or_experimental_settings",
+    "aliases": [
+      "time step size",
+      "temporal resolution",
+      "timescale resolution (ms to hours)",
+      "cardiac cycle sampling"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "pulsatile_FSI_simulation",
+      "fatigue_or_fatigue_like_stress_analysis"
+    ],
+    "required_when": [
+      "claims_about_pulsatility_or_fatigue (e.g., ΔPSS importance)",
+      "time-dependent_outputs_reported"
+    ],
+    "requirement_level": "mandatory",
+    "reason": "Because a core claim hinges on pulsatile amplitude (ΔPSS) and fatigue-like interpretation, precise temporal resolution and time-stepping (Δt, cycles to steady periodic state) are logically necessary for credible results and are standard methodological requirements.",
+    "source_items": [
+      "paper_008:item_05"
+    ]
+  },
+  {
+    "canonical_key": "blood_rheology_and_inflow_variation",
+    "category": "numerical_or_experimental_settings",
+    "aliases": [
+      "variation of blood mechanical properties",
+      "hematocrit changes",
+      "inlet velocity/flow waveform variation",
+      "inflow boundary condition variation"
+    ],
+    "applicable_to": [
+      "quantitative_numerical_simulation",
+      "hemodynamics_sensitivity_analysis",
+      "computational_biomechanics"
+    ],
+    "required_when": [
+      "study_claims_depend_on_blood_non-newtonian_effects",
+      "patient-specific_hemodynamic_property_investigation"
+    ],
+    "requirement_level": "optional",
+    "reason": "Varying blood rheology or inlet velocity is relevant for hemodynamics-focused sensitivity studies, but this project uses a Newtonian fluid with prescribed inflow waveforms and does not claim blood non-Newtonian effects, so such variations are optional rather than necessary for the central stress/strength and material-dominance claims.",
+    "source_items": [
+      "paper_003:item_05"
+    ]
+  },
+  {
+    "canonical_key": "validation_ex_vivo_and_other_modal_validation_18f_naf_compared_with_carotid_endarterectomy_histology_and_intravascular_ultrasound",
+    "category": "validation",
+    "aliases": [
+      "validation: ex vivo and other-modal validation – 18F-NaF compared with carotid endarterectomy histology and intravascular ultrasound"
+    ],
+    "applicable_to": [],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "",
+    "source_items": [
+      "paper_006:item_06"
+    ]
+  },
+  {
+    "canonical_key": "models_and_equations_use_of_computational_fluid_dynamics_finite_element_analysis_and_fluid_structure_interaction_simulations",
+    "category": "models_and_equations",
+    "aliases": [
+      "models_and_equations: use of computational fluid dynamics, finite element analysis, and fluid-structure interaction simulations"
+    ],
+    "applicable_to": [],
+    "required_when": [],
+    "requirement_level": "common",
+    "reason": "",
+    "source_items": [
+      "paper_009:item_06"
+    ]
+  }
+]

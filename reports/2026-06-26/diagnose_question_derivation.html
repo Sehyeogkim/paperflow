@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>진단 질문은 어떻게 유도되는가 · paperpal</title>
+<style>
+  :root{
+    --bg:#F0EEE6; --surface:#FAF9F5; --surface2:#E6E0D4;
+    --accent:#CC785C; --accent2:#E8D5C4; --border:#D4C5B0;
+    --ink:#1A1A1A; --body:#2D2D2D; --muted:#6B5E54;
+    --code-bg:#E6E0D4; --code-ink:#8B4513;
+    --ok:#7A9A6D; --err:#C25744;
+    --radius:16px; --radius-sm:10px;
+    --shadow:0 1px 2px rgba(60,40,20,.05),0 8px 24px rgba(60,40,20,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--body);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo",Pretendard,sans-serif;
+    line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:48px 28px 96px}
+  h1{font-size:2.1rem;letter-spacing:-.02em;color:var(--ink);margin:0 0 6px;font-weight:800}
+  .sub{color:var(--muted);font-size:1.02rem;margin:0 0 4px}
+  .tagline{font-size:.92rem;color:var(--accent);font-weight:700;margin-top:14px;
+    display:inline-flex;gap:8px;align-items:center;background:var(--accent2);
+    padding:7px 14px;border-radius:999px}
+  .mono{font-family:ui-monospace,Menlo,monospace}
+
+  /* flow */
+  .flow{margin-top:40px;position:relative}
+  .stage{position:relative;background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px;margin:0 0 14px}
+  .stage::before{content:"";position:absolute;left:34px;bottom:-15px;width:2px;height:15px;
+    background:var(--border)}
+  .stage:last-of-type::before{display:none}
+  .stage-h{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .num{flex:none;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;
+    display:grid;place-items:center;font-weight:800;font-size:.95rem;box-shadow:0 2px 6px rgba(204,120,92,.4)}
+  .num.soft{background:var(--surface2);color:var(--code-ink)}
+  .stage-h h2{font-size:1.18rem;color:var(--ink);margin:0;font-weight:800;letter-spacing:-.01em}
+  .stage-h .k{margin-left:auto;font-size:.66rem;font-weight:800;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted)}
+  .stage p{margin:8px 0 0;font-size:.94rem}
+  .stage p.note{color:var(--muted);font-size:.86rem}
+
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  .src{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px}
+  .src .t{font-weight:800;font-size:.82rem;color:var(--ink);display:flex;gap:6px;align-items:center}
+  .src .d{font-size:.74rem;color:var(--muted);margin-top:5px;line-height:1.5}
+  @media(max-width:780px){.grid4{grid-template-columns:repeat(2,1fr)}}
+
+  .codeblock{background:var(--code-bg);border:1px solid var(--border);border-radius:var(--radius-sm);
+    padding:13px 15px;margin-top:14px;font-family:ui-monospace,Menlo,monospace;font-size:.78rem;
+    color:#3a2a18;white-space:pre-wrap;line-height:1.6;overflow-x:auto}
+  .codeblock .hl{color:var(--code-ink);font-weight:700}
+  .codeblock .dim{color:var(--muted)}
+
+  /* requirement pack */
+  .packgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+  @media(max-width:780px){.packgrid{grid-template-columns:1fr}}
+  .packcol{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px}
+  .packcol h3{margin:0 0 10px;font-size:.82rem;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--accent);font-weight:800}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;
+    padding:5px 11px;border-radius:999px;margin:0 5px 7px 0;border:1px solid var(--border);background:var(--surface)}
+  .chip.present{background:#EAF0E5;border-color:#BBD0AB;color:#42603a}
+  .chip.present::before{content:"✓";color:var(--ok);font-weight:800}
+  .chip.missing{background:#F7E7E2;border-color:#E3B3A6;color:#9c4634}
+  .chip.missing::before{content:"✗";color:var(--err);font-weight:800}
+  .chip.fired{background:var(--accent2);border-color:var(--accent);color:var(--code-ink)}
+  .chip.fired::before{content:"⚡";}
+  .chip.idle{opacity:.55}
+  .chip.idle::before{content:"·";font-weight:800}
+  .cond{margin-top:8px;font-size:.82rem}
+  .cond .row{display:flex;gap:10px;align-items:baseline;padding:8px 0;border-top:1px dashed var(--border)}
+  .cond .row:first-child{border-top:none}
+  .cond .nm{font-weight:800;min-width:170px;font-family:ui-monospace,Menlo,monospace;font-size:.78rem}
+  .cond .tr{color:var(--muted);font-size:.78rem}
+  .verdict{font-weight:800;font-size:.74rem;padding:2px 9px;border-radius:999px;margin-left:auto;white-space:nowrap}
+  .verdict.on{background:var(--accent2);color:var(--code-ink)}
+  .verdict.off{background:var(--code-bg);color:var(--muted)}
+
+  /* llm substeps */
+  .steps{counter-reset:s;margin-top:14px}
+  .substep{display:flex;gap:14px;padding:12px 0;border-top:1px dashed var(--border)}
+  .substep:first-child{border-top:none}
+  .substep .b{flex:none;width:26px;height:26px;border-radius:8px;background:var(--surface2);
+    color:var(--code-ink);font-weight:800;display:grid;place-items:center;font-size:.8rem}
+  .substep .x{font-size:.9rem}
+  .substep .x b{color:var(--ink)}
+  .substep .x .s{color:var(--muted);font-size:.82rem;display:block;margin-top:3px}
+
+  /* questions */
+  .qsec{margin-top:14px}
+  .qgrouplabel{font-size:.8rem;font-weight:800;color:var(--accent);text-transform:uppercase;
+    letter-spacing:.06em;margin:18px 0 10px;display:flex;align-items:center;gap:9px}
+  .qgrouplabel .cnt{background:var(--accent);color:#fff;border-radius:999px;font-size:.7rem;padding:1px 9px}
+  details.q{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);
+    margin-bottom:9px;overflow:hidden}
+  details.q[open]{border-color:var(--accent);box-shadow:var(--shadow)}
+  details.q summary{cursor:pointer;list-style:none;padding:13px 16px;display:flex;gap:11px;
+    align-items:flex-start;font-size:.9rem;font-weight:600;color:var(--ink)}
+  details.q summary::-webkit-details-marker{display:none}
+  details.q summary .fld{font-family:ui-monospace,Menlo,monospace;font-size:.74rem;color:var(--code-ink);
+    background:var(--code-bg);padding:2px 8px;border-radius:6px;flex:none}
+  details.q summary .arrow{margin-left:auto;color:var(--muted);transition:transform .2s}
+  details.q[open] summary .arrow{transform:rotate(90deg)}
+  .qbody{padding:0 16px 16px;font-size:.86rem}
+  .qbody .lab{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);
+    font-weight:800;margin:12px 0 4px}
+  .qbody .why{color:var(--body)}
+  .qbody .ex{background:var(--surface);border:1px dashed var(--border);border-radius:8px;padding:10px 12px;
+    font-size:.78rem;color:var(--muted);font-style:italic;line-height:1.55}
+  .risk{font-size:.6rem;font-weight:800;padding:2px 8px;border-radius:999px;text-transform:uppercase;flex:none}
+  .risk.high{background:#F7E7E2;color:var(--err)}
+  .risk.medium{background:var(--accent2);color:var(--code-ink)}
+
+  /* token panel */
+  .tok{display:grid;grid-template-columns:1.3fr 1fr;gap:18px;margin-top:14px}
+  @media(max-width:780px){.tok{grid-template-columns:1fr}}
+  .bar{margin-top:10px}
+  .bar .row{margin-bottom:11px}
+  .bar .top{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:4px}
+  .bar .top .v{font-weight:800;color:var(--ink);font-family:ui-monospace,Menlo,monospace}
+  .track{height:13px;border-radius:999px;background:var(--code-bg);overflow:hidden;display:flex}
+  .seg{height:100%}
+  .seg.sys{background:#9DB0C4}.seg.inp{background:var(--accent)}.seg.pk{background:#C9A24B}
+  .seg.out{background:var(--ok)}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:.74rem;color:var(--muted)}
+  .legend i{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px}
+  .tokcard{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px}
+  .tokcard .big{font-size:2rem;font-weight:800;color:var(--ink);font-family:ui-monospace,Menlo,monospace;line-height:1.1}
+  .tokcard .lbl{font-size:.76rem;color:var(--muted);margin-top:2px}
+  .tokcard hr{border:none;border-top:1px dashed var(--border);margin:12px 0}
+  .kv{display:flex;justify-content:space-between;font-size:.82rem;padding:3px 0}
+  .kv .v{font-weight:700;font-family:ui-monospace,Menlo,monospace;color:var(--ink)}
+
+  .foot{margin-top:34px;font-size:.78rem;color:var(--muted);text-align:center;line-height:1.7}
+  .pill{display:inline-block;background:var(--surface);border:1px solid var(--border);border-radius:999px;
+    padding:3px 11px;font-size:.74rem;font-weight:600;margin:0 3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>진단 질문은 어떻게 유도되는가</h1>
+  <p class="sub">유저 입력 4개 → <b>진단(diagnose)</b> → 9개 질문 덩어리까지의 전 과정</p>
+  <div class="tagline">project: coronary_plaque_VI_demo · model: gpt-5 · 분류 결과: MISSING_CRITICAL_INFORMATION</div>
+
+  <div class="flow">
+
+    <!-- STAGE 0 -->
+    <div class="stage">
+      <div class="stage-h"><div class="num">0</div><h2>유저 입력 (4개 소스)</h2><span class="k">raw input</span></div>
+      <p>당신이 채운 네 가지가 진단의 “재료”입니다. 각 소스가 서로 다른 신호를 줍니다.</p>
+      <div class="grid4">
+        <div class="src"><div class="t">🎯 journal info</div><div class="d">분야(computational biomechanics)·타깃 저널·제목. → <b>도메인</b>을 고정해 어떤 리뷰어 기준을 적용할지 결정.</div></div>
+        <div class="src"><div class="t">💡 core message</div><div class="d">한 문단 + Novelty 3개. → <b>무엇을 주장</b>하는지(맥동성 FSI, ΔPSS, Sobol 민감도, 재료 지배). 조건부 트리거의 근거.</div></div>
+        <div class="src"><div class="t">🗂️ outline</div><div class="d">Intro~Conclusion 섹션별 논리. → 어떤 방법·결과를 <b>쓸 계획</b>인지. 트리거·present 판단의 보조 신호.</div></div>
+        <div class="src"><div class="t">📎 data</div><div class="d">파일명·컬럼·노트(input.csv 1,000샘플, sobol_*·inflow/elastance.dat·bc.md). → 어떤 <b>근거가 이미 있는지</b>.</div></div>
+      </div>
+    </div>
+
+    <!-- STAGE 1 -->
+    <div class="stage">
+      <div class="stage-h"><div class="num">1</div><h2>ingest → <span class="mono">inputs_block</span></h2><span class="k">parse_inputs.py</span></div>
+      <p>네 입력을 파싱해 하나의 안정적 텍스트 블록으로 조립합니다(캐시 prefix 안정 유지). 이게 LLM에 들어가는 “문맥”입니다.</p>
+      <div class="codeblock"><span class="hl">## JOURNAL INFO</span>
+title: 관상동맥 파열위험지표 정의및 민감도 분석
+field: Computational biomechanics
+target: 1. Computers in biology and medicine
+
+<span class="hl">## CORE MESSAGE</span>
+one_paragraph: …맥동성 FSI…ΔPSS…6가지 위험지표…<span class="dim">GPR 대리모델·Sobol 민감도…재료물성 지배…</span>
+novelty: ① stress/strength·ΔPSS ② strength 정규화 ③ Material &gt; Hemo &gt; Morpho
+
+<span class="hl">## OUTLINE</span>  <span class="dim">(Intro·Method·Result·Discussion·Conclusion 섹션별 번호 논리)</span>
+
+<span class="hl">## DATA FILES</span>
+input.csv <span class="dim">(20 cols · 1,000-sample 설계공간)</span>
+sobol_ind/grp_*_VI1/VI2.csv · inflow.dat · elastance.dat · bc.md · …</div>
+      <p class="note">→ inputs_block ≈ <b>2,503 토큰</b> (4,856자). 이 블록은 진단·작성·검증에서 재사용됩니다.</p>
+    </div>
+
+    <!-- STAGE 2 -->
+    <div class="stage">
+      <div class="stage-h"><div class="num">2</div><h2>요구사항 팩 — 도메인 체크리스트</h2><span class="k">computational_biomechanics.yaml</span></div>
+      <p>“계산 생체역학 논문이 방어되려면 반드시 있어야 하는 것”의 고정 목록. LLM이 즉흥적으로 정하는 게 아니라, 이 <b>팩이 기준선</b>입니다.</p>
+      <div class="packgrid">
+        <div class="packcol">
+          <h3>required · 항상 필요 (10)</h3>
+          <span class="chip present">research_objective</span>
+          <span class="chip missing">geometry_definition</span>
+          <span class="chip missing">governing_equations</span>
+          <span class="chip missing">material_properties</span>
+          <span class="chip present">boundary_conditions</span>
+          <span class="chip missing">numerical_solver</span>
+          <span class="chip missing">convergence_criteria</span>
+          <span class="chip missing">validation</span>
+          <span class="chip present">sample_definition</span>
+          <span class="chip present">outcome_metric</span>
+          <p class="note" style="margin-top:8px">✓ = 입력에 이미 있음(질문 안 함) · ✗ = 누락(질문 생성)</p>
+        </div>
+        <div class="packcol">
+          <h3>conditional · 특정 주장일 때만 (4)</h3>
+          <div class="cond">
+            <div class="row"><span class="nm">mesh_independence</span><span class="tr">peak-stress / 압력강하 주장 시</span><span class="verdict on">발동⚡</span></div>
+            <div class="row"><span class="nm">timestep_independence</span><span class="tr">맥동성/과도 시뮬레이션 시</span><span class="verdict on">발동⚡</span></div>
+            <div class="row"><span class="nm">sensitivity_method</span><span class="tr">민감도 분석 주장 시</span><span class="verdict on">발동⚡</span></div>
+            <div class="row"><span class="nm">statistical_analysis</span><span class="tr">집단 비교 / cohort&gt;1 시</span><span class="verdict off">미발동</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAGE 3 -->
+    <div class="stage">
+      <div class="stage-h"><div class="num">3</div><h2>gpt-5 추론 호출 — 4단계 판단</h2><span class="k">prompt: missing_info · tier: reasoning</span></div>
+      <p>시스템 프롬프트(“너는 깐깐한 CFD/FSI 리뷰어다. 논문을 쓰지 말고, <b>방어 가능한 Method/Result를 쓸 정보가 충분한지</b> 판단하라”)와 함께 <span class="mono">inputs_block + 요구사항 팩</span>을 넣어 한 번 호출합니다.</p>
+      <div class="steps">
+        <div class="substep"><div class="b">a</div><div class="x"><b>조건부 트리거 결정</b> — core message·outline을 읽고 어떤 conditional이 켜지는지.
+          <span class="s">“맥동성 FSI” → timestep_independence ⚡ · “PSS/peak stress” → mesh_independence ⚡ · “Sobol 민감도” → sensitivity_method ⚡ · 집단 통계 주장 없음 → statistical_analysis 꺼짐</span></div></div>
+        <div class="substep"><div class="b">b</div><div class="x"><b>present vs missing 판정</b> — required 10개 + 발동된 conditional 3개 각각, 입력/데이터에 정보가 있나? (관대하게: 어떤 형태로든 있으면 present)
+          <span class="s">present 4개: research_objective(핵심메시지) · boundary_conditions(inflow/elastance.dat·bc.md) · sample_definition(input.csv 1,000샘플) · outcome_metric(ΔPSS·VI·sobol 출력)</span></div></div>
+        <div class="substep"><div class="b">c</div><div class="x"><b>누락 항목마다 질문 생성</b> — 각 missing에 ① 질문 ② 회색 예시(placeholder) ③ reviewer_risk(low/med/high) ④ why_it_matters.
+          <span class="s">값을 지어내지 않음 — “없으면 없다”. 예시는 형식만 보여주는 샘플.</span></div></div>
+        <div class="substep"><div class="b">d</div><div class="x"><b>전체 완성 가능성 분류</b>
+          <span class="s">load-bearing required(지배방정식·검증 등)가 비어 있음 → <b>MISSING_CRITICAL_INFORMATION</b></span></div></div>
+      </div>
+    </div>
+
+    <!-- STAGE 4 -->
+    <div class="stage">
+      <div class="stage-h"><div class="num soft">4</div><h2>후처리 — 우선순위 정렬</h2><span class="k">detect.py (코드, LLM 아님)</span></div>
+      <p>LLM이 준 missing 목록을 reviewer_risk로 점수화해 내림차순 정렬합니다. high가 위로.</p>
+      <div class="codeblock"><span class="dim"># 코드가 결정적으로 처리 (추가 LLM 호출 없음)</span>
+priority = {<span class="hl">"high":3</span>, "medium":2, "low":1}[m.reviewer_risk]
+missing.sort(key=priority, reverse=True)   <span class="dim"># high 8개 → medium 1개</span>
+save_report(...)  <span class="dim"># requirement_report.json 에 저장 → 생성 단계가 재사용(2차 LLM 호출 없음)</span></div>
+    </div>
+
+    <!-- STAGE 5 -->
+    <div class="stage">
+      <div class="stage-h"><div class="num">5</div><h2>출력 — 9개 질문 덩어리</h2><span class="k">→ 하드 게이트로 화면에 표시</span></div>
+      <p>required 누락 6개 + 조건부 발동 3개 = <b>9개</b>. 각 질문은 위 (c)에서 함께 만든 예시·risk를 그대로 답니다. 클릭해 펼쳐보세요.</p>
+
+      <div class="qsec">
+        <div class="qgrouplabel">필수 필드 누락 <span class="cnt">6</span> · required-missing</div>
+
+        <details class="q"><summary><span class="fld">geometry_definition</span><span>LAP(3도메인)/CP(4도메인) 이상화 혈관 생성 규칙 — 반경·길이·FC두께·지질/석회 배치·input.csv 형태 매핑</span><span class="risk high">high</span><span class="arrow">▸</span></summary>
+          <div class="qbody"><div class="lab">왜 필요한가</div><div class="why">정확한 이상화 형상과 치수, 입력 파라미터→3D 형상 매핑을 알아야 리뷰어가 생체역학적 현실성·재현성을 판단함.</div>
+          <div class="lab">회색 예시 (placeholder)</div><div class="ex">3D idealized straight coronary (L=60 mm, D=3.0 mm), symmetric stenosis; LAP=lumen·cap·lipid, CP adds calcification at shoulder; cap thickness fc_av_th∈[40,150] μm; DOS sets min lumen radius via cosine profile…</div></div></details>
+
+        <details class="q"><summary><span class="fld">governing_equations</span><span>유체/고체 지배방정식·구성법칙·FSI 결합 방식(ALE, 선형/초탄성, 분할/단일)과 차원</span><span class="risk high">high</span><span class="arrow">▸</span></summary>
+          <div class="qbody"><div class="lab">왜 필요한가</div><div class="why">PSS·ΔPSS의 신뢰도는 유체/고체 정식화·비압축 가정·결합 전략에 의존 — 없으면 결과 해석·재현 불가.</div>
+          <div class="lab">회색 예시</div><div class="ex">Fluid: incompressible Navier–Stokes (ALE), ρ=1060, μ=3.5 cP. Solid: nearly-incompressible neo-Hookean (vessel/cap/lipid) + linear elastic calcification, large deformation. FSI: partitioned Dirichlet–Neumann, 3D.</div></div></details>
+
+        <details class="q"><summary><span class="fld">material_properties</span><span>각 도메인 구성모델·물성표 + strength 3시나리오 정량 정의(σ=k·E_fc^α)·파괴기준</span><span class="risk high">high</span><span class="arrow">▸</span></summary>
+          <div class="qbody"><div class="lab">왜 필요한가</div><div class="why">민감도·위험지수 결과가 구성법칙·범위·strength 모델에 좌우됨 — 정확한 가정 없이는 타당성 평가 불가.</div>
+          <div class="lab">회색 예시</div><div class="ex">Vessel/cap neo-Hookean (ν=0.49); Lipid E=5–20 kPa; Calcification E=10–20 GPa, ν=0.3; Fluid ρ=1060, μ=3.5 cP. Strength σ=k·E_fc^α, α∈{0,0.5,1.0}; failure by max principal stress at cap.</div></div></details>
+
+        <details class="q"><summary><span class="fld">numerical_solver</span><span>유체·고체 솔버(코드·버전)·이산화·시간적분·FSI 결합 알고리즘·안정화</span><span class="risk high">high</span><span class="arrow">▸</span></summary>
+          <div class="qbody"><div class="lab">왜 필요한가</div><div class="why">솔버·이산화·결합 세부가 PSS/ΔPSS에 크게 영향 — 정확한 도구·버전 없이는 재현·신뢰 불가.</div>
+          <div class="lab">회색 예시</div><div class="ex">Fluid: OpenFOAM v10 (pimpleFoam), 2nd-order backward; Solid: FEBio 4.0, hex elements, implicit Newmark. Coupling: preCICE v2.5 partitioned D–N + Aitken, 3–5 sub-iters/step.</div></div></details>
+
+        <details class="q"><summary><span class="fld">validation</span><span>정량 검증 — FFR vs 협착도, ΔPSS vs FC두께, 파열위치(어깨부) 문헌 일치·오차지표</span><span class="risk high">high</span><span class="arrow">▸</span></summary>
+          <div class="qbody"><div class="lab">왜 필요한가</div><div class="why">생리적 타당성·정확성 주장은 정성적 진술이 아니라 벤치마크·문헌과의 정량 비교가 필요.</div>
+          <div class="lab">회색 예시</div><div class="ex">FFR 0.92(DOS50%)→0.73(DOS75%), 문헌 범위 내; peak cap MPS 0.12→0.36 MPa(150→50 μm) 선행과 일치; max stress가 &gt;80% 케이스에서 어깨부.</div></div></details>
+
+        <details class="q"><summary><span class="fld">convergence_criteria</span><span>비선형·선형·결합 허용오차, FSI 서브반복 수, 주기영속 달성 기준</span><span class="risk medium">medium</span><span class="arrow">▸</span></summary>
+          <div class="qbody"><div class="lab">왜 필요한가</div><div class="why">허용오차·주기영속 기준이 종료·정확도를 결정 — 특히 주기 의존적인 ΔPSS에 중요.</div>
+          <div class="lab">회색 예시</div><div class="ex">Per step: fluid/solid residual &lt;1e-6; FSI mismatch &lt;1e-4(rel); Aitken 5–10 sub-iters. 3 cardiac cycles, accept last when waveform Δ&lt;1%/cycle.</div></div></details>
+      </div>
+
+      <div class="qsec">
+        <div class="qgrouplabel">조건부 발동 <span class="cnt">3</span> · conditional-triggered ⚡</div>
+
+        <details class="q"><summary><span class="fld">mesh_independence</span><span>유체-고체 격자 독립성(≥3수준, FC 관통두께 해상도, peak PSS·ΔPSS 변화율, 채택 격자)</span><span class="risk high">high</span><span class="arrow">▸</span></summary>
+          <div class="qbody"><div class="lab">트리거</div><div class="why">core message의 <b>peak-stress 주장</b> → mesh_independence 발동.</div>
+          <div class="lab">왜 필요한가</div><div class="why">얇은 FC를 가로지르는 peak PSS·ΔPSS는 격자 민감 — 독립성 없이는 응력 기반 주장이 신뢰 불가.</div>
+          <div class="lab">회색 예시</div><div class="ex">coarse 1.2M(3 elem/cap) · medium 2.4M(6) · fine 4.8M(10); peak ΔPSS +6.1%→+1.8%; medium 채택, &lt;2% 목표.</div></div></details>
+
+        <details class="q"><summary><span class="fld">timestep_independence</span><span>심박주기·Δt(Δt,Δt/2,Δt/4) 정밀화에 따른 peak ΔPSS·PSS 변화·채택 Δt</span><span class="risk high">high</span><span class="arrow">▸</span></summary>
+          <div class="qbody"><div class="lab">트리거</div><div class="why">core message의 <b>맥동성/과도 FSI</b> → timestep_independence 발동.</div>
+          <div class="lab">왜 필요한가</div><div class="why">ΔPSS는 시간해상도에 의존 — 독립성 없으면 피로 관련 지표가 Δt 인공물일 수 있음.</div>
+          <div class="lab">회색 예시</div><div class="ex">T=0.8 s; Δt={1.0,0.5,0.25} ms; peak ΔPSS 4.3%→1.2%; Δt=0.5 ms 채택, &lt;2% 목표.</div></div></details>
+
+        <details class="q"><summary><span class="fld">sensitivity_method</span><span>UQ/GSA 파이프라인 — LHS/Sobol 표본, GPR(커널·R²·분할), Saltelli N, 그룹화, 부트스트랩 CI</span><span class="risk high">high</span><span class="arrow">▸</span></summary>
+          <div class="qbody"><div class="lab">트리거</div><div class="why">core message의 <b>Sobol 민감도 분석 주장</b> → sensitivity_method 발동.</div>
+          <div class="lab">왜 필요한가</div><div class="why">전역 민감도 결론은 표본설계·대리모델 정확도·Sobol 추정설정에 의존 — 없으면 “Material&gt;Hemo&gt;Morpho” 지배 주장이 방어 불가.</div>
+          <div class="lab">회색 예시</div><div class="ex">LHS uniform; LAP n=784/CP n=727; GPR ARD-SE+noise, 80/20·5-fold, R²≈0.97; Sobol Saltelli N=25,000; S1·ST 95% CI via 1,000 bootstrap; 그룹 Morpho/Hemo/Material.</div></div></details>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TOKENS -->
+  <div class="stage" style="margin-top:30px">
+    <div class="stage-h"><div class="num soft">⊕</div><h2>이 진단 1회의 토큰 사용량</h2><span class="k">o200k_base · gpt-5</span></div>
+    <p class="note">진단은 <b>LLM 호출 단 1번</b>. 입력 = 시스템 프롬프트 + (inputs_block + 요구사항 팩), 출력 = 9개 질문이 담긴 구조화 JSON.</p>
+    <div class="tok">
+      <div>
+        <div class="bar">
+          <div class="row">
+            <div class="top"><span>INPUT (전송)</span><span class="v">3,190 tok</span></div>
+            <div class="track">
+              <div class="seg sys" style="width:16.8%"></div>
+              <div class="seg inp" style="width:78.5%"></div>
+              <div class="seg pk" style="width:4.6%"></div>
+            </div>
+            <div class="legend">
+              <span><i style="background:#9DB0C4"></i>system prompt 536</span>
+              <span><i style="background:var(--accent)"></i>inputs_block 2,503</span>
+              <span><i style="background:#C9A24B"></i>requirement pack 146</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="top"><span>OUTPUT (생성)</span><span class="v">2,384 tok</span></div>
+            <div class="track"><div class="seg out" style="width:100%"></div></div>
+            <div class="legend"><span><i style="background:var(--ok)"></i>9개 질문 + 예시 + risk + 분류 (JSON)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="tokcard">
+        <div class="big">5,574</div><div class="lbl">총 토큰 (input + output)</div>
+        <hr>
+        <div class="kv"><span>input</span><span class="v">3,190</span></div>
+        <div class="kv"><span>output</span><span class="v">2,384</span></div>
+        <div class="kv"><span>호출 횟수</span><span class="v">1</span></div>
+        <hr>
+        <div class="kv"><span>추정 비용 (gpt-5)</span><span class="v">≈ $0.028</span></div>
+        <p class="note" style="margin-top:6px">in $1.25 / out $10 per 1M · cold(캐시 0) 기준. 저장된 결과는 생성 단계가 재사용 → 2차 호출 없음.</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">
+    핵심 한 줄: <b>요구사항 팩(도메인 체크리스트)</b>을 기준으로, gpt-5가 <b>네 입력에 무엇이 이미 있고 무엇이 없는지</b>를 항목별로 대조해 <b>없는 것만</b> 질문으로 바꾼다.<br>
+    <span class="pill">10 required</span><span class="pill">+ 4 conditional</span> → <span class="pill">4 present</span><span class="pill">+ 1 미발동</span> → <span class="pill" style="background:var(--accent);color:#fff;border-color:var(--accent)">9 questions</span><br>
+    paperpal · coronary_plaque_VI_demo · 2026-06-26
+  </p>
+
+</div>
+</body>
+</html>

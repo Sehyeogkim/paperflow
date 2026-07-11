@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_004",
+  "study_archetype": "narrative review of biomarkers for vulnerable atherosclerotic plaque",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: summarize current data on biomarkers for vulnerable atherosclerotic lesions",
+      "category": "objective",
+      "sub_category": "review objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: literature review / narrative review",
+      "category": "study_design",
+      "sub_category": "review type",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: published literature on biomarkers and imaging of atherosclerotic plaque",
+      "category": "data_or_sample",
+      "sub_category": "literature sources (unspecified)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: discussion of biomarkers and comparison with imaging modalities (traditional imaging and intravascular imaging)",
+      "category": "methods",
+      "sub_category": "comparative literature synthesis",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: identification/summarization of main biomarkers potentially useful for diagnosis and risk stratification of vulnerable plaques",
+      "category": "outcomes",
+      "sub_category": "biomarker identification",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "limitations: intravascular imaging is invasive and operator-dependent (limitation of that modality)",
+      "category": "limitations",
+      "sub_category": "imaging limitations noted",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

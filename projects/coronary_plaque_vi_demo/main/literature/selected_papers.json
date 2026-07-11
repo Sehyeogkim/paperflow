@@ -1,0 +1,122 @@
+[
+  {
+    "paper_id": "paper_001",
+    "title": "Hyperelastic modelling of arterial layers with distributed collagen fibre orientations",
+    "doi": "10.1098/rsif.2005.0073",
+    "year": 2005,
+    "authors": "Thomas C. Gasser, Ray W. Ogden, Gerhard A. Holzapfel",
+    "abstract": "Constitutive relations are fundamental to the solution of problems in continuum mechanics, and are required in the study of, for example, mechanically dominated clinical interventions involving soft biological tissues. Structural continuum constitutive models of arterial layers integrate information about the tissue morphology and therefore allow investigation of the interrelation between structure and function in response to mechanical loading. Collagen fibres are key ingredients in the structure of arteries. In the media (the middle layer of the artery wall) they are arranged in two helically distributed families with a small pitch and very little dispersion in their orientation (i.e. they are aligned quite close to the circumferential direction). By contrast, in the adventitial and intimal layers, the orientation of the collagen fibres is dispersed, as shown by polarized light microscopy of stained arterial tissue. As a result, continuum models that do not account for the dispersion are not able to capture accurately the stress-strain response of these layers. The purpose of this paper, therefore, is to develop a structural continuum framework that is able to represent the dispe",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 2396
+  },
+  {
+    "paper_id": "paper_002",
+    "title": "A low dimensional surrogate model for a fast estimation of strain in the thrombus during a thrombectomy procedure",
+    "doi": "10.1016/j.jmbbm.2022.105577",
+    "year": 2022,
+    "authors": "Sara Bridio, Giulia Luraghi, Francesco Migliavacca, Sanjay Pant, Alberto García‐González, José Félix Rodríguez Matas",
+    "abstract": "",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 10
+  },
+  {
+    "paper_id": "paper_003",
+    "title": "Targeted Drug Delivery of Microbubble to Arrest Abdominal Aortic Aneurysm Development: A Simulation Study Towards Optimized Microbubble Design",
+    "doi": "10.1038/s41598-020-62410-3",
+    "year": 2020,
+    "authors": "Amir Shamloo, Sina Ebrahimi, Ali Mohammad Amani, Famida Fallah",
+    "abstract": "Abdominal aortic aneurysm (AAA) is an irreversible bulge in the artery with higher prevalence among the elderlies. Increase of the aneurysm diameter by time is a fatal phenomenon which will lead to its sidewall rupture. Invasive surgical treatments are vital in preventing from AAA development. These approaches however have considerable side effects. Targeted drug delivery using microbubbles (MBs) has been recently employed to suppress the AAA growth. The present study is aimed to investigate the surface adhesion of different types of drug-containing MBs to the inner wall of AAA through ligand-receptor binding, using fluid-structure interaction (FSI) simulation by using a patient CT-scan images of the vascular system. The effect of blood flow through AAA on MBs delivery to the intended surface was also addressed. For this purpose, the adherence of four types of MBs with three different diameters to the inner surface wall of AAA was studied in a patient with 40-mm diameter aneurysm. The effects of the blood mechanical properties on the hematocrit (Hct) percentage of patients suffering from anemia and diabetes were studied. Moreover, the impact of variations in the artery inlet veloci",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 40
+  },
+  {
+    "paper_id": "paper_004",
+    "title": "Compressive mechanical properties of atherosclerotic plaques—Indentation test to characterise the local anisotropic behaviour",
+    "doi": "10.1016/j.jbiomech.2014.01.018",
+    "year": 2014,
+    "authors": "C. K. Chai, Lambert Speelman, C.W.J. Oomens, Frank Frank Baaijens",
+    "abstract": "",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 60
+  },
+  {
+    "paper_id": "paper_005",
+    "title": "Beyond Stress Ischemia: Unveiling the Multifaceted Nature of Coronary Vulnerable Plaques Using Cardiac Computed Tomography",
+    "doi": "10.3390/jcm13144277",
+    "year": 2024,
+    "authors": "Gianluigi Napoli, Saima Mushtaq, Paolo Basile, Maria Cristina Carella, Daniele De Feo, Michele Davide Latorre, Andrea Baggiano, Marco Matteo Ciccone, Gianluca Pontone, Andrea Igoren Guaricci",
+    "abstract": "Historically, cardiovascular prevention has been predominantly focused on stress-induced ischemia, but recent trials have challenged this paradigm, highlighting the emerging role of vulnerable, non-flow-limiting coronary plaques, leading to a shift towards integrating plaque morphology with functional data into risk prediction models. Coronary computed tomography angiography (CCTA) represents a high-resolution, low-risk, and largely available non-invasive modality for the precise delineation of plaque composition, morphology, and inflammatory activity, further enhancing our ability to stratify high-risk plaque and predict adverse cardiovascular outcomes. Coronary artery calcium (CAC) scoring, derived from CCTA, has emerged as a promising tool for predicting future cardiovascular events in asymptomatic individuals, demonstrating incremental prognostic value beyond traditional cardiovascular risk factors in terms of myocardial infarction, stroke, and all-cause mortality. Additionally, CCTA-derived information on adverse plaque characteristics, geometric characteristics, and hemodynamic forces provides valuable insights into plaque vulnerability and seems promising in guiding revascul",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 5
+  },
+  {
+    "paper_id": "paper_006",
+    "title": "18F-fluoride positron emission tomography for identification of ruptured and high-risk coronary atherosclerotic plaques: a prospective clinical trial",
+    "doi": "10.1016/s0140-6736(13)61754-7",
+    "year": 2013,
+    "authors": "Nikhil Joshi, Alex Vesey, Michelle C. Williams, Anoop Shah, Patrick A. Calvert, Felicity Craighead, Su Ern Yeoh, William Wallace, Donald M. Salter, Alison Fletcher, Edwin J.R. van Beek, Andrew D. Flapan, Neal Uren, Miles Behan, Nicholas L. Cruden, Nicholas L. Mills, Keith A.A. Fox, James H.F. Rudd, Marc R. Dweck, David E. Newby",
+    "abstract": "BACKGROUND: The use of non-invasive imaging to identify ruptured or high-risk coronary atherosclerotic plaques would represent a major clinical advance for prevention and treatment of coronary artery disease. We used combined PET and CT to identify ruptured and high-risk atherosclerotic plaques using the radioactive tracers (18)F-sodium fluoride ((18)F-NaF) and (18)F-fluorodeoxyglucose ((18)F-FDG). METHODS: In this prospective clinical trial, patients with myocardial infarction (n=40) and stable angina (n=40) underwent (18)F-NaF and (18)F-FDG PET-CT, and invasive coronary angiography. (18)F-NaF uptake was compared with histology in carotid endarterectomy specimens from patients with symptomatic carotid disease, and with intravascular ultrasound in patients with stable angina. The primary endpoint was the comparison of (18)F-fluoride tissue-to-background ratios of culprit and non-culprit coronary plaques of patients with acute myocardial infarction. FINDINGS: In 37 (93%) patients with myocardial infarction, the highest coronary (18)F-NaF uptake was seen in the culprit plaque (median maximum tissue-to-background ratio: culprit 1·66 [IQR 1·40-2·25] vs highest non-culprit 1·24 [1·06-1·",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 942
+  },
+  {
+    "paper_id": "paper_007",
+    "title": "Expert recommendations on the assessment of wall shear stress in human coronary arteries: existing methodologies, technical considerations, and clinical applications",
+    "doi": "10.1093/eurheartj/ehz551",
+    "year": 2019,
+    "authors": "Frank Gijsen, Yuki Katagiri, Peter Barlis, Christos V. Bourantas, Carlos Collet, U. Ugur Coskun, Joost Daemen, Jouke Dijkstra, Elazer R. Edelman, Paul C. Evans, Kim Van der Heiden, Rod Hose, Bon‐Kwon Koo, Rob Krams, Alison L. Marsden, Francesco Migliavacca, Yoshinobu Onuma, Andrew Ooi, Eric Poon, Habib Samady, Peter H. Stone, Kuniaki Takahashi, Dalin Tang, Vikas Thondapu, Erhan Tenekecioğlu, Lucas H. Timmins, Ryo Torii, Jolanda J. Wentzel, Patrick W. Serruys",
+    "abstract": "Abstract",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 312
+  },
+  {
+    "paper_id": "paper_008",
+    "title": "Mathematical model of mechanobiology of acute and repeated synaptic injury and systemic biomarker kinetics",
+    "doi": "10.3389/fncel.2023.1007062",
+    "year": 2023,
+    "authors": "Hamidreza Gharahi, Harsha T. Garimella, Zhijian J. Chen, Raj K. Gupta, Andrzej Przekwas",
+    "abstract": "Background: Blast induced Traumatic Brain Injury (bTBI) has become a signature casualty of military operations. Recently, military medics observed neurocognitive deficits in servicemen exposed to repeated low level blast (LLB) waves during military heavy weapons training. In spite of significant clinical and preclinical TBI research, current understanding of injury mechanisms and short- and long-term outcomes is limited. Mathematical models of bTBI biomechanics and mechanobiology of sensitive neuro-structures such as synapses may help in better understanding of injury mechanisms and in the development of improved diagnostics and neuroprotective strategies. Methods and results: In this work, we formulated a model of a single synaptic structure integrating the dynamics of the synaptic cell adhesion molecules (CAMs) with the deformation mechanics of the synaptic cleft. The model can resolve time scales ranging from milliseconds during the hyperacute phase of mechanical loading to minutes-hours acute/chronic phase of injury progression/repair. The model was used to simulate the synaptic injury responses caused by repeated blast loads. Conclusion: Our simulations demonstrated the import",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 6
+  },
+  {
+    "paper_id": "paper_009",
+    "title": "Medical Image-Based Computational Fluid Dynamics and Fluid-Structure Interaction Analysis in Vascular Diseases",
+    "doi": "10.3389/fbioe.2022.855791",
+    "year": 2022,
+    "authors": "Yong He, Hannah M. Northrup, H. Le, Alfred K. Cheung, Scott A. Berceli, Yan Tin Shiu",
+    "abstract": "Hemodynamic factors, induced by pulsatile blood flow, play a crucial role in vascular health and diseases, such as the initiation and progression of atherosclerosis. Computational fluid dynamics, finite element analysis, and fluid-structure interaction simulations have been widely used to quantify detailed hemodynamic forces based on vascular images commonly obtained from computed tomography angiography, magnetic resonance imaging, ultrasound, and optical coherence tomography. In this review, we focus on methods for obtaining accurate hemodynamic factors that regulate the structure and function of vascular endothelial and smooth muscle cells. We describe the multiple steps and recent advances in a typical patient-specific simulation pipeline, including medical imaging, image processing, spatial discretization to generate computational mesh, setting up boundary conditions and solver parameters, visualization and extraction of hemodynamic factors, and statistical analysis. These steps have not been standardized and thus have unavoidable uncertainties that should be thoroughly evaluated. We also discuss the recent development of combining patient-specific models with machine-learning",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 52
+  },
+  {
+    "paper_id": "paper_010",
+    "title": "Modelling of Atherosclerotic Plaque for Use in a Computational Test-Bed for Stent Angioplasty",
+    "doi": "10.1007/s10439-014-1107-4",
+    "year": 2014,
+    "authors": "Claire Conway, Patrick McGarry, P.E. McHugh",
+    "abstract": "",
+    "content_level": "abstract_only",
+    "source": "openalex",
+    "selection_role": "",
+    "cited_by": 38
+  }
+]

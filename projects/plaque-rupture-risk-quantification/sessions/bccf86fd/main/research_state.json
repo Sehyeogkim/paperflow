@@ -1,0 +1,184 @@
+{
+  "study_type": "computational_biomechanics",
+  "research_problem": "Current plaque-rupture risk indicators are typically defined using stress alone and ignore patient-specific material strength; determining a clinically-relevant vulnerability index that accounts for both stress and strength and identifying which factor groups (morphology, hemodynamics, material) dominate rupture risk requires global sensitivity analysis over a wide realistic parameter space, but such an analysis has been infeasible previously because of the high cost of fully-resolved simulations.",
+  "objective": "비용효율 맥동성 FSI로 저감쇠 플라크(LAP)와 석회화 플라크(CP)에 대해 1,000-sample 데이터셋을 만들고, 취약성지수 VI = stress/strength를 정의했습니다.",
+  "primary_message": "파열위험지표는 stress/strength 형태여야 하며, stress는 ΔPSS(피로·진폭 관점)가 임상적으로 더 적합해 맥동성 FSI가 필요하다; 또한 재료물성 정규화(정규화지수 α)에 따라 민감도가 달라지고, 전역 민감도 분석에서 재료물성이 혈류역학·형태보다 파열 위험을 더 지배한다 (Material > Hemodynamics > Morphology) with top individual drivers E_vessel, E_FC, SBP, and PP.",
+  "study_design": "Computational study using a validated, cost-efficient pulsatile fluid-structure interaction (FSI) solver to generate a 1,000-sample design of simulations for two plaque phenotypes (LAP and CP); define six candidate vulnerability indices (stress: PSS or ΔPSS combined with three strength-normalization scenarios), screen candidates against seven clinical sign/criterion rules to select final VIs, train Gaussian Process Regression (GPR) surrogate models for the selected VIs, and perform Sobol global sensitivity analysis (first-order and total indices) at both group and individual-parameter levels.",
+  "methods": [
+    "Construct two geometric plaque phenotypes (LAP and CP) and parameterize morphology, hemodynamics, and material properties to define input design space",
+    "Generate 1,000-sample input design matrix (input.csv) sampling morphology, hemodynamic, and material parameters",
+    "Run cost-efficient pulsatile FSI simulations using prescribed inflow and cardiac elastance waveforms (inflow.dat, elastance.dat) to obtain time-resolved wall stresses",
+    "Compute PSS (peak systolic stress) and ΔPSS (stress amplitude / fatigue-perspective metric) from simulation outputs",
+    "Define vulnerability index candidates as VI = stress / strength with stress ∈ {PSS, ΔPSS} and three strength-normalization scenarios (varying exponent α) to produce six candidate VIs",
+    "Evaluate candidate VIs against seven clinical sign/criteria (sign-consistency rules) and select candidates that satisfy all criteria (result: VI1 = ΔPSS / E_FC^0.5 and VI2 = ΔPSS / E_FC^1.0)",
+    "Train Gaussian Process Regression (GPR) surrogate models mapping input parameters to the selected VI outputs",
+    "Compute Sobol global sensitivity indices (first-order S1 and total-order ST) at group level (Material, Hemodynamics, Morphology) and individual-parameter level using the GPR surrogate for both phenotypes and both selected VIs",
+    "Compare simulation-based stress outputs and rupture-location tendencies with trends reported in prior literature to assess model validity"
+  ],
+  "datasets": [
+    {
+      "name": "elastance",
+      "path": "data/uploads/elastance.dat",
+      "description": "",
+      "role": "cardiac_elastance_waveform"
+    },
+    {
+      "name": "inflow",
+      "path": "data/uploads/inflow.dat",
+      "description": "",
+      "role": "inflow_waveform"
+    },
+    {
+      "name": "input",
+      "path": "data/uploads/input.csv",
+      "description": "",
+      "role": "simulation_input_design_matrix"
+    },
+    {
+      "name": "sobol_grp_CP_VI1",
+      "path": "data/uploads/sobol_grp_CP_VI1.csv",
+      "description": "",
+      "role": "sobol_group_indices_CP_VI1"
+    },
+    {
+      "name": "sobol_grp_CP_VI2",
+      "path": "data/uploads/sobol_grp_CP_VI2.csv",
+      "description": "",
+      "role": "sobol_group_indices_CP_VI2"
+    },
+    {
+      "name": "sobol_grp_LAP_VI1",
+      "path": "data/uploads/sobol_grp_LAP_VI1.csv",
+      "description": "",
+      "role": "sobol_group_indices_LAP_VI1"
+    },
+    {
+      "name": "sobol_grp_LAP_VI2",
+      "path": "data/uploads/sobol_grp_LAP_VI2.csv",
+      "description": "",
+      "role": "sobol_group_indices_LAP_VI2"
+    },
+    {
+      "name": "sobol_ind_CP_VI1",
+      "path": "data/uploads/sobol_ind_CP_VI1.csv",
+      "description": "",
+      "role": "sobol_individual_indices_CP_VI1"
+    },
+    {
+      "name": "sobol_ind_CP_VI2",
+      "path": "data/uploads/sobol_ind_CP_VI2.csv",
+      "description": "",
+      "role": "sobol_individual_indices_CP_VI2"
+    },
+    {
+      "name": "sobol_ind_LAP_VI1",
+      "path": "data/uploads/sobol_ind_LAP_VI1.csv",
+      "description": "",
+      "role": "sobol_individual_indices_LAP_VI1"
+    },
+    {
+      "name": "sobol_ind_LAP_VI2",
+      "path": "data/uploads/sobol_ind_LAP_VI2.csv",
+      "description": "",
+      "role": "sobol_individual_indices_LAP_VI2"
+    }
+  ],
+  "input_variables": [
+    "DOS",
+    "lesion_length",
+    "lumen_axial_skewness",
+    "lipid_length_ratio",
+    "alpha",
+    "PI",
+    "d_fc_ca",
+    "fraction",
+    "ca_axial_skewness",
+    "ca_shoulder_skewness",
+    "ca_strength_ratio",
+    "fc_av_th",
+    "SBP",
+    "PP",
+    "tau",
+    "DBP",
+    "E_vessel",
+    "E_fc",
+    "E_lipid",
+    "E_cal"
+  ],
+  "outcomes": [
+    "Time-resolved wall stress fields from pulsatile FSI (used to derive PSS and ΔPSS)",
+    "PSS values per simulation sample",
+    "ΔPSS values per simulation sample",
+    "Computed vulnerability index values for each candidate VI and each sample",
+    "Selection result of VI candidates against seven clinical criteria (which candidates pass)",
+    "GPR surrogate model performance metrics (trained mapping from inputs to VI1 and VI2)",
+    "Sobol group-level sensitivity indices (S1 and ST for Material, Hemodynamics, Morphology) for LAP and CP and for VI1 and VI2",
+    "Sobol individual-parameter sensitivity indices (S1 and ST) identifying top contributing parameters (e.g., E_vessel, E_FC, SBP, PP)"
+  ],
+  "comparisons": [
+    "Plaque phenotypes: low-attenuation plaque (LAP) versus calcified plaque (CP)",
+    "Stress metrics: PSS versus ΔPSS",
+    "Vulnerability-index candidates: six stress/strength combinations (2 stresses × 3 strength-normalizations)",
+    "Strength-normalization exponents (different α scenarios), including α = 0.5 and α = 1.0 which produced selected VIs",
+    "Relative contribution of factor groups: Material versus Hemodynamics versus Morphology (group-level Sobol indices)"
+  ],
+  "key_observations": [
+    "발견 1: 파열위험지표는 stress/strength여야 하고, stress는 ΔPSS(피로·진폭 관점)가 임상적으로 더 적합하다 → 맥동성 FSI가 필요하다.",
+    "발견 2: strength 정규화가 필요하다(정규화 지수 α에 따라 민감도가 달라진다).",
+    "발견 3: 소볼 민감도 결과 재료물성이 혈류역학·형태보다 파열 위험을 지배한다 (Material > Hemo > Morpho), 상위 4인자는 E_vessel·E_FC·수축기압·맥압.",
+    "Simulation-derived PSS and rupture-location trends are consistent with prior studies, supporting model plausibility",
+    "Of six candidate VIs (PSS or ΔPSS combined with three strength-normalization scenarios), only VI1 = ΔPSS / E_FC^0.5 and VI2 = ΔPSS / E_FC^1.0 satisfied all seven clinical sign-consistency criteria",
+    "ΔPSS-based indices outperform PSS-based indices with respect to clinical sign consistency, indicating the importance of pulsatility/fatigue (amplitude) rather than peak-only stress",
+    "Sobol group indices show Material group contributes more to VI variance than Hemodynamics, which in turn contributes more than Morphology (Material > Hemodynamics > Morphology) for both phenotypes and VIs",
+    "Individual-parameter Sobol indices identify E_vessel, E_FC, systolic blood pressure (SBP), and pulse pressure (PP) as the top four contributors to VI variance"
+  ],
+  "possible_claims": [
+    "발견 1: 파열위험지표는 stress/strength여야 하고, stress는 ΔPSS(피로·진폭 관점)가 임상적으로 더 적합하다 → 맥동성 FSI가 필요하다.",
+    "발견 2: strength 정규화가 필요하다(정규화 지수 α에 따라 민감도가 달라진다).",
+    "발견 3: 소볼 민감도 결과 재료물성이 혈류역학·형태보다 파열 위험을 지배한다 (Material > Hemo > Morpho), 상위 4인자는 E_vessel·E_FC·수축기압·맥압.",
+    "관상동맥 플라크 파열은 급성 관상동맥 증후군(ACS)의 주원인이며 심혈관 사망 부담이 크다.",
+    "파열 위험은 형태(morphology)·혈류역학(hemodynamics)·재료물성(material/strength) 인자가 함께 작용해 결정된다.",
+    "그러나 기존 파열위험지표는 응력(stress)만으로 정의되어 환자마다 다른 strength(물성)를 무시한다 → 정확한 지표는 stress/strength 비율이어야 한다.",
+    "어느 인자군이 위험을 지배하는지 알면 임상 측정·위험층화의 우선순위가 정해지지만, 이를 규명하려면 세 인자군을 '현실적 VI' 위에서 동시에·넓은 설계공간으로 변동시키는 전역 민감도 분석이 필요한데 고비용 수치해석 때문에 수행되지 못했다.",
+    "따라서 본 연구는 선행 검증된 비용효율 맥동성 FSI를 활용해 strength를 반영한 현실적 VI에 대한 세 인자군 전체 공간 민감도 분석을 수행하여 ΔPSS 기반 지표의 임상 타당성과 재료물성의 지배성을 규명한다.",
+    "분석은 3단계로 구성된다: (1) 1,000-sample 데이터 생성 → (2) VI 후보 선정 → (3) surrogate 기반 전역 민감도 분석.",
+    "데이터는 선행 논문에서 검증된 비용효율 맥동성 FSI로 생성한다.",
+    "두 플라크 표현형(저감쇠 플라크 LAP, 석회화 플라크 CP)을 각각 모델링한다.",
+    "입력은 형태·혈류역학·재료 3군의 파라미터로 1,000-sample 설계공간을 이룬다 (input.csv).",
+    "출력은 PSS와 ΔPSS(피로·진폭 관점의 응력)로 측정한다.",
+    "취약성지수 VI = stress/strength로 정의하고, stress 2종(PSS, ΔPSS) × strength 3시나리오 = 6개 후보를 구성한다.",
+    "6개 후보를 7개 임상기준의 부호 일치로 선별해 VI1 = ΔPSS/E_FC^0.5, VI2 = ΔPSS/E_FC^1.0 두 지표를 채택한다.",
+    "최종 VI에 GPR(Gaussian Process Regression) 대리모델을 학습하고, 그 위에서 Sobol 1차·전차 지수로 전역 민감도를 분석한다.",
+    "시뮬레이션 결과(PSS·파열위치 등)는 선행연구들의 경향성과 일치하여 모델 타당성을 확인한다.",
+    "6개 후보 중 VI1(ΔPSS/E_FC^0.5)과 VI2(ΔPSS/E_FC^1.0)만 7개 임상기준을 모두 만족한다.",
+    "Sobol 민감도 결과 재료물성이 파열 위험을 지배하며, 인자군 순위는 Material > Hemodynamics > Morphology이다 (sobol_grp_*).",
+    "상위 4개 지배 인자는 E_vessel·E_FC·수축기압(SBP)·맥압(PP)이다 (sobol_ind_*).",
+    "ΔPSS가 PSS보다 강한 예측인자다 → 맥동성(피로·진폭)이 파열 위험에 중요하므로 정적 FSI가 아닌 맥동성 FSI가 필요하다.",
+    "strength 정규화가 필수다: 재료가 분모로 들어가야 하며 정규화 지수 α에 따라 민감도가 달라진다(α는 재료물성의 기여 가중을 조절).",
+    "Material > Hemodynamics > Morphology의 지배성은 임상 위험 층화에 함의를 준다: 형태보다 OCT 기반 강성(물성) 특성화의 정보가치가 더 크다.",
+    "한계와 향후 과제: 균일 FC 두께 가정, 표현형 범위, 환자별 검증 등.",
+    "본 연구는 stress/strength 형태의 ΔPSS 기반 파열위험지표(VI1, VI2)를 정의하고, 전역 민감도 분석으로 재료물성이 파열 위험을 지배함을 규명했다 → 임상 위험 평가에서 물성 특성화를 우선해야 한다.",
+    "[Intro]",
+    "[Method]",
+    "[Result]",
+    "[Discussion]",
+    "[Conclusion]",
+    "A clinically-plausible plaque-rupture vulnerability index must be defined as stress/strength rather than stress alone.",
+    "ΔPSS (stress amplitude / fatigue metric) is a better stress measure for rupture-risk indicators than PSS (peak stress), implying the need for pulsatile FSI rather than static analyses.",
+    "Normalizing stress by fibrous-cap material stiffness (E_FC) with appropriate exponent (α) is necessary; the choice of α affects sensitivity and ranking of drivers.",
+    "Across a broad realistic parameter space, material properties dominate variance in chosen VI metrics more than hemodynamics or plaque morphology (Material > Hemodynamics > Morphology).",
+    "Top individual drivers of vulnerability indices are vessel stiffness (E_vessel), fibrous cap stiffness (E_FC), systolic blood pressure (SBP), and pulse pressure (PP).",
+    "Using a GPR surrogate enables computationally tractable global sensitivity analysis over a 1,000-sample design space for complex pulsatile FSI outputs."
+  ],
+  "limitations": [
+    "Assumed uniform fibrous-cap (FC) thickness (uniform FC thickness assumption) which may not reflect all patient plaques",
+    "Plaque phenotype representation limited to two modeled phenotypes (LAP and CP); other phenotypes or greater morphological diversity were not explored",
+    "Simulations are virtual and lack direct patient-specific clinical validation in this study",
+    "Cost-efficient FSI solver and surrogate modeling introduce modeling approximations whose impact on absolute risk predictions is not fully quantified",
+    "Strength scenarios limited to the tested normalization exponents (α values); other functional forms of strength normalization were not evaluated"
+  ],
+  "known_references": [],
+  "unknowns": [],
+  "answer_provenance": [],
+  "source": "llm_enriched"
+}

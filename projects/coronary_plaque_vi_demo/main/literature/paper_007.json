@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_007",
+  "study_archetype": "expert consensus / methodological recommendations review",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: provide expert recommendations on WSS assessment in coronary arteries",
+      "category": "objective",
+      "sub_category": "primary objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study type: expert recommendations / consensus review",
+      "category": "study_design",
+      "sub_category": "article type",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Scope: existing methodologies, technical considerations, clinical applications",
+      "category": "methods",
+      "sub_category": "topics covered",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data/sample: human coronary artery assessment (clinical focus)",
+      "category": "data_or_sample",
+      "sub_category": "target biological system",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Outcomes: recommendations for assessment of wall shear stress (WSS)",
+      "category": "outcomes",
+      "sub_category": "consensus recommendations",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Detailed methodological settings (e.g., solver settings, mesh, boundary conditions)",
+      "category": "numerical_or_experimental_settings",
+      "sub_category": "expected detailed CFD/measurement parameters",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": false,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

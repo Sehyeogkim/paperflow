@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_002",
+  "study_archetype": "methodological thesis on active learning for reliability estimation",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: reduce numerical cost of reliability analysis using active learning",
+      "category": "objective",
+      "sub_category": "cost reduction via active learning",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: development and evaluation of Gaussian-process-based active learning methods",
+      "category": "study_design",
+      "sub_category": "method development / thesis",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data or sample: expensive engineering simulation codes as black‑box functions",
+      "category": "data_or_sample",
+      "sub_category": "computational model evaluations",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: Gaussian process surrogate modeling focused near limit-state for failure probability estimation",
+      "category": "methods",
+      "sub_category": "GP surrogate for performance function",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: active learning (adaptive sampling) driven by estimation error near failure boundary",
+      "category": "methods",
+      "sub_category": "adaptive sampling / acquisition function targeting limit-state",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: coupling active learning with model reduction approaches",
+      "category": "methods",
+      "sub_category": "surrogate + model reduction coupling",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

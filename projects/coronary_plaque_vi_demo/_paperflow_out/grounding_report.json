@@ -1,0 +1,53 @@
+{
+  "claims": [
+    {
+      "id": "C1",
+      "text": "Vulnerability index (VI) should be defined as stress/strength and stress is best interpreted as the pulsatile amplitude ΔPSS (fatigue perspective), implying the need for pulsatile FSI simulations.",
+      "status": "grounded",
+      "evidence_ids": [
+        "E_deltaPSS_vs_peakPSS",
+        "E1"
+      ],
+      "data_ids": [],
+      "reference_ids": [
+        "W1"
+      ]
+    },
+    {
+      "id": "C2",
+      "text": "Vulnerability indices must normalize stress by fibrous-cap strength (E_fc^α); strength-normalization choice materially affects VI behavior.",
+      "status": "partial",
+      "evidence_ids": [],
+      "data_ids": [],
+      "reference_ids": [
+        "W2"
+      ]
+    },
+    {
+      "id": "C3",
+      "text": "Material properties dominate VI variability (Material > Hemodynamics > Morphology); key determinants are vessel wall stiffness, fibrous-cap stiffness, systolic blood pressure and pulse pressure.",
+      "status": "grounded",
+      "evidence_ids": [
+        "E_material_dominant_group"
+      ],
+      "data_ids": [
+        "D_sobol_grp_LAP_VI2"
+      ],
+      "reference_ids": []
+    },
+    {
+      "id": "C4",
+      "text": "Two selected VIs (VI1=ΔPSS/E_fc^0.5, VI2=ΔPSS/E_fc^1.0) satisfy all seven established clinical high-risk plaque criteria and show promising diagnostic separation (surrogate-evaluated).",
+      "status": "partial",
+      "evidence_ids": [
+        "E_VI_candidates_screening"
+      ],
+      "data_ids": [],
+      "reference_ids": []
+    }
+  ],
+  "warnings": [
+    "claim_without_evidence: Vulnerability indices must normalize stress by fibrous-cap strength (E_fc^α); strength-normalization choice materially affects VI behavior.",
+    "evidence_without_provenance: GPR surrogate evaluation of VI2 shows diagnostic separation on synthetic high-risk label: AUC ≈0.84 (95% CI 0.80–0.88), Youden sensitivity ≈0.78, specificity ≈0.76"
+  ]
+}

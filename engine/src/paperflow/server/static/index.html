@@ -1,1116 +1,994 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>paperpal — Manuscript Compiler</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>paperflow — Manuscript Compiler</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #F0EEE6; --accent: #CC785C; --accent-2: #E8D5C4; --border: #D4C5B0;
-    --ink: #1A1A1A; --body: #2D2D2D; --muted: #6B5E54; --code-bg: #E6E0D4; --code-ink: #8B4513;
-    --ok: #7A9A6D; --err: #C25744; --surface: #F7F5EF; --highlight: rgba(204,120,92,.15);
-    --data: #5B7A8C; --data-bg: #E6EDF0;
-    --radius: 14px; --radius-sm: 9px; --rail-w: 246px; --aside-w: 296px;
-    --shadow: 0 1px 0 rgba(26,26,26,.04), 0 8px 26px -18px rgba(60,40,30,.55);
-    --ease: cubic-bezier(0.16,1,0.3,1);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Pretendard", sans-serif;
-  }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--body); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-  h1,h2,h3,h4 { color: var(--ink); font-weight: 650; letter-spacing: -.01em; margin: 0; }
-  .serif { font-family: "Iowan Old Style","Palatino Linotype",Georgia,serif; }
+  html, body { margin: 0; height: 100%; }
+  :root {
+    --ink:#1f1f1e; --muted:#8a8984; --line:#ECEBE7; --sidebar:#F7F6F3;
+    --accent:#3E63B8; --accent-soft:#EAF0FA; --soft:#FBFAF8; --bubble:#F1F0EC;
+    --serif:'Newsreader',Georgia,serif; --sans:'Hanken Grotesk',system-ui,sans-serif;
+  }
+  body { font-family:var(--sans); color:var(--ink); background:#fff; }
+  ::-webkit-scrollbar { width:10px; }
+  ::-webkit-scrollbar-thumb { background:rgba(0,0,0,.14); border-radius:999px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::placeholder { color:#9b9a96; }
+  textarea:focus, input:focus { outline:none; }
+  button { font-family:inherit; }
 
-  .topbar { display: flex; align-items: center; gap: 14px; padding: 14px 26px; background: linear-gradient(180deg,#F4F1E9,#EFECE2); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 20; }
-  .logo { font-family: "Iowan Old Style",Georgia,serif; font-size: 1.32rem; font-weight: 700; color: var(--ink); letter-spacing: -.02em; }
-  .logo .dot { color: var(--accent); }
-  .tag { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .14em; }
-  .spacer { flex: 1; }
-  .providers { font-size: .73rem; color: var(--code-ink); background: var(--code-bg); border: 1px solid var(--border); padding: 5px 11px; border-radius: 999px; font-weight: 600; }
-  .providers.warn { background: var(--accent-2); color: var(--err); }
+  .app { height:100vh; display:flex; min-height:0; }
 
-  .shell { display: grid; grid-template-columns: var(--rail-w) 1fr var(--aside-w); height: calc(100vh - 61px); }
-  .rail { border-right: 1px solid var(--border); padding: 18px 14px; background: #EFECE2; overflow-y: auto; display: flex; flex-direction: column; }
-  .aside { border-left: 1px solid var(--border); padding: 18px 14px; background: #EFECE2; overflow-y: auto; }
-  .rail-title, .aside-title { font-size: .7rem; text-transform: uppercase; letter-spacing: .15em; color: var(--muted); font-weight: 700; margin: 4px 6px 12px; }
+  /* ---------- LEFT ---------- */
+  .rail { flex:none; width:272px; background:var(--sidebar); border-right:1px solid var(--line);
+    display:flex; flex-direction:column; min-height:0; transition:margin-left .2s; }
+  .rail.closed { margin-left:-272px; }
+  .rail .top { flex:none; display:flex; align-items:center; gap:9px; padding:14px 12px 8px; }
+  .logo { font-family:var(--serif); font-size:19px; font-weight:600; letter-spacing:-.02em; }
+  .logo .d { color:var(--accent); }
+  .rail .top .ic { margin-left:auto; display:flex; gap:2px; }
+  .iconbtn { width:30px; height:30px; border-radius:8px; display:grid; place-items:center; color:var(--muted);
+    background:transparent; border:none; cursor:pointer; font-size:16px; }
+  .iconbtn:hover { background:#ECEBE7; }
+  .rail .list { flex:1; overflow-y:auto; padding:6px 8px 10px; }
+  .seclabel { display:flex; align-items:center; gap:6px; padding:10px 8px 6px; }
+  .seclabel b { font-size:13px; } .seclabel .more { margin-left:auto; display:flex; gap:2px; }
+  .sess { display:flex; align-items:center; gap:9px; width:100%; text-align:left; border:none; background:transparent;
+    font:inherit; font-size:13.5px; color:var(--ink); padding:8px 9px; border-radius:9px; cursor:pointer; }
+  .sess:hover { background:#ECEBE7; }
+  .sess.active { background:#E7E6E1; font-weight:600; }
+  .sess .nm { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .sess .tag { flex:none; font-size:9.5px; font-weight:700; color:var(--accent); background:var(--accent-soft);
+    padding:2px 7px; border-radius:999px; }
+  .sess .caret { flex:none; font-size:11px; color:var(--muted); }
+  .sess .del { flex:none; opacity:0; color:var(--muted); font-size:12px; line-height:1; padding:3px 5px; border-radius:6px; }
+  .sess:hover .del { opacity:.5; }
+  .sess .del:hover { opacity:1; color:#b5503c; background:#F6E5E0; }
+  .subwrap { display:flex; flex-direction:column; gap:1px; margin:1px 0 8px; }
+  .sess.sub { padding-left:26px; font-size:12.5px; color:#46453f; }
+  .sess.sub .dotmark { flex:none; width:5px; height:5px; border-radius:50%; background:var(--muted); }
+  .sess.newtrial { color:var(--accent); font-weight:600; }
+  .rail .user { flex:none; border-top:1px solid var(--line); padding:11px 12px; display:flex; align-items:center; gap:10px; }
+  .ava { width:28px; height:28px; border-radius:50%; background:var(--accent); color:#fff; display:grid;
+    place-items:center; font-size:12px; font-weight:700; }
+  .pro { margin-left:auto; font-size:10px; font-weight:700; color:var(--accent); background:var(--accent-soft);
+    padding:3px 8px; border-radius:999px; }
 
-  /* left nav (clickable items only) */
-  .navfile { display: flex; align-items: center; gap: 9px; width: 100%; text-align: left; font: inherit; padding: 10px 11px; margin: 2px 0; border-radius: var(--radius-sm); cursor: pointer; color: var(--body); background: transparent; border: 1px solid transparent; transition: background .16s var(--ease), border-color .16s; }
-  .navfile:hover { background: var(--highlight); }
-  .navfile.active { background: var(--surface); border-color: var(--border); box-shadow: var(--shadow); }
-  .navfile .di { flex: none; width: 18px; text-align: center; font-size: .9rem; }
-  .navfile .fn { font-size: .87rem; color: var(--ink); font-weight: 600; }
-  .navfile .dot { margin-left: auto; width: 9px; height: 9px; border-radius: 50%; background: var(--border); flex: none; }
-  .navfile .dot.filled { background: var(--ok); }
-  .createBtn { margin-top: 14px; width: 100%; border: none; background: var(--accent); color: #fff; font: inherit; font-size: .9rem; font-weight: 700; padding: 12px; border-radius: var(--radius-sm); cursor: pointer; box-shadow: var(--shadow); transition: transform .15s var(--ease), opacity .2s; }
-  .createBtn:hover:not(:disabled) { transform: translateY(-1px); }
-  .createBtn:disabled { opacity: .4; cursor: not-allowed; }
-  .railspace { flex: 1; }
-  .openexist { margin-top: 12px; border-top: 1px dashed var(--border); padding-top: 12px; }
-  .openexist label { font-size: .64rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; }
-  .openexist input { width: 100%; margin-top: 6px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); font: inherit; font-size: .76rem; color: var(--ink); padding: 7px 9px; }
-  .openexist input:focus { outline: none; border-color: var(--accent); }
-  .openexist button { margin-top: 7px; width: 100%; border: 1px solid var(--border); background: var(--surface); color: var(--body); font: inherit; font-size: .76rem; padding: 7px; border-radius: 7px; cursor: pointer; }
+  /* ---------- CENTER ---------- */
+  .main { flex:1; display:flex; flex-direction:column; min-width:0; min-height:0; position:relative; }
+  .mhead { flex:none; height:52px; display:flex; align-items:center; gap:10px; padding:0 22px; }
+  .mhead .ht { font-size:14px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+  .mhead .hs { font-size:11.5px; color:var(--muted); border:1px solid var(--line); padding:3px 9px; border-radius:999px; }
+  .mhead .prov { margin-left:auto; font-size:11.5px; color:var(--muted); }
+  .mhead .prov.warn { color:#b5503c; font-weight:600; }
 
-  .work { display: flex; flex-direction: column; min-width: 0; }
-  .canvas { flex: 1; overflow-y: auto; padding: 24px 34px; display: flex; flex-direction: column; }
-  .crumb { font-size: .74rem; color: var(--muted); margin-bottom: 6px; }
-  .canvas h2.title { font-size: 1.5rem; margin-bottom: 4px; }
-  .ehint { color: var(--muted); font-size: .86rem; line-height: 1.6; margin: 6px 0 14px; }
-  .editor { flex: 1; width: 100%; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); font-family: ui-monospace, Menlo, monospace; font-size: .86rem; color: var(--ink); padding: 16px 18px; line-height: 1.65; resize: none; box-shadow: var(--shadow); }
-  .editor.one { flex: none; height: 46px; font-family: inherit; font-size: .95rem; }
-  .editor:focus { outline: none; border-color: var(--accent); }
-  .editor::placeholder { color: var(--muted); opacity: .55; }
-  .savednote { font-size: .72rem; color: var(--ok); margin-top: 8px; height: 14px; }
-  /* journal info structured sub-form */
-  .subform { display: flex; flex-direction: column; gap: 1px; }
-  .sflabel { font-size: .7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin: 13px 2px 5px; }
-  .sflabel .req { color: var(--err); } .sflabel .opt { color: var(--muted); font-weight: 600; font-size: .6rem; text-transform: none; letter-spacing: 0; }
-  .sfinput { width: 100%; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); font: inherit; font-size: .9rem; color: var(--ink); padding: 9px 12px; resize: vertical; line-height: 1.5; }
-  .sfinput:focus { outline: none; border-color: var(--accent); }
-  .sfinput::placeholder { color: var(--muted); opacity: .55; }
-  .nrow { display: flex; gap: 7px; align-items: center; margin-bottom: 6px; }
-  .nrow .nnum { flex: none; font-family: ui-monospace, Menlo, monospace; font-size: .72rem; font-weight: 700; color: var(--accent); min-width: 20px; }
-  .nrow .rmbtn { flex: none; width: 28px; height: 28px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); border-radius: 7px; cursor: pointer; font-size: .8rem; }
-  .nrow .rmbtn:hover { color: var(--err); border-color: var(--err); }
-  .addbtn { margin: 2px 0 4px; border: 1px dashed var(--accent); background: var(--highlight); color: var(--accent); font: inherit; font-size: .8rem; font-weight: 700; padding: 7px 12px; border-radius: 8px; cursor: pointer; }
-  .addbtn:hover { background: var(--accent); color: #fff; }
-  /* outline: fixed sections, one free-text message each */
-  .osec { margin: 16px 0 4px; }
-  .osec-h { display: flex; align-items: center; gap: 8px; font-size: .92rem; font-weight: 700; color: var(--ink); padding: 8px 10px; background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
-  .osec-h .fixed { margin-left: auto; font-size: .56rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
-  .osec-h .reqd { font-size: .56rem; font-weight: 700; color: var(--err); }
-  .osec-h .opt { font-size: .56rem; font-weight: 700; color: var(--muted); }
-  .osecta { width: 100%; border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--surface); font: inherit; font-size: .88rem; color: var(--ink); padding: 11px 12px; resize: vertical; min-height: 92px; line-height: 1.6; box-shadow: var(--shadow); }
-  .osecta:focus { outline: none; border-color: var(--accent); }
-  .osecta::placeholder { color: var(--muted); opacity: .5; }
-  /* shared by renderList (+row component) */
-  .obtn { flex: none; width: 26px; height: 26px; border: 1px solid var(--border); background: var(--bg); color: var(--muted); border-radius: 6px; cursor: pointer; font-size: .72rem; line-height: 1; }
-  .obtn:hover { color: var(--accent); border-color: var(--accent); } .obtn.rm:hover { color: var(--err); border-color: var(--err); }
-  .obtn:disabled { opacity: .3; cursor: not-allowed; }
-  /* data panel: dropzone + file list */
-  .dropzone { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; margin: 18px 0 14px; padding: 30px 20px; border: 2px dashed var(--border); border-radius: var(--radius); background: var(--surface); cursor: pointer; transition: border-color .15s, background .15s; }
-  .dropzone:hover, .dropzone.over { border-color: var(--accent); background: var(--highlight); }
-  .dropzone .dz-icon { font-size: 1.5rem; }
-  .dropzone .dz-main { font-weight: 700; font-size: .92rem; color: var(--ink); }
-  .dropzone .dz-sub { font-size: .68rem; color: var(--muted); letter-spacing: .04em; }
-  .data-split { display: flex; gap: 14px; align-items: flex-start; }
-  .filelist { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 7px; max-height: 460px; overflow-y: auto; }
-  .fl-empty { color: var(--muted); font-size: .84rem; padding: 8px 2px; }
-  .frow { display: flex; align-items: center; gap: 10px; padding: 9px 11px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--shadow); cursor: pointer; transition: border-color .12s, background .12s; }
-  .frow:hover { border-color: var(--accent); }
-  .frow.sel { border-color: var(--accent); background: var(--highlight); }
-  .frow .fkind { flex: none; font-family: ui-monospace, Menlo, monospace; font-size: .58rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); background: var(--highlight); padding: 3px 7px; border-radius: 5px; min-width: 40px; text-align: center; }
-  .frow .fname { flex: 1; font-size: .86rem; font-weight: 600; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .frow.noted .fname::after { content: "📝"; margin-left: 6px; font-size: .72rem; }
-  .frow .fmeta { flex: none; font-size: .72rem; color: var(--muted); }
-  /* note panel (right side of the data split) */
-  .notepanel { flex: 1 1 0; min-width: 0; position: sticky; top: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 15px; box-shadow: var(--shadow); min-height: 200px; }
-  .np-empty { color: var(--muted); font-size: .84rem; line-height: 1.7; text-align: center; padding: 44px 12px; }
-  .np-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-  .np-head .fkind { flex: none; font-family: ui-monospace, Menlo, monospace; font-size: .58rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); background: var(--highlight); padding: 3px 7px; border-radius: 5px; }
-  .np-head .np-name { font-size: .92rem; font-weight: 700; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .np-sub { font-size: .68rem; color: var(--muted); margin-bottom: 10px; word-break: break-all; }
-  .np-ta { width: 100%; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font: inherit; font-size: .88rem; color: var(--ink); padding: 11px 12px; resize: vertical; min-height: 150px; line-height: 1.6; }
-  .np-ta:focus { outline: none; border-color: var(--accent); }
-  .np-ta::placeholder { color: var(--muted); opacity: .5; }
+  .thread { flex:1; overflow-y:auto; min-height:0; }
+  .twrap { max-width:760px; margin:0 auto; padding:26px 24px 30px; display:flex; flex-direction:column; gap:22px; }
 
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 14px; box-shadow: var(--shadow); }
-  .card h3 { font-size: .98rem; margin-bottom: 10px; display: flex; align-items: center; gap: 9px; }
-  .badge { font-size: .62rem; text-transform: uppercase; letter-spacing: .1em; background: var(--highlight); color: var(--accent); padding: 3px 8px; border-radius: 6px; font-weight: 700; }
-  .badge.ok { background: #EAF0E6; color: #4f6a44; } .badge.warn { background: var(--accent-2); color: var(--err); }
-  .muted { color: var(--muted); font-size: .86rem; line-height: 1.6; }
-  .toks { display: flex; gap: 18px; flex-wrap: wrap; font-size: .82rem; margin-top: 8px; }
-  .toks b { color: var(--ink); }
-  .log { background: #2a2620; color: #e7dcc8; border-radius: var(--radius-sm); padding: 12px 14px; font-family: ui-monospace,Menlo,monospace; font-size: .74rem; line-height: 1.7; max-height: 220px; overflow-y: auto; white-space: pre-wrap; }
+  /* greeting */
+  .greet { min-height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 40px 80px; }
+  .greet h1 { font-family:var(--serif); font-size:30px; font-weight:500; letter-spacing:-.01em; margin:0 0 26px; text-align:center; }
+  .composer { width:100%; max-width:600px; }
+  .cbox { display:flex; align-items:flex-end; gap:10px; background:#fff; border:1px solid #DEDDD8; border-radius:26px;
+    padding:11px 12px 11px 16px; box-shadow:0 8px 30px -16px rgba(0,0,0,.25); }
+  .cbox.sm { border-radius:26px; box-shadow:0 6px 22px -16px rgba(0,0,0,.22); }
+  .cbox .plus { flex:none; width:30px; height:30px; border-radius:50%; border:1px solid var(--line); color:var(--muted);
+    display:grid; place-items:center; font-size:17px; cursor:pointer; background:#fff; }
+  .cbox textarea { flex:1; border:none; resize:none; font-family:inherit; font-size:15px; color:var(--ink);
+    line-height:1.5; max-height:140px; padding:5px 0; background:transparent; }
+  .cbox .ground { flex:none; display:flex; align-items:center; gap:5px; font-size:12.5px; font-weight:600;
+    color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:5px 10px; cursor:default; }
+  .send { flex:none; width:34px; height:34px; border-radius:50%; background:var(--ink); color:#fff; border:none;
+    cursor:pointer; display:grid; place-items:center; font-size:15px; }
+  .send:hover { opacity:.85; }
+  .send:disabled { opacity:.4; cursor:default; }
+  .chips { display:flex; gap:9px; justify-content:center; margin-top:16px; flex-wrap:wrap; }
+  .chip { display:flex; align-items:center; gap:7px; font:inherit; font-size:13px; color:#5b5a56; background:#fff;
+    border:1px solid var(--line); border-radius:999px; padding:8px 14px; cursor:pointer; }
+  .chip:hover { background:#F2F1ED; }
 
-  /* question dock (center bottom) */
-  .chatdock { border-top: 1px solid var(--border); background: linear-gradient(180deg,#F4F1E9,#EFECE2); padding: 14px 26px 18px; max-height: 46vh; overflow-y: auto; }
-  .dock-title { font-size: .68rem; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); font-weight: 800; margin-bottom: 4px; display: flex; align-items: center; gap: 7px; }
-  .dock-hint { font-size: .72rem; color: var(--muted); margin-bottom: 12px; }
-  .q { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 11px 13px; margin-bottom: 9px; }
-  .q .qq { font-size: .86rem; color: var(--ink); font-weight: 600; margin-bottom: 7px; display: flex; gap: 8px; align-items: baseline; }
-  .q .risk { font-size: .56rem; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: var(--code-bg); color: var(--code-ink); text-transform: uppercase; }
-  .q .risk.high { background: var(--accent-2); color: var(--err); }
-  .q textarea { width: 100%; border: 1px solid var(--border); border-radius: 7px; background: var(--bg); font: inherit; font-size: .85rem; color: var(--ink); padding: 8px 10px; resize: vertical; min-height: 38px; line-height: 1.5; }
-  .q textarea:focus { outline: none; border-color: var(--accent); }
-  .q textarea::placeholder { color: var(--muted); opacity: .65; font-style: italic; }
-  .skipbtn { margin-top: 6px; border: 1px dashed var(--border); background: transparent; color: var(--muted); font: inherit; font-size: .72rem; padding: 4px 10px; border-radius: 6px; cursor: pointer; }
-  .skipbtn:hover { border-color: var(--accent); color: var(--accent); }
-  /* generated-paper viewer (center) */
-  .paperBtn { width: 100%; margin-top: 8px; border: 1px solid var(--accent); background: var(--highlight); color: var(--accent); font: inherit; font-size: .86rem; font-weight: 700; padding: 10px; border-radius: var(--radius-sm); cursor: pointer; }
-  .paperBtn:hover { background: var(--accent); color: #fff; }
-  .paperbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 6px 0 10px; }
-  .paperbar .dl { font-size: .78rem; font-weight: 700; color: var(--accent); text-decoration: none; border: 1px solid var(--border); padding: 5px 11px; border-radius: 7px; }
-  .paperbar .dl:hover { border-color: var(--accent); background: var(--highlight); }
-  .paperframe { width: 100%; height: calc(100vh - 230px); min-height: 460px; border: 1px solid var(--border); border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); }
-  .logdetails { margin-top: 12px; } .logdetails summary { cursor: pointer; font-size: .8rem; color: var(--muted); font-weight: 700; }
-  /* Stage 3: plan confirm + chat */
-  .planview { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; margin: 14px 0 10px; }
-  .plabel { font-size: .64rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: var(--accent); margin: 12px 0 5px; }
-  .pcontrib { font-size: .92rem; font-weight: 600; color: var(--ink); background: var(--highlight); border-radius: 8px; padding: 9px 11px; }
-  .claims { margin: 0 0 4px 16px; font-size: .84rem; color: var(--ink); } .claims li { margin: 3px 0; }
-  .secblock { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 11px; margin-bottom: 7px; box-shadow: var(--shadow); }
-  .sechead { font-size: .86rem; font-weight: 800; color: var(--ink); }
-  .secsum { font-size: .78rem; color: var(--muted); margin: 2px 0 4px; }
-  .subs { margin: 0 0 0 16px; font-size: .82rem; color: var(--accent); font-weight: 600; } .subs li { margin: 2px 0; }
-  .nosubs { font-size: .74rem; color: var(--muted); font-style: italic; }
-  .figgrid { display: flex; flex-direction: column; gap: 9px; }
-  .figcard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 9px; box-shadow: var(--shadow); }
-  .figcard svg { display: block; }
-  .figmeta { font-size: .76rem; color: var(--muted); margin-top: 5px; line-height: 1.45; }
-  .figmeta .fkind { font-family: ui-monospace, Menlo, monospace; font-size: .58rem; font-weight: 700; text-transform: uppercase; color: var(--accent); background: var(--highlight); padding: 2px 6px; border-radius: 5px; }
-  /* Stage 3: claim graph cards */
-  .graphgrid { display: flex; flex-direction: column; gap: 9px; }
-  .gcard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 9px 11px; box-shadow: var(--shadow); }
-  .gclaim { font-size: .85rem; font-weight: 800; color: var(--ink); margin-bottom: 5px; }
-  .gsub { border-left: 2px solid var(--border); padding: 3px 0 3px 9px; margin: 5px 0 0 4px; }
-  .gsubtext { font-size: .8rem; color: var(--ink); margin-bottom: 3px; }
-  .gchips { display: flex; flex-wrap: wrap; gap: 4px; }
-  .gchip { font-size: .66rem; font-weight: 700; padding: 2px 7px; border-radius: 999px; border: 1px solid var(--border); }
-  .gchip.ev { color: #2f6f4f; background: #eaf5ee; border-color: #cfe6d8; }
-  .gchip.me { color: var(--accent); background: var(--highlight); }
-  .gchip.da { color: #6b5e54; background: var(--code-bg); }
-  .gchip.fi { color: #7a5cc2; background: #efeafb; border-color: #ddd2f2; }
-  .gchip.re { color: #8b4513; background: #f4ece0; border-color: #e3d4bf; }
-  .gnone { font-size: .72rem; color: var(--muted); font-style: italic; }
-  .ghint { font-size: .74rem; color: var(--muted); margin: -2px 0 8px; }
-  .chatwrap { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; }
-  .chatlog { display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; margin-bottom: 10px; }
-  .cmsg { font-size: .86rem; line-height: 1.55; padding: 8px 12px; border-radius: 12px; max-width: 90%; }
-  .cmsg.user { align-self: flex-end; background: var(--accent); color: #fff; } .cmsg.user b { display: none; }
-  .cmsg.agent { align-self: flex-start; background: var(--code-bg); color: var(--ink); } .cmsg.agent b { display: none; }
-  .cmsg.muted { opacity: .6; }
-  .chatrow { display: flex; gap: 8px; align-items: flex-end; }
-  .chatrow textarea { flex: 1; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); font: inherit; font-size: .88rem; color: var(--ink); padding: 10px 12px; resize: vertical; min-height: 42px; line-height: 1.5; }
-  .chatrow textarea:focus { outline: none; border-color: var(--accent); }
-  .send.go { background: var(--ink); }
-  .composer-bar { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
-  .send { border: none; background: var(--accent); color: #fff; font: inherit; font-size: .86rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); cursor: pointer; box-shadow: var(--shadow); }
-  .send:disabled { opacity: .45; cursor: not-allowed; }
+  /* messages */
+  .urow { display:flex; justify-content:flex-end; }
+  .ubub { max-width:80%; font-size:15px; line-height:1.6; background:var(--bubble); border-radius:20px; padding:11px 16px; }
+  .arow { display:flex; gap:13px; }
+  .spark { flex:none; width:28px; height:28px; border-radius:50%; background:#fff; border:1px solid var(--line);
+    display:grid; place-items:center; font-size:13px; }
+  .abody { flex:1; min-width:0; font-size:15px; line-height:1.7; padding-top:2px; }
+  .abody b { font-weight:700; }
 
-  /* workflow tree (right) */
-  .steps { position: relative; margin: 0; padding: 0; list-style: none; }
-  .steps::before { content: ""; position: absolute; left: 19px; top: 16px; bottom: 16px; width: 2px; background: var(--border); }
-  .step { position: relative; display: flex; gap: 12px; align-items: flex-start; padding: 9px 10px; margin-bottom: 2px; border-radius: var(--radius-sm); border: 1px solid transparent; transition: background .2s var(--ease); }
-  .step.active { background: var(--surface); border-color: var(--border); box-shadow: var(--shadow); }
-  .step.locked { opacity: .55; }
-  .node { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: .72rem; font-weight: 700; background: var(--surface); border: 2px solid var(--border); color: var(--muted); z-index: 1; }
-  .step.done .node { background: var(--ok); border-color: var(--ok); color: #fff; }
-  .step.active .node { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 0 4px var(--highlight); animation: pulse 1.2s infinite; }
-  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 4px var(--highlight); } 50% { box-shadow: 0 0 0 7px rgba(204,120,92,.08); } }
-  .step.locked .node { background: var(--accent-2); }
-  .step .meta { display: flex; flex-direction: column; gap: 1px; padding-top: 1px; }
-  .step .k { font-size: .62rem; color: var(--muted); letter-spacing: .04em; }
-  .step .t { font-size: .85rem; color: var(--ink); font-weight: 600; }
-  .step .s { font-size: .68rem; color: var(--muted); }
-  .step.active .s { color: var(--accent); font-weight: 600; }
-  .step.done .s { color: var(--ok); }
-  /* step 0 sub-checklist */
-  .subs { list-style: none; margin: 6px 0 10px 30px; padding: 0; }
-  .subs li { display: flex; align-items: center; gap: 8px; font-size: .76rem; color: var(--muted); padding: 3px 0; }
-  .subs li .sdot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex: none; }
-  .subs li.on { color: var(--ink); } .subs li.on .sdot { background: var(--ok); }
+  .card { border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#fff; margin-top:10px; }
+  .erow { display:flex; align-items:flex-start; gap:11px; padding:13px 16px; border-bottom:1px solid var(--line); }
+  .erow:last-child { border-bottom:none; }
+  .dot { flex:none; width:9px; height:9px; border-radius:50%; margin-top:5px; }
+  .dot.ready { background:#3f7d57; } .dot.thin { background:#c79a3a; } .dot.missing { background:#b5503c; }
+  .ei { flex:1; min-width:0; }
+  .ei .lab { font-size:13.5px; font-weight:600; }
+  .ei .lab .st { font-size:10px; font-weight:700; padding:1px 7px; border-radius:999px; margin-left:5px; }
+  .st.ready { color:#3f7d57; background:#E7F0EA; } .st.thin { color:#8a6a22; background:#F3E7CF; }
+  .st.missing { color:#b5503c; background:#F6E5E0; }
+  .ei .det { font-size:13px; color:var(--muted); line-height:1.5; margin-top:2px; }
+  .ebtn { flex:none; font:inherit; font-size:12.5px; font-weight:600; background:transparent; border:1px solid var(--line);
+    border-radius:8px; padding:6px 11px; cursor:pointer; }
+  .ebtn:hover { background:#F2F1ED; }
+  .cardfoot { display:flex; align-items:center; gap:10px; padding:12px 16px; background:var(--soft); flex-wrap:wrap; }
+  .primary { font:inherit; font-size:13px; font-weight:700; color:#fff; background:var(--ink); border:none;
+    border-radius:9px; padding:9px 16px; cursor:pointer; }
+  .primary:disabled { opacity:.4; cursor:default; }
+  .foothint { font-size:12px; color:var(--muted); }
 
-  /* ===== dashboard ===== */
-  #dashboard { display: none; padding: 30px 40px 50px; max-width: 1180px; margin: 0 auto; }
-  body.dash #dashboard { display: block; }
-  body.dash #workspace { display: none; }
-  .dash-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
-  .dash-head h1 { font-size: 1.7rem; } .dash-head .sub { color: var(--muted); font-size: .9rem; }
-  .dash-sub { color: var(--muted); font-size: .92rem; margin-bottom: 22px; }
-  .newbtn { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; background: var(--accent); color: #fff; border: none; border-radius: 999px; padding: 9px 18px; font: inherit; font-size: .84rem; font-weight: 700; cursor: pointer; box-shadow: var(--shadow); }
-  .newbtn:hover { transform: translateY(-1px); }
-  .pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 18px; }
-  .pcard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); cursor: pointer; transition: transform .2s var(--ease), border-color .2s; position: relative; overflow: hidden; }
-  .pcard:hover { transform: translateY(-3px); border-color: var(--accent); }
-  .pcard .ptop { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 4px; }
-  .pcard .pic { flex: none; width: 34px; height: 34px; border-radius: 9px; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: .82rem; font-weight: 700; }
-  .pcard h3.pt { font-size: 1.0rem; line-height: 1.35; }
-  .pcard .pmeta { font-size: .76rem; color: var(--muted); margin-top: 2px; }
-  .pcard .ptag { margin-left: auto; flex: none; font-size: .6rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
-  .ptag.done { background: #EAF0E6; color: #4f6a44; } .ptag.active { background: var(--highlight); color: var(--accent); } .ptag.new { background: var(--code-bg); color: var(--code-ink); }
-  .prog { margin: 16px 0 12px; }
-  .prog .pl { display: flex; justify-content: space-between; align-items: baseline; font-size: .76rem; margin-bottom: 6px; }
-  .prog .pl .pct { font-weight: 700; color: var(--ink); font-size: .92rem; }
-  .prog .pl .stp { color: var(--muted); }
-  .bar { height: 8px; border-radius: 999px; background: var(--code-bg); overflow: hidden; }
-  .bar > span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), #d98e6f); }
-  .pfoot { display: flex; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid var(--border); font-size: .76rem; }
-  .ddl { font-weight: 700; padding: 3px 10px; border-radius: 999px; }
-  .ddl.soon { background: #f6e3dd; color: var(--err); } .ddl.mid { background: var(--code-bg); color: var(--code-ink); } .ddl.far { background: #EAF0E6; color: #4f6a44; } .ddl.none { background: var(--code-bg); color: var(--muted); }
-  .newcard { border: 2px dashed var(--border); background: transparent; border-radius: var(--radius); display: grid; place-items: center; min-height: 200px; cursor: pointer; color: var(--muted); text-align: center; }
-  .newcard:hover { border-color: var(--accent); color: var(--accent); }
-  .newcard .plus { font-size: 1.8rem; }
-  /* new-project modal */
-  .modal { position: fixed; inset: 0; background: rgba(26,20,16,.4); display: none; place-items: center; z-index: 60; }
-  .modal.show { display: grid; }
-  .modal .box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; width: 380px; box-shadow: 0 20px 60px -20px rgba(0,0,0,.5); }
-  .modal h3 { margin-bottom: 14px; }
-  .modal label { display: block; font-size: .72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin: 12px 2px 5px; }
-  .modal input { width: 100%; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); font: inherit; font-size: .9rem; padding: 9px 12px; }
-  .modal input:focus { outline: none; border-color: var(--accent); }
-  .modal .mrow { display: flex; gap: 10px; margin-top: 18px; }
-  .modal .mrow button { flex: 1; border-radius: 8px; padding: 10px; font: inherit; font-weight: 700; cursor: pointer; border: 1px solid var(--border); }
-  .modal .mrow .ok { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .backbtn { background: var(--surface); border: 1px solid var(--border); color: var(--body); font: inherit; font-size: .78rem; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
-  .backbtn:hover { border-color: var(--accent); color: var(--accent); }
-  .wtitle { font-size: .86rem; font-weight: 700; color: var(--ink); }
+  .qcard { border:1px solid var(--line); border-radius:14px; background:#fff; padding:13px 15px; margin-bottom:11px; }
+  .qtop { display:flex; gap:8px; align-items:baseline; margin-bottom:3px; }
+  .qkind { flex:none; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.04em;
+    padding:2px 7px; border-radius:5px; color:var(--accent); background:var(--accent-soft); }
+  .qkind.high { color:#b5503c; background:#F6E5E0; }
+  .qq { font-size:14px; font-weight:600; line-height:1.45; }
+  .qwhy { font-size:12.5px; color:var(--muted); margin:3px 0 9px; }
+  .qta { width:100%; border:1px solid var(--line); border-radius:9px; background:var(--soft); font:inherit;
+    font-size:13.5px; color:var(--ink); padding:9px 11px; resize:vertical; min-height:40px; line-height:1.5; }
+  .qta:disabled { opacity:.7; }
+  .qskip { margin-top:7px; font:inherit; font-size:12px; color:var(--muted); background:transparent;
+    border:1px dashed var(--line); padding:4px 10px; border-radius:7px; cursor:pointer; }
+  .srchead { display:flex; align-items:center; gap:9px; padding:12px 16px; border-bottom:1px solid var(--line); background:var(--soft); }
+  .srchead .nm { font-size:13px; font-weight:600; } .srchead .mt { font-size:12.5px; color:var(--muted); }
+  .badge { margin-left:auto; font-size:10.5px; font-weight:700; padding:2px 9px; border-radius:999px;
+    color:var(--accent); background:var(--accent-soft); }
+  .badge.ok { color:#3f7d57; background:#E7F0EA; }
+  .genlog { background:#1c1c1b; color:#dcd9d2; border-radius:12px; padding:13px 15px; font-family:ui-monospace,Menlo,monospace;
+    font-size:12.5px; line-height:1.8; white-space:pre-wrap; max-height:300px; overflow-y:auto; }
+  .restitle { font-family:var(--serif); font-size:19px; font-weight:600; line-height:1.3; }
+  .resmeta { font-size:13px; color:var(--muted); margin-top:5px; }
+  .dl { font-size:12.5px; font-weight:600; color:var(--accent); border:1px solid var(--line); padding:7px 12px;
+    border-radius:8px; cursor:pointer; text-decoration:none; }
+  .dl:hover { background:var(--soft); }
+
+  .botcomp { flex:none; padding:8px 24px 18px; }
+  .botcomp .inner { max-width:760px; margin:0 auto; }
+  .botcomp .foot { text-align:center; font-size:11px; color:var(--muted); margin-top:8px; }
+
+  /* ---------- RIGHT PANEL ---------- */
+  .panel { flex:none; width:46%; min-width:380px; max-width:680px; border-left:1px solid var(--line); background:#fff;
+    display:flex; flex-direction:column; min-height:0; }
+  .panel.hidden { display:none; }
+  .phead { flex:none; display:flex; align-items:center; gap:10px; padding:11px 14px; border-bottom:1px solid var(--line); }
+  .phead .pt { font-size:13.5px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .phead .x { margin-left:auto; width:30px; height:30px; border-radius:8px; display:grid; place-items:center;
+    color:var(--muted); background:transparent; border:none; font-size:16px; cursor:pointer; }
+  .pbody { flex:1; overflow-y:auto; padding:22px 26px 30px; }
+  .pkicker { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:4px; }
+  .pbody h2 { font-family:var(--serif); font-size:22px; font-weight:600; margin:0 0 6px; }
+  .pbody .desc { font-size:13px; color:var(--muted); line-height:1.6; margin:0 0 16px; }
+  .ptabs { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
+  .ptab { font:inherit; font-size:12.5px; font-weight:600; color:var(--muted); background:transparent;
+    border:1px solid var(--line); border-radius:8px; padding:6px 11px; cursor:pointer; }
+  .ptab.on { color:#fff; background:var(--ink); border-color:var(--ink); }
+  .flabel { display:block; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase;
+    letter-spacing:.04em; margin:14px 1px 6px; }
+  .flabel .req { color:#b5503c; } .flabel .opt { font-weight:600; text-transform:none; letter-spacing:0; }
+  .fin, .fta { width:100%; border:1px solid var(--line); border-radius:9px; background:var(--soft); font:inherit;
+    font-size:14px; color:var(--ink); padding:10px 12px; }
+  .fta { resize:vertical; line-height:1.6; }
+  .novrow { display:flex; gap:8px; align-items:center; margin-top:7px; }
+  .novrow .num { flex:none; font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:700; color:var(--accent); }
+  .novrow input { flex:1; border:1px solid var(--line); border-radius:8px; background:var(--soft); font:inherit;
+    font-size:13.5px; color:var(--ink); padding:9px 11px; }
+  .addbtn { margin-top:8px; font:inherit; font-size:12.5px; font-weight:600; color:var(--accent); background:transparent;
+    border:1px dashed var(--line); border-radius:8px; padding:6px 12px; cursor:pointer; }
+  .drop { display:flex; flex-direction:column; align-items:center; gap:5px; text-align:center; padding:26px 18px;
+    border:2px dashed var(--line); border-radius:13px; background:var(--soft); cursor:pointer; margin-bottom:14px;
+    transition:border-color .12s ease, background .12s ease; }
+  .drop.dragover { border-color:var(--accent, #cc785c); background:#f3ebe5; }
+  .frow { display:flex; align-items:center; gap:10px; padding:9px 11px; background:#fff; border:1px solid var(--line);
+    border-radius:9px; margin-bottom:7px; }
+  .fkind { flex:none; font-family:ui-monospace,Menlo,monospace; font-size:9px; font-weight:700; text-transform:uppercase;
+    color:var(--accent); background:var(--accent-soft); padding:3px 7px; border-radius:5px; }
+  .fname { flex:1; font-size:13px; font-weight:600; } .fmeta { font-size:11.5px; color:var(--muted); }
+  .savetag { font-size:11.5px; color:#3f7d57; margin-top:14px; }
+  .ofile { display:flex; align-items:center; gap:9px; width:100%; text-align:left; border:1px solid var(--line);
+    background:#fff; border-radius:9px; padding:8px 11px; margin-bottom:6px; cursor:pointer; font:inherit; }
+  .ofile.active { border-color:var(--accent); background:var(--accent-soft); }
+  .ofile .ok { font-family:ui-monospace,Menlo,monospace; font-size:9px; font-weight:700; text-transform:uppercase;
+    color:var(--accent); } .ofile .on { flex:1; font-size:12.5px; font-weight:600; } .ofile .os { font-size:11px; color:var(--muted); }
+  .modal { position:fixed; inset:0; background:rgba(0,0,0,.3); display:grid; place-items:center; z-index:50; }
+  .modal .box { background:#fff; border-radius:14px; padding:20px 22px; width:340px; box-shadow:0 20px 60px rgba(0,0,0,.25); }
+  .modal h3 { font-family:var(--serif); margin:0 0 12px; font-size:18px; }
+  .modal input { width:100%; border:1px solid var(--line); border-radius:9px; padding:10px 12px; font:inherit; font-size:14px; margin-bottom:14px; }
+  .modal .row { display:flex; gap:8px; justify-content:flex-end; }
+  .ghost { font:inherit; background:transparent; border:1px solid var(--line); border-radius:8px; padding:8px 14px; cursor:pointer; }
 </style>
 </head>
 <body>
-  <div class="topbar">
-    <span class="logo">paper<span class="dot">·</span>pal</span>
-    <span class="tag">Manuscript Compiler</span>
-    <button class="backbtn" id="backBtn" style="display:none">← 프로젝트 목록</button>
-    <span class="wtitle" id="wtitle" style="display:none"></span>
-    <span class="spacer"></span>
-    <span id="providers" class="providers warn">키 확인 안 됨</span>
-  </div>
-
-  <!-- DASHBOARD (landing) -->
-  <div id="dashboard">
-    <div class="dash-head">
-      <h1 class="serif">프로젝트</h1>
-      <span class="sub">진행 중인 논문</span>
-      <button class="newbtn" id="newBtn">＋ 새 프로젝트</button>
+<div class="app">
+  <!-- LEFT -->
+  <aside class="rail" id="rail">
+    <div class="top">
+      <span class="logo">paper<span class="d">·</span>flow</span>
+      <span class="ic">
+        <button class="iconbtn" id="toggleRail" title="Collapse">⇤</button>
+      </span>
     </div>
-    <div class="dash-sub">카드를 클릭하면 작업 화면이 열립니다. 진행률·마감일이 함께 표시돼요.</div>
-    <div class="pgrid" id="pgrid"></div>
-  </div>
-
-  <!-- new project modal -->
-  <div class="modal" id="newModal">
-    <div class="box">
-      <h3 class="serif">새 프로젝트</h3>
-      <label>프로젝트 이름</label>
-      <input type="text" id="np_name" placeholder="coronary_plaque_2026">
-      <label>마감일 (선택)</label>
-      <input type="date" id="np_deadline">
-      <div class="mrow"><button id="np_cancel">취소</button><button class="ok" id="np_create">만들기</button></div>
+    <div class="list">
+      <div class="seclabel"><b>Projects</b><span style="font-size:11px;color:var(--muted)">▾</span>
+        <span class="more"><button class="iconbtn" id="newProjBtn" title="New project" style="width:26px;height:26px;font-size:15px">＋</button></span></div>
+      <div id="projlist"></div>
     </div>
-  </div>
+    <div class="user">
+      <span class="ava">JK</span><span style="font-size:13px;font-weight:600">Jeff Kim</span>
+      <span class="pro">Pro</span>
+    </div>
+  </aside>
 
-  <!-- WORKSPACE -->
-  <div id="workspace">
-  <div class="shell">
-    <!-- LEFT: clickable nav only -->
-    <nav class="rail">
-      <div class="rail-title">입력 항목</div>
-      <div id="nav"></div>
-      <button class="createBtn" id="createBtn" disabled>＋ Create Journal</button>
-      <button class="paperBtn" id="paperBtn" style="display:none">📄 생성된 논문 보기</button>
-      <div class="railspace"></div>
-      <div class="openexist">
-        <label>기존 프로젝트 열기</label>
-        <input type="text" id="pdir" placeholder="…/projects/master_thesis">
-        <button id="openBtn">이 project_dir로 진행</button>
-      </div>
-    </nav>
-
-    <!-- CENTER: editor / status / questions -->
-    <div class="work">
-      <div class="canvas" id="canvas"></div>
-      <div class="chatdock" id="dock" style="display:none">
-        <div class="dock-title">❓ 추가 정보가 필요해요</div>
-        <div class="dock-hint">각 칸의 회색 예시처럼 답해주세요. 빈 칸은 건너뛰어도 됩니다.</div>
-        <div id="questions"></div>
-        <div class="composer-bar">
-          <button class="send" id="answerBtn">답변 제출 → 생성 시작</button>
-          <span class="muted" id="answerNote"></span>
+  <!-- CENTER -->
+  <main class="main">
+    <div class="mhead">
+      <button class="iconbtn" id="openRail" title="Open sidebar" style="display:none;border:1px solid var(--line)">⇥</button>
+      <span class="ht" id="headerTitle">New paper</span>
+      <span class="hs" id="headerStage">greeting</span>
+    </div>
+    <div class="thread" id="thread"><!-- greeting or messages injected --></div>
+    <div class="botcomp" id="botcomp" style="display:none">
+      <div class="inner">
+        <div class="cbox sm">
+          <span class="plus" title="Attach">＋</span>
+          <textarea id="botInput" rows="1" placeholder="Reply, or add detail…"></textarea>
+          <span class="ground">Grounded ▾</span>
+          <button class="send" id="botSend">↑</button>
         </div>
+        <div class="foot">paperflow grounds every claim in your data, a figure, or a verified citation.</div>
       </div>
     </div>
+  </main>
 
-    <!-- RIGHT: workflow tree -->
-    <aside class="aside">
-      <div class="aside-title">Workflow</div>
-      <ul class="steps" id="steps"></ul>
-    </aside>
-  </div>
-  </div>
+  <!-- RIGHT PANEL -->
+  <aside class="panel hidden" id="panel">
+    <div class="phead">
+      <span class="pt" id="panelTitle">Panel</span>
+      <button class="x" id="panelClose">✕</button>
+    </div>
+    <div class="pbody" id="panelBody"></div>
+  </aside>
+</div>
 
 <script>
-const $ = (id) => document.getElementById(id);
-let projectDir = null;
-let stepIndex = {};
-
-const FIELDS = [
-  {key:"journal", label:"journal info", icon:"🎯", composite:true,
-   hint:"받을 정보가 정해져 있어 칸을 나눴습니다. <b>*</b>=필수. Target journal에 가이드라인 URL을 넣으면 글자수·figure 제한을 자동으로 긁어옵니다."},
-  {key:"core", label:"core message", icon:"💡", coreform:true,
-   hint:"이 논문이 증명하는 것. <b>One paragraph</b>와 <b>Novelty(기여)</b>가 필수 — Novelty는 claim graph의 핵심 주장이 됩니다. <b>＋</b>로 여러 개 추가하세요."},
-  {key:"outline", label:"outline", icon:"🗂️", outlineform:true,
-   hint:"섹션은 고정. 각 섹션에 <b>전하고 싶은 메시지를 자유롭게</b> 적어주세요. 소제목을 미리 생각해뒀다면 <b>1. 2.</b> 처럼 줄로 나눠도 됩니다(선택). <b>Method·Result</b>만 필수, 나머지는 비워도 AI가 채웁니다."},
-  {key:"data", label:"data", icon:"📎", dataform:true,
-   hint:"실험 결과·측정값·참고자료를 올려주세요. AI가 글을 쓸 때 이 파일들을 근거로 삼습니다. <b>CSV·TXT·DAT</b>는 내용까지, <b>PDF·PNG·XLSX</b>는 파일 존재를 인식합니다. (선택 — 없어도 진행됩니다)"},
-];
-const inputs = {journal:"", core:"", outline:""};
-let dataFiles = [];   // uploaded files under <project>/data/ (+ reference/)
-let selectedData = null;  // rel path of the file whose note is open
-let current = null;
-let diskMode = false;  // existing project with on-disk inputs but no saved UI state
-let paperReady = false;  // a compiled paper.pdf exists for this project
-
-// journal info is structured (fixed fields we always need)
-const JSUB = [
-  {k:"field",         label:"Author's field",        req:true,  type:"input", ph:"Computational biomechanics"},
-  {k:"target",        label:"Target journal(s)",     req:true,  type:"list", reorder:true,  ph:"Journal of Biomechanics — https://www.example.com/author-guidelines"},
-  {k:"title",         label:"Paper title",           req:false, type:"input", ph:"관상동맥 플라크 파열 위험지표 정의 및 민감도 분석 (비우면 마지막에 AI가 제안)"},
-  {k:"authors",       label:"Authors (저자 순서대로)",  req:false, type:"list", reorder:true,  ph:"Jeff Kim"},
-  {k:"corresponding", label:"Corresponding author(s)", req:false, type:"list", reorder:false, ph:"Advisor Name"},
-  {k:"affiliation",   label:"Affiliation (소속)",     req:false, type:"input", ph:"KAIST, Dept. of Mechanical Engineering"},
-];
-const JF = {field:"", title:"", affiliation:"", target:[""], authors:[""], corresponding:[""]};
-
-// core message is structured (paragraph + variable-length novelty list + optionals)
-const CM = {paragraph:"", sentence:"", keywords:[""], outscope:""};
-let novelty = [""];
-const NOVELTY_PH = ["ΔPSS가 정적 PSS보다 파열 위험을 더 잘 설명한다",
-                    "파열 위험지표에 강도 정규화가 필요하다",
-                    "고체 도메인 물성치가 파열 위험에 가장 민감하다"];
-
-// outline = fixed sections, each ONE free-text message (user numbers 1./2. if they want)
-const SECTIONS = [
-  {key:"introduction", label:"Introduction", req:false},
-  {key:"method",       label:"Method",       req:true},
-  {key:"result",       label:"Result",       req:true},
-  {key:"discussion",   label:"Discussion",   req:false},
-  {key:"conclusion",   label:"Conclusion",   req:false},
-];
-const outlineData = {introduction:"", method:"", result:"", discussion:"", conclusion:""};
-const SECTION_PH = {
-  introduction: "이 섹션에서 전하고 싶은 메시지를 자유롭게 적어주세요.\n예) 관상동맥 질환 부담 → 파열이 핵심 → 기존 지표의 한계 → 우리 접근",
-  method: "Method에서 전하고 싶은 내용을 자유롭게. 소제목을 미리 생각했다면 1. 2. 처럼 줄로 나눠도 됩니다.\n예)\n1. Cost-effective FSI 프레임워크 구성\n2. 환자 맞춤 경계조건 보정\n3. 메쉬·시간 수렴 검증",
-  result: "Result에서 전하고 싶은 내용을 자유롭게. (1. 2. 로 나눠도 됨)\n예)\n1. Sobol 민감도: 물성치 > 혈류역학 > 형태 (Fig 3)\n2. ΔPSS가 정적 PSS보다 파열 위험을 잘 설명",
-  discussion: "자유롭게.\n예) 결과의 의미·한계, 선행연구와의 비교",
-  conclusion: "자유롭게.\n예) 핵심 기여 요약 + 임상적 함의(과대주장 금지)",
-};
-function secHasContent(secKey) {
-  return outlineData[secKey].trim().length > 0;
-}
-function assembleOutlineMd() {
-  // Phase A = numbered claim lines per [Section]; Phase B = the raw message per section.
-  const a = [], b = ["## Phase B (structure)"];
-  let n = 0;
-  for (const sec of SECTIONS) {
-    const txt = outlineData[sec.key].trim();
-    if (!txt) continue;
-    a.push(`[${sec.label}]`);
-    b.push(`### ${sec.label}`, txt, "");
-    const lines = txt.split("\n")
-      .map(x => x.replace(/^\s*\d+[.)]\s*/, "").replace(/^\s*[-*]\s*/, "").trim())
-      .filter(Boolean);
-    lines.forEach(ln => { n++; a.push(`${n}. ${ln}`); });
-    a.push("");
-  }
-  return a.join("\n") + "\n" + b.join("\n");
-}
-
-function isFilled(key) {
-  if (key === "journal") return !!(JF.field.trim() && JF.target.some(t => t.trim()));  // title optional
-  if (key === "core") return !!(CM.paragraph.trim() && novelty.some(n => n.trim()));
-  if (key === "outline") return secHasContent("method") && secHasContent("result");  // A안: Method+Result
-  if (key === "data") return dataFiles.length > 0;  // optional — never gates Create
-  return !!inputs[key].trim();
-}
-function assembleCoreMd() {
-  const lines = ["## One paragraph", CM.paragraph, "", "## Novelty"];
-  novelty.filter(n => n.trim()).forEach(n => lines.push(`- ${n.trim()}`));
-  lines.push("");
-  if (CM.sentence.trim()) lines.push("## One sentence", CM.sentence.trim(), "");
-  const kw = CM.keywords.filter(k => k.trim()).map(k => k.trim());
-  if (kw.length) lines.push("## Keywords", kw.join(", "), "");
-  if (CM.outscope.trim()) lines.push("## Out of scope", CM.outscope.trim(), "");
-  return lines.join("\n");
-}
-function assembleJournalMd() {
-  const lines = ["## Author's field", JF.field, "", "## Target journals"];
-  JF.target.filter(t => t.trim()).forEach((t, i) => lines.push(`${i + 1}. ${t.trim()}`));  // ranked
-  lines.push("");
-  if (JF.title.trim()) lines.push("## Paper title", JF.title.trim(), "");
-  const extra = [];
-  const auth = JF.authors.filter(a => a.trim()).map(a => a.trim());
-  if (auth.length) extra.push(`- authors: ${auth.join("; ")}`);  // author order preserved
-  const corr = JF.corresponding.filter(c => c.trim()).map(c => c.trim());
-  if (corr.length) extra.push(`- corresponding author: ${corr.join("; ")}`);
-  if (JF.affiliation.trim()) extra.push(`- affiliation: ${JF.affiliation.trim()}`);
-  if (extra.length) { lines.push("## Extra info"); lines.push(...extra); }
-  return lines.join("\n");
-}
-
+const $ = id => document.getElementById(id);
+const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const today = () => new Date().toISOString().slice(0,10);
 async function postJSON(url, body) {
   const r = await fetch(url, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
   if (!r.ok) throw new Error(await r.text());
   return r.json();
 }
+function enc(s){ return encodeURIComponent(s); }
+
+// figure-prompt copy: the preview HTML's inline <script> never runs when injected via
+// innerHTML, so define the handler globally here (inline onclick="pfCopyPrompt(this)" finds it).
+window.pfCopyPrompt = function(btn){
+  const txt = btn.dataset.prompt || "";
+  const ok = () => { btn.textContent = "✓ 복사됨"; btn.classList.add("ok");
+    setTimeout(() => { btn.textContent = "📋 이미지 모델 prompt 복사"; btn.classList.remove("ok"); }, 1500); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(ok).catch(() => fallbackCopy(txt, ok));
+  } else fallbackCopy(txt, ok);
+};
+function fallbackCopy(txt, ok){
+  const ta = document.createElement("textarea"); ta.value = txt;
+  ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand("copy"); ok && ok(); } catch (e) { alert("복사 실패 — 수동 복사하세요"); }
+  ta.remove();
+}
+
+// ---------------- state ----------------
+const S = {
+  projectRoot:null, projectName:"New paper", sourceDir:null, sessionDir:null, sessionId:null,
+  phase:"greet", stage:"requirement", diag:null,
+  expandedProject:null,
+  messages:[],            // data-driven thread (persisted to chat.json)
+  // filled by the onboarding orchestrator from the user's description (no hardcoded prefill)
+  form: { field:"", target:"", title:"", affiliation:"", paragraph:"", novelty:[""], outlineQuick:"" },
+};
+function mergeExtracted(ex) {
+  ex = ex || {};
+  const str = v => Array.isArray(v) ? v.filter(Boolean).map((s,i)=>`${i+1}. ${s}`).join("\n") : (v||"");
+  if (ex.field) S.form.field = ex.field;
+  if (ex.target) S.form.target = ex.target;
+  if (ex.title) S.form.title = ex.title;
+  if (ex.affiliation) S.form.affiliation = ex.affiliation;
+  if (ex.paragraph) S.form.paragraph = ex.paragraph;
+  if (Array.isArray(ex.novelty) && ex.novelty.filter(Boolean).length) S.form.novelty = ex.novelty.filter(Boolean);
+  if (ex.outline) S.form.outlineQuick = str(ex.outline);
+}
+
+// ================= LEFT RAIL =================
+$("toggleRail").onclick = () => { $("rail").classList.add("closed"); $("openRail").style.display=""; };
+$("openRail").onclick = () => { $("rail").classList.remove("closed"); $("openRail").style.display="none"; };
+$("newProjBtn").onclick = () => openNewProjectModal();
+
+let _projects = [], _sessions = {};   // _sessions[projectRoot] = {sessions, source_dir}
+async function loadProjects() {
+  try {
+    const r = await (await fetch("/api/projects/list")).json();
+    setProviders(r.providers);
+    _projects = r.projects || [];
+    renderProjects();
+  } catch (e) { setProviders(null); }
+}
 function setProviders(list) {
   const el = $("providers");
+  if (!el) return;   // header indicator removed
   if (list && list.length) { el.textContent = "providers: " + list.join(", "); el.classList.remove("warn"); }
-  else { el.textContent = "⚠ API 키 없음 (engine/.env)"; el.classList.add("warn"); }
+  else { el.textContent = "⚠ no API key (engine/.env)"; el.classList.add("warn"); }
 }
-
-// ---------- left nav ----------
-function renderNav() {
-  const nav = $("nav"); nav.innerHTML = "";
-  FIELDS.forEach(f => {
+function renderProjects() {
+  const box = $("projlist"); box.innerHTML = "";
+  _projects.forEach(p => {
+    const expanded = S.expandedProject === p.project_dir;
+    const isLive = p.project_dir === S.projectRoot;
+    const pb = document.createElement("button");
+    pb.className = "sess" + (isLive && !expanded ? " active" : "");
+    pb.innerHTML = `<span style="flex:none;font-size:14px">${expanded?'📂':'📁'}</span>
+      <span class="nm">${esc(p.name||p.dir)}</span>
+      <span class="del" title="Delete paper">🗑</span><span class="caret">${expanded?'▾':'›'}</span>`;
+    pb.onclick = () => toggleProject(p);
+    pb.querySelector(".del").onclick = (e) => { e.stopPropagation();
+      confirmModal(`Delete the whole paper “${p.name||p.dir}” and all its trials? (moved to trash, recoverable)`,
+        () => deleteProject(p)); };
+    box.appendChild(pb);
+    if (expanded) box.appendChild(renderSubsessions(p));
+  });
+}
+function renderSubsessions(p) {
+  const wrap = document.createElement("div"); wrap.className = "subwrap";
+  const sx = _sessions[p.project_dir];
+  // source
+  const src = document.createElement("button"); src.className = "sess sub";
+  src.innerHTML = `<span style="flex:none;font-size:12px">🗂️</span><span class="nm">source</span>
+    <span class="tag">shared</span>`;
+  src.onclick = () => openSource(p);
+  wrap.appendChild(src);
+  // sessions
+  if (!sx) { const l = document.createElement("div"); l.className="sess sub"; l.textContent="loading…"; wrap.appendChild(l); }
+  else (sx.sessions||[]).forEach(s => {
     const b = document.createElement("button");
-    b.className = "navfile" + (current === f.key ? " active" : "");
-    b.innerHTML = `<span class="di">${f.icon}</span><span class="fn">${f.label}</span>
-      <span class="dot ${isFilled(f.key) ? 'filled' : ''}"></span>`;
-    b.onclick = () => openField(f.key);
-    nav.appendChild(b);
+    const active = s.session_dir === S.sessionDir;
+    b.className = "sess sub" + (active ? " active" : "");
+    const tag = s.status === "done" ? `<span class="tag">done</span>` :
+                (active ? `<span class="tag">live</span>` : "");
+    const del = s.legacy ? "" : `<span class="del" title="Delete trial">🗑</span>`;
+    b.innerHTML = `<span class="dotmark"></span><span class="nm">${esc(s.title||s.id)}</span>${tag}${del}`;
+    b.onclick = () => openSession(p, s);
+    if (!s.legacy) b.querySelector(".del").onclick = (e) => { e.stopPropagation();
+      confirmModal(`Delete trial “${esc(s.title||s.id)}”? (moved to trash, recoverable)`,
+        () => deleteSession(p, s)); };
+    wrap.appendChild(b);
   });
+  // new trial
+  const nt = document.createElement("button"); nt.className = "sess sub newtrial";
+  nt.innerHTML = `<span style="flex:none">＋</span><span class="nm">new trial</span>`;
+  nt.onclick = () => newSession(p);
+  wrap.appendChild(nt);
+  return wrap;
 }
-
-// ---------- center editor ----------
-function openField(key) {
-  current = key;
-  const f = FIELDS.find(x => x.key === key);
-
-  if (f.composite) {  // journal info — structured sub-form
-    let html = `<div class="crumb">입력 / ${f.label}</div>
-      <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div><div class="subform">`;
-    for (const s of JSUB) {
-      const tag = s.req ? '<span class="req">*</span>' : '<span class="opt">선택</span>';
-      html += `<label class="sflabel">${s.label} ${tag}</label>`;
-      html += s.type === "list"
-        ? `<div id="jl_${s.k}"></div><button class="addbtn" data-jadd="${s.k}">＋ 추가</button>`
-        : `<input type="text" class="sfinput" data-jk="${s.k}">`;
-    }
-    html += `</div><div class="savednote" id="savednote"></div>`;
-    $("canvas").innerHTML = html;
-    document.querySelectorAll("[data-jk]").forEach(el => {  // single fields
-      const k = el.dataset.jk;
-      el.value = JF[k];
-      el.placeholder = "예) " + JSUB.find(s => s.k === k).ph;
-      el.oninput = () => { JF[k] = el.value; renderNav(); refreshStep0(); note(); };
-    });
-    JSUB.filter(s => s.type === "list").forEach(s => {  // list fields
-      renderList($("jl_" + s.k), JF[s.k], () => "예) " + s.ph, s.reorder);
-    });
-    document.querySelectorAll("[data-jadd]").forEach(btn => {
-      const k = btn.dataset.jadd, s = JSUB.find(x => x.k === k);
-      btn.onclick = () => { JF[k].push(""); renderList($("jl_" + k), JF[k], () => "예) " + s.ph, s.reorder); };
-    });
-    renderNav();
-    return;
-  }
-
-  if (f.coreform) {  // core message — paragraph + variable novelty list + optionals
-    $("canvas").innerHTML = `<div class="crumb">입력 / ${f.label}</div>
-      <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div><div class="subform">
-      <label class="sflabel">One paragraph <span class="req">*</span></label>
-      <textarea class="sfinput" id="cm_paragraph" rows="4"></textarea>
-      <label class="sflabel">Novelty <span class="req">*</span> <span class="opt">기여/새로움 — claim graph의 핵심 주장</span></label>
-      <div id="noveltyList"></div>
-      <button class="addbtn" id="addNovelty">＋ novelty 추가</button>
-      <label class="sflabel">One sentence <span class="opt">선택 · 비우면 paragraph에서 자동</span></label>
-      <input type="text" class="sfinput" id="cm_sentence">
-      <label class="sflabel">Keywords <span class="opt">선택 · 선행연구 검색 강화</span></label>
-      <div id="cm_keywords_list"></div>
-      <button class="addbtn" id="addKeyword">＋ keyword 추가</button>
-      <label class="sflabel">Out of scope <span class="opt">선택 · 이 논문이 주장하지 않는 것</span></label>
-      <textarea class="sfinput" id="cm_outscope" rows="2"></textarea>
-      </div><div class="savednote" id="savednote"></div>`;
-    const bindCM = (id, k, ph) => {
-      const el = $(id); el.value = CM[k]; el.placeholder = ph;
-      el.oninput = () => { CM[k] = el.value; renderNav(); refreshStep0(); $("savednote").textContent = "✓ 자동 저장됨"; };
-    };
-    bindCM("cm_paragraph", "paragraph", "이 논문의 핵심을 한 문단으로…");
-    bindCM("cm_sentence", "sentence", "예) 플라크 파열 위험은 ΔPSS로 더 잘 설명된다");
-    bindCM("cm_outscope", "outscope", "예) 임상 예측·인과는 주장하지 않음");
-    renderNoveltyRows();
-    $("addNovelty").onclick = () => { novelty.push(""); renderNoveltyRows(); };
-    renderList($("cm_keywords_list"), CM.keywords, () => "예) plaque rupture", false);
-    $("addKeyword").onclick = () => { CM.keywords.push(""); renderList($("cm_keywords_list"), CM.keywords, () => "예) plaque rupture", false); };
-    renderNav();
-    return;
-  }
-
-  if (f.outlineform) {  // fixed sections, one free-text message each
-    let html = `<div class="crumb">입력 / ${f.label}</div>
-      <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div><div class="subform">`;
-    for (const sec of SECTIONS) {
-      const req = sec.req ? '<span class="reqd">필수</span>' : '<span class="opt">선택</span>';
-      html += `<div class="osec"><div class="osec-h">${sec.label} ${req}<span class="fixed">고정 섹션</span></div>
-        <textarea class="osecta" id="osec_${sec.key}"></textarea></div>`;
-    }
-    html += `</div><div class="savednote" id="savednote"></div>`;
-    $("canvas").innerHTML = html;
-    SECTIONS.forEach(sec => {
-      const ta = $("osec_" + sec.key);
-      ta.value = outlineData[sec.key];
-      ta.placeholder = SECTION_PH[sec.key];
-      ta.oninput = () => { outlineData[sec.key] = ta.value; renderNav(); refreshStep0(); note(); };
-    });
-    renderNav();
-    return;
-  }
-
-  if (f.dataform) {  // file uploads (experiment data / references the writer grounds claims on)
-    $("canvas").innerHTML = `<div class="crumb">입력 / ${f.label}</div>
-      <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div>
-      <input type="file" id="fileInput" multiple
-        accept=".csv,.txt,.dat,.md,.pdf,.png,.jpg,.jpeg,.xlsx,.xls,.json,.bib"
-        style="display:none">
-      <div class="dropzone" id="dropzone" role="button" tabindex="0">
-        <span class="dz-icon">⬆️</span>
-        <span class="dz-main">파일을 끌어다 놓거나 클릭해서 업로드</span>
-        <span class="dz-sub">CSV · TXT · DAT · PDF · PNG · XLSX · JSON · BIB</span>
-      </div>
-      <div class="data-split">
-        <div class="filelist" id="filelist"></div>
-        <div class="notepanel" id="notepanel"></div>
-      </div>
-      <div class="savednote" id="savednote"></div>`;
-    const inp = $("fileInput"), dz = $("dropzone");
-    inp.onchange = () => { if (inp.files.length) uploadFiles(inp.files); inp.value = ""; };
-    dz.onclick = () => inp.click();  // open the OS file picker
-    dz.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); inp.click(); } };
-    dz.ondragover = e => { e.preventDefault(); dz.classList.add("over"); };
-    dz.ondragleave = () => dz.classList.remove("over");
-    dz.ondrop = e => { e.preventDefault(); dz.classList.remove("over");
-      if (e.dataTransfer.files.length) uploadFiles(e.dataTransfer.files); };
-    renderFileList();
-    renderNotePanel();
-    loadDataFiles();
-    renderNav();
-    return;
-  }
-
-  $("canvas").innerHTML = `
-    <div class="crumb">입력 / ${f.label}</div>
-    <h2 class="title serif">${f.label}</h2>
-    <div class="ehint">${f.hint}</div>
-    <${f.multiline ? "textarea" : "input type='text'"} class="editor ${f.multiline?'':'one'}" id="editorInput"></${f.multiline?'textarea':'input'}>
-    <div class="savednote" id="savednote"></div>`;
-  const ed = $("editorInput");
-  ed.value = inputs[key];
-  ed.placeholder = f.tmpl;
-  ed.oninput = () => { inputs[key] = ed.value; renderNav(); refreshStep0(); $("savednote").textContent = "✓ 자동 저장됨"; };
-  ed.focus();
-  renderNav();
+async function toggleProject(p) {
+  if (S.expandedProject === p.project_dir) { S.expandedProject = null; renderProjects(); return; }
+  S.expandedProject = p.project_dir;
+  renderProjects();
+  await refreshSessions(p);
+  renderProjects();
 }
-
-function mkBtn(label, title, disabled, onclick, isRm) {
-  const b = document.createElement("button");
-  b.className = "obtn" + (isRm ? " rm" : ""); b.textContent = label; b.title = title;
-  b.disabled = !!disabled; b.onclick = onclick;
-  return b;
-}
-function note() { const el = $("savednote"); if (el) el.textContent = "✓ 자동 저장됨"; }
-
-// reusable +row list: ordered (▲▼) when reorder=true, removable (✕) when >1 item
-function renderList(box, arr, getPh, reorder) {
-  if (!box) return;
-  box.innerHTML = "";
-  arr.forEach((val, i) => {
-    const row = document.createElement("div"); row.className = "nrow";
-    const num = document.createElement("span"); num.className = "nnum"; num.textContent = (i + 1) + ".";
-    const inp = document.createElement("input");
-    inp.type = "text"; inp.className = "sfinput"; inp.value = val; inp.placeholder = getPh(i);
-    inp.oninput = () => { arr[i] = inp.value; renderNav(); refreshStep0(); note(); };
-    row.append(num, inp);
-    if (reorder) {
-      row.append(
-        mkBtn("▲", "위로", i === 0, () => { [arr[i-1], arr[i]] = [arr[i], arr[i-1]]; renderList(box, arr, getPh, reorder); }),
-        mkBtn("▼", "아래로", i === arr.length - 1, () => { [arr[i+1], arr[i]] = [arr[i], arr[i+1]]; renderList(box, arr, getPh, reorder); }),
-      );
-    }
-    if (arr.length > 1) {
-      row.append(mkBtn("✕", "삭제", false, () => { arr.splice(i, 1); renderList(box, arr, getPh, reorder); renderNav(); refreshStep0(); }, true));
-    }
-    box.appendChild(row);
-  });
-}
-
-function renderNoveltyRows() {
-  const box = $("noveltyList"); if (!box) return;
-  box.innerHTML = "";
-  novelty.forEach((val, i) => {
-    const row = document.createElement("div"); row.className = "nrow";
-    const num = document.createElement("span"); num.className = "nnum"; num.textContent = (i+1) + ".";
-    const inp = document.createElement("input");
-    inp.type = "text"; inp.className = "sfinput"; inp.value = val;
-    inp.placeholder = "예) " + (NOVELTY_PH[i] || `novelty ${i+1}`);
-    inp.oninput = () => { novelty[i] = inp.value; renderNav(); refreshStep0(); $("savednote").textContent = "✓ 자동 저장됨"; };
-    row.appendChild(num); row.appendChild(inp);
-    if (novelty.length > 1) {
-      const rm = document.createElement("button"); rm.className = "rmbtn"; rm.textContent = "✕";
-      rm.title = "삭제";
-      rm.onclick = () => { novelty.splice(i, 1); renderNoveltyRows(); renderNav(); refreshStep0(); };
-      row.appendChild(rm);
-    }
-    box.appendChild(row);
-  });
-}
-
-// ---------- right tree: STEP 0 (inputs) ----------
-function renderStep0() {
-  const ul = $("steps");
-  ul.innerHTML = `
-    <li class="step" id="s0">
-      <span class="node">0</span>
-      <span class="meta"><span class="k">STEP 0</span>
-      <span class="t">입력 수집</span><span class="s" id="s0s">0 / 4 작성됨</span></span>
-    </li>
-    <ul class="subs" id="s0subs"></ul>`;
-  refreshStep0();
-}
-function refreshStep0() {
-  const subs = $("s0subs"); if (!subs) return;
-  subs.innerHTML = "";
-  let done = 0;
-  FIELDS.forEach(f => {
-    const filled = isFilled(f.key);
-    if (filled) done++;
-    const li = document.createElement("li");
-    li.className = filled ? "on" : "";
-    li.innerHTML = `<span class="sdot"></span>${f.label}`;
-    subs.appendChild(li);
-  });
-  $("s0s").textContent = `${done} / ${FIELDS.length} 작성됨`;
-  const allCore = isFilled("journal") && isFilled("core") && isFilled("outline");  // data optional
-  const s0 = $("s0");
-  if (allCore) { s0.className = "step done"; s0.querySelector(".node").textContent = "✓"; }
-  else { s0.className = "step active"; s0.querySelector(".node").textContent = "0"; }
-  $("createBtn").disabled = diskMode ? false : !allCore;  // journal+core+outline required
-}
-
-// ---------- save inputs + diagnose ----------
-$("createBtn").onclick = async () => {
-  $("createBtn").disabled = true;
+async function refreshSessions(p) {
   try {
-    if (!diskMode) {
-      await postJSON("/api/projects/save", {
-        project_dir: projectDir,
-        journal_info_md: assembleJournalMd(), coremessage_md: assembleCoreMd(),
-        outline_md: assembleOutlineMd(), ui_state: uiState(),
-      });
-    }
-    await runDiagnose();
-  } catch (e) { showStatus("오류", "오류", String(e), "warn"); $("createBtn").disabled = false; }
-};
-$("openBtn").onclick = () => {
-  const pdir = $("pdir").value.trim(); if (!pdir) return;
-  openExisting(pdir, pdir.split("/").pop());
-};
-
-async function runDiagnose() {
-  showStatus("진단 중…", "진단", "누락 정보를 찾고 있습니다. (ingest + requirement)");
-  markStep0Done();
-  const diag = await postJSON("/api/projects/diagnose", {project_dir: projectDir});
-  renderQuestions(diag);
-}
-function markStep0Done() {
-  const s0 = $("s0"); if (s0) { s0.className = "step done"; s0.querySelector(".node").textContent = "✓"; s0.querySelector(".s").textContent = "완료"; }
-}
-function showStatus(badge, crumb, msg, kind) {
-  $("canvas").innerHTML = `<div class="crumb">${crumb}</div>
-    <div class="card"><h3>${crumb} <span class="badge ${kind||''}">${badge}</span></h3>
-    <p class="muted">${msg}</p></div>`;
+    const r = await (await fetch("/api/projects/sessions?project_dir=" + enc(p.project_dir))).json();
+    _sessions[p.project_dir] = r;
+  } catch { _sessions[p.project_dir] = {sessions:[], source_dir:p.project_dir}; }
 }
 
-// ---------- questions ----------
-const _UNKNOWN = "(모름 — 나중에 보완)";
-function renderQuestions(diag) {
-  showStatus(diag.classification || "진단 완료", "진단 완료",
-    `분류: <b>${diag.classification||'-'}</b> · 확보된 항목 ${(diag.present||[]).length}개. ${diag.notes||''}`);
-  const wrap = $("questions"); wrap.innerHTML = "";
-  if (!diag.questions || !diag.questions.length) {
-    wrap.innerHTML = `<p class="muted">추가 질문이 없습니다. 바로 생성할 수 있어요.</p>`;
-  } else {
-    for (const q of diag.questions) {
-      const risk = q.reviewer_risk === "high" ? "risk high" : "risk";
-      const div = document.createElement("div"); div.className = "q";
-      div.innerHTML = `<div class="qq"><span>${q.question}</span><span class="${risk}">${q.reviewer_risk||''}</span></div>`;
-      const ta = document.createElement("textarea");
-      ta.placeholder = q.example ? ("예) " + q.example) : "여기에 답변…";
-      ta.dataset.field = q.field;
-      ta.oninput = refreshAnswerGate;
-      const skip = document.createElement("button");
-      skip.className = "skipbtn"; skip.type = "button"; skip.textContent = "모름 / 나중에";
-      skip.onclick = () => { ta.value = _UNKNOWN; refreshAnswerGate(); };
-      div.append(ta, skip); wrap.appendChild(div);
-    }
+// ================= SESSION OPEN / CREATE =================
+async function openSession(p, s) {
+  S.projectRoot = p.project_dir; S.projectName = p.name || p.dir;
+  S.sessionDir = s.session_dir; S.sessionId = s.id;
+  S.sourceDir = (_sessions[p.project_dir] || {}).source_dir || p.project_dir;
+  $("headerTitle").textContent = (p.name||p.dir) + (s.title ? " · " + s.title : "");
+  renderProjects();
+  // load chat history
+  let msgs = [];
+  try { msgs = (await (await fetch("/api/projects/chat-history?session_dir=" + enc(s.session_dir))).json()).messages || []; } catch {}
+  S.messages = msgs;
+  if (msgs.length) { setStage(s.stage || "done"); $("botcomp").style.display = ""; renderThread(); }
+  else if (s.status === "done") {            // legacy/older run with output but no saved chat
+    setStage("done"); $("botcomp").style.display = ""; $("thread").innerHTML = `<div class="twrap"></div>`;
+    addMessage({t:"assistant", text:"This trial already produced a manuscript. Here it is — open it on the right."});
+    addMessage({t:"result", meta:{}, session_dir:s.session_dir});
   }
-  $("dock").style.display = "block";
-  refreshAnswerGate();
+  else { startGreeting(); }
 }
-// hard gate: every question needs a response (an answer OR an explicit '모름')
-function refreshAnswerGate() {
-  const tas = [...document.querySelectorAll("#questions textarea")];
-  const pending = tas.filter(ta => !ta.value.trim()).length;
-  $("answerBtn").disabled = pending > 0;
-  $("answerNote").textContent = pending > 0
-    ? `${pending}개 미응답 — 답하거나 '모름'을 눌러주세요`
-    : (tas.length ? "모든 질문 응답됨 · 생성 가능" : "");
+async function newSession(p) {
+  const r = await postJSON("/api/projects/sessions", {project_dir:p.project_dir, title:"New trial", created:today()});
+  await refreshSessions(p);
+  await openSession(p, {session_dir:r.session_dir, id:r.id, title:r.title, stage:"greet"});
 }
-$("answerBtn").onclick = async () => {
-  $("answerBtn").disabled = true;
-  try {
-    const answers = {};
-    document.querySelectorAll("#questions textarea").forEach(ta => {
-      const v = ta.value.trim(); if (v) answers[ta.dataset.field] = v;  // '모름' included
-    });
-    await postJSON("/api/projects/answers", {project_dir: projectDir, answers});
-    $("answerNote").textContent = `${Object.keys(answers).length}개 저장됨 · 계획 수립`;
-    $("dock").style.display = "none";
-    await startPlan();   // Stage 3: build the plan, then confirm via chat
-  } catch (e) { $("answerNote").textContent = "오류: " + e; refreshAnswerGate(); }
-};
+async function openSource(p) {
+  S.projectRoot = p.project_dir; S.projectName = p.name || p.dir;
+  S.sourceDir = (_sessions[p.project_dir] || {}).source_dir || (p.project_dir + "/source");
+  openPanel("journal");
+}
+// ensure a project+session exists when the user acts from the bare greeting
+async function ensureSession(nameHint) {
+  if (S.sessionDir) return;
+  const name = (nameHint || ("paper_" + Date.now().toString(36))).slice(0, 40);
+  const cr = await postJSON("/api/projects/create", {name, created:today()});
+  const sr = await postJSON("/api/projects/sessions", {project_dir:cr.project_dir, title:"Trial 1", created:today()});
+  S.projectRoot = cr.project_dir; S.projectName = name;
+  S.sessionDir = sr.session_dir; S.sessionId = sr.id; S.sourceDir = sr.source_dir;
+  S.expandedProject = cr.project_dir;
+  await loadProjects(); await refreshSessions({project_dir:cr.project_dir}); renderProjects();
+}
 
-// ---------- generate + live tree (STEP 0 stays done on top) ----------
-function renderPipeline(steps) {
-  const ul = $("steps");
-  ul.innerHTML = `<li class="step done"><span class="node">✓</span>
-    <span class="meta"><span class="k">STEP 0</span><span class="t">입력 수집</span><span class="s">완료</span></span></li>`;
-  stepIndex = {};
-  steps.forEach((s, i) => {
-    const li = document.createElement("li");
-    li.className = "step locked";
-    li.innerHTML = `<span class="node">${i+1}</span><span class="meta">
-      <span class="k">STEP ${i+1}</span><span class="t">${s.label}</span><span class="s">대기</span></span>`;
-    ul.appendChild(li); stepIndex[s.id] = li;
+// ---- delete (soft, recoverable) ----
+function confirmModal(msg, onYes) {
+  const m = document.createElement("div"); m.className = "modal";
+  m.innerHTML = `<div class="box"><h3>Move to trash?</h3>
+    <p style="font-size:13.5px;color:var(--muted);line-height:1.5;margin:0 0 16px">${msg}</p>
+    <div class="row"><button class="ghost" id="cdNo">Cancel</button>
+      <button class="primary" id="cdYes" style="background:#b5503c">Delete</button></div></div>`;
+  document.body.appendChild(m);
+  const close = () => m.remove();
+  m.querySelector("#cdNo").onclick = close; m.onclick = e => { if (e.target===m) close(); };
+  m.querySelector("#cdYes").onclick = () => { close(); onYes(); };
+}
+function resetToBlank() {
+  S.projectRoot=null; S.sourceDir=null; S.sessionDir=null; S.sessionId=null; S.projectName="New paper";
+  $("panel").classList.add("hidden"); startGreeting();
+}
+async function deleteProject(p) {
+  try { await postJSON("/api/projects/delete", {project_dir:p.project_dir}); }
+  catch (e) { alert("delete failed: " + e); return; }
+  delete _sessions[p.project_dir];
+  if (S.expandedProject===p.project_dir) S.expandedProject=null;
+  if (S.projectRoot===p.project_dir) resetToBlank();
+  await loadProjects();
+}
+async function deleteSession(p, s) {
+  try { await postJSON("/api/projects/sessions/delete", {session_dir:s.session_dir}); }
+  catch (e) { alert("delete failed: " + e); return; }
+  if (S.sessionDir===s.session_dir) resetToBlank();
+  await refreshSessions(p); renderProjects();
+}
+
+function openNewProjectModal() {
+  const m = document.createElement("div"); m.className = "modal";
+  m.innerHTML = `<div class="box"><h3>New project (paper)</h3>
+    <input id="npName" placeholder="paper name (e.g. coronary_plaque_2026)" autofocus>
+    <div class="row"><button class="ghost" id="npCancel">Cancel</button>
+      <button class="primary" id="npCreate">Create</button></div></div>`;
+  document.body.appendChild(m);
+  const close = () => m.remove();
+  $("npCancel").onclick = close; m.onclick = e => { if (e.target===m) close(); };
+  $("npName").onkeydown = e => { if (e.key==="Enter") $("npCreate").click(); };
+  $("npCreate").onclick = async () => {
+    const name = $("npName").value.trim() || "untitled";
+    const cr = await postJSON("/api/projects/create", {name, created:today()});
+    const sr = await postJSON("/api/projects/sessions", {project_dir:cr.project_dir, title:"Trial 1", created:today()});
+    close();
+    S.expandedProject = cr.project_dir;
+    await loadProjects(); await refreshSessions({project_dir:cr.project_dir});
+    openSession({project_dir:cr.project_dir, name}, {session_dir:sr.session_dir, id:sr.id, title:sr.title, stage:"greet"});
+  };
+}
+
+// ================= HEADER / STAGE =================
+let _metaQ = Promise.resolve();   // serialize session.json patches (avoid read-modify-write races)
+function patchSession(patch) {
+  if (!S.sessionDir) return; const sd = S.sessionDir;
+  _metaQ = _metaQ.then(() => postJSON("/api/projects/sessions/meta", {session_dir:sd, ...patch}).catch(()=>{}));
+}
+function setStage(s) { S.phase = s; $("headerStage").textContent = s; patchSession({stage:s}); }
+
+// ================= CHAT PERSISTENCE =================
+let _chatT = null;
+function saveChat() {
+  if (!S.sessionDir) return;
+  clearTimeout(_chatT);
+  _chatT = setTimeout(() => {
+    const clean = S.messages.map(m => { const o={}; for (const k in m) if (!k.startsWith("_")) o[k]=m[k]; return o; });
+    postJSON("/api/projects/chat-history", {session_dir:S.sessionDir, messages:clean}).catch(()=>{});
+  }, 700);
+}
+
+// ================= GREETING =================
+function startGreeting() {
+  setStage("greet"); $("botcomp").style.display = "none"; S.messages = [];
+  $("headerTitle").textContent = S.projectName + (S.sessionId ? " · new trial" : "");
+  $("thread").innerHTML = `
+    <div class="greet">
+      <h1>Tell me about your journal.</h1>
+      <div class="composer">
+        <div class="cbox">
+          <span class="plus" title="Attach">＋</span>
+          <textarea id="greetInput" rows="1" placeholder="Describe the paper you want to write — topic, what you found, the data you have…"></textarea>
+          <span class="ground">Grounded ▾</span>
+          <button class="send" id="greetSend">↑</button>
+        </div>
+        <div class="chips">
+          <button class="chip" data-s="data">📊 Start from my data</button>
+          <button class="chip" data-s="outline">🗂️ I have an outline</button>
+          <button class="chip" data-s="reconstruct">🔁 Reconstruct a past study</button>
+        </div>
+      </div>
+    </div>`;
+  const gi = $("greetInput"), gs = $("greetSend");
+  gs.onclick = () => startFromDescription(gi.value.trim());
+  gi.onkeydown = e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); gs.onclick(); } };
+  document.querySelectorAll(".chip").forEach(c => c.onclick = () => startFromDescription(defaultDesc()));
+}
+function defaultDesc() {
+  return "I ran a 1,000-sample cost-effective FSI study on coronary plaque rupture risk. I want to define a rupture-risk index (ΔPSS / strength) and show what drives it, aimed at Computers in Biology and Medicine.";
+}
+
+// ================= DATA-DRIVEN THREAD =================
+function threadWrap() {
+  let w = document.querySelector(".twrap");
+  if (!w) { $("thread").innerHTML = `<div class="twrap"></div>`; w = document.querySelector(".twrap"); }
+  return w;
+}
+function scrollDown() { requestAnimationFrame(() => { const t = $("thread"); t.scrollTop = t.scrollHeight; }); }
+function addMessage(m) { S.messages.push(m); m._el = renderMessage(m); threadWrap().appendChild(m._el); saveChat(); scrollDown(); return m; }
+function rerender(m) { if (!m._el) return; const n = renderMessage(m); m._el.replaceWith(n); m._el = n; saveChat(); }
+function renderThread() {
+  $("thread").innerHTML = `<div class="twrap"></div>`;
+  S.messages.forEach(m => { m._el = renderMessage(m); threadWrap().appendChild(m._el); });
+  scrollDown();
+}
+function renderMessage(m) {
+  switch (m.t) {
+    case "user":       return mUser(m);
+    case "assistant":  return mAssistant(m);
+    case "essentials": return mEssentials(m);
+    case "search":     return mSearch(m);
+    case "questions":  return mQuestions(m);
+    case "log":        return mLog(m);
+    case "result":     return mResult(m);
+    case "gaps":       return mGaps(m);
+    default:           return mAssistant({text:""});
+  }
+}
+function aShell(innerHTML) {
+  const d = document.createElement("div"); d.className = "arow";
+  d.innerHTML = `<span class="spark">✦</span><div class="abody">${innerHTML}</div>`;
+  return d;
+}
+function mUser(m) { const d = document.createElement("div"); d.className = "urow";
+  d.innerHTML = `<div class="ubub">${esc(m.text)}</div>`; return d; }
+function mAssistant(m) { return aShell(m.text || ""); }
+
+// ---- essentials ----
+function essentialsStatus() {
+  const f = S.form;
+  return {
+    journal: (f.field.trim() && f.target.trim()) ? "ready" : "missing",
+    core: (f.paragraph.trim() && f.novelty.filter(n=>n.trim()).length) ? "ready" : "missing",
+    outline: f.outlineQuick.trim() ? (f.outlineQuick.length > 120 ? "ready" : "thin") : "missing",
+    data: (S._dataCount) ? "ready" : "missing",
+  };
+}
+function mEssentials(m) {
+  const st = essentialsStatus(), f = S.form;
+  const nov = f.novelty.filter(n=>n.trim()).length;
+  const rows = [
+    {k:"journal", label:"Journal info", det: st.journal==="ready"?`${f.target} · field set`:"Target journal / field missing", btn:"Edit"},
+    {k:"core", label:"Core message + novelty", det: st.core==="ready"?`${nov} novelty claims detected`:"Paragraph / novelty missing", btn:"Edit"},
+    {k:"outline", label:"Outline", det: st.outline==="missing"?"No outline yet":(st.outline==="thin"?"Thin — add detail":"Intro→Discussion covered"), btn:"Fill in"},
+    {k:"data", label:"Data", det: st.data==="ready"?`${S._dataCount} files attached`:"No files attached — claims can't be grounded yet", btn:"Attach"},
+  ];
+  const thin = rows.filter(r => st[r.k] !== "ready").length;
+  const el = aShell(`Here are the essentials I pulled from your description${thin?` — <b>${thin} still thin</b>. 아래 비어있는 칸을 채워주시거나 그대로 진행하세요.`:`. 좋으면 바로 진행하세요.`}
+    <div class="card" id="essCard"></div>`);
+  const card = el.querySelector("#essCard");
+  rows.forEach(r => {
+    const s = st[r.k];
+    const row = document.createElement("div"); row.className = "erow";
+    row.innerHTML = `<span class="dot ${s}"></span>
+      <div class="ei"><div class="lab">${r.label} <span class="st ${s}">${s}</span></div><div class="det">${esc(r.det)}</div></div>
+      <button class="ebtn">${r.btn}</button>`;
+    row.querySelector(".ebtn").onclick = () => openPanel(r.k);
+    card.appendChild(row);
   });
-}
-function setStepActive(stepId, label) {
-  let passed = true;
-  for (const [id, li] of Object.entries(stepIndex)) {
-    if (id === stepId) { li.className = "step active"; li.querySelector(".s").textContent = label || "진행 중…"; passed = false; }
-    else if (passed && !li.classList.contains("done")) {
-      li.className = "step done"; li.querySelector(".node").textContent = "✓"; li.querySelector(".s").textContent = "완료";
-    }
+  const foot = document.createElement("div"); foot.className = "cardfoot";
+  foot.innerHTML = `<button class="primary" id="proceedBtn">Looks right — research prior work →</button>
+    <span class="foothint">I'll search OpenAlex next.</span>`;
+  foot.querySelector("#proceedBtn").onclick = () => proceedToResearch();
+  card.appendChild(foot);
+  // gap questions + data ask folded INTO the same message (tied to the card above)
+  const miss = (m.missing || []).filter(Boolean);
+  if (miss.length || m.ask_data) {
+    const g = document.createElement("div");
+    g.style.cssText = "margin-top:13px;font-size:14px;line-height:1.6";
+    let html = "";
+    if (miss.length) html += `<b>채워주시면 초안이 더 정확해져요:</b><br>` + miss.map(q => `• ${esc(q)}`).join("<br>");
+    if (m.ask_data) html += (html ? "<br><br>" : "") + `📎 <b>${esc(m.ask_data)}</b>`;
+    html += `<div class="foothint" style="margin-top:8px">아래 입력창에 답하거나, 카드의 <b>Edit / Attach</b>를 누르세요.</div>`;
+    g.innerHTML = html;
+    el.querySelector(".abody").appendChild(g);
   }
+  return el;
 }
-function markAllDone() {
-  for (const li of Object.values(stepIndex)) { li.className = "step done"; li.querySelector(".node").textContent = "✓"; li.querySelector(".s").textContent = "완료"; }
-}
-let logLines = [];
-function logLine(s) { logLines.push(s); if (logLines.length>200) logLines.shift(); const el=$("logbox"); if (el){ el.textContent=logLines.join("\n"); el.scrollTop=el.scrollHeight; } }
 
-// ---------- Stage 3: plan -> confirm via chat -> generate ----------
-let planProposal = null, chatHistory = [];
-const SEC_LABEL = {introduction:"Introduction", method:"Methods", result:"Results", discussion:"Discussion", conclusion:"Conclusion", abstract:"Abstract"};
-async function startPlan() {
-  logLines = []; chatHistory = [];
-  $("canvas").innerHTML = `<div class="crumb">제작 계획</div>
-    <div class="card"><h3>계획 수립 중… <span class="badge">planning</span></h3>
-    <p class="muted">claim graph · 섹션 구조 · figure를 설계하고 있어요. 우측 트리 참고.</p>
-    <div class="log" id="logbox"></div></div>`;
-  const res = await postJSON("/api/projects/plan", {project_dir: projectDir});
-  if (res.error === "unanswered_questions") {
-    showStatus("미응답", "계획 차단", `미응답 질문 ${(res.pending||[]).length}개. 답하거나 '모름'을 눌러주세요.`, "warn");
-    $("dock").style.display = "block"; refreshAnswerGate(); return;
+// ---- gaps (orchestrator follow-up questions + data ask) ----
+function mGaps(m) {
+  const miss = (m.missing||[]);
+  let html = "";
+  if (miss.length) html += `To sharpen the draft, a few things would help:<br>` + miss.map(g=>`• ${esc(g)}`).join("<br>");
+  html += (html?"<br><br>":"") + `📎 <b>${esc(m.ask_data||"Do you have data/result files to add?")}</b>`;
+  html += `<div class="foothint" style="margin-top:8px">Answer below, or click <b>Edit/Attach</b> on the cards — then “research prior work”.</div>`;
+  return aShell(html);
+}
+
+// ---- search ----
+function mSearch(m) {
+  const running = m.status !== "done";
+  const meta = running ? "querying…" : `${m.present||0} covered · ${m.nq||0} questions`;
+  const badge = running ? `<span class="badge">running</span>` : `<span class="badge ok">✓ done</span>`;
+  return aShell(`Searching prior work to ground your claims and find gaps…
+    <div class="card"><div class="srchead"><span>🔎</span><span class="nm">OpenAlex</span>
+      <span class="mt">${meta}</span>${badge}</div></div>`);
+}
+
+// ---- questions ----
+function mQuestions(m) {
+  m.answers = m.answers || {};
+  const el = aShell(`Now the reasoning. These shape the <b>claim graph</b>, the figures, and how each section argues — answer in your words, or skip.
+    <div style="font-size:12.5px;color:var(--muted);margin-top:4px">${esc(m.classification||"")} · ${(m.questions||[]).length} questions${m.submitted?" · submitted":""}</div>
+    <div id="qlist" style="margin-top:12px"></div>
+    <div style="display:flex;align-items:center;gap:11px;margin-top:8px">
+      <button class="primary" id="genBtn">Generate the paper →</button><span class="foothint" id="genNote"></span></div>`);
+  const list = el.querySelector("#qlist");
+  (m.questions||[]).forEach(q => {
+    const fld = q.field || q.id;
+    const card = document.createElement("div"); card.className = "qcard";
+    const high = q.reviewer_risk === "high" ? "high" : "";
+    card.innerHTML = `<div class="qtop"><span class="qkind ${high}">${q.reviewer_risk||"info"}</span><span class="qq">${esc(q.question)}</span></div>
+      ${q.why_asked ? `<div class="qwhy">${esc(q.why_asked)}</div>` : ""}
+      <textarea class="qta" placeholder="${q.example?'예) '+esc(q.example):'Your answer…'}">${esc(m.answers[fld]||"")}</textarea>
+      <div><button class="qskip">Let me decide</button></div>`;
+    const ta = card.querySelector(".qta");
+    if (m.submitted) { ta.disabled = true; card.querySelector(".qskip").style.display = "none"; }
+    ta.oninput = () => { m.answers[fld] = ta.value; gate(el, m); saveChat(); };
+    card.querySelector(".qskip").onclick = () => { ta.value = "(모름 — 나중에 보완)"; m.answers[fld] = ta.value; gate(el, m); saveChat(); };
+    list.appendChild(card);
+  });
+  const genBtn = el.querySelector("#genBtn");
+  if (m.submitted) { genBtn.disabled = true; genBtn.textContent = "Submitted ✓"; el.querySelector("#genNote").textContent = ""; }
+  else { genBtn.onclick = () => submitAnswers(m); setTimeout(()=>gate(el, m), 0); }
+  return el;
+}
+function gate(el, m) {
+  const tas = [...el.querySelectorAll(".qta")];
+  const pending = tas.filter(t => !t.value.trim()).length;
+  const btn = el.querySelector("#genBtn"); if (!btn) return;
+  btn.disabled = pending > 0;
+  el.querySelector("#genNote").textContent = pending > 0 ? `${pending} unanswered — answer or "Let me decide"` : (tas.length?"All answered · ready":"ready");
+}
+
+// ---- log ----
+function mLog(m) {
+  const el = aShell(`${esc(m.heading||"Working…")}<div class="genlog" id="genlog"></div>`);
+  const box = el.querySelector("#genlog");
+  box.textContent = (m.lines||[]).join("\n");
+  m._logEl = box;
+  return el;
+}
+
+// ---- result ----
+function mResult(m) {
+  const meta = m.meta || {}, pdir = m.session_dir || S.sessionDir;
+  const cls = meta.classification ? ` · ${meta.classification}` : "";
+  const toks = (meta.input_tokens != null)
+    ? `<div class="foothint" style="margin-top:6px">tokens — in ${(meta.input_tokens).toLocaleString()} · out ${(meta.output_tokens).toLocaleString()} · cached ${Math.round((meta.cache_hit_rate||0)*100)}%</div>` : "";
+  const el = aShell(`Done — manuscript compiled${cls}. Here it is.
+    <div class="card">
+      <div style="padding:18px 20px 14px;border-bottom:1px solid var(--line)">
+        <div class="restitle">${esc(S.form.title || "Generated manuscript")}</div>
+        <div class="resmeta">${esc(S.form.affiliation)}</div>${toks}
+      </div>
+      <div class="cardfoot">
+        <button class="primary" id="openDraft">Open full draft</button>
+        <a class="dl" href="/api/projects/output/file?project_dir=${enc(pdir)}&rel=${enc('_paperflow_out/paper.docx')}&t=${Date.now()}" download="paper.docx">⬇ DOCX</a>
+        <a class="dl" href="/api/projects/paper?project_dir=${enc(pdir)}&kind=pdf&t=${Date.now()}" target="_blank">PDF ↗</a>
+        <a class="dl" href="/api/projects/paper?project_dir=${enc(pdir)}&kind=tex&t=${Date.now()}" target="_blank">.tex ↗</a>
+        <span class="foothint" style="margin-left:auto">Want changes? Tell me below.</span>
+      </div>
+    </div>`);
+  el.querySelector("#openDraft").onclick = () => openPanel("paper", pdir);
+  return el;
+}
+
+// ================= FLOW =================
+async function startFromDescription(text) {
+  text = text || defaultDesc();
+  $("thread").innerHTML = `<div class="twrap"></div>`; S.messages = [];
+  $("botcomp").style.display = "";
+  addMessage({t:"user", text});
+  const pend = addMessage({t:"assistant", text:`<span style="color:var(--muted)">thinking…</span>`});
+  let o;
+  try { o = await postJSON("/api/projects/onboard", {message:text}); }
+  catch (e) { pend.text = "onboard failed: " + esc(String(e)); rerender(pend); return; }
+  if (o.error) { pend.text = "onboard error: " + esc(o.error); rerender(pend); return; }
+  // agent names the project + session, then we create them
+  const cr = await postJSON("/api/projects/create", {name:(o.project_name||text.slice(0,30)), created:today()});
+  const sr = await postJSON("/api/projects/sessions", {project_dir:cr.project_dir, title:(o.session_title||"Trial 1"), created:today()});
+  S.projectRoot = cr.project_dir; S.projectName = o.project_name || cr.project_dir.split("/").pop();
+  S.sessionDir = sr.session_dir; S.sessionId = sr.id; S.sourceDir = sr.source_dir; S.expandedProject = cr.project_dir;
+  $("headerTitle").textContent = S.projectName + (o.session_title ? " · " + o.session_title : "");
+  mergeExtracted(o.extracted);
+  await saveInputs().catch(()=>{});
+  patchSession({title:o.session_title || text.slice(0,40)});
+  setStage("essentials");
+  pend.text = esc(o.reply || "Here's what I understood.").replace(/\n/g,"<br>"); rerender(pend);
+  addMessage({t:"essentials", missing:(o.missing||[]).filter(Boolean),
+              ask_data:o.ask_data||"Do you have data/result files to add?"});
+  await loadProjects(); await refreshSessions({project_dir:cr.project_dir}); renderProjects();
+  saveChat();
+}
+
+function assembleJournalMd() {
+  const f = S.form;
+  const L = ["## Author's field", f.field, "", "## Target journals", "1. " + f.target, ""];
+  if (f.title.trim()) { L.push("## Paper title", f.title, ""); }
+  L.push("## Extra info");
+  if (f.affiliation.trim()) L.push("- affiliation: " + f.affiliation);
+  return L.join("\n");
+}
+function assembleCoreMd() {
+  const f = S.form;
+  const L = ["## One paragraph", f.paragraph, "", "## Novelty"];
+  f.novelty.filter(n=>n.trim()).forEach((n,i) => L.push(`- 발견 ${i+1}: ${n}`));
+  return L.join("\n");
+}
+async function saveInputs() {
+  const dirs = [...new Set([S.sessionDir, S.sourceDir].filter(Boolean))];   // run dir + shared source
+  for (const d of dirs) {
+    await postJSON("/api/projects/save", {project_dir:d, journal_info_md:assembleJournalMd(),
+      coremessage_md:assembleCoreMd(), outline_md:S.form.outlineQuick, ui_state:{form:S.form}});
+    await postJSON("/api/projects/outline", {project_dir:d, mode:"quick", raw:S.form.outlineQuick});
   }
-  renderPipeline(res.steps);
-  const es = new EventSource(`/api/projects/plan/${res.job_id}/stream`);
+}
+
+async function proceedToResearch() {
+  setStage("research");
+  const sm = addMessage({t:"search", status:"running"});
+  try {
+    await saveInputs();
+    const diag = await postJSON("/api/projects/diagnose", {project_dir:S.sessionDir});
+    S.diag = diag;
+    sm.present = (diag.present||[]).length; sm.nq = (diag.questions||[]).length; sm.status = "done"; rerender(sm);
+    setTimeout(() => addMessage({t:"questions", questions:diag.questions||[], classification:diag.classification||"", stage:"requirement", answers:{}, submitted:false}), 350);
+  } catch (e) {
+    addMessage({t:"assistant", text:`<b style="color:#b5503c">Diagnose failed.</b> ${esc(String(e))}`});
+  }
+}
+
+async function submitAnswers(m) {
+  m.submitted = true; rerender(m);
+  const url = m.stage === "logic" ? "/api/projects/answers/logic" : "/api/projects/answers/requirement";
+  try {
+    const res = await postJSON(url, {project_dir:S.sessionDir, answers:m.answers});
+    runJob(res, m.stage);
+  } catch (e) { addMessage({t:"assistant", text:"error: " + esc(String(e))}); m.submitted=false; rerender(m); }
+}
+
+function runJob(res, stage) {
+  const pdir = S.sessionDir;
+  setStage("generating");
+  const heading = stage === "logic" ? "Generating the manuscript — grounding every claim."
+    : "Building the logic graph from your answers, then drafting.";
+  const lm = addMessage({t:"log", heading, lines:[], done:false});
+  const log = s => { lm.lines.push(s); if (lm.lines.length>120) lm.lines.shift();
+    if (lm._logEl) { lm._logEl.textContent = lm.lines.join("\n"); lm._logEl.scrollTop = lm._logEl.scrollHeight; } saveChat(); scrollDown(); };
+  const es = new EventSource(`/api/projects/answers/${res.job_id}/stream`);
   es.onmessage = (ev) => {
     const m = JSON.parse(ev.data);
-    if (m.type === "progress") { if (m.step_id && stepIndex[m.step_id]) setStepActive(m.step_id, m.label); logLine(m.raw||m.label); }
-    else if (m.type === "plan_ready") { markAllDone(); es.close(); planProposal = m.proposal;
-      chatHistory = [{role:"assistant", content:"아래 구성으로 작성할게요. 소제목·figure를 보고 바꿀 게 있으면 채팅으로 말해주세요. 좋으면 ‘제작 시작’을 누르면 됩니다."}];
-      renderPlanView(); }
-    else if (m.type === "error") { es.close(); showStatus("실패","오류", m.error, "warn"); }
+    if (m.type === "progress") log("› " + (m.raw || m.label || ""));
+    else if (m.type === "logic_questions") { es.close(); log("✓ logic gaps found — a few more questions");
+      setTimeout(() => addMessage({t:"questions", questions:m.questions||[], classification:"logic gaps", stage:"logic", answers:{}, submitted:false}), 300); }
+    else if (m.type === "generating") log("✓ logic graph complete — drafting the paper…");
+    else if (m.type === "done") { es.close(); log("✓ paper.docx ready"); lm.done=true;
+      setStage("done"); refreshSessionsLive();
+      setTimeout(() => addMessage({t:"result", meta:m, session_dir:pdir}), 300); }
+    else if (m.type === "error") { es.close(); log("✗ error: " + m.error); }
   };
   es.onerror = () => es.close();
 }
-function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-function renderPlanView() {
-  const p = planProposal || {};
-  const claims = (p.claims||[]).map(c => `<li>${esc(c.text)}</li>`).join("");
-  const structure = (p.sections||[]).map(sec => {
-    const s = (p.structure||{})[sec] || {}; const subs = (s.subheadings||[]);
-    const subhtml = subs.length ? `<ul class="subs">${subs.map(h=>`<li>${esc(h)}</li>`).join("")}</ul>` : `<div class="nosubs">소제목 없음</div>`;
-    return `<div class="secblock"><div class="sechead">${esc(SEC_LABEL[sec]||sec)}</div>
-      <div class="secsum">${esc(s.summary||"")}</div>${subhtml}</div>`;
-  }).join("");
-  const figs = (p.figures||[]).map(f => `<div class="figcard">${f.svg||""}
-      <div class="figmeta"><span class="fkind">${esc(f.kind||"figure")}</span> ${esc(f.section||"")}<br>${esc(f.message||"")}</div></div>`).join("");
-  const chips = (arr, cls) => (arr||[]).map(x => `<span class="gchip ${cls}">${esc(x.text||x.id||"")}</span>`).join("");
-  const subRow = (sc) => {
-    const groups = [
-      chips(sc.evidence, "ev"), chips(sc.methods, "me"), chips(sc.data, "da"),
-      chips(sc.figures, "fi"), chips(sc.refs, "re"),
-    ].filter(Boolean).join("");
-    return `<div class="gsub"><div class="gsubtext">${esc(sc.text||"")}</div>
-      <div class="gchips">${groups || "<span class='gnone'>근거 노드 없음</span>"}</div></div>`;
-  };
-  const graph = (p.graph||[]).map(g => `<div class="gcard">
-      <div class="gclaim">${esc((g.claim||{}).text||"")}</div>
-      ${(g.subclaims||[]).map(subRow).join("")}</div>`).join("");
-  const chat = chatHistory.map(m => `<div class="cmsg ${m.role}"><b>${m.role==="user"?"나":"agent"}</b> ${esc(m.content)}</div>`).join("");
-  $("canvas").innerHTML = `<div class="crumb">제작 계획 · 확인/수정</div>
-    <h2 class="title serif">제작 계획 — 확인하고 수정하세요</h2>
-    <div class="ehint">분류 <b>${esc(p.classification||"-")}</b>. claim graph·소제목·figure를 검토하고, 바꿀 게 있으면 아래 채팅으로. 좋으면 <b>제작 시작</b>.</div>
-    <div class="planview">
-      <div class="plancol">
-        <div class="plabel">핵심 기여</div><div class="pcontrib">${esc(p.main_contribution||"")}</div>
-        <div class="plabel">주요 주장</div><ul class="claims">${claims||"<li class='muted'>(없음)</li>"}</ul>
-        <div class="plabel">섹션 구조 · 소제목</div>${structure}
-        <div class="plabel">Claim graph · 주장별 근거</div>
-        <div class="graphgrid">${graph||"<div class='muted'>(없음)</div>"}</div>
-      </div>
-      <div class="plancol">
-        <div class="plabel">Figure / Table 설계 (스케치)</div>
-        <div class="figgrid">${figs||"<div class='muted'>(없음)</div>"}</div>
-      </div>
+async function refreshSessionsLive() {
+  if (S.projectRoot) { await refreshSessions({project_dir:S.projectRoot}); renderProjects(); }
+}
+
+// ================= BOTTOM COMPOSER =================
+$("botSend").onclick = async () => {
+  const v = $("botInput").value.trim(); if (!v) return;
+  addMessage({t:"user", text:v}); $("botInput").value = "";
+  const history = S.messages.filter(m => m.t==="user" || m.t==="assistant").map(m => ({role:m.t, text:m.text}));
+  const pend = addMessage({t:"assistant", text:"<span style='color:var(--muted)'>…</span>"});
+  // during onboarding, route follow-ups back through the orchestrator so it refines the inputs
+  if (S.phase === "essentials") {
+    try {
+      const o = await postJSON("/api/projects/onboard", {message:v, history});
+      if (!o.error) {
+        mergeExtracted(o.extracted); await saveInputs().catch(()=>{});
+        pend.text = esc(o.reply || "Updated.").replace(/\n/g,"<br>"); rerender(pend);
+        addMessage({t:"essentials", missing:(o.missing||[]).filter(Boolean), ask_data:o.ask_data||""});
+        return;
+      }
+      pend.text = "error: " + esc(o.error); rerender(pend); return;
+    } catch (e) { pend.text = "error: " + esc(String(e)); rerender(pend); return; }
+  }
+  // otherwise: plain conversational chat (gpt-4o-mini)
+  try {
+    const r = await postJSON("/api/projects/llm-chat", {message:v, history});
+    pend.text = esc(r.reply || r.error || "(no reply)").replace(/\n/g,"<br>"); rerender(pend);
+  } catch (e) { pend.text = "error: " + esc(String(e)); rerender(pend); }
+};
+$("botInput").onkeydown = e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); $("botSend").onclick(); } };
+
+// ================= RIGHT PANEL =================
+$("panelClose").onclick = () => $("panel").classList.add("hidden");
+function openPanel(kind, pdir) {
+  $("panel").classList.remove("hidden");
+  const titles = {journal:"Source · journal info", core:"Source · core message", outline:"Source · outline", data:"Source · data", paper:"Manuscript"};
+  $("panelTitle").textContent = titles[kind] || "Panel";
+  const b = $("panelBody"); b.innerHTML = "";
+  if (kind === "journal" || kind === "core" || kind === "outline" || kind === "data") renderSourcePanel(b, kind);
+  else if (kind === "paper") renderPaperPanel(b, pdir || S.sessionDir);
+}
+function renderSourcePanel(b, kind) {
+  const tabs = [["journal","Journal"],["core","Core"],["outline","Outline"],["data","Data"]];
+  const head = document.createElement("div");
+  head.innerHTML = `<div class="pkicker">Shared source · all trials use this</div>
+    <div class="ptabs">${tabs.map(([k,l])=>`<button class="ptab ${k===kind?'on':''}" data-k="${k}">${l}</button>`).join("")}</div>`;
+  b.appendChild(head);
+  head.querySelectorAll(".ptab").forEach(t => t.onclick = () => openPanel(t.dataset.k));
+  const body = document.createElement("div"); b.appendChild(body);
+  if (kind === "journal") fJournal(body);
+  else if (kind === "core") fCore(body);
+  else if (kind === "outline") fOutline(body);
+  else if (kind === "data") fData(body);
+}
+function field(b, label, key, opt) {
+  const wrap = document.createElement("div");
+  wrap.innerHTML = `<label class="flabel">${label} ${opt?'<span class="opt">· optional</span>':'<span class="req">*</span>'}</label>`;
+  const inp = document.createElement("input"); inp.className = "fin"; inp.value = S.form[key] || "";
+  inp.oninput = () => { S.form[key] = inp.value; markSaved(b); };
+  wrap.appendChild(inp); b.appendChild(wrap);
+}
+function fJournal(b) {
+  b.innerHTML = `<h2>Journal info</h2><p class="desc">Target journal + field define how paperflow frames every section.</p>`;
+  field(b,"Author's field","field"); field(b,"Target journal","target");
+  field(b,"Paper title","title",true); field(b,"Affiliation","affiliation",true); saveTag(b);
+}
+function fCore(b) {
+  b.innerHTML = `<h2>Core message + novelty</h2><p class="desc">One paragraph and each novelty become the core claims of the graph.</p>`;
+  const pl = document.createElement("label"); pl.className="flabel"; pl.innerHTML = `One paragraph <span class="req">*</span>`;
+  const pt = document.createElement("textarea"); pt.className="fta"; pt.rows=6; pt.value=S.form.paragraph;
+  pt.oninput = () => { S.form.paragraph = pt.value; markSaved(b); }; b.append(pl, pt);
+  const nl = document.createElement("label"); nl.className="flabel"; nl.innerHTML = `Novelty <span class="req">*</span>`; b.appendChild(nl);
+  const nbox = document.createElement("div");
+  const draw = () => { nbox.innerHTML=""; S.form.novelty.forEach((n,i)=>{ const row=document.createElement("div"); row.className="novrow";
+    row.innerHTML = `<span class="num">${i+1}</span>`; const inp=document.createElement("input"); inp.value=n;
+    inp.oninput=()=>{ S.form.novelty[i]=inp.value; markSaved(b); }; row.appendChild(inp); nbox.appendChild(row); }); };
+  draw(); b.appendChild(nbox);
+  const add = document.createElement("button"); add.className="addbtn"; add.textContent="＋ novelty";
+  add.onclick = () => { S.form.novelty.push(""); draw(); }; b.appendChild(add); saveTag(b);
+}
+function fOutline(b) {
+  b.innerHTML = `<h2>Outline</h2><p class="desc">Free-form is fine — paste your skeleton. Method & Result matter most.</p>`;
+  const ta = document.createElement("textarea"); ta.className="fta"; ta.rows=18; ta.value=S.form.outlineQuick; ta.style.fontSize="13px";
+  ta.oninput = () => { S.form.outlineQuick = ta.value; markSaved(b); }; b.appendChild(ta); saveTag(b);
+}
+function fData(b) {
+  b.innerHTML = `<h2>Data</h2><p class="desc">Shared across every trial of this paper. paperflow infers each file's meaning.</p>
+    <div class="drop" id="drop"><span style="font-size:21px">⬆️</span>
+      <span style="font-size:13.5px;font-weight:700">Drop files, or click to upload</span>
+      <span style="font-size:11px;color:var(--muted)">CSV · DAT · PDF · XLSX · JSON · BIB</span>
+      <input type="file" id="fileInput" multiple style="display:none"></div><div id="filelist"></div>`;
+  const inp = b.querySelector("#fileInput"), drop = b.querySelector("#drop");
+  // single trigger: clicking the zone opens the picker once (guard against the
+  // hidden input's own click bubbling back up and re-opening it).
+  drop.onclick = (e) => { if (e.target !== inp) inp.click(); };
+  inp.onchange = () => uploadFiles(inp.files, b);
+  // real drag-and-drop (the zone advertises "Drop files")
+  drop.ondragover = (e) => { e.preventDefault(); drop.classList.add("dragover"); };
+  drop.ondragleave = () => drop.classList.remove("dragover");
+  drop.ondrop = (e) => { e.preventDefault(); drop.classList.remove("dragover");
+    if (e.dataTransfer && e.dataTransfer.files.length) uploadFiles(e.dataTransfer.files, b); };
+  loadDataFiles(b);
+}
+async function loadDataFiles(b) {
+  // read source data listing via files endpoint (best-effort)
+  const box = b.querySelector("#filelist"); if (!box) return;
+  try {
+    const r = await (await fetch("/api/projects/files?project_dir=" + enc(S.sourceDir))).json();
+    const files = r.files || [];
+    S._dataCount = files.length;
+    box.innerHTML = files.length ? "" : `<div style="font-size:12px;color:#b5503c;padding:4px 2px">⚠ Empty so far — attach files so claims can be grounded.</div>`;
+    files.forEach(f => { const row=document.createElement("div"); row.className="frow";
+      const ext=(f.name.split(".").pop()||"").toUpperCase();
+      row.innerHTML = `<span class="fkind">${ext}</span><span class="fname">${esc(f.name)}</span><span class="fmeta">${f.note||""}</span>`; box.appendChild(row); });
+  } catch { box.innerHTML = `<div style="font-size:12px;color:var(--muted)">(could not list files)</div>`; }
+}
+async function uploadFiles(files, b) {
+  if (!files || !files.length) return;
+  const fd = new FormData(); fd.append("project_dir", S.sourceDir);
+  for (const f of files) fd.append("files", f);
+  try { await fetch("/api/projects/upload", {method:"POST", body:fd}); loadDataFiles(b); }
+  catch (e) { alert("upload failed: " + e); }
+}
+async function renderPaperPanel(b, pdir) {
+  b.innerHTML = `<div class="desc">Loading…</div>`;
+  let files = [];
+  try { files = (await (await fetch("/api/projects/output/list?project_dir=" + enc(pdir))).json()).files || []; }
+  catch (e) { b.innerHTML = `<div class="desc">Could not load output: ${esc(String(e))}</div>`; return; }
+  const has = n => files.find(f => f.name === n);
+  const dlA = (rel, label, name) =>
+    `<a class="dl" href="/api/projects/output/file?project_dir=${enc(pdir)}&rel=${enc(rel)}&t=${Date.now()}"`
+    + (name ? ` download="${name}"` : ` target="_blank"`) + `>${label}</a>`;
+  // download bar + readable manuscript (main) + collapsible file list
+  b.innerHTML = `<div class="pkicker">Manuscript</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 16px">
+      ${has('paper.docx') ? dlA('_paperflow_out/paper.docx','⬇ DOCX','paper.docx') : ''}
+      ${has('paper.pdf')  ? dlA('_paperflow_out/paper.pdf','PDF ↗') : ''}
+      ${has('paper.tex')  ? dlA('_paperflow_out/paper.tex','.tex ↗') : ''}
     </div>
-    <div class="chatwrap"><div class="chatlog" id="chatlog">${chat}</div>
-      <div class="ghint">claim graph도 채팅으로 편집할 수 있어요. 예) E1을 C1.2가 아니라 C1.1을 지지하게 바꿔줘</div>
-      <div class="chatrow">
-        <textarea id="chatInput" rows="1" placeholder="수정 요청… 예) Result 소제목을 '검증·선정·민감도'로 바꿔줘"></textarea>
-        <button class="send" id="chatSend">보내기</button>
-        <button class="send go" id="startGenBtn">▶ 제작 시작</button>
-      </div></div>`;
-  $("chatSend").onclick = sendChat;
-  $("startGenBtn").onclick = startGenerate;
-  const ci = $("chatInput");
-  ci.onkeydown = (e) => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); sendChat(); } };
-  const cl = $("chatlog"); if (cl) cl.scrollTop = cl.scrollHeight;
+    <div id="docview" class="ppaper"><div class="desc">불러오는 중…</div></div>
+    <details style="margin-top:20px;border-top:1px solid var(--line);padding-top:12px">
+      <summary style="cursor:pointer;font-size:12.5px;color:var(--muted);font-weight:600">생성 파일 ${files.length}개 (클릭해서 펼치기)</summary>
+      <div id="outlist" style="margin-top:10px"></div>
+    </details>`;
+  const docview = b.querySelector("#docview");
+  // MAIN: the readable manuscript (rendered preview, with working figure-prompt copy buttons)
+  const prev = has('manuscript_preview.html');
+  if (prev) await showOut(prev, docview, pdir);
+  else docview.innerHTML = `<div class="desc">읽기용 미리보기 파일이 없어요. 아래 파일 목록에서 .md를 보세요.</div>`;
+  // SECONDARY: every generated file, click to view in the same area
+  const ol = b.querySelector("#outlist");
+  files.forEach(f => { const btn = document.createElement("button"); btn.className = "ofile";
+    btn.innerHTML = `<span class="ok">${f.kind}</span><span class="on">${esc(f.name)}</span><span class="os">${fmtSize(f.size)}</span>`;
+    btn.onclick = () => { ol.querySelectorAll(".ofile").forEach(x=>x.classList.remove("active")); btn.classList.add("active");
+      showOut(f, docview, pdir); docview.scrollIntoView({behavior:"smooth", block:"start"}); };
+    ol.appendChild(btn); });
 }
-async function sendChat() {
-  const ci = $("chatInput"); const msg = (ci.value||"").trim(); if (!msg) return;
-  chatHistory.push({role:"user", content: msg}); ci.value = ""; ci.disabled = true;
-  renderPlanView(); $("chatlog").innerHTML += `<div class="cmsg agent muted">생각 중…</div>`;
-  try {
-    const r = await postJSON("/api/projects/chat", {project_dir: projectDir, message: msg, history: chatHistory});
-    if (r.proposal) planProposal = r.proposal;
-    chatHistory.push({role:"assistant", content: r.reply || "반영했어요."});
-  } catch (e) { chatHistory.push({role:"assistant", content:"오류: " + e}); }
-  renderPlanView();
+async function showOut(f, view, pdir) {
+  const url = `/api/projects/output/file?project_dir=${enc(pdir)}&rel=${enc(f.rel)}&t=${Date.now()}`;
+  if (f.kind === "pdf") { view.innerHTML = `<iframe src="${url}#view=FitH" style="width:100%;height:70vh;border:1px solid var(--line);border-radius:10px"></iframe>`; return; }
+  if (f.kind === "docx") { view.innerHTML = `<div class="desc">DOCX는 브라우저에서 미리볼 수 없어요. 위 ⬇ DOCX로 받으세요.<br><br></div><a class="dl" href="${url}" download="${esc(f.name)}">⬇ ${esc(f.name)} 다운로드</a>`; return; }
+  view.innerHTML = `<div class="desc">Loading…</div>`;
+  try { const r = await (await fetch(`/api/projects/output/preview?project_dir=${enc(pdir)}&rel=${enc(f.rel)}`)).json();
+    view.innerHTML = r.html || `<pre style="white-space:pre-wrap;font-size:12.5px">${esc(r.text||"(empty)")}</pre>`;
+    // belt-and-suspenders: rebind figure-prompt copy buttons (inline onclick already works via global)
+    view.querySelectorAll(".pf-copy").forEach(btn => btn.onclick = () => window.pfCopyPrompt(btn));
+  } catch { view.innerHTML = `<div class="desc">preview error</div>`; }
 }
+async function selectOut(f, view, pdir) {
+  const url = `/api/projects/output/file?project_dir=${enc(pdir)}&rel=${enc(f.rel)}&t=${Date.now()}`;
+  if (f.kind === "pdf") { view.innerHTML = `<iframe src="${url}#view=FitH" style="width:100%;height:60vh;border:1px solid var(--line);border-radius:10px"></iframe>`; return; }
+  if (f.kind === "docx") { view.innerHTML = `<a class="dl" href="${url}" download="${esc(f.name)}">⬇ ${esc(f.name)}</a>`; return; }
+  view.innerHTML = `<div class="desc">Loading…</div>`;
+  try { const r = await (await fetch(`/api/projects/output/preview?project_dir=${enc(pdir)}&rel=${enc(f.rel)}`)).json();
+    view.innerHTML = r.html || `<pre style="white-space:pre-wrap;font-size:12.5px">${esc(r.text||"(empty)")}</pre>`;
+  } catch { view.innerHTML = `<div class="desc">preview error</div>`; }
+}
+function fmtSize(n){ n=n||0; return n<1024?n+"B":n<1048576?(n/1024).toFixed(1)+"KB":(n/1048576).toFixed(1)+"MB"; }
+let _saveT=null;
+function markSaved(b){ clearTimeout(_saveT); _saveT=setTimeout(()=>{ saveInputs().catch(()=>{}); },600);
+  const t=b.querySelector(".savetag")||b.parentElement.querySelector(".savetag"); if(t) t.textContent="✓ saved to source"; }
+function saveTag(b){ const d=document.createElement("div"); d.className="savetag"; b.appendChild(d); }
 
-async function startGenerate() {
-  logLines = [];
-  $("canvas").innerHTML = `<div class="crumb">생성</div>
-    <div class="card"><h3>논문 생성 중… <span class="badge">running</span></h3>
-    <p class="muted">우측 workflow tree에서 현재 단계를 확인하세요.</p>
-    <div class="log" id="logbox"></div></div>`;
-  const res = await postJSON("/api/projects/generate", {project_dir: projectDir});
-  if (res.error === "unanswered_questions") {  // hard gate (server-side backstop)
-    showStatus("미응답", "생성 차단", `아직 응답하지 않은 질문 ${ (res.pending||[]).length }개가 있어요. 모두 답하거나 '모름'을 눌러주세요.`, "warn");
-    $("dock").style.display = "block"; refreshAnswerGate();
-    return;
-  }
-  renderPipeline(res.steps);
-  const es = new EventSource(`/api/projects/generate/${res.job_id}/stream`);
-  es.onmessage = (ev) => {
-    const m = JSON.parse(ev.data);
-    if (m.type === "progress") { if (m.step_id && stepIndex[m.step_id]) setStepActive(m.step_id, m.label); logLine(m.raw || m.label); }
-    else if (m.type === "done") {
-      markAllDone(); es.close();
-      paperReady = true; $("paperBtn").style.display = "";
-      showPaper(m);
-    } else if (m.type === "error") { es.close(); showStatus("실패", "오류", m.error, "warn"); }
-  };
-  es.onerror = () => es.close();
-}
-
-// ---------- generated-paper viewer (center = the produced journal) ----------
-function paperUrl(kind) {
-  return `/api/projects/paper?project_dir=${encodeURIComponent(projectDir)}&kind=${kind}&t=${Date.now()}`;
-}
-function showPaper(meta) {
-  meta = meta || {};
-  const toks = (meta.input_tokens != null) ? `<div class="toks">
-      <span>input <b>${meta.input_tokens.toLocaleString()}</b></span>
-      <span>output <b>${meta.output_tokens.toLocaleString()}</b></span>
-      <span>cached <b>${meta.cached_tokens.toLocaleString()}</b> (${Math.round((meta.cache_hit_rate||0)*100)}%)</span>
-    </div>` : "";
-  const cls = meta.classification ? `<span class="muted">분류 <b>${meta.classification}</b></span>` : "";
-  const log = logLines.length ? `<details class="logdetails"><summary>실행 로그</summary><div class="log">${logLines.join("\n")}</div></details>` : "";
-  $("canvas").innerHTML = `<div class="crumb">생성된 논문</div>
-    <h2 class="title serif">${JF.title || wtitleText()}</h2>
-    <div class="paperbar">
-      <span class="badge ok">PDF</span>${cls}
-      <a class="dl" href="${paperUrl('pdf')}" target="_blank">PDF 새 탭 ↗</a>
-      <a class="dl" href="${paperUrl('tex')}" target="_blank">.tex 소스 ↗</a>
-    </div>${toks}
-    <iframe class="paperframe" src="${paperUrl('pdf')}#view=FitH" title="generated paper"></iframe>
-    ${log}`;
-}
-function wtitleText() { const el = $("wtitle"); return el ? el.textContent : "Manuscript"; }
-
-// ---------- data files (experiment data / references) ----------
-function fmtSize(n) { return n >= 1e6 ? (n/1e6).toFixed(1)+" MB" : n >= 1e3 ? Math.round(n/1e3)+" KB" : (n||0)+" B"; }
-async function loadDataFiles() {
-  if (!projectDir) { dataFiles = []; return; }
-  try {
-    const r = await (await fetch("/api/projects/files?project_dir=" + encodeURIComponent(projectDir))).json();
-    dataFiles = r.files || [];
-  } catch { dataFiles = []; }
-  renderFileList(); renderNotePanel(); renderNav(); refreshStep0();
-}
-async function uploadFiles(fileList) {
-  if (!projectDir) return;
-  const fd = new FormData();
-  fd.append("project_dir", projectDir);
-  for (const f of fileList) fd.append("files", f);
-  const nt = $("savednote"); if (nt) nt.textContent = "업로드 중…";
-  try {
-    const r = await fetch("/api/projects/upload", {method:"POST", body: fd});
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    if (nt) nt.textContent = "✓ 업로드됨";
-  } catch (e) { if (nt) nt.textContent = "업로드 실패: " + e; }
-  await loadDataFiles();
-}
-async function deleteDataFile(rel) {
-  if (!projectDir) return;
-  await postJSON("/api/projects/files/delete", {project_dir: projectDir, rel});
-  await loadDataFiles();
-}
-function renderFileList() {
-  const box = $("filelist"); if (!box) return;
-  box.innerHTML = "";
-  if (!dataFiles.length) { box.innerHTML = `<div class="fl-empty">아직 업로드된 파일이 없습니다.</div>`; return; }
-  dataFiles.forEach(f => {
-    const row = document.createElement("div");
-    row.className = "frow" + (f.rel === selectedData ? " sel" : "") + (f.note ? " noted" : "");
-    row.title = "클릭하면 오른쪽에 설명을 적을 수 있어요";
-    const cols = (f.columns && f.columns.length) ? ` · ${f.columns.length} cols` : "";
-    row.innerHTML = `<span class="fkind">${f.kind || "file"}</span>
-      <span class="fname">${f.name}</span>
-      <span class="fmeta">${fmtSize(f.size)}${cols}</span>`;
-    row.onclick = () => selectData(f.rel);
-    row.appendChild(mkBtn("✕", "삭제", false,
-      (e) => { e.stopPropagation(); deleteDataFile(f.rel); }, true));
-    box.appendChild(row);
-  });
-}
-function selectData(rel) {
-  selectedData = rel;
-  renderFileList();
-  renderNotePanel();
-  const ta = $("noteTa"); if (ta) ta.focus();
-}
-function renderNotePanel() {
-  const box = $("notepanel"); if (!box) return;
-  const f = dataFiles.find(x => x.rel === selectedData);
-  if (!f) {
-    box.innerHTML = `<div class="np-empty">왼쪽에서 파일을 클릭하면<br>여기에 그 파일이 무엇인지<br>자유롭게 적을 수 있어요.</div>`;
-    return;
-  }
-  const cols = (f.columns && f.columns.length) ? ` · ${f.columns.join(", ")}` : "";
-  box.innerHTML = `<div class="np-head"><span class="fkind">${f.kind || "file"}</span>
-      <span class="np-name">${f.name}</span></div>
-    <div class="np-sub">${f.rel}${cols}</div>
-    <textarea class="np-ta" id="noteTa"
-      placeholder="이 파일이 무엇인지 자유롭게 적어주세요.\n예) VI=2 하중조건에서 그룹별 1차/전체 Sobol 민감도.\nResult 섹션의 '물성치가 가장 민감' 주장 근거(Fig 3)."></textarea>`;
-  const ta = $("noteTa");
-  ta.value = f.note || "";
-  ta.oninput = () => { f.note = ta.value; };          // keep locally so re-renders don't lose it
-  ta.onchange = () => saveNote(f.rel, ta.value);      // persist on blur
-}
-async function saveNote(rel, note) {
-  const f = dataFiles.find(x => x.rel === rel); if (f) f.note = note;
-  renderFileList();  // refresh the "noted" marker
-  try {
-    await postJSON("/api/projects/files/note", {project_dir: projectDir, rel, note});
-    const nt = $("savednote"); if (nt) nt.textContent = "✓ 설명 저장됨";
-  } catch (e) { const nt = $("savednote"); if (nt) nt.textContent = "설명 저장 실패: " + e; }
-}
-
-// ---------- structured UI state (lossless reopen) ----------
-function uiState() { return {JF, CM, novelty, outlineData}; }
-function resetState() {
-  Object.assign(JF, {field:"", title:"", affiliation:"", target:[""], authors:[""], corresponding:[""]});
-  Object.assign(CM, {paragraph:"", sentence:"", outscope:""}); CM.keywords = [""];
-  novelty = [""];
-  SECTIONS.forEach(s => outlineData[s.key] = "");
-}
-function restoreState(st) {
-  if (!st) { resetState(); return; }
-  Object.assign(JF, st.JF || {});
-  ["target", "authors", "corresponding"].forEach(k => { if (!Array.isArray(JF[k]) || !JF[k].length) JF[k] = [""]; });
-  Object.assign(CM, st.CM || {});
-  if (!Array.isArray(CM.keywords) || !CM.keywords.length) CM.keywords = [""];
-  novelty = (st.novelty && st.novelty.length) ? st.novelty : [""];
-  SECTIONS.forEach(s => {
-    const v = (st.outlineData || {})[s.key];
-    // tolerate old format ([{heading,intent}]) by flattening to text
-    outlineData[s.key] = typeof v === "string" ? v
-      : Array.isArray(v) ? v.map(o => [o.heading, o.intent].filter(Boolean).join(" — ")).filter(Boolean).join("\n")
-      : "";
-  });
-}
-
-// ---------- dashboard ----------
-function ddlInfo(deadline) {
-  if (!deadline) return {cls:"none", label:"마감 미정"};
-  const days = Math.ceil((new Date(deadline) - new Date()) / 86400000);
-  const cls = days <= 14 ? "soon" : days <= 45 ? "mid" : "far";
-  return {cls, label: days >= 0 ? `D-${days}` : `D+${-days}`};
-}
-function statusLabel(s) { return s === "done" ? "완료" : s === "active" ? "작업 중" : "신규"; }
-
-async function loadProjects() {
-  const r = await (await fetch("/api/projects/list")).json();
-  setProviders(r.providers);
-  const g = $("pgrid"); g.innerHTML = "";
-  (r.projects || []).forEach(p => {
-    const card = document.createElement("div"); card.className = "pcard";
-    const dd = ddlInfo(p.deadline);
-    card.innerHTML = `<div class="ptop"><span class="pic">${(p.title || p.name || 'P').trim()[0] || 'P'}</span>
-        <div><h3 class="pt serif">${p.title || p.name}</h3><div class="pmeta">${p.field || p.name}</div></div>
-        <span class="ptag ${p.status}">${statusLabel(p.status)}</span></div>
-      <div class="prog"><div class="pl"><span class="pct">${p.progress}%</span><span class="stp">${p.step}</span></div>
-      <div class="bar"><span style="width:${p.progress}%"></span></div></div>
-      <div class="pfoot"><span class="ddl ${dd.cls}">${dd.label}</span><span class="nx">${p.name}</span></div>`;
-    card.onclick = () => openExisting(p.project_dir, p.title || p.name);
-    g.appendChild(card);
-  });
-  const nc = document.createElement("div"); nc.className = "newcard";
-  nc.innerHTML = `<div><div class="plus">＋</div><div>새 프로젝트</div></div>`;
-  nc.onclick = openNewModal;
-  g.appendChild(nc);
-}
-function showDashboard() {
-  document.body.classList.add("dash");
-  $("backBtn").style.display = "none"; $("wtitle").style.display = "none";
-  loadProjects();
-}
-function enterWorkspace(dir, title) {
-  projectDir = dir;
-  document.body.classList.remove("dash");
-  $("backBtn").style.display = ""; $("wtitle").style.display = "";
-  $("wtitle").textContent = title || dir.split("/").pop();
-  $("dock").style.display = "none";
-  dataFiles = []; selectedData = null;
-  $("paperBtn").style.display = paperReady ? "" : "none";  // show only if a paper exists
-  renderNav(); renderStep0();
-  if (paperReady) showPaper({}); else openField("journal");  // completed -> show the paper
-  loadDataFiles();  // populate the data-panel dot from disk
-  if (diskMode) {
-    $("createBtn").disabled = false; $("createBtn").textContent = "진단 시작 (저장된 입력)";
-    showStatus("기존 입력", "기존 프로젝트", "이 프로젝트는 저장된 입력 파일이 있어요. 폼은 비어 보여도 디스크 입력으로 진단/생성합니다.");
-  } else {
-    $("createBtn").textContent = "＋ Create Journal";
-  }
-}
-async function openExisting(dir, title) {
-  const r = await (await fetch("/api/projects/state?project_dir=" + encodeURIComponent(dir))).json();
-  diskMode = !r.ui_state;
-  paperReady = !!r.paper_ready;
-  restoreState(r.ui_state);
-  enterWorkspace(dir, title);
-}
-$("paperBtn").onclick = () => showPaper({});
-function openNewModal() { $("np_name").value = ""; $("np_deadline").value = ""; $("newModal").classList.add("show"); }
-$("newBtn").onclick = openNewModal;
-$("np_cancel").onclick = () => $("newModal").classList.remove("show");
-$("np_create").onclick = async () => {
-  const name = $("np_name").value.trim(); if (!name) return;
-  const today = new Date().toISOString().slice(0, 10);
-  const r = await postJSON("/api/projects/create", {name, deadline: $("np_deadline").value, created: today});
-  $("newModal").classList.remove("show");
-  diskMode = false; paperReady = false; resetState();
-  enterWorkspace(r.project_dir, name);
-};
-$("backBtn").onclick = showDashboard;
-
-// ---------- init ----------
-showDashboard();
+// ================= BOOT =================
+loadProjects();
+startGreeting();
 </script>
 </body>
 </html>

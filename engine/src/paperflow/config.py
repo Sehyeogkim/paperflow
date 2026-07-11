@@ -21,6 +21,8 @@ DEFAULT_REGISTRY = {
     "writer": os.getenv("PAPERFLOW_WRITER_MODEL", "deepseek:deepseek-chat"),
     "reasoning": os.getenv("PAPERFLOW_REASONING_MODEL", "openai:gpt-4o"),
     "image": os.getenv("PAPERFLOW_IMAGE_MODEL", "fal:fal-ai/nano-banana"),
+    # conversational assistant in the chat UI (cheap, fast) — NOT the pipeline
+    "chat": os.getenv("PAPERFLOW_CHAT_MODEL", "openai:gpt-4o-mini"),
 }
 
 # escalation: if a tier's provider has no key, fall back along this chain

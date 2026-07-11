@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PaperFlow Product Workflow Guide</title>
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --panel:#ffffff;
+      --ink:#172033;
+      --muted:#687086;
+      --line:#dfe3ec;
+      --navy:#1b2a4a;
+      --blue:#315efb;
+      --teal:#0f9f95;
+      --amber:#d88a18;
+      --violet:#7957d5;
+      --red:#c64f5f;
+      --green:#2d9d68;
+      --soft-blue:#edf2ff;
+      --soft-teal:#eaf8f6;
+      --soft-amber:#fff5e6;
+      --soft-violet:#f2efff;
+      --soft-red:#fff0f2;
+      --soft-green:#edf8f2;
+      --shadow:0 10px 30px rgba(24,39,75,.08);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--ink);
+      background:var(--bg);
+      line-height:1.58;
+    }
+    a{color:inherit;text-decoration:none}
+    .layout{
+      display:grid;
+      grid-template-columns:280px minmax(0,1fr);
+      min-height:100vh;
+    }
+    aside{
+      position:sticky;
+      top:0;
+      height:100vh;
+      padding:26px 20px;
+      background:var(--navy);
+      color:#fff;
+      overflow:auto;
+    }
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+    .logo{
+      width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+      background:linear-gradient(135deg,#fff 0%,#dce4ff 100%);
+      color:var(--navy);font-weight:800;font-size:20px;
+    }
+    .brand h1{font-size:18px;margin:0}
+    .brand p{font-size:12px;margin:2px 0 0;color:#cdd5e6}
+    .nav-title{margin:22px 10px 8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#93a0b7}
+    nav a{display:block;padding:10px 12px;border-radius:10px;font-size:14px;color:#d9dfec;margin-bottom:4px}
+    nav a:hover{background:rgba(255,255,255,.09);color:#fff}
+    .aside-note{margin-top:26px;padding:14px;border:1px solid rgba(255,255,255,.14);border-radius:12px;font-size:12px;color:#cbd3e3}
+    main{padding:42px 48px 80px;max-width:1500px}
+    section{margin-bottom:48px;scroll-margin-top:24px}
+    .hero{
+      padding:40px;border-radius:28px;
+      background:radial-gradient(circle at 90% 10%,rgba(49,94,251,.17),transparent 26%),radial-gradient(circle at 70% 90%,rgba(15,159,149,.13),transparent 25%),var(--panel);
+      box-shadow:var(--shadow);border:1px solid #e7eaf1;
+    }
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;background:var(--soft-blue);color:var(--blue);font-size:12px;font-weight:700;margin-bottom:16px}
+    .hero h2{font-size:38px;line-height:1.18;letter-spacing:-.03em;margin:0 0 16px;max-width:980px}
+    .hero .lead{font-size:18px;color:var(--muted);max-width:950px;margin:0}
+    .hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px}
+    .hero-stat{padding:16px;background:#fff;border:1px solid var(--line);border-radius:14px}
+    .hero-stat b{display:block;font-size:19px}.hero-stat span{font-size:12px;color:var(--muted)}
+    h3.section-title{font-size:28px;letter-spacing:-.02em;margin:0 0 8px}
+    .section-sub{margin:0 0 22px;color:var(--muted);max-width:980px}
+    .card{background:var(--panel);border:1px solid #e4e8f0;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .simple-flow{display:grid;grid-template-columns:repeat(7,minmax(145px,1fr));gap:12px;align-items:stretch;overflow-x:auto;padding:20px}
+    .flow-step{position:relative;min-width:145px;padding:18px 14px 16px;border-radius:14px;border:1px solid var(--line);background:#fff;cursor:pointer;transition:.2s ease}
+    .flow-step:hover,.flow-step.active{transform:translateY(-3px);border-color:var(--blue);box-shadow:0 8px 22px rgba(49,94,251,.13)}
+    .flow-step:not(:last-child)::after{content:"→";position:absolute;right:-19px;top:50%;transform:translateY(-50%);color:#9aa4b7;font-weight:800;z-index:2}
+    .flow-num{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:var(--navy);color:#fff;font-size:12px;font-weight:700;margin-bottom:10px}
+    .flow-step b{display:block;font-size:14px;margin-bottom:4px}.flow-step span{font-size:12px;color:var(--muted)}
+    .step-detail{margin-top:16px;padding:22px;border-radius:16px;border:1px solid var(--line);background:#fbfcff;min-height:126px}
+    .detail-title{font-size:18px;font-weight:800;margin-bottom:7px}
+    .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.pill{padding:6px 9px;border-radius:999px;font-size:12px;font-weight:700;background:#eef1f7;color:#4d5870}
+    .input-grid,.feature-grid,.state-grid,.mvp-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .input-card,.feature-card,.state-card,.mvp-card{padding:22px}
+    .icon{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;font-size:19px;margin-bottom:14px;font-weight:700}
+    .blue{background:var(--soft-blue);color:var(--blue)}.teal{background:var(--soft-teal);color:var(--teal)}.amber{background:var(--soft-amber);color:var(--amber)}.violet{background:var(--soft-violet);color:var(--violet)}.green{background:var(--soft-green);color:var(--green)}.red{background:var(--soft-red);color:var(--red)}
+    .input-card h4,.feature-card h4,.state-card h4,.mvp-card h4{margin:0 0 7px;font-size:18px}
+    .input-card p,.feature-card p,.state-card p,.mvp-card p{margin:0;color:var(--muted);font-size:14px}
+    .required,.optional{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:999px;font-size:10px;vertical-align:2px;font-weight:700}
+    .required{background:var(--soft-red);color:var(--red)}.optional{background:#f0f2f6;color:#737b8c}
+    .engine{padding:28px}.engine-row{display:grid;grid-template-columns:1fr 72px 1fr 72px 1fr;align-items:center;gap:8px}
+    .engine-box{padding:22px;border-radius:16px;border:1px solid var(--line);min-height:150px;background:#fff}
+    .engine-box h4{margin:0 0 8px;font-size:17px}.engine-box ul{margin:0;padding-left:18px;color:var(--muted);font-size:13px}
+    .arrow{text-align:center;font-size:30px;color:#9ba5b7;font-weight:700}
+    .logic-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}.logic-map{padding:26px;overflow:auto}
+    .node{border-radius:14px;border:1px solid var(--line);background:#fff;padding:14px 16px;font-size:13px;min-width:180px}
+    .node strong{display:block;margin-bottom:4px;font-size:14px}
+    .node.claim{border-left:5px solid var(--blue)}.node.evidence{border-left:5px solid var(--teal)}.node.method{border-left:5px solid var(--violet)}.node.data{border-left:5px solid var(--amber)}.node.reference{border-left:5px solid var(--green)}.node.qualifier{border-left:5px solid var(--red)}
+    .logic-line{display:flex;align-items:center;justify-content:center;color:#929db0;font-size:22px;padding:7px 0}
+    .logic-branches{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.logic-side{padding:22px}.logic-side h4{margin:0 0 12px}.logic-side ul{padding-left:18px;color:var(--muted);font-size:14px}
+    .question-cycle{padding:28px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .cycle-box{padding:18px;border-radius:14px;border:1px solid var(--line);background:#fff;position:relative}
+    .cycle-box:not(:last-child)::after{content:"→";position:absolute;right:-19px;top:45%;font-size:22px;color:#9aa3b5;font-weight:700}
+    .cycle-box b{display:block;margin-bottom:6px}.cycle-box span{font-size:13px;color:var(--muted)}
+    .rank-formula{margin-top:18px;padding:16px;border:1px dashed #b6bfd1;border-radius:12px;background:#f8faff;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:#33405c;white-space:pre-line}
+    .table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:840px;background:#fff}th,td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top;font-size:13px}th{background:#f8f9fc;color:#4f5a70;font-size:12px}
+    .output-shell{display:grid;grid-template-columns:260px 1fr;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow)}
+    .file-pane{padding:20px;background:#f4f6fa;border-right:1px solid var(--line)}.file-item{padding:11px 12px;border-radius:10px;margin-bottom:7px;background:#fff;border:1px solid var(--line);font-size:13px}.file-item.active{border-color:var(--blue);background:var(--soft-blue)}
+    .preview-pane{padding:28px}.preview-paper{max-width:760px;margin:auto;padding:42px 46px;min-height:500px;border:1px solid #e0e3ea;box-shadow:0 8px 22px rgba(38,50,77,.08);background:#fff}
+    .preview-paper h4{font-size:22px;text-align:center;margin:0 0 20px}.preview-paper h5{font-size:16px;margin:22px 0 8px}.preview-paper p{font-size:13px;color:#3c4557}
+    details{background:#fff;border:1px solid var(--line);border-radius:13px;padding:14px 16px;margin-bottom:10px}summary{cursor:pointer;font-weight:700}details p{color:var(--muted);font-size:14px}
+    .callout{padding:20px 22px;border-radius:16px;background:var(--soft-blue);border:1px solid #d7e0ff;color:#33405f}.callout strong{color:var(--blue)}
+    footer{margin-top:54px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+    @media(max-width:1100px){.layout{grid-template-columns:1fr}aside{position:relative;height:auto}nav{display:grid;grid-template-columns:repeat(3,1fr)}main{padding:28px}.hero-grid{grid-template-columns:repeat(2,1fr)}.engine-row{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}.logic-wrap{grid-template-columns:1fr}.question-cycle{grid-template-columns:1fr 1fr}.cycle-box::after{display:none}}
+    @media(max-width:700px){nav{grid-template-columns:1fr 1fr}main{padding:18px}.hero{padding:26px}.hero h2{font-size:30px}.input-grid,.feature-grid,.state-grid,.mvp-grid{grid-template-columns:1fr}.hero-grid{grid-template-columns:1fr}.question-cycle{grid-template-columns:1fr}.output-shell{grid-template-columns:1fr}.file-pane{border-right:0;border-bottom:1px solid var(--line)}.logic-branches{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside>
+    <div class="brand"><div class="logo">PF</div><div><h1>PaperFlow</h1><p>Product Workflow Guide</p></div></div>
+    <div class="nav-title">Overview</div>
+    <nav>
+      <a href="#overview">한눈에 보기</a><a href="#inputs">사용자 입력</a><a href="#reconstruction">Research Reconstruction</a><a href="#literature">선행연구 조사</a><a href="#logic">Logic Graph</a><a href="#questions">질문 Loop</a><a href="#writing">논문 작성</a><a href="#output">DOCX · Preview</a><a href="#states">내부 데이터 구조</a><a href="#mvp">MVP 범위</a>
+    </nav>
+    <div class="aside-note">이 문서는 PaperFlow의 <b>제품 내부 workflow</b>를 설명한다. 사용자 화면과 백엔드 엔진이 어떻게 연결되는지 함께 보여준다.</div>
+  </aside>
+
+  <main>
+    <section id="overview" class="hero">
+      <div class="eyebrow">PAPERFLOW · INTERNAL PRODUCT WORKFLOW</div>
+      <h2>흩어진 연구 자료를<br/>근거가 연결된 논문 초안으로 컴파일한다.</h2>
+      <p class="lead">PaperFlow는 단순히 글을 대신 쓰는 도구가 아니다. 연구자의 계획서, 데이터, 참고문헌, 핵심 메시지를 읽고 연구의 논리 구조를 복원한 뒤, 부족한 정보를 질문하고, 최종 Logic Graph를 기반으로 전체 논문을 생성한다.</p>
+      <div class="hero-grid">
+        <div class="hero-stat"><b>4+1</b><span>핵심 입력 4종 + optional outline</span></div>
+        <div class="hero-stat"><b>2-pass</b><span>분야 이해 + claim별 문헌조사</span></div>
+        <div class="hero-stat"><b>Adaptive</b><span>Logic gap 기반 질문 loop</span></div>
+        <div class="hero-stat"><b>2 outputs</b><span>DOCX 다운로드 + 앱 preview</span></div>
+      </div>
+    </section>
+
+    <section>
+      <h3 class="section-title">1분 안에 이해하는 전체 흐름</h3>
+      <p class="section-sub">아래 박스를 클릭하면 각 단계가 무엇을 입력받고 무엇을 만드는지 볼 수 있다.</p>
+      <div class="card">
+        <div class="simple-flow" id="flow">
+          <div class="flow-step active" data-step="0"><div class="flow-num">1</div><b>사용자 입력</b><span>저널·핵심메시지·자료·데이터</span></div>
+          <div class="flow-step" data-step="1"><div class="flow-num">2</div><b>연구 복원</b><span>연구목적·방법·결과 후보 추출</span></div>
+          <div class="flow-step" data-step="2"><div class="flow-num">3</div><b>문헌조사</b><span>유사 논문과 표현 패턴 탐색</span></div>
+          <div class="flow-step" data-step="3"><div class="flow-num">4</div><b>잠정 Graph</b><span>Claim과 Evidence 연결</span></div>
+          <div class="flow-step" data-step="4"><div class="flow-num">5</div><b>질문 Loop</b><span>비어 있는 핵심 정보 보완</span></div>
+          <div class="flow-step" data-step="5"><div class="flow-num">6</div><b>논문 작성</b><span>Graph를 section과 문단으로 변환</span></div>
+          <div class="flow-step" data-step="6"><div class="flow-num">7</div><b>출력</b><span>DOCX + 오른쪽 preview</span></div>
+        </div>
+        <div class="step-detail" id="stepDetail"></div>
+      </div>
+    </section>
+
+    <section id="inputs">
+      <h3 class="section-title">사용자가 처음 제공하는 정보</h3>
+      <p class="section-sub">초기에는 정보를 충분히 요구하는 방향으로 시작한다. 이후 실제 사용자의 이탈률과 만족도를 측정해 threshold를 조정한다.</p>
+      <div class="input-grid">
+        <div class="card input-card"><div class="icon blue">J</div><h4>Journal & User Information <span class="required">필수</span></h4><p>목표 저널, 연구 분야, 논문 제목 후보, 저자·소속 등. 저널의 형식과 논문의 문체를 정하는 입력이다.</p></div>
+        <div class="card input-card"><div class="icon teal">C</div><h4>Core Message <span class="required">필수</span></h4><p>“이 논문에서 가장 말하고 싶은 결과는 무엇인가?”에 대한 한 문장 또는 짧은 문단.</p></div>
+        <div class="card input-card"><div class="icon amber">D</div><h4>Data / Result Files + 설명 <span class="required">필수</span></h4><p>CSV, XLSX, JSON, 이미지, 결과표 등. 각 파일이 무엇이고 어떤 분석에서 생성되었는지 한 줄 설명을 함께 받는다.</p></div>
+        <div class="card input-card"><div class="icon violet">R</div><h4>Research Plan / Related Documents <span class="required">필수</span></h4><p>연구계획서, 연구노트, 기존 Method, 발표자료, 초안, 참고문헌 PDF·BibTeX 등 연구 맥락을 제공하는 자료.</p></div>
+        <div class="card input-card"><div class="icon green">O</div><h4>Outline <span class="optional">선택</span></h4><p>사용자가 이미 가지고 있다면 활용한다. 없으면 Research Reconstruction Engine이 자동 생성한다.</p></div>
+        <div class="card input-card"><div class="icon red">!</div><h4>중요한 원칙</h4><p>사용자에게 입력을 적게 받는 것이 목표가 아니다. <b>초안 품질을 올리는 데 가치 있는 정보</b>를 최대한 효율적으로 받는 것이 목표다.</p></div>
+      </div>
+    </section>
+
+    <section id="reconstruction">
+      <h3 class="section-title">Research Reconstruction Engine</h3>
+      <p class="section-sub">업로드 파일을 단순히 요약하는 단계가 아니다. 서로 다른 자료를 하나의 연구 상태로 통합해 “이 연구가 실제로 무엇을 했는가”를 복원한다.</p>
+      <div class="card engine">
+        <div class="engine-row">
+          <div class="engine-box"><h4>① Document Understanding</h4><ul><li>연구문제와 목적 추출</li><li>실험·해석·통계 절차 추출</li><li>기존 주장과 limitation 탐지</li><li>참고문헌·DOI 식별</li></ul></div>
+          <div class="arrow">→</div>
+          <div class="engine-box"><h4>② Data Profiling</h4><ul><li>파일 형식과 column 분석</li><li>단위·표본·변수 후보 추론</li><li>사용자 설명과 파일 의미 결합</li><li>주요 관찰 결과 후보 생성</li></ul></div>
+          <div class="arrow">→</div>
+          <div class="engine-box"><h4>③ Research State</h4><ul><li>연구 설계와 방법</li><li>데이터셋과 비교구조</li><li>주요 결과 및 claim 후보</li><li>알려진 정보와 unknown 분리</li></ul></div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:16px"><strong>핵심:</strong> outline이 없더라도 Research State를 기반으로 자동 outline을 만들 수 있다. 단, 데이터만으로 의미를 확정할 수 없는 부분은 질문 단계로 넘긴다.</div>
+    </section>
+
+    <section id="literature">
+      <h3 class="section-title">선행연구 조사는 두 번 수행한다</h3>
+      <p class="section-sub">논문을 많이 모으는 것이 목적이 아니다. 연구의 구조와 Logic Graph를 완성하는 데 필요한 문헌만 찾는다.</p>
+      <div class="feature-grid">
+        <div class="card feature-card"><div class="icon blue">1</div><h4>Pass 1 · Field Reconstruction</h4><p>이 연구가 어떤 paper archetype에 속하는지, 해당 분야 논문들이 어떤 Method·검증·Figure를 요구하는지 파악한다.</p><div class="pill-row"><span class="pill">유사 논문 구조</span><span class="pill">필수 보고 항목</span><span class="pill">Figure/Table 패턴</span></div></div>
+        <div class="card feature-card"><div class="icon teal">2</div><h4>Pass 2 · Claim-specific Search</h4><p>잠정 Logic Graph의 각 claim을 기준으로 배경, 방법 정당화, 결과 비교, 해석, 반대 근거를 찾는다.</p><div class="pill-row"><span class="pill">Background</span><span class="pill">Method justification</span><span class="pill">Comparison</span><span class="pill">Limitation</span></div></div>
+      </div>
+    </section>
+
+    <section id="logic">
+      <h3 class="section-title">Logic Graph란 무엇인가?</h3>
+      <p class="section-sub">논문의 주장을 글로 쓰기 전에, 그 주장이 어떤 데이터·방법·문헌·과학적 논리에 의해 지지되는지 구조화한 내부 지도다.</p>
+      <div class="logic-wrap">
+        <div class="card logic-map">
+          <div class="node claim"><strong>Claim</strong>재료물성이 형태학적 변수보다 파열 위험을 더 지배한다.</div>
+          <div class="logic-line">↑ supports</div>
+          <div class="node evidence"><strong>Evidence</strong>Material 그룹의 Sobol ST가 Morpho 그룹보다 높다.</div>
+          <div class="logic-line">↑ derived from</div>
+          <div class="logic-branches">
+            <div class="node data"><strong>Data</strong>sobol_group_results.csv</div>
+            <div class="node method"><strong>Method</strong>GPR surrogate + Sobol analysis</div>
+            <div class="node reference"><strong>Reference / Warrant</strong>Sobol ST는 총 분산 기여도를 나타낸다.</div>
+            <div class="node qualifier"><strong>Qualifier</strong>본 설계공간과 이상화 모델 조건에서의 결과다.</div>
+          </div>
+        </div>
+        <div class="card logic-side"><h4>각 Claim이 가져야 하는 것</h4><ul><li>주장 문장</li><li>이를 지지하는 Evidence</li><li>Evidence의 실제 Data provenance</li><li>Evidence를 만든 Method</li><li>해석을 정당화하는 Warrant/Reference</li><li>적용 범위와 Limitation</li><li>어떤 Figure/Table로 보여줄지</li></ul><h4 style="margin-top:24px">Graph의 역할</h4><ul><li>근거 없는 문장 생성 방지</li><li>Method–Result–Discussion 연결 유지</li><li>문단별 근거 추적</li><li>Figure/Table 설계의 출발점</li></ul></div>
+      </div>
+    </section>
+
+    <section id="questions">
+      <h3 class="section-title">Critical Question Loop</h3>
+      <p class="section-sub">질문 수를 5개로 고정하지 않는다. Logic Graph에서 중요한 빈칸을 찾고, 사용자 답변 가치가 높은 순서대로 묻는다.</p>
+      <div class="card">
+        <div class="question-cycle">
+          <div class="cycle-box"><b>① Gap 탐지</b><span>Claim·Evidence·Data·Method 관계에서 비어 있거나 모순된 부분을 찾는다.</span></div>
+          <div class="cycle-box"><b>② 질문 우선순위</b><span>논문 방향과 reviewer risk에 미치는 영향으로 질문을 정렬한다.</span></div>
+          <div class="cycle-box"><b>③ 사용자 답변</b><span>작은 batch로 질문하고 답변을 Research State에 저장한다.</span></div>
+          <div class="cycle-box"><b>④ Graph 업데이트</b><span>답변을 반영해 다시 gap을 검사하고 필요하면 다음 질문을 만든다.</span></div>
+        </div>
+        <div style="padding:0 28px 28px"><div class="rank-formula">question_value =
+impact_on_primary_claim
++ impact_on_method_correctness
++ impact_on_result_interpretation
++ reviewer_risk
+- inferability_from_existing_files
+- user_answering_cost</div></div>
+      </div>
+      <div class="callout" style="margin-top:16px"><strong>질문 Loop 종료 조건:</strong> main claim이 정해지고, 각 claim에 evidence 또는 missing 상태가 명확하며, 핵심 데이터 의미·방법·해석 범위가 충분히 정의되었을 때 종료한다.</div>
+    </section>
+
+    <section id="writing">
+      <h3 class="section-title">Logic Graph에서 논문으로 변환</h3>
+      <p class="section-sub">Writer는 빈 화면에서 자유롭게 글을 쓰지 않는다. Graph를 section과 paragraph contract로 변환한 뒤 그 계약을 자연어로 compile한다.</p>
+      <div class="card table-wrap"><table><thead><tr><th>작성 순서</th><th>핵심 질문</th><th>사용하는 Graph 요소</th><th>주요 출력</th></tr></thead><tbody>
+        <tr><td>1. Method</td><td>무엇을 어떻게 수행했는가?</td><td>Method, Data, Reference, Artifact</td><td>재현 가능한 연구 절차</td></tr>
+        <tr><td>2. Result</td><td>데이터에서 무엇이 관찰되었는가?</td><td>Evidence, Data, Artifact</td><td>수치와 Figure/Table 중심 결과</td></tr>
+        <tr><td>3. Discussion</td><td>그 결과가 왜 중요한가?</td><td>Claim, Warrant, Reference, Qualifier</td><td>해석·비교·한계·의미</td></tr>
+        <tr><td>4. Introduction</td><td>왜 이 연구가 필요한가?</td><td>Background claim, Reference, Gap</td><td>문제→한계→목적의 논리</td></tr>
+        <tr><td>5. Conclusion</td><td>무엇을 최종적으로 보여주었는가?</td><td>Main claims, Qualifier</td><td>핵심 결론과 적용 범위</td></tr>
+        <tr><td>6. Abstract</td><td>전체 연구를 가장 짧게 압축하면?</td><td>전체 Graph의 핵심 노드</td><td>배경·방법·결과·결론 요약</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section id="output">
+      <h3 class="section-title">최종 사용자 경험</h3>
+      <p class="section-sub">백엔드의 원본은 Word 파일이 아니라 manuscript.json이다. 같은 내용을 DOCX로 내보내고 앱 오른쪽에는 읽기 전용 preview로 보여준다.</p>
+      <div class="output-shell">
+        <div class="file-pane"><b style="display:block;margin-bottom:14px">Generated Files</b><div class="file-item active">📄 manuscript.docx</div><div class="file-item">🧩 logic_graph.json</div><div class="file-item">📚 references.bib</div><div class="file-item">🧾 grounding_report.html</div><div class="file-item">🖼 figure_prompts.md</div></div>
+        <div class="preview-pane"><div class="preview-paper"><h4>Draft Manuscript Title</h4><p style="text-align:center;color:#7a8292">Author information · Target Journal</p><h5>Abstract</h5><p>This study investigates... The proposed workflow generated... Results showed... These findings suggest...</p><h5>1. Introduction</h5><p>The research problem is introduced through verified background references, followed by the unresolved gap and the specific objective of the present study.</p><h5>2. Methods</h5><p>The analysis pipeline, data definitions, numerical or experimental procedures, and statistical methods are compiled from the final logic graph.</p></div></div>
+      </div>
+    </section>
+
+    <section id="states">
+      <h3 class="section-title">백엔드 내부 데이터 구조</h3>
+      <p class="section-sub">서로 다른 에이전트와 단계가 같은 사실을 공유하도록 중간 상태를 명시적으로 저장한다.</p>
+      <div class="state-grid">
+        <div class="card state-card"><div class="icon blue">{ }</div><h4>research_state.json</h4><p>연구문제, 목적, 설계, 방법, 데이터셋, outcome, 주요 관찰, claim 후보, limitation, unknown.</p></div>
+        <div class="card state-card"><div class="icon amber">Σ</div><h4>evidence_inventory.json</h4><p>각 파일의 역할, 사용자 설명, column 의미, 표본 단위, 주요 관찰, 불확실성.</p></div>
+        <div class="card state-card"><div class="icon teal">G</div><h4>logic_graph.json</h4><p>Claim–Evidence–Data–Method–Reference–Qualifier–Artifact 관계.</p></div>
+        <div class="card state-card"><div class="icon violet">¶</div><h4>manuscript.json</h4><p>section, subsection, paragraph, citations, figure placeholders, grounding 상태를 저장하는 canonical manuscript.</p></div>
+      </div>
+    </section>
+
+    <section id="mvp">
+      <h3 class="section-title">이번 MVP에 포함되는 것과 제외되는 것</h3>
+      <p class="section-sub">일요일 MVP는 “자료 업로드→질문→전체 초안→DOCX/preview” 흐름을 증명하는 데 집중한다.</p>
+      <div class="mvp-grid">
+        <div class="card mvp-card"><div class="icon green">✓</div><h4>이번 MVP 포함</h4><p>입력 업로드, 파일 설명, research reconstruction, 두 단계 문헌조사, preliminary/final logic graph, 질문 loop, 전체 논문 생성, Figure/Table placeholder와 prompt, DOCX export, read-only preview.</p></div>
+        <div class="card mvp-card"><div class="icon red">×</div><h4>이번 MVP 제외</h4><p>본문 직접 편집, 공동편집, 실제 Figure 이미지 생성, 완전한 citation entailment, 모든 분야 범용화, 복잡한 reviewer multi-agent.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h3 class="section-title">자주 헷갈리는 질문</h3>
+      <details open><summary>Logic Graph가 사용자에게 먼저 보이는 화면인가?</summary><p>아니다. Logic Graph는 내부 품질 엔진이다. 사용자가 가장 먼저 보는 핵심 결과는 완성된 초안이고, Graph는 근거 추적이나 설명이 필요할 때 보조적으로 보여준다.</p></details>
+      <details><summary>질문은 최대 5개인가?</summary><p>아니다. 질문 수는 고정하지 않는다. 다만 한 번에 보여주는 batch는 작게 유지하며, 질문 가치와 사용자 피로도 사이 threshold를 실험한다.</p></details>
+      <details><summary>선행연구는 글쓰기 직전에 한 번만 찾는가?</summary><p>아니다. 분야와 논문 형식을 이해하기 위한 1차 검색, claim별 근거와 비교 연구를 찾기 위한 2차 검색으로 나눈다.</p></details>
+      <details><summary>Word 파일을 읽어서 앱 오른쪽에 보여주는가?</summary><p>아니다. manuscript.json이 원본이고, 여기서 DOCX와 HTML preview를 각각 생성한다.</p></details>
+    </section>
+
+    <footer>PaperFlow Product Workflow Guide · Research Reconstruction MVP · 2026-06-26</footer>
+  </main>
+</div>
+
+<script>
+  const details = [
+    {title:"1. 사용자 입력",text:"저널·사용자 정보, core message, 설명이 붙은 데이터 파일, 연구계획서·관련 문서·references를 받는다. Outline은 선택이다.",pills:["Journal info","Core message","Data + explanation","Research documents","Optional outline"]},
+    {title:"2. Research Reconstruction",text:"문서와 데이터를 함께 읽어 연구 목적, 방법, 변수, outcome, 주요 관찰, claim 후보, limitation, unknown을 구조화한다.",pills:["research_state.json","evidence_inventory.json","automatic outline"]},
+    {title:"3. 두 단계 문헌조사",text:"먼저 해당 연구 분야의 일반적인 논문 구조와 Figure/Table 패턴을 찾고, 잠정 claim이 생성된 후에는 claim별 배경·방법·비교 문헌을 다시 찾는다.",pills:["Field reconstruction","Claim-specific search","DOI/OpenAlex"]},
+    {title:"4. Preliminary Logic Graph",text:"사용자 데이터와 문서에서 Claim–Evidence–Data–Method–Reference–Qualifier–Artifact 관계를 먼저 구성한다. 아직 불확실한 연결은 missing 또는 partial로 표시한다.",pills:["Claim","Evidence","Data provenance","Method","Qualifier","Artifact"]},
+    {title:"5. Adaptive Question Loop",text:"Graph의 중요한 빈칸을 찾아 사용자에게 질문한다. 답변을 받을 때마다 Research State와 Graph를 업데이트하며, claim을 방어 가능한 수준으로 작성할 정보가 확보되면 종료한다.",pills:["Gap detection","Question ranking","Adaptive batch","User fatigue threshold"]},
+    {title:"6. Manuscript Compilation",text:"Final Logic Graph를 section과 paragraph contract로 변환하고 Method→Result→Discussion→Introduction→Conclusion→Abstract 순으로 전체 논문을 작성한다.",pills:["Section contracts","Grounded writing","Figure placeholders","Consistency checks"]},
+    {title:"7. DOCX + Right-side Preview",text:"Canonical manuscript state에서 Word 파일을 생성하고, 동일한 내용을 앱 오른쪽 read-only preview에 보여준다. MVP에서는 직접 편집 기능은 제외한다.",pills:["manuscript.json","DOCX export","HTML preview","Grounding report"]}
+  ];
+  const detail = document.getElementById("stepDetail");
+  const steps = document.querySelectorAll(".flow-step");
+  function render(i){
+    const d = details[i];
+    detail.innerHTML = `<div class="detail-title">${d.title}</div><div style="color:var(--muted);font-size:14px">${d.text}</div><div class="pill-row">${d.pills.map(x=>`<span class="pill">${x}</span>`).join("")}</div>`;
+    steps.forEach((s,j)=>s.classList.toggle("active",j===i));
+  }
+  steps.forEach((s,i)=>s.addEventListener("click",()=>render(i)));
+  render(0);
+</script>
+</body>
+</html>

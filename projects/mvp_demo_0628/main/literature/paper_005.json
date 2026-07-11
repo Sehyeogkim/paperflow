@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_005",
+  "study_archetype": "clinical consensus / review on vulnerable plaque and patient risk",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: define concept of vulnerable plaque and patient",
+      "category": "objective",
+      "sub_category": "define vulnerable plaque and vulnerable patient",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: consensus document / review",
+      "category": "study_design",
+      "sub_category": "consensus statement",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: epidemiologic burden statement",
+      "category": "data_or_sample",
+      "sub_category": "global mortality and disease burden (stated >19 million deaths annually)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: proposal of classification",
+      "category": "methods",
+      "sub_category": "proposed classification for clinical and pathological evaluation of vulnerable plaques",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: broader concept of vulnerability (plaque, blood, myocardium)",
+      "category": "outcomes",
+      "sub_category": "identification of multiple contributors to acute events (vulnerable plaque, vulnerable blood, vulnerable myocardium)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "limitations: current screening and diagnostic insufficiency",
+      "category": "limitations",
+      "sub_category": "existing screening/diagnostic methods insufficient to identify at-risk individuals before events",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

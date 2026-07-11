@@ -14,3 +14,9 @@ master_thesis/data/paraview_model/*.vtu
 
 # temp verification runs
 projects/_verify_run/
+
+# local UI backups
+*.bak
+
+# soft-deleted projects/sessions (recoverable trash)
+**/.trash/

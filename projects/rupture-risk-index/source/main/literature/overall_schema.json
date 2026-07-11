@@ -1,0 +1,1401 @@
+{
+  "project_id": "1c7b01ec",
+  "study_archetype": "large-sample cost-effective fluid–structure interaction (FSI) plaque-rupture risk modeling study",
+  "source_papers": 10,
+  "requirement_source": "literature_derived",
+  "requirements": [
+    {
+      "key": "primary_study_objective_define_rupture_risk_index",
+      "category": "objective",
+      "aliases": [
+        "Objective: assess effects of cyclic bending and anisotropy on plaque mechanics",
+        "primary objective: investigate effect of necrotic core size and plaque morphology on peak cap stress",
+        "Objective: role of biomechanical forces in coronary atherosclerosis",
+        "objective: summarize current data on biomarkers for vulnerable atherosclerotic lesions",
+        "Objective: review methods and role of plaque structural stress (PSS)"
+      ],
+      "observed_in": 5,
+      "applicable_papers": 10,
+      "prevalence": 0.5,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "mandatory",
+      "reason": "A clearly stated primary objective to define and evaluate a rupture-risk index (linking mechanics and strength) is central and logically necessary to justify the study design, sample selection and analyses; many cited abstracts express similar primary aims.",
+      "evidence_sources": [
+        "paper_001",
+        "paper_002",
+        "paper_004",
+        "paper_006",
+        "paper_009"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 5
+      }
+    },
+    {
+      "key": "fsi_simulation",
+      "category": "methods",
+      "aliases": [
+        "3D fluid-structure interaction (FSI) models",
+        "FSI simulation",
+        "computational FSI techniques (unspecified)",
+        "advanced computational FSI methods (general, not specified)"
+      ],
+      "observed_in": 4,
+      "applicable_papers": 10,
+      "prevalence": 0.4,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "mandatory",
+      "reason": "The central claim is a rupture-risk index derived from FSI-computed ΔPSS across 1,000 simulated samples, so performing and reporting the FSI simulation workflow is logically necessary and is the dominant method reported in the literature.",
+      "evidence_sources": [
+        "paper_001",
+        "paper_005",
+        "paper_007",
+        "paper_008"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 4
+      }
+    },
+    {
+      "key": "parameter_sampling_of_geometries_and_materials",
+      "category": "objective",
+      "aliases": [
+        "primary objective: investigate effect of necrotic core size and plaque morphology on peak cap stress",
+        "Objective: assess effects of cyclic bending and anisotropy on plaque mechanics"
+      ],
+      "observed_in": 3,
+      "applicable_papers": 10,
+      "prevalence": 0.3,
+      "applicability": {
+        "required_when": [
+          "claim_involves_large_sample_parameter_sampling",
+          "goal_is_to_identify_drivers_of_variation"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "mandatory",
+      "reason": "The central study design is a 1,000-sample parameter-sampling FSI study to identify drivers of a rupture-risk index, so reporting how geometries and material properties were sampled is essential and repeatedly reflected in the objectives of related works.",
+      "evidence_sources": [
+        "paper_001",
+        "paper_006",
+        "paper_008"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 3
+      }
+    },
+    {
+      "key": "study_design_computational_fsi_modeling",
+      "category": "study_design",
+      "aliases": [
+        "computational modelling study using MRI-derived geometry",
+        "computational FSI modeling",
+        "computational study (synthetic dataset + ML)"
+      ],
+      "observed_in": 2,
+      "applicable_papers": 10,
+      "prevalence": 0.2,
+      "applicability": {
+        "required_when": [
+          "claim_involves_FSI-derived_metrics",
+          "large_cohort_simulation_or_parameter_sampling"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "mandatory",
+      "reason": "The core claim and methods of this project are a large-sample FSI computational study producing ΔPSS and a rupture-risk index, so a clear computational FSI study design is essential and widely used in the literature.",
+      "evidence_sources": [
+        "paper_001",
+        "paper_010"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 2
+      }
+    },
+    {
+      "key": "literature_sources_for_parameters",
+      "category": "data_or_sample",
+      "aliases": [
+        "published literature on plaque biomarkers and imaging",
+        "discussion of coronary atherosclerosis literature",
+        "literature sources (unspecified)"
+      ],
+      "observed_in": 2,
+      "applicable_papers": 10,
+      "prevalence": 0.2,
+      "applicability": {
+        "required_when": [
+          "using_literature_ranges_for_material_properties_or_strength"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "mandatory",
+      "reason": "When material strengths and parameter ranges are assigned from prior studies, citing and describing the literature sources is essential to justify sampled ranges and to interpret the rupture-risk index; many related papers rely on literature-derived parameters (paper_002, paper_004).",
+      "evidence_sources": [
+        "paper_002",
+        "paper_004"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 2
+      }
+    },
+    {
+      "key": "material_strength_estimation",
+      "category": "methods",
+      "aliases": [
+        "estimate local material/rupture strength",
+        "assigned material strength values",
+        "strength"
+      ],
+      "observed_in": 2,
+      "applicable_papers": 10,
+      "prevalence": 0.2,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "mandatory",
+      "reason": "The index ΔPSS/strength requires estimation or assignment of local material rupture strength for each sample, making strength estimation a logical necessity for the core claim.",
+      "evidence_sources": [
+        "paper_006",
+        "paper_009"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 2
+      }
+    },
+    {
+      "key": "statistical_and_sensitivity_analysis",
+      "category": "methods",
+      "aliases": [
+        "sensitivity analysis",
+        "multivariate/statistical analysis",
+        "analysis of factors driving the rupture-risk index"
+      ],
+      "observed_in": 2,
+      "applicable_papers": 10,
+      "prevalence": 0.2,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "mandatory",
+      "reason": "Identifying drivers of the rupture-risk index across a sampled cohort requires and thus logically mandates reporting the statistical and sensitivity analyses used to attribute effect sizes and variable importance.",
+      "evidence_sources": [
+        "paper_002",
+        "paper_005"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 2
+      }
+    },
+    {
+      "key": "sensitivity_and_statistical_analysis",
+      "category": "outcomes",
+      "aliases": [
+        "sensitivity analysis",
+        "multivariate/statistical analysis",
+        "drivers analysis"
+      ],
+      "observed_in": 2,
+      "applicable_papers": 10,
+      "prevalence": 0.2,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "mandatory",
+      "reason": "Identifying which input variables drive the rupture-risk index is a core objective of the study, so sensitivity and multivariate analyses are required to support the claims.",
+      "evidence_sources": [
+        "paper_002",
+        "paper_005"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 2
+      }
+    },
+    {
+      "key": "synthetic_geometries_cohort",
+      "category": "data_or_sample",
+      "aliases": [
+        "dataset of synthetic LCA geometries",
+        "parametrized synthetic plaque geometries",
+        "synthetic left coronary artery geometries"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "study_uses_parameter_sampling_or_synthetic_cohort"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "mandatory",
+      "reason": "The project's central claim and methods rely on computing the rupture-risk index across a 1,000-sample synthetic cohort, so reporting the synthetic geometries dataset and how it was generated is essential and consistently present in similar studies (paper_010).",
+      "evidence_sources": [
+        "paper_010"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "peak_structural_stress_calculation",
+      "category": "methods",
+      "aliases": [
+        "PSS calculation",
+        "calculation and modelling of plaque structural stress",
+        "ΔPSS computation",
+        "plaque structural stress using imaging and idealized biomechanical models"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "mandatory",
+      "reason": "The rupture-risk index is defined as ΔPSS/strength, so calculation and reporting of ΔPSS (peak structural stress change) per sample is essential to support the core claim.",
+      "evidence_sources": [
+        "paper_009"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "rupture_risk_index",
+      "category": "outcomes",
+      "aliases": [
+        "ΔPSS/strength",
+        "rupture-risk index",
+        "mechanical_risk_index"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "mandatory",
+      "reason": "The central claim of this project is the introduction and analysis of a new rupture-risk index (ΔPSS/strength), so definition, computation and reporting of that index are logically necessary and must be present.",
+      "evidence_sources": [
+        "paper_002"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "develop_and_report_FSI_model_and_workflow",
+      "category": "objective",
+      "aliases": [
+        "objective: develop animal-specific FSI model of mouse abdominal aorta",
+        "objective: role of computational FSI in micro elastofluidics",
+        "Objective: assess effects of anisotropic vessel properties and cyclic bending on plaque mechanics"
+      ],
+      "observed_in": 3,
+      "applicable_papers": 10,
+      "prevalence": 0.3,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "strongly_expected",
+      "reason": "The paper's central claim and methods rely on an FSI modeling pipeline (cost-effective, 1,000 samples), so developing and reporting the FSI model/workflow is expected and affects credibility; related items in the literature describe similar modeling objectives.",
+      "evidence_sources": [
+        "paper_005",
+        "paper_007",
+        "paper_008"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 3
+      }
+    },
+    {
+      "key": "constitutive_material_modeling",
+      "category": "methods",
+      "aliases": [
+        "anisotropic vessel wall material properties included",
+        "anisotropic constitutive behavior",
+        "material constitutive model",
+        "plaque and cap material properties"
+      ],
+      "observed_in": 3,
+      "applicable_papers": 10,
+      "prevalence": 0.3,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "strongly_expected",
+      "reason": "Material constitutive laws (including anisotropy and component-specific properties) strongly influence computed structural stresses and therefore the ΔPSS/strength index; many related studies report such modeling and a reviewer would likely demand it.",
+      "evidence_sources": [
+        "paper_001",
+        "paper_006",
+        "paper_008"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 3
+      }
+    },
+    {
+      "key": "peak_structural_stress",
+      "category": "outcomes",
+      "aliases": [
+        "peak PSS",
+        "peak_cap_stress",
+        "maximum principal stress (P1)",
+        "Cap(stress)"
+      ],
+      "observed_in": 3,
+      "applicable_papers": 10,
+      "prevalence": 0.3,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "strongly_expected",
+      "reason": "ΔPSS (change in peak structural stress) is a numerator of the proposed index and peak stresses (cap stress/P1) are widely reported predictors of rupture, so reporting peak stress measures is essential for credibility.",
+      "evidence_sources": [
+        "paper_006",
+        "paper_008",
+        "paper_009"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 3
+      }
+    },
+    {
+      "key": "hemodynamic_loading_and_cfd_metrics",
+      "category": "methods",
+      "aliases": [
+        "luminal pressure / hemodynamic loading conditions",
+        "CFD simulations to compute TAWSS and OSI",
+        "CFD-derived hemodynamic metrics"
+      ],
+      "observed_in": 2,
+      "applicable_papers": 10,
+      "prevalence": 0.2,
+      "applicability": {
+        "required_when": [
+          "claims_involve hemodynamic drivers or compare hemodynamic metrics to stress-based index"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "strongly_expected",
+      "reason": "Hemodynamic loading is an explicit input class in the study and influences ΔPSS; related literature commonly reports CFD metrics (TAWSS/OSI) and reviewers will expect clear specification of boundary conditions and hemodynamic measures when claiming hemodynamic drivers.",
+      "evidence_sources": [
+        "paper_001",
+        "paper_010"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 2
+      }
+    },
+    {
+      "key": "large_sample_parameter_sampling",
+      "category": "methods",
+      "aliases": [
+        "large-sample (1,000-sample) cost-effective FSI study",
+        "finite set of idealized atherosclerotic vessel models (5,500 models) simulating positive arterial remodeling",
+        "parameter-sampling of plaque geometries, material properties and hemodynamic loading"
+      ],
+      "observed_in": 2,
+      "applicable_papers": 10,
+      "prevalence": 0.2,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "strongly_expected",
+      "reason": "The study's novelty rests on a cost-effective large-sample FSI approach (1,000 samples) to derive the index and identify drivers; similar large-cohort idealized/model-sampling approaches in the literature support expecting clear reporting of sampling strategy and rationale.",
+      "evidence_sources": [
+        "paper_005",
+        "paper_006"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 2
+      }
+    },
+    {
+      "key": "material_strength_estimate",
+      "category": "outcomes",
+      "aliases": [
+        "local material/rupture strength",
+        "cap material strength",
+        "assigned material strength"
+      ],
+      "observed_in": 2,
+      "applicable_papers": 10,
+      "prevalence": 0.2,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "strongly_expected",
+      "reason": "The index divides ΔPSS by material strength, so estimated local strength values (even if literature-derived) must be reported and their uncertainty characterized to interpret the index.",
+      "evidence_sources": [
+        "paper_002",
+        "paper_006"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 2
+      }
+    },
+    {
+      "key": "incomplete_reporting_in_abstracts",
+      "category": "limitations",
+      "aliases": [
+        "details of modelling parameters, numerical settings, and experimental methods not provided in abstract",
+        "limitations not reported",
+        "missing methodological detail in abstract"
+      ],
+      "observed_in": 2,
+      "applicable_papers": 10,
+      "prevalence": 0.2,
+      "applicability": {
+        "required_when": [
+          "paper_is_abstract_only_or_methods_are_summarized_without_detail",
+          "readers_or reviewers_must_assess_reproducibility"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "strongly_expected",
+      "reason": "Adequate reporting of modelling parameters, numerical settings and methods is commonly expected and necessary for assessing reproducibility and credibility; many source records note such details are often missing in abstracts, so full-method reporting should be strongly expected for this project.",
+      "evidence_sources": [
+        "paper_007",
+        "paper_009"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 2
+      }
+    },
+    {
+      "key": "study_design_computational_parametric_with_clinical_comparison",
+      "category": "study_design",
+      "aliases": [
+        "computational parametric study with comparison to clinical intravascular ultrasound (IVUS) cases",
+        "computational_parametric_with_clinical_test"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "claim_includes_validation_or_comparison_to_clinical_imaging"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "strongly_expected",
+      "reason": "When asserting that an index reflects clinical risk, comparison or partial validation against clinical imaging/data is strongly expected by reviewers and is present in similar works.",
+      "evidence_sources": [
+        "paper_006"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "relationships_between_geometric_compositional_features_and_cap_stress",
+      "category": "results",
+      "aliases": [
+        "relationships between necrotic core size, remodeling index and cap stress",
+        "core size/remodeling vs cap stress relationships",
+        "geometric/compositional drivers of cap stress"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "claim_identifies_drivers_of_index",
+          "sensitivity_or_multivariate_analysis_reported"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "strongly_expected",
+      "reason": "Several simulation studies report that geometric and compositional features (e.g., necrotic core size, remodeling) relate to cap stress; because this project claims to identify drivers of a mechanical rupture-risk index, reporting such relationships (with appropriate sampling/statistics) is strongly expected.",
+      "evidence_sources": [
+        "paper_006"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "study_design_review_article",
+      "category": "study_design",
+      "aliases": [
+        "narrative review",
+        "literature review",
+        "review paper",
+        "literature review / narrative review",
+        "review of prospective studies and modelling work"
+      ],
+      "observed_in": 4,
+      "applicable_papers": 10,
+      "prevalence": 0.4,
+      "applicability": {
+        "required_when": [
+          "providing_literature_context_or_motivation"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "Review articles are frequently cited to provide context and motivate computational studies but do not dictate the experimental or computational requirements of this project.",
+      "evidence_sources": [
+        "paper_002",
+        "paper_004",
+        "paper_005",
+        "paper_009"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 4
+      }
+    },
+    {
+      "key": "idealized_or_parameterized_plaque_models",
+      "category": "methods",
+      "aliases": [
+        "finite set of idealized atherosclerotic vessel models (5,500 models)",
+        "parametrized coronary plaque geometries",
+        "idealized_model_simulations",
+        "FSI model variants",
+        "construction of 3-D FSI models varying anisotropy, cyclic bending, and axial stretch"
+      ],
+      "observed_in": 3,
+      "applicable_papers": 10,
+      "prevalence": 0.3,
+      "applicability": {
+        "required_when": [
+          "using synthetic cohorts instead of patient-specific geometry"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "The project's design uses parametrized synthetic plaque geometries for a large sample; many related papers report idealized/model-sampling approaches, so documenting the parameterization and model set is commonly expected though not uniquely novel.",
+      "evidence_sources": [
+        "paper_001",
+        "paper_006",
+        "paper_008"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 3
+      }
+    },
+    {
+      "key": "comparative_evidence_and_guideline_synthesis",
+      "category": "methods",
+      "aliases": [
+        "synthesis of biomechanical and clinical evidence",
+        "guideline synthesis and recommendations (evidence review implied)",
+        "comparative literature synthesis",
+        "discussion of biomarkers and comparison with imaging modalities"
+      ],
+      "observed_in": 3,
+      "applicable_papers": 10,
+      "prevalence": 0.3,
+      "applicability": {
+        "required_when": [
+          "claims_extend_to clinical recommendations or comparison to existing biomarkers"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "While many papers include conceptual synthesis or comparative discussion to place biomechanical indices in clinical context, such synthesis is not essential to computing the index but is commonly expected when discussing clinical implications.",
+      "evidence_sources": [
+        "paper_002",
+        "paper_003",
+        "paper_004"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 3
+      }
+    },
+    {
+      "key": "evaluate_hemodynamic_loading_and_predictions",
+      "category": "objective",
+      "aliases": [
+        "objective: predict hemodynamic parameters (TAWSS and OSI) using ML trained on CFD",
+        "Objective: role of biomechanical forces in coronary atherosclerosis"
+      ],
+      "observed_in": 2,
+      "applicable_papers": 10,
+      "prevalence": 0.2,
+      "applicability": {
+        "required_when": [
+          "hemodynamic_variation_is_sampled_or_claimed_as_driver"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "Assessing or predicting hemodynamic loading (TAWSS/OSI/pressure) is commonly part of FSI plaque studies and relevant here when hemodynamic conditions are posited drivers of ΔPSS, though some reported objectives used ML/CFD which is not essential to every FSI pipeline.",
+      "evidence_sources": [
+        "paper_002",
+        "paper_010"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 2
+      }
+    },
+    {
+      "key": "clinical_imaging_datasets",
+      "category": "data_or_sample",
+      "aliases": [
+        "in vivo IVUS dataset",
+        "44-slice IVUS one-patient dataset",
+        "IVUS imaging datasets"
+      ],
+      "observed_in": 2,
+      "applicable_papers": 10,
+      "prevalence": 0.2,
+      "applicability": {
+        "required_when": [
+          "study_includes_patient_specific_models_or_validation_against_imaging"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "Clinical imaging datasets (IVUS) are commonly used in the literature to build or validate plaque models; for this cost-effective synthetic-cohort study they are useful for context or validation but not strictly required (paper_006, paper_008).",
+      "evidence_sources": [
+        "paper_006",
+        "paper_008"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 2
+      }
+    },
+    {
+      "key": "biomarker_identification",
+      "category": "outcomes",
+      "aliases": [
+        "biomarkers for vulnerable plaques",
+        "diagnostic biomarkers",
+        "risk stratification biomarkers"
+      ],
+      "observed_in": 2,
+      "applicable_papers": 10,
+      "prevalence": 0.2,
+      "applicability": {
+        "required_when": [
+          "claim_involves_clinical_application_or_translation"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "Papers report identification of biomarkers potentially useful for diagnosis and risk stratification; if the study links mechanical index to biomarkers or clinical markers, reporting comparable analyses is expected but not strictly necessary for the primary computational claim.",
+      "evidence_sources": [
+        "paper_004",
+        "paper_009"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 2
+      }
+    },
+    {
+      "key": "study_design_case_study_single_subject_modeling",
+      "category": "study_design",
+      "aliases": [
+        "in vivo IVUS imaging combined with computational modeling (FSI) on one patient dataset",
+        "case study / single-subject modeling"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "claim_is_demonstrative_or_method_proof_of_concept"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "Single-subject case studies are commonly used to illustrate modeling workflows but are not sufficient for the project's large-sample rupture-index claim; they are common for method demonstration in the literature.",
+      "evidence_sources": [
+        "paper_008"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "clinical_prospective_studies_on_PSS",
+      "category": "data_or_sample",
+      "aliases": [
+        "prospective clinical studies correlating peak PSS with outcomes",
+        "clinical studies linking PSS to ACS/MACE"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "making_clinical_relevance_claims_or_proposing_translation_to_clinic"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "Clinical prospective studies relating peak PSS to adverse outcomes provide important context and support for clinical relevance of a rupture-risk index, and are often referenced though not strictly required for the computational index itself (paper_009).",
+      "evidence_sources": [
+        "paper_009"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "models_six_computational_models_varying_cyclic_bending_anisotropy_pulsating_pressure_plaque_structure_and_axial_stretch",
+      "category": "models_and_equations",
+      "aliases": [
+        "Models: six computational models varying cyclic bending, anisotropy, pulsating pressure, plaque structure, and axial stretch"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "",
+      "evidence_sources": [
+        "paper_001"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "conceptual_framework_biomechanics",
+      "category": "outcomes",
+      "aliases": [
+        "conceptual framework linking biomechanics to disease",
+        "mechanobiological framework",
+        "theoretical conclusions"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "Several sources present broader conceptual frameworks linking biomechanical metrics to disease progression; situating the new index within such a framework is commonly reported and helps interpretation.",
+      "evidence_sources": [
+        "paper_002"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "clinical_associations_of_pstress",
+      "category": "outcomes",
+      "aliases": [
+        "associations of peak PSS with clinical events",
+        "prognostic value of PSS",
+        "association with ACS and MACE"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "making_claims_about_clinical_predictive_value"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "Literature links peak PSS to clinical outcomes; if the manuscript claims clinical relevance or improved prognostic value of the new index, comparative/association evidence is commonly expected.",
+      "evidence_sources": [
+        "paper_009"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "biomechanical_forces_influence_on_plaque_outcomes",
+      "category": "results",
+      "aliases": [
+        "biomechanical forces influence plaque development and clinical events",
+        "mechanical forces affect plaque outcomes"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "Multiple abstracts assert that biomechanical forces affect plaque development and events, and this general mechanistic claim is commonly reported and provides conceptual motivation for a rupture-risk index though it is not sufficient by itself to validate the new index.",
+      "evidence_sources": [
+        "paper_002"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "quantitative_relative_changes_in_stress_and_flow_under_model_variations",
+      "category": "results",
+      "aliases": [
+        "quantitative comparisons of model variants (percent changes in stress/flow)",
+        "relative changes in stress and flow across models",
+        "model sensitivity: % change in peak/stress/flow"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "claim_demonstrates_cost_effectiveness_via_model_variants",
+          "claim_compares_index_vs_components"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "Published simulation abstracts present quantitative percent-changes in stresses and flow between model variants; for a large-sample FSI study claiming cost-effectiveness and comparative behaviors of ΔPSS versus alternatives, reporting representative quantitative relative changes is commonly done and supports credibility.",
+      "evidence_sources": [
+        "paper_008"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "fsi_tool_development_and_complexity_limits",
+      "category": "limitations",
+      "aliases": [
+        "current challenges in computational FSI for time-dependent, complex microfluidic models",
+        "need for further tool development",
+        "limitations: current challenges in computational FSI for time-dependent, complex microfluidic models"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "study_uses_cost-effective_or_simplified_FSI_approaches",
+          "claims_feasibility_or_scalability_of_large_sample_FSI"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "common",
+      "reason": "Literature frequently notes tool and methodological limitations for complex/time-dependent FSI; because this project emphasizes a cost-effective large-sample FSI workflow, acknowledging limitations of FSI tools and simplifications is commonly reported and affects credibility.",
+      "evidence_sources": [
+        "paper_005"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "literature_review_or_biomarker_summary",
+      "category": "objective",
+      "aliases": [
+        "objective: summarize current data on biomarkers for vulnerable atherosclerotic lesions",
+        "Objective: review methods and role of plaque structural stress (PSS)",
+        "Objective: role of biomechanical forces in coronary atherosclerosis"
+      ],
+      "observed_in": 3,
+      "applicable_papers": 10,
+      "prevalence": 0.3,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "optional",
+      "reason": "Background reviews and biomarker summaries inform motivation and discussion but are not required for executing or validating the computational rupture-risk index study; several abstract-only items report such review objectives.",
+      "evidence_sources": [
+        "paper_002",
+        "paper_004",
+        "paper_009"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 3
+      }
+    },
+    {
+      "key": "pulsatile_loading_and_cyclic_bending",
+      "category": "methods",
+      "aliases": [
+        "cyclic bending",
+        "FSI with cyclic bending",
+        "FSI model variants varying cyclic bending"
+      ],
+      "observed_in": 2,
+      "applicable_papers": 10,
+      "prevalence": 0.2,
+      "applicability": {
+        "required_when": [
+          "claims_depend_on realistic coronary mechanics or bending-driven stress changes"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "optional",
+      "reason": "Cyclic bending/pulsatile vessel motion can alter local stresses and is reported in several FSI studies, but the project's cost-effective large-sample approach may validly omit or simplify bending depending on scope; it is only required if bending-driven mechanics are central to the rupture-risk claim.",
+      "evidence_sources": [
+        "paper_001",
+        "paper_008"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 2
+      }
+    },
+    {
+      "key": "study_design_guideline_document",
+      "category": "study_design",
+      "aliases": [
+        "clinical practice guidelines document",
+        "guideline development"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "claims_implicate_clinical_recommendations_or_translation"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "optional",
+      "reason": "Guideline documents are relevant when making clinical translation claims but are not necessary for presenting a computational rupture-risk index derived in silico.",
+      "evidence_sources": [
+        "paper_003"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "study_design_animal_model_based_modelling",
+      "category": "study_design",
+      "aliases": [
+        "animal (mouse) in vivo data used to build model",
+        "animal study / modelling study"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "claim_involves_in_vivo_biological_validation_or_biomechanical_parameter_estimation_from_animals"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "optional",
+      "reason": "Animal-based model studies provide experimental/mechanistic data used in some modeling works but are not required for an in-silico, parameter-sampling FSI rupture-index development.",
+      "evidence_sources": [
+        "paper_007"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "ex_vivo_specimen",
+      "category": "data_or_sample",
+      "aliases": [
+        "ex vivo coronary plaque MRI specimen",
+        "single ex vivo plaque sample"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "study_offers_experimental_or_imaging_validation"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "optional",
+      "reason": "Ex vivo specimens provide direct material/geometry information and are occasionally used in related studies for validation, but this synthetic FSI study does not require them to support its primary computational claims (paper_001).",
+      "evidence_sources": [
+        "paper_001"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "animal_data_or_measurements",
+      "category": "data_or_sample",
+      "aliases": [
+        "anesthetized mice measurements",
+        "animal measurements"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "study_uses_or_compares_to_animal_experiments"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "optional",
+      "reason": "Animal measurements can inform parameter values or provide experimental validation in some studies, but are not necessary for a large synthetic-cohort FSI computational study unless the authors claim experimental corroboration (paper_007).",
+      "evidence_sources": [
+        "paper_007"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "target_population_description",
+      "category": "data_or_sample",
+      "aliases": [
+        "target patient populations",
+        "population description (e.g., immunocompromised)"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "making_population_specific_clinical_claims"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "optional",
+      "reason": "Describing the target population is relevant if authors make claims about specific patient groups; for a synthetic plaque mechanics study with general coronary focus this is useful but not essential (paper_003).",
+      "evidence_sources": [
+        "paper_003"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "machine_learning_models_for_prediction",
+      "category": "methods",
+      "aliases": [
+        "fourteen machine learning algorithms employed for prediction",
+        "ML algorithms (n=14)"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "the project uses ML for index prediction or classification"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "optional",
+      "reason": "ML approaches are used in some related studies for prediction/feature selection, but the present study describes sensitivity/statistical analysis rather than ML; ML is only relevant if added for prediction tasks.",
+      "evidence_sources": [
+        "paper_010"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "future_directions_and_roadmap",
+      "category": "outcomes",
+      "aliases": [
+        "future directions",
+        "roadmap for research and development",
+        "potential for future R&D"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "optional",
+      "reason": "Papers often include future research suggestions; including a roadmap is useful for impact statements but not required to support the computational results.",
+      "evidence_sources": [
+        "paper_005"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "ml_hemodynamics_prediction",
+      "category": "outcomes",
+      "aliases": [
+        "ML prediction of hemodynamics",
+        "TAWSS and OSI prediction models",
+        "machine_learning_flow_surrogates"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "study_uses_ml_or_surrogate_models_to_reduce_cost"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "optional",
+      "reason": "Some recent studies report ML models to predict hemodynamic metrics as a cost-saving surrogate; if this project uses similar surrogates to reach 1,000 samples, reporting ML model performance is necessary, otherwise it's optional.",
+      "evidence_sources": [
+        "paper_010"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "imaging_invasiveness_operator_dependence",
+      "category": "limitations",
+      "aliases": [
+        "intravascular imaging is invasive and operator-dependent",
+        "imaging limitations noted",
+        "limitations: intravascular imaging is invasive and operator-dependent (limitation of that modality)"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "study_uses_intravascular_imaging_for_geometry_or_validation",
+          "claims_generalizability_to_clinical_imaging-derived cohorts"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "optional",
+      "reason": "When patient or validation data are derived from intravascular imaging, its invasiveness and operator dependence are relevant caveats; for a synthetic-large-sample FSI study that does not rely on patient imaging, this is an important but not mandatory limitation to state.",
+      "evidence_sources": [
+        "paper_004"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "guideline_update_or_clinical_recommendation_objective",
+      "category": "objective",
+      "aliases": [
+        "Objective: update treatment guidelines for aspergillosis"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "unsupported",
+      "reason": "A guideline-update objective (unrelated infectious-disease example) is irrelevant to this computational cardiology study and provides weak/abstract-only evidence for requirements here.",
+      "evidence_sources": [
+        "paper_003"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "application_domain_examples",
+      "category": "data_or_sample",
+      "aliases": [
+        "examples of microdevices and biomedical devices",
+        "application domains discussed"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [
+          "providing_broad_context_or_interdisciplinary_examples"
+        ],
+        "not_applicable_when": []
+      },
+      "requirement_level": "unsupported",
+      "reason": "Discussion of microdevices and other biomedical device examples is unrelated to coronary plaque FSI rupture-index development and appears as background in other domains, so it does not drive requirements for this project (paper_005).",
+      "evidence_sources": [
+        "paper_005"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "aortic_haemodynamics_mouse",
+      "category": "outcomes",
+      "aliases": [
+        "aortic haemodynamics and wall mechanics (mouse)",
+        "mouse aortic behaviour characterization"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "unsupported",
+      "reason": "This item refers to mouse aortic behavior, which is not directly applicable to human coronary plaque FSI studies and provides weak relevance to the project's central claims.",
+      "evidence_sources": [
+        "paper_007"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "treatment_recommendations_unrelated",
+      "category": "outcomes",
+      "aliases": [
+        "treatment recommendations (aspergillosis)",
+        "clinical_treatment_recs_unrelated"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "unsupported",
+      "reason": "This item is about treatment of aspergillosis and is not relevant to coronary plaque rupture-risk modeling.",
+      "evidence_sources": [
+        "paper_003"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    },
+    {
+      "key": "guideline_replacement_or_policy_claims",
+      "category": "results",
+      "aliases": [
+        "replacement of 2000 practice guidelines with updated guidelines",
+        "guideline replacement/conclusion"
+      ],
+      "observed_in": 1,
+      "applicable_papers": 10,
+      "prevalence": 0.1,
+      "applicability": {
+        "required_when": [],
+        "not_applicable_when": []
+      },
+      "requirement_level": "unsupported",
+      "reason": "An abstract-level claim about replacing practice guidelines is unrelated to the computational rupture-risk index study and is unsupported by the simulation-focused materials provided.",
+      "evidence_sources": [
+        "paper_003"
+      ],
+      "content_support": {
+        "full_text": 0,
+        "partial_text": 0,
+        "abstract_only": 1
+      }
+    }
+  ]
+}

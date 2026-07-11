@@ -11,3 +11,4 @@ dist/
 
 # run outputs
 outputs/
+.pytest_cache/

@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_006",
+  "study_archetype": "computational biomechanical simulation study comparing idealized models with clinical IVUS cases",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "primary objective: investigate effect of necrotic core size and plaque morphology on peak cap stress",
+      "category": "objective",
+      "sub_category": "primary_objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study design: computational parametric study with comparison to clinical intravascular ultrasound (IVUS) cases",
+      "category": "study_design",
+      "sub_category": "computational_parametric_with_clinical_test",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data/sample: 24 nonruptured plaques imaged by intravascular ultrasound (IVUS) from patients",
+      "category": "data_or_sample",
+      "sub_category": "clinical_IVUS_sample",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: finite set of idealized atherosclerotic vessel models (5,500 models) simulating positive arterial remodeling",
+      "category": "methods",
+      "sub_category": "idealized_model_simulations",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcome measure: peak fibrous cap stress (Cap(stress)) as predictor of rupture",
+      "category": "outcomes",
+      "sub_category": "peak_cap_stress",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "results: relationships found between necrotic core size, remodeling index and cap stress based on extensive simulations",
+      "category": "results",
+      "sub_category": "simulation_relationships_core_remodeling_capstress",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

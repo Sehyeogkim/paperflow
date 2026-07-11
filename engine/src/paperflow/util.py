@@ -3,13 +3,55 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from .schemas.evidence_inventory import EvidenceInventory
 from .schemas.project_state import ProjectState
+from .schemas.research_state import ResearchState
 
 _PROMPTS = Path(__file__).resolve().parents[2] / "prompts"
 
 
 def prompt(name: str) -> str:
     return (_PROMPTS / f"{name}.txt").read_text()
+
+
+def _research_state_block(rs: ResearchState) -> list[str]:
+    """Reconstructed study logic — rendered for the claim graph / contracts / writer."""
+    lines = ["", "## RESEARCH STATE (reconstructed — treat as recovered study facts)"]
+    scalars = [("study_type", rs.study_type), ("research_problem", rs.research_problem),
+               ("objective", rs.objective), ("study_design", rs.study_design),
+               ("primary_message", rs.primary_message)]
+    for label, val in scalars:
+        if val:
+            lines.append(f"  {label}: {val}")
+    for label, items in [("methods", rs.methods), ("input_variables", rs.input_variables),
+                         ("outcomes", rs.outcomes), ("comparisons", rs.comparisons),
+                         ("key_observations", rs.key_observations),
+                         ("possible_claims", rs.possible_claims),
+                         ("limitations", rs.limitations)]:
+        if items:
+            lines.append(f"  {label}:")
+            lines += [f"    - {x}" for x in items]
+    if rs.unknowns:
+        lines.append(f"  unknowns (still missing): {', '.join(rs.unknowns)}")
+    return lines
+
+
+def _evidence_block(inv: EvidenceInventory) -> list[str]:
+    """Each uploaded file as research evidence (role + unit + columns)."""
+    if not inv.assets:
+        return []
+    lines = ["", "## EVIDENCE INVENTORY (uploaded files as research evidence)"]
+    for a in inv.assets:
+        bits = [f"  - {a.path} [{a.inferred_role or a.kind}]"]
+        if a.unit_of_analysis:
+            bits.append(f"unit={a.unit_of_analysis}")
+        if a.columns:
+            bits.append("cols=" + ",".join(list(a.columns)[:12]))
+        line = "  ".join(bits)
+        if a.user_description:
+            line += f"\n      desc: {a.user_description}"
+        lines.append(line)
+    return lines
 
 
 def inputs_block(ps: ProjectState) -> str:
@@ -53,6 +95,10 @@ def inputs_block(ps: ProjectState) -> str:
             lines.append(f"  - {d.path} ({d.kind}){cols}{note}")
     else:
         lines.append("  (none)")
+    if ps.research_state is not None:
+        lines += _research_state_block(ps.research_state)
+    if ps.evidence_inventory is not None:
+        lines += _evidence_block(ps.evidence_inventory)
     lines += ["", "## EXISTING REFERENCE KEYS", "  " + (", ".join(ps.reference_keys) or "(none)")]
     if ps.found_references:
         lines += ["", "## FOUND REFERENCES (real papers from literature search — citable as [cite:key])"]

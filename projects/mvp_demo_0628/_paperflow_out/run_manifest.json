@@ -1,0 +1,172 @@
+{
+  "project_dir": "/Users/jeff/project/jeff_soul/projects/paperflow/projects/mvp_demo_0628",
+  "sections": [
+    "method",
+    "result",
+    "discussion",
+    "introduction",
+    "conclusion",
+    "abstract"
+  ],
+  "classification": null,
+  "calls": [
+    {
+      "step": "contracts.abstract",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 16020,
+      "output_tokens": 720,
+      "cached_tokens": 16000
+    },
+    {
+      "step": "contracts.introduction",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 16021,
+      "output_tokens": 1031,
+      "cached_tokens": 0
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 11364,
+      "output_tokens": 695,
+      "cached_tokens": 0
+    },
+    {
+      "step": "contracts.method",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 16020,
+      "output_tokens": 1493,
+      "cached_tokens": 15872
+    },
+    {
+      "step": "contracts.conclusion",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 16021,
+      "output_tokens": 1517,
+      "cached_tokens": 16000
+    },
+    {
+      "step": "contracts.result",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 16020,
+      "output_tokens": 1634,
+      "cached_tokens": 16000
+    },
+    {
+      "step": "contracts.discussion",
+      "tier": "reasoning",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 16020,
+      "output_tokens": 1810,
+      "cached_tokens": 11904
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 16047,
+      "output_tokens": 1854,
+      "cached_tokens": 7040
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 15536,
+      "output_tokens": 1571,
+      "cached_tokens": 7040
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 20510,
+      "output_tokens": 1989,
+      "cached_tokens": 7040
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 20342,
+      "output_tokens": 2086,
+      "cached_tokens": 7040
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "openai",
+      "model": "gpt-5-mini",
+      "input_tokens": 28047,
+      "output_tokens": 2560,
+      "cached_tokens": 7040
+    }
+  ],
+  "totals": {
+    "input_tokens": 207968,
+    "output_tokens": 18960,
+    "cached_tokens": 110976,
+    "cache_hit_rate": 0.5336
+  },
+  "by_step": {
+    "contracts.abstract": {
+      "input": 16020,
+      "output": 720,
+      "cached": 16000,
+      "calls": 1
+    },
+    "contracts.introduction": {
+      "input": 16021,
+      "output": 1031,
+      "cached": 0,
+      "calls": 1
+    },
+    "writer": {
+      "input": 111846,
+      "output": 10755,
+      "cached": 35200,
+      "calls": 6
+    },
+    "contracts.method": {
+      "input": 16020,
+      "output": 1493,
+      "cached": 15872,
+      "calls": 1
+    },
+    "contracts.conclusion": {
+      "input": 16021,
+      "output": 1517,
+      "cached": 16000,
+      "calls": 1
+    },
+    "contracts.result": {
+      "input": 16020,
+      "output": 1634,
+      "cached": 16000,
+      "calls": 1
+    },
+    "contracts.discussion": {
+      "input": 16020,
+      "output": 1810,
+      "cached": 11904,
+      "calls": 1
+    }
+  }
+}

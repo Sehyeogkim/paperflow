@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaperFlow — 현재 전체 흐름·시간 + compare 설명</title>
+<style>
+  :root{
+    --bg:#F0EEE6; --surface:#FAF9F5; --surface2:#E6E0D4;
+    --accent:#CC785C; --accent2:#E8D5C4; --border:#D4C5B0;
+    --ink:#1A1A1A; --body:#2D2D2D; --muted:#6B5E54;
+    --code-bg:#E6E0D4; --code-ink:#8B4513;
+    --ok:#7A9A6D; --err:#C25744; --info:#9DB0C4; --gold:#C9A24B;
+    --radius:16px; --radius-sm:10px;
+    --shadow:0 1px 2px rgba(60,40,20,.05),0 8px 24px rgba(60,40,20,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--body);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo",Pretendard,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1160px;margin:0 auto;padding:42px 24px 100px}
+  h1{font-size:2rem;letter-spacing:-.02em;color:var(--ink);margin:0 0 6px;font-weight:800}
+  .sub{color:var(--muted);font-size:1rem;margin:0}
+  .mono{font-family:ui-monospace,Menlo,monospace}
+
+  .banner{margin:18px 0 6px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:14px 20px;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center}
+  .banner .kv{font-size:.85rem} .banner .kv b{color:var(--accent)}
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .lg{font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:999px;border:1px solid var(--border)}
+  .lg.mini{background:var(--info);color:#1f2d3d}.lg.http{background:var(--surface2);color:var(--code-ink)}
+  .lg.det{background:#EAF0E5;color:#42603a}.lg.cut{background:#F7E7E2;color:#9c4634}
+
+  .phase{margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);overflow:hidden}
+  .phase>h2{margin:0;padding:14px 20px;font-size:1.08rem;color:#fff;font-weight:800;display:flex;align-items:center;gap:12px}
+  .phase.s1>h2{background:linear-gradient(90deg,#B5654A,#CC785C)}
+  .phase.adv>h2{background:linear-gradient(90deg,#5f7b94,#9DB0C4)}
+  .phase.gen>h2{background:linear-gradient(90deg,#6b8560,#7A9A6D)}
+  .phase>h2 .tot{margin-left:auto;font-size:.8rem;font-weight:700;background:rgba(255,255,255,.22);padding:3px 11px;border-radius:999px}
+  table{width:100%;border-collapse:collapse;font-size:.83rem}
+  thead th{font-size:.64rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:800;
+    text-align:left;padding:8px 14px;border-bottom:1px solid var(--border)}
+  tbody td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+  tbody tr:last-child td{border-bottom:none}
+  .step{font-weight:700;color:var(--ink)} .step .n{display:inline-block;width:20px;color:var(--muted);font-family:ui-monospace,Menlo,monospace}
+  .what{color:var(--muted);font-size:.78rem;margin-top:2px}
+  .model{font-family:ui-monospace,Menlo,monospace;font-size:.72rem;font-weight:700;padding:2px 7px;border-radius:6px;white-space:nowrap}
+  .model.mini{background:var(--info);color:#1f2d3d}.model.http{background:var(--surface2);color:var(--code-ink)}
+  .model.det{background:#EAF0E5;color:#42603a}
+  .time{font-family:ui-monospace,Menlo,monospace;font-weight:800;color:var(--ink);white-space:nowrap}
+  .time.zero{color:var(--ok)} .time.hot{color:var(--err)}
+  .was{font-size:.7rem;color:var(--muted);text-decoration:line-through;margin-right:5px}
+  .tag{font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:999px}
+  .tag.par{background:var(--accent2);color:var(--code-ink)}
+  .tag.cut{background:#F7E7E2;color:#9c4634}
+  .gate{padding:10px 20px;background:var(--accent2);color:var(--code-ink);font-size:.83rem;font-weight:700}
+  .gate .b{background:var(--accent);color:#fff;border-radius:6px;padding:2px 9px;font-size:.7rem;margin-right:6px}
+  .gate.skip{background:#EAF0E5;color:#42603a}
+  .arrow{text-align:center;color:var(--border);font-size:1.3rem;margin:4px 0}
+
+  .note{margin-top:22px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:16px 22px}
+  .note h3{margin:0 0 8px;font-size:1rem;color:var(--ink)} .note ul{margin:0;padding-left:18px}
+  .note li{font-size:.85rem;margin:4px 0} .note li b{color:var(--accent)}
+
+  /* compare deep dive */
+  .deep{margin-top:28px;background:#FBF3EE;border:1.5px solid var(--accent);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:20px 24px}
+  .deep h2{margin:0 0 4px;font-size:1.25rem;color:var(--accent);font-weight:800}
+  .deep .lead{color:var(--body);font-size:.92rem;margin:0 0 14px}
+  .deep h3{margin:16px 0 6px;font-size:.95rem;color:var(--ink)}
+  .flowbox{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0;font-size:.82rem}
+  .fb{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px}
+  .fb b{color:var(--accent)} .fb .s{display:block;color:var(--muted);font-size:.72rem}
+  .fb.in{background:var(--accent2)} .fb.out{background:#EAF0E5}
+  .ar{color:var(--muted);font-weight:800}
+  .why{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+  @media(max-width:760px){.why{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+  .card h4{margin:0 0 5px;font-size:.84rem;color:var(--ink)} .card p{margin:0;font-size:.8rem;color:var(--muted)}
+  .barwrap{margin-top:6px} .bar{height:16px;border-radius:5px;background:linear-gradient(90deg,#E8D5C4,#CC785C);position:relative}
+  .bar .lbl{position:absolute;right:6px;top:0;font-size:.66rem;font-weight:800;color:#fff;line-height:16px}
+  .cand{margin-top:10px} .cand li{font-size:.84rem;margin:5px 0} .cand li b{color:var(--accent)}
+
+  .foot{margin-top:26px;font-size:.76rem;color:var(--muted);text-align:center;line-height:1.7}
+  .pill{display:inline-block;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:3px 11px;font-size:.74rem;font-weight:600;margin:2px}
+  .pill.hot{background:var(--accent);color:#fff;border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>PaperFlow — 현재 전체 흐름 · step별 시간</h1>
+  <p class="sub">반영 목록 5개 + Stage-2 스킵 적용 후 (라이브 실측, coronary_plaque_VI_demo, 2026-06-27)</p>
+
+  <div class="banner">
+    <div class="kv">모델: <b>전부 gpt-5-mini</b></div>
+    <div class="kv">effort: minimal/low</div>
+    <div class="kv">질문 라운드: <b>1회</b> (Stage-2 스킵)</div>
+    <div class="kv">검증: off</div>
+  </div>
+  <div class="legend">
+    <span class="lg mini">● gpt-5-mini</span>
+    <span class="lg http">● HTTP(OpenAlex)</span>
+    <span class="lg det">● 결정적 코드</span>
+    <span class="lg cut">✂ 이번에 제거/단축</span>
+  </div>
+
+  <!-- STAGE 1 -->
+  <div class="phase s1">
+    <h2>STAGE 1 · 진단(질문1) <span class="tot">≈ 100~190초 (변동)</span></h2>
+    <table>
+      <thead><tr><th>단계</th><th>모델</th><th>시간</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td class="step"><span class="n">1</span>검색 쿼리·archetype<div class="what">입력 → OpenAlex 검색어</div></td><td><span class="model mini">mini·minimal</span></td><td class="time">~4s</td><td></td></tr>
+        <tr><td class="step"><span class="n">2</span>OpenAlex 검색·10편 선정</td><td><span class="model http">OpenAlex</span></td><td class="time">~13s</td><td></td></tr>
+        <tr><td class="step"><span class="n">3</span>논문 항목 추출</td><td><span class="model mini">mini·minimal</span></td><td class="time">~5s</td><td><span class="tag par">▷ 10편 동시</span></td></tr>
+        <tr><td class="step"><span class="n">4+5</span>normalize <i>+ 레벨 판단</i> → schema<div class="what">클러스터링과 requirement_level을 한 콜에서. schema는 코드 계산</div></td><td><span class="model mini">mini·low</span></td><td class="time">~22s <span class="was">19+32</span></td><td><span class="tag cut">✂ synthesize LLM 제거(0s)</span></td></tr>
+        <tr style="background:#FBF3EE"><td class="step"><span class="n">6</span>비교 + 질문 생성 (병합)<div class="what">52개 요구를 present/partial/missing 판정 + 빠진 것만 질문. ★남은 병목</div></td><td><span class="model mini">mini·low</span></td><td class="time hot">60~148s</td><td>↓ 아래 상세</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="gate">★ <span class="b">질문 라운드 1</span> 유저가 빠진 연구 사실에 답함 (출처 논문 포함) → 논리 구조로</div>
+
+  <div class="arrow">▼</div>
+
+  <!-- ADVANCE -->
+  <div class="phase adv">
+    <h2>STAGE 2 · 논리그래프 <span class="tot">≈ 91초</span></h2>
+    <table>
+      <thead><tr><th>단계</th><th>모델</th><th>시간</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td class="step"><span class="n">7</span>연구상태 v2 (답변 반영)<div class="what">진단이 만든 state를 로드 + 답변 fold</div></td><td><span class="model det">코드</span></td><td class="time zero">~0s <span class="was">58s</span></td><td><span class="tag cut">✂ LLM 재구성 제거</span></td></tr>
+        <tr><td class="step"><span class="n">8</span>잠정 Logic Graph (2-pass)<div class="what">Pass A 주장 골격 → Pass B 근거+엣지. 노드 51·엣지 46</div></td><td><span class="model mini">mini·low</span></td><td class="time">~91s</td><td>다음 병목 후보</td></tr>
+        <tr><td class="step"><span class="n">9</span>빈틈 검사</td><td><span class="model det">코드</span></td><td class="time zero">즉시</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="gate skip"><span class="b" style="background:#7A9A6D">SKIP</span> 질문2(논리질문) 스킵 — 빈틈검사 결과와 무관하게 바로 생성 (SKIP_STAGE2=True, 한 줄로 복구)</div>
+
+  <div class="arrow">▼</div>
+
+  <!-- GENERATE -->
+  <div class="phase gen">
+    <h2>STAGE 3 · 논문 생성 <span class="tot">≈ 35초 <span style="opacity:.6">(was 126s)</span></span></h2>
+    <table>
+      <thead><tr><th>단계</th><th>모델</th><th>시간</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td class="step"><span class="n">11</span>최종 Logic Graph 확정</td><td><span class="model det">코드</span></td><td class="time zero">즉시</td><td></td></tr>
+        <tr><td class="step"><span class="n">12</span>auto-plan (figure 계획)<div class="what">figure만. 인용은 Stage-1 논문 재사용, 소제목은 13에서</div></td><td><span class="model mini">mini·low</span></td><td class="time zero">~즉시</td><td><span class="tag cut">✂ 2차 OpenAlex·structure 제거</span></td></tr>
+        <tr><td class="step"><span class="n">13+14</span>섹션 계약 + 본문 작성 ×6<div class="what">설계도(소제목 포함) + 작성. 6섹션 동시</div></td><td><span class="model mini">mini·min/low</span></td><td class="time">~35s</td><td><span class="tag par">▷ 6섹션 동시</span></td></tr>
+        <tr><td class="step"><span class="n">15</span>인용 채우기</td><td><span class="model mini">mini</span></td><td class="time">~수초</td><td></td></tr>
+        <tr><td class="step"><span class="n">16</span>출력 PDF·DOCX (figure=네모박스+복사 prompt)</td><td><span class="model det">코드</span></td><td class="time zero">즉시</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <h3>✂ 이번에 줄인 것 요약</h3>
+    <ul>
+      <li><b>synthesize LLM 제거</b> (4+5 병합) — normalize가 레벨까지 판단, schema는 코드. ~32s→0s</li>
+      <li><b>state v2 LLM 재구성 제거</b> (#2) — 진단 state 재사용 + 답변 fold. ~58s→0s</li>
+      <li><b>2차 OpenAlex 제거</b> (#4) — Stage-1 논문을 인용으로 재사용</li>
+      <li><b>structure 콜 제거</b> (#6) — contracts가 소제목 직접 생성</li>
+      <li><b>Stage-2 질문 라운드 스킵</b> — 바로 생성</li>
+      <li><b>figure = 복사가능 이미지모델 prompt</b> (#5) — 미리보기 클릭복사 버튼</li>
+    </ul>
+  </div>
+
+  <!-- ===== compare deep dive ===== -->
+  <div class="deep">
+    <h2>🔍 compare + questions — 왜 남은 병목인가</h2>
+    <p class="lead">진단(질문1)에서 가장 오래 걸리는 단 하나의 호출. <b>52개 요구사항을 한 번에</b> 판정하고, 빠진 것만 질문으로 씁니다.</p>
+
+    <h3>무엇을 하나 (한 콜)</h3>
+    <div class="flowbox">
+      <div class="fb in"><b>입력</b><span class="s">유저 자료(inputs_block ~2.5k토큰) + 답변 + 요구 52개</span></div>
+      <span class="ar">→</span>
+      <div class="fb"><b>각 요구마다</b><span class="s">present / partial / missing / N·A 판정 + 근거</span></div>
+      <span class="ar">→</span>
+      <div class="fb out"><b>출력</b><span class="s">52개 status + 빠진 것(missing·partial) 중 핵심만 질문 5개</span></div>
+    </div>
+    <div style="font-size:.8rem;color:var(--muted);margin-top:4px">실측: present 13 · partial 11 · missing 14 · not_applicable 14 → 질문 5개</div>
+
+    <h3>왜 느리고, 왜 런마다 흔들리나 (60s ↔ 148s)</h3>
+    <div class="barwrap"><div class="bar" style="width:42%"><span class="lbl">빠른 런 ~60s</span></div></div>
+    <div class="barwrap"><div class="bar" style="width:100%"><span class="lbl">느린 런 ~148s</span></div></div>
+    <div class="why">
+      <div class="card"><h4>① 단일 거대 호출</h4><p>52개 요구를 한 콜에서 판정 + 질문 작성. 입력·출력이 커서 처리량이 많음.</p></div>
+      <div class="card"><h4>② gpt-5-mini 추론 변동</h4><p>추론 모델은 내부 "생각" 시간이 입력 난이도에 따라 출렁임. 같은 작업도 2배 이상 차이.</p></div>
+      <div class="card"><h4>③ 미묘한 판정</h4><p>"데이터 파일 존재 ≠ 방법 서술"을 가려야 해서 가벼운 분류보다 추론이 더 듦.</p></div>
+      <div class="card"><h4>④ 순차(병렬 아님)</h4><p>한 콜이라 내부적으로 쪼개 동시 처리할 수 없음. 통째로 기다림.</p></div>
+    </div>
+
+    <h3>왜 쉽게 못 줄이나</h3>
+    <p style="font-size:.84rem;color:var(--body);margin:4px 0">
+      이건 <b>유저에게 직접 보이는 정확도-핵심 단계</b>예요. 더 합치면 캐시 경계가 사라지고, 더 작은 모델로 내리면 (이전에 본) <b>"파일 있으니 present" 오판 + 결과 흔들림</b>이 심해져요. effort는 이미 low.
+    </p>
+
+    <h3>다음 개선 후보</h3>
+    <ul class="cand">
+      <li><b>category별 병렬 분할</b> — normalize처럼 52개를 카테고리 배치로 쪼개 <b>동시</b> 판정 → 벽시계 = 가장 느린 배치 (가장 유력)</li>
+      <li><b>present-판정 / 질문-작성 분리</b> — 대부분(38개)은 안 물으니, 빠른 분류로 missing만 추린 뒤 그 몇 개만 질문 작성</li>
+      <li><b>변경분만 재판정</b> — outline·답변 바뀐 요구만 다시 (캐시 확장)</li>
+      <li><b>품질 모드에서만 gpt-5 full + effort=low</b> — 발표용 일관성</li>
+    </ul>
+  </div>
+
+  <p class="foot">
+    <span class="pill hot">입력</span> → <span class="pill">문헌 스키마</span> → <span class="pill">질문1</span> →
+    <span class="pill">Logic Graph</span> → <span class="pill" style="background:#EAF0E5">질문2 스킵</span> →
+    <span class="pill hot">논문(PDF·DOCX·복사 prompt)</span><br>
+    PaperFlow · coronary_plaque_VI_demo · 2026-06-27 · 전부 gpt-5-mini
+  </p>
+
+</div>
+</body>
+</html>

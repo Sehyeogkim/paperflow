@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_009",
+  "study_archetype": "narrative review of imaging and biomechanics studies",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: review methods and role of plaque structural stress (PSS)",
+      "category": "objective",
+      "sub_category": "review scope",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: review of prospective studies and modelling work",
+      "category": "study_design",
+      "sub_category": "narrative review",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data_or_sample: prospective clinical studies correlating peak PSS with ACS, plaque rupture, and MACE",
+      "category": "data_or_sample",
+      "sub_category": "clinical prospective studies (unspecified)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: calculation and modelling of plaque structural stress using imaging and idealized biomechanical models",
+      "category": "methods",
+      "sub_category": "PSS calculation and biomechanical modelling (imaging-based and idealized)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Outcomes: associations of peak PSS with ACS presentation, plaque rupture, and MACE; incremental prognostic information over imaging",
+      "category": "outcomes",
+      "sub_category": "clinical associations and prognostic value",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Limitations: details of modelling parameters, numerical settings, and experimental methods not provided in abstract",
+      "category": "limitations",
+      "sub_category": "missing methodological detail in abstract",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

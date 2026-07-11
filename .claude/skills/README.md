@@ -26,5 +26,7 @@
 ## 유틸리티 skill
 - `/ssh <harvey|ws1|ws2> [command]` — 등록 서버에 SSH 키로 원샷 명령 실행/복사
   (주 용도: HPC에서 결과 수치(Sobol·R²·파열위치%)를 가져와 초안의 `[TODO]` 채우기)
+- `/reset-results <project>` — 해당 프로젝트의 `_paperflow_out/`만 삭제(입력은 보존)
+  → Create Journal/생성을 처음부터 다시 돌려보기 위함 (백업 후 삭제)
 
 (전부 세션 재시작 후 `/` 메뉴에 잡힘.)

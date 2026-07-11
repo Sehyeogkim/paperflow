@@ -113,7 +113,7 @@ def write_section(ps: ProjectState, graph: ClaimGraph, contract: SectionContract
         max_tokens = min(max_tokens, int(limit * 3))  # words -> token budget cap
     draft = client.call(
         "writer", prompt("writer_section"), user, step="writer",
-        max_tokens=max_tokens, temperature=0.4,
+        max_tokens=max_tokens, temperature=0.4, effort="minimal",
     ).text.strip()
     draft = _guard_citations(draft, allowed)      # never let invented keys survive
     draft = _strip_data_paths(_round_decimals(draft))  # enforce the publishing rules deterministically

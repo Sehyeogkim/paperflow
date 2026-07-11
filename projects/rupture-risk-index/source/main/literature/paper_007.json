@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_007",
+  "study_archetype": "animal-specific computational FSI modelling study",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: develop animal-specific FSI model of mouse abdominal aorta",
+      "category": "objective",
+      "sub_category": "primary objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: animal (mouse) in vivo data used to build model",
+      "category": "study_design",
+      "sub_category": "animal study / modelling study",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: anesthetized mice measurements (implied)",
+      "category": "data_or_sample",
+      "sub_category": "animal measurements",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": false,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: fluid-structure interaction (FSI) computational modelling",
+      "category": "methods",
+      "sub_category": "FSI simulation",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: characterization of aortic behaviour / hemodynamics in mouse",
+      "category": "outcomes",
+      "sub_category": "aortic haemodynamics and wall mechanics",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": false,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "limitations: not provided in abstract-only record",
+      "category": "limitations",
+      "sub_category": "limitations not reported",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": false,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

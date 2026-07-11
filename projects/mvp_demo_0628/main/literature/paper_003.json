@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_003",
+  "study_archetype": "expert consensus / methodological recommendations review",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: provide expert recommendations on WSS assessment in coronary arteries",
+      "category": "objective",
+      "sub_category": "consensus guidance objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: expert recommendations / review of existing methodologies",
+      "category": "study_design",
+      "sub_category": "expert consensus review",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: human coronary arteries (clinical application focus)",
+      "category": "data_or_sample",
+      "sub_category": "human coronary vasculature focus",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: discussion of existing methodologies and technical considerations for WSS assessment",
+      "category": "methods",
+      "sub_category": "methodological survey and technical considerations",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: clinical applications and recommendations for WSS assessment",
+      "category": "outcomes",
+      "sub_category": "clinical application recommendations",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "limitations: (likely relevant) detailed methodological settings and parameters not present in abstract",
+      "category": "limitations",
+      "sub_category": "missing methodological detail in abstract",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": false,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

@@ -1,11 +1,20 @@
 [
   {
-    "key": "terahara2020",
-    "title": "Heart valve isogeometric sequentially-coupled FSI analysis with the space–time topology change method",
-    "authors": "Takuya Terahara, Kenji Takizawa, Tayfun E. Tezduyar, Yuri Bazilevs, Ming‐Chen Hsu",
-    "year": 2020,
-    "doi": "10.1007/s00466-019-01813-0",
-    "used_for": "validation of the cost-effective pulsatile FSI method",
+    "key": "l2013",
+    "title": "The use of indigenous knowledge in weather and climate prediction in Mahenge and Ismani wards, Tanzania",
+    "authors": "A. L.",
+    "year": 2013,
+    "doi": "10.5897/jgrp2013.0386",
+    "used_for": "Stone2011",
+    "verification_status": "auto_openalex"
+  },
+  {
+    "key": "almohrej2022",
+    "title": "The role of preoperative opioid use in shoulder surgery—A systematic review",
+    "authors": "Omar A. Al-Mohrej, Carlos Prada, Kim Madden, Harsha Shanthanna, Timothy Leroux, Moin Khan",
+    "year": 2022,
+    "doi": "10.1177/17585732211070193",
+    "used_for": "Morris2016",
     "verification_status": "auto_openalex"
   }
 ]

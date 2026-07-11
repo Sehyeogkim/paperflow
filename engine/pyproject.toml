@@ -12,7 +12,13 @@ dependencies = [
   "rich>=13.7",
   "fastapi>=0.110",
   "uvicorn>=0.29",
+  "python-multipart>=0.0.9",
+  "openpyxl>=3.1",
+  "python-docx>=1.1",
 ]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
 
 [project.scripts]
 paperflow = "paperflow.cli:app"

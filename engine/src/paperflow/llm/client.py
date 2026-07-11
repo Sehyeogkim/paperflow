@@ -40,7 +40,10 @@ class LLMError(RuntimeError):
 
 
 def call(tier: str, system: str, user: str, *, step: str = "", max_tokens: int = 4096,
-         temperature: float = 0.3) -> LLMResult:
+         temperature: float = 0.3, effort: str = "") -> LLMResult:
+    """`effort` = reasoning_effort for gpt-5/o-series ("minimal"|"low"|"medium"|"high").
+    The biggest latency lever for reasoning models — lower effort = far less internal
+    thinking. Ignored by non-reasoning providers."""
     ref = config.pick_available(tier)
     key = config.api_key(ref.provider)
     if not key:
@@ -50,7 +53,8 @@ def call(tier: str, system: str, user: str, *, step: str = "", max_tokens: int =
         )
 
     if ref.provider in ("openai", "deepseek"):
-        res = _openai_compatible(ref.provider, ref.model, key, system, user, max_tokens, temperature)
+        res = _openai_compatible(ref.provider, ref.model, key, system, user, max_tokens,
+                                 temperature, effort)
     elif ref.provider == "anthropic":
         res = _anthropic(ref.model, key, system, user, max_tokens, temperature)
     elif ref.provider == "gemini":
@@ -67,13 +71,14 @@ def call(tier: str, system: str, user: str, *, step: str = "", max_tokens: int =
     return res
 
 
-def call_json(tier: str, system: str, user: str, *, step: str = "", max_tokens: int = 4096) -> dict:
+def call_json(tier: str, system: str, user: str, *, step: str = "", max_tokens: int = 4096,
+              effort: str = "") -> dict:
     """Call expecting a JSON object back. Tolerant of ```json fences / surrounding prose.
     Retries once on a parse failure (a single bad JSON must not crash the pipeline)."""
     sys2 = system + "\n\nReturn ONLY a single valid JSON object. No prose, no markdown fences."
     last: Exception | None = None
     for _ in range(2):
-        r = call(tier, sys2, user, step=step, max_tokens=max_tokens, temperature=0.1)
+        r = call(tier, sys2, user, step=step, max_tokens=max_tokens, temperature=0.1, effort=effort)
         try:
             return _extract_json(r.text)
         except LLMError as e:
@@ -83,16 +88,20 @@ def call_json(tier: str, system: str, user: str, *, step: str = "", max_tokens: 
 
 # ---------- provider adapters ----------
 
-def _openai_compatible(provider, model, key, system, user, max_tokens, temperature) -> LLMResult:
+def _openai_compatible(provider, model, key, system, user, max_tokens, temperature,
+                       effort: str = "") -> LLMResult:
     base = "https://api.openai.com/v1" if provider == "openai" else "https://api.deepseek.com"
     payload = {
         "model": model,
         "messages": [{"role": "system", "content": system},
                      {"role": "user", "content": user}],
     }
-    # gpt-5 / o-series reasoning models: use max_completion_tokens, fixed temperature
+    # gpt-5 / o-series reasoning models: use max_completion_tokens (a CAP, not a target — it
+    # must leave headroom for reasoning tokens) and reasoning_effort (the real latency lever).
     if provider == "openai" and (model.startswith("gpt-5") or model.startswith(("o1", "o3", "o4"))):
-        payload["max_completion_tokens"] = max(max_tokens, 16000)  # reasoning eats output budget
+        payload["max_completion_tokens"] = max(max_tokens, 8000)  # headroom for reasoning + output
+        if effort:
+            payload["reasoning_effort"] = effort   # minimal|low|medium|high (gpt-5 supports minimal)
     else:
         payload["max_tokens"] = max_tokens
         payload["temperature"] = temperature

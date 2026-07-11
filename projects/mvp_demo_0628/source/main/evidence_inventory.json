@@ -1,0 +1,728 @@
+{
+  "assets": [
+    {
+      "path": "data/cost_effective_FSI_BC/bc.md",
+      "kind": "md",
+      "user_description": "",
+      "inferred_description": "Markdown documentation describing boundary condition (BC) implementation and/or cost‑effective pulsatile FSI solver setup used to generate the simulation dataset (likely contains equations, BC values, references to the cost‑effective FSI method cited in Methods).",
+      "inferred_role": "method_documentation_boundary_conditions",
+      "unit_of_analysis": "document / method description",
+      "related_sections": [
+        "method",
+        "supplementary"
+      ],
+      "artifact_usage": [
+        "table",
+        "methods_text"
+      ],
+      "confidence": "medium",
+      "columns": {},
+      "profile": {
+        "kind": "text",
+        "lines": 46,
+        "chars": 1182,
+        "head": "### ideal coronary \nParameter\tValue\tUnit\nRa\t78827.25\tdynes·s/cm⁵\nC_cor\t0.396E-6\tcm⁵/dynes\nR_a-mic\t128094.28\tdynes·s/cm⁵\nC_myo\t3.20E-05\tcm⁵/dynes\nRv\t19706.81\tdynes·s/cm⁵\nRv-mic\t19706.81\tdynes·s/cm⁵\n\n\n### total CA, Heary Inlet\nParameter\tValue\tUnit\nCO\t5.0\tL/min\ntcycle\t1.0\ts\ntsys\t0.33\ts"
+      },
+      "key_observations": [
+        "File is an md file placed under cost_effective_FSI_BC indicating solver/BC documentation for the FSI runs used to create data.",
+        "Serves as supporting material for the Methods claim that a cost‑effective pulsatile FSI approach (from prior work) was used."
+      ],
+      "uncertainties": [
+        "Exact contents not provided (equations, parameter values, or which BC types included unknown).",
+        "Whether this file contains numeric BC time series or only descriptive instructions is unclear."
+      ]
+    },
+    {
+      "path": "data/input_parameter/elastance.dat",
+      "kind": "dat",
+      "user_description": "",
+      "inferred_description": "Time series or table of cardiac elastance values (left ventricular elastance over cardiac cycle) used to generate physiological inlet/outlet pressures or to drive inflow boundary conditions for pulsatile FSI simulations.",
+      "inferred_role": "driving_waveform_elastance",
+      "unit_of_analysis": "time step / elastance sample value",
+      "related_sections": [
+        "method",
+        "supplementary"
+      ],
+      "artifact_usage": [
+        "methods_text",
+        "input_file"
+      ],
+      "confidence": "medium",
+      "columns": {},
+      "profile": {
+        "kind": "text",
+        "lines": 1385,
+        "chars": 45705,
+        "head": "  0.0000000e+000  7.8935972e-002\n  2.5000000e-003  7.9531081e-002\n  5.0000000e-003  8.0179957e-002\n  7.5000000e-003  8.0884088e-002\n  1.0000000e-002  8.1644909e-002\n  1.2500000e-002  8.2463808e-002\n  1.5000000e-002  8.3342113e-002\n  1.7500000e-002  8.4281097e-002\n  2.0000000e-002  8.5281973e-002\n  2.2500000e-002  8.6345889e-002\n  2.5000000e-002  8.7473926e-002\n  2.7500000e-002  8.8667099e-002\n  3.0000000e-002  8.9926351e-002\n  3.2500000e-002  9.1252550e-002\n  3.5000000e-002  9.2646491e-002"
+      },
+      "key_observations": [
+        "File name suggests elastance waveform used in lumped‑parameter coupling or inflow generation.",
+        "Placed with other input .dat files, consistent with being a numeric driver for the pulsatile simulations."
+      ],
+      "uncertainties": [
+        "Exact format (columns, sampling rate, units) not shown.",
+        "Whether elastance corresponds to left ventricle, a Windkessel element, or other model is not explicit."
+      ]
+    },
+    {
+      "path": "data/input_parameter/inflow.dat",
+      "kind": "dat",
+      "user_description": "",
+      "inferred_description": "Numeric inflow waveform (time series of flow rate or velocity) used as the inlet boundary condition for the transient FSI simulations.",
+      "inferred_role": "driving_waveform_inflow",
+      "unit_of_analysis": "time step / flow or velocity sample",
+      "related_sections": [
+        "method",
+        "supplementary"
+      ],
+      "artifact_usage": [
+        "methods_text",
+        "input_file"
+      ],
+      "confidence": "medium",
+      "columns": {},
+      "profile": {
+        "kind": "text",
+        "lines": 1001,
+        "chars": 16411,
+        "head": "0.00000 0.67117\n0.00100 0.71306\n0.00200 0.75713\n0.00300 0.80337\n0.00400 0.85178\n0.00500 0.90236\n0.00600 0.95511\n0.00700 1.01004\n0.00800 1.06756\n0.00900 1.12727\n0.01000 1.18914\n0.01100 1.25318\n0.01200 1.31940\n0.01300 1.38779\n0.01400 1.45836"
+      },
+      "key_observations": [
+        "Filename and directory indicate a file supplying inflow boundary condition for the cost‑effective pulsatile FSI runs.",
+        "Paired with elastance.dat, suggesting multiple ways to prescribe pulsatility (direct inflow or elastance‑derived)."
+      ],
+      "uncertainties": [
+        "Exact variable (flow vs. velocity), units, and sampling frequency are unknown.",
+        "Whether this file was used for all simulations or only a subset is not explicit."
+      ]
+    },
+    {
+      "path": "data/input_parameter/input.csv",
+      "kind": "csv",
+      "user_description": "",
+      "inferred_description": "Design of experiments (DOE) input parameter table: 1,000 sampled combinations of morphology, hemodynamics, and material parameters used to run the FSI dataset. Each row is one simulation input vector.",
+      "inferred_role": "design_of_experiments_inputs",
+      "unit_of_analysis": "one simulation case / sample (row)",
+      "related_sections": [
+        "method",
+        "results",
+        "supplementary"
+      ],
+      "artifact_usage": [
+        "table",
+        "methods_text",
+        "figure (sampling illustration)"
+      ],
+      "confidence": "high",
+      "columns": {
+        "DOS": "float",
+        "lesion_length": "float",
+        "lumen_axial_skewness": "float",
+        "lipid_length_ratio": "float",
+        "alpha": "float",
+        "PI": "float",
+        "d_fc_ca": "float",
+        "fraction": "float",
+        "ca_axial_skewness": "float",
+        "ca_shoulder_skewness": "float",
+        "ca_strength_ratio": "float",
+        "fc_av_th": "float",
+        "SBP": "float",
+        "PP": "float",
+        "tau": "float",
+        "DBP": "float",
+        "E_vessel": "int",
+        "E_fc": "int",
+        "E_lipid": "int",
+        "E_cal": "int"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 1000,
+        "columns": {
+          "DOS": "float",
+          "lesion_length": "float",
+          "lumen_axial_skewness": "float",
+          "lipid_length_ratio": "float",
+          "alpha": "float",
+          "PI": "float",
+          "d_fc_ca": "float",
+          "fraction": "float",
+          "ca_axial_skewness": "float",
+          "ca_shoulder_skewness": "float",
+          "ca_strength_ratio": "float",
+          "fc_av_th": "float",
+          "SBP": "float",
+          "PP": "float",
+          "tau": "float",
+          "DBP": "float",
+          "E_vessel": "int",
+          "E_fc": "int",
+          "E_lipid": "int",
+          "E_cal": "int"
+        },
+        "numeric_ranges": {
+          "DOS": [
+            0.2507,
+            0.7479
+          ],
+          "lesion_length": [
+            1.0269,
+            2.9957
+          ],
+          "lumen_axial_skewness": [
+            -0.4979,
+            0.4994
+          ],
+          "lipid_length_ratio": [
+            0.5005,
+            0.7997
+          ],
+          "alpha": [
+            120.3,
+            269.3
+          ],
+          "PI": [
+            0.901,
+            1.199
+          ],
+          "d_fc_ca": [
+            0.0051,
+            0.02
+          ],
+          "fraction": [
+            0.1049,
+            0.7959
+          ],
+          "ca_axial_skewness": [
+            0.0031,
+            0.7985
+          ],
+          "ca_shoulder_skewness": [
+            0.0001,
+            0.7974
+          ],
+          "ca_strength_ratio": [
+            0.122,
+            7.7614
+          ],
+          "fc_av_th": [
+            0.01,
+            0.01
+          ],
+          "SBP": [
+            100.87,
+            169.94
+          ],
+          "PP": [
+            35.24,
+            79.99
+          ],
+          "tau": [
+            0.0141,
+            0.49864
+          ],
+          "DBP": [
+            41.64,
+            129.66
+          ],
+          "E_vessel": [
+            1140509.0,
+            13898610.0
+          ],
+          "E_fc": [
+            4007995.0,
+            22918092.0
+          ],
+          "E_lipid": [
+            20501.0,
+            997305.0
+          ],
+          "E_cal": [
+            8069298794.0,
+            249798996858.0
+          ]
+        },
+        "sample_row": {
+          "DOS": "0.4767",
+          "lesion_length": "1.6932",
+          "lumen_axial_skewness": "0.417",
+          "lipid_length_ratio": "0.7298",
+          "alpha": "156.7",
+          "PI": "1.022",
+          "d_fc_ca": "0.0079",
+          "fraction": "0.2698",
+          "ca_axial_skewness": "0.3292",
+          "ca_shoulder_skewness": "0.5611",
+          "ca_strength_ratio": "2.3442",
+          "fc_av_th": "0.01",
+          "SBP": "160.82",
+          "PP": "66.59",
+          "tau": "0.14879",
+          "DBP": "94.23",
+          "E_vessel": "13794939",
+          "E_fc": "19837661",
+          "E_lipid": "878370",
+          "E_cal": "143396539569"
+        },
+        "truncated": true
+      },
+      "key_observations": [
+        "Contains 1000 rows and columns matching the three input groups (morphology e.g., lesion_length, ca_axial_skewness; hemodynamics e.g., SBP, PP, PI; material e.g., E_vessel, E_fc, E_lipid, E_cal).",
+        "Numeric ranges show realistic and wide spans (e.g., E_vessel ~1.14e6 to 1.39e7, E_cal very large up to ~2.5e11), consistent with global sensitivity sampling.",
+        "One sample row provided (DOS 0.4767, lesion_length 1.6932, SBP 160.82, E_fc 1.98e7, etc.) confirming DOElike structure."
+      ],
+      "uncertainties": [
+        "Sampling method (Sobol/Latin Hypercube/uniform) not specified in file metadata.",
+        "Units for some parameters (e.g., E_* units assumed Pa) are not explicitly declared here."
+      ]
+    },
+    {
+      "path": "data/sobol/sobol_grp_CP_VI1.csv",
+      "kind": "csv",
+      "user_description": "",
+      "inferred_description": "Grouped Sobol global sensitivity indices (first‑order S1 and total ST) aggregated by parameter group (Morphology, Hemodynamics, Material) for CP phenotype using vulnerability index VI1.",
+      "inferred_role": "sobol_grouped_indices_CP_VI1",
+      "unit_of_analysis": "parameter group (row)",
+      "related_sections": [
+        "results",
+        "discussion",
+        "methods"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "group": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 3,
+        "columns": {
+          "group": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            0.15145456790848685,
+            0.5087122894884933
+          ],
+          "ST": [
+            0.2442776326656704,
+            0.6259271505110576
+          ]
+        },
+        "sample_row": {
+          "group": "Morphology",
+          "S1": "0.15145456790848685",
+          "ST": "0.2442776326656704"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "Three rows (groups) present; S1 ranges ~0.151–0.509 and ST ranges ~0.244–0.626 per profile, indicating material/other groups contributions.",
+        "Provides aggregated evidence that one or more groups (likely Material) have higher sensitivity for VI1 in CP."
+      ],
+      "uncertainties": [
+        "Exact group labels beyond 'Morphology' (others likely 'Hemodynamics' and 'Material') are inferred but not listed in provided sample.",
+        "Which group is dominant needs cross‑reference with other group files."
+      ]
+    },
+    {
+      "path": "data/sobol/sobol_grp_CP_VI2.csv",
+      "kind": "csv",
+      "user_description": "",
+      "inferred_description": "Grouped Sobol indices (S1, ST) by parameter group for CP phenotype using vulnerability index VI2.",
+      "inferred_role": "sobol_grouped_indices_CP_VI2",
+      "unit_of_analysis": "parameter group (row)",
+      "related_sections": [
+        "results",
+        "discussion"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "group": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 3,
+        "columns": {
+          "group": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            0.0437505506934874,
+            0.7967778987247732
+          ],
+          "ST": [
+            0.08924334397107396,
+            0.8358889185491081
+          ]
+        },
+        "sample_row": {
+          "group": "Morphology",
+          "S1": "0.0437505506934874",
+          "ST": "0.08924334397107396"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "Three group rows with wide S1/ST ranges (S1 up to ~0.797, ST up to ~0.836) indicating larger contributions or interactions for at least one group under VI2.",
+        "Allows comparison between VI1 and VI2 regarding which factor groups control CP VI variability."
+      ],
+      "uncertainties": [
+        "Group names other than the sampled 'Morphology' row are assumed; exact numeric mapping to groups requires opening the file."
+      ]
+    },
+    {
+      "path": "data/sobol/sobol_grp_LAP_VI1.csv",
+      "kind": "csv",
+      "user_description": "",
+      "inferred_description": "Grouped Sobol sensitivity indices (S1, ST) by parameter group for LAP phenotype using vulnerability index VI1.",
+      "inferred_role": "sobol_grouped_indices_LAP_VI1",
+      "unit_of_analysis": "parameter group (row)",
+      "related_sections": [
+        "results",
+        "discussion"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "group": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 3,
+        "columns": {
+          "group": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            0.15084277960801465,
+            0.501286013821807
+          ],
+          "ST": [
+            0.24698767143679934,
+            0.6023101737614719
+          ]
+        },
+        "sample_row": {
+          "group": "Morphology",
+          "S1": "0.15084277960801465",
+          "ST": "0.2827357082026276"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "Three rows present; S1 values ~0.151–0.501 and ST values ~0.247–0.602 from profile indicating group contributions similar to CP_VI1.",
+        "Supports claim that material group substantially contributes to VI1 variability in LAP as well."
+      ],
+      "uncertainties": [
+        "Exact group labels assumed; relative ordering across groups not explicit without full file inspection."
+      ]
+    },
+    {
+      "path": "data/sobol/sobol_grp_LAP_VI2.csv",
+      "kind": "csv",
+      "user_description": "",
+      "inferred_description": "Grouped Sobol indices (S1, ST) by parameter group for LAP phenotype using vulnerability index VI2.",
+      "inferred_role": "sobol_grouped_indices_LAP_VI2",
+      "unit_of_analysis": "parameter group (row)",
+      "related_sections": [
+        "results",
+        "discussion"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "group": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 3,
+        "columns": {
+          "group": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            0.07101564000174668,
+            0.7506966098655802
+          ],
+          "ST": [
+            0.11720173985933734,
+            0.7965081701408067
+          ]
+        },
+        "sample_row": {
+          "group": "Morphology",
+          "S1": "0.07101564000174668",
+          "ST": "0.13486512424408015"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "Three group rows with S1 up to ~0.751 and ST up to ~0.797 suggesting strong group effects/interactions for VI2 in LAP.",
+        "Enables comparison showing VI2 may amplify importance of certain groups vs VI1."
+      ],
+      "uncertainties": [
+        "Exact mapping of numeric rows to group names (Morphology/Hemo/Material) is implied but not fully explicit in the sample."
+      ]
+    },
+    {
+      "path": "data/sobol/sobol_ind_CP_VI1.csv",
+      "kind": "csv",
+      "user_description": "",
+      "inferred_description": "Individual Sobol sensitivity indices (first‑order S1 and total ST) per input parameter for CP phenotype evaluated on VI1; includes parameter identifiers and display names for plotting and table reporting.",
+      "inferred_role": "sobol_individual_indices_CP_VI1",
+      "unit_of_analysis": "single input parameter",
+      "related_sections": [
+        "results",
+        "discussion",
+        "methods"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "parameter": "text",
+        "display_name": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 14,
+        "columns": {
+          "parameter": "text",
+          "display_name": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            -0.0020628712362619913,
+            0.31536745507105857
+          ],
+          "ST": [
+            1.5825702114021227e-10,
+            0.4287926475516295
+          ]
+        },
+        "sample_row": {
+          "parameter": "DOS",
+          "display_name": "DOS",
+          "S1": "0.050998828572254615",
+          "ST": "0.08852993994718819"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "Contains 14 parameters with S1 values ranging approximately from slightly negative (~-0.002) to ~0.315 and ST up to ~0.429, indicating which individual parameters drive VI1 variability in CP.",
+        "Sample row shows DOS S1=0.051, ST=0.088 — DOS has small but nonzero contribution."
+      ],
+      "uncertainties": [
+        "Significance (confidence intervals or p‑values) for indices are not present; negative small S1 suggests sampling/noise but exact interpretation depends on estimator details."
+      ]
+    },
+    {
+      "path": "data/sobol/sobol_ind_CP_VI2.csv",
+      "kind": "csv",
+      "user_description": "",
+      "inferred_description": "Individual Sobol indices per input parameter for CP phenotype evaluated on VI2 (parameter, display_name, S1, ST).",
+      "inferred_role": "sobol_individual_indices_CP_VI2",
+      "unit_of_analysis": "single input parameter",
+      "related_sections": [
+        "results",
+        "discussion"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "parameter": "text",
+        "display_name": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 14,
+        "columns": {
+          "parameter": "text",
+          "display_name": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            -1.316469145813798e-9,
+            0.6272396200605556
+          ],
+          "ST": [
+            9.785591570057206e-17,
+            0.6340939312313216
+          ]
+        },
+        "sample_row": {
+          "parameter": "DOS",
+          "display_name": "DOS",
+          "S1": "0.01821305451924902",
+          "ST": "0.029629104139830748"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "14 parameters reported; S1 spans up to ~0.627 and ST up to ~0.634, indicating at least one parameter strongly influences VI2 variability in CP.",
+        "Sample DOS row shows small contribution (S1=0.018, ST=0.029)."
+      ],
+      "uncertainties": [
+        "Which parameters are dominant (expected E_vessel, E_FC, SBP, PP) should be verified from full file contents."
+      ]
+    },
+    {
+      "path": "data/sobol/sobol_ind_LAP_VI1.csv",
+      "kind": "csv",
+      "user_description": "",
+      "inferred_description": "Individual Sobol first‑order and total indices for each input parameter for LAP phenotype using VI1 (12 parameters listed).",
+      "inferred_role": "sobol_individual_indices_LAP_VI1",
+      "unit_of_analysis": "single input parameter",
+      "related_sections": [
+        "results",
+        "discussion"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "parameter": "text",
+        "display_name": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 12,
+        "columns": {
+          "parameter": "text",
+          "display_name": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            0.0009316298489435725,
+            0.3068211191558551
+          ],
+          "ST": [
+            0.0010592150568327244,
+            0.40823694412671824
+          ]
+        },
+        "sample_row": {
+          "parameter": "DOS",
+          "display_name": "DOS",
+          "S1": "0.002479380740172285",
+          "ST": "0.05424249973456474"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "12 parameters present; S1 values range from ~0.00093 to ~0.307 and ST up to ~0.408, consistent with material and hemodynamic drivers being important for VI1 in LAP.",
+        "Sample DOS row shows very small S1 (0.00248) but nonzero ST (~0.054), indicating interactions."
+      ],
+      "uncertainties": [
+        "Exact parameter ordering and which parameters correspond to the top indices need direct inspection to report ranks."
+      ]
+    },
+    {
+      "path": "data/sobol/sobol_ind_LAP_VI2.csv",
+      "kind": "csv",
+      "user_description": "",
+      "inferred_description": "Individual Sobol sensitivity indices (S1, ST) per input parameter for LAP phenotype using VI2 (12 parameters).",
+      "inferred_role": "sobol_individual_indices_LAP_VI2",
+      "unit_of_analysis": "single input parameter",
+      "related_sections": [
+        "results",
+        "discussion"
+      ],
+      "artifact_usage": [
+        "figure",
+        "table"
+      ],
+      "confidence": "high",
+      "columns": {
+        "parameter": "text",
+        "display_name": "text",
+        "S1": "float",
+        "ST": "float"
+      },
+      "profile": {
+        "kind": "csv",
+        "rows": 12,
+        "columns": {
+          "parameter": "text",
+          "display_name": "text",
+          "S1": "float",
+          "ST": "float"
+        },
+        "numeric_ranges": {
+          "S1": [
+            0.0005356759060444509,
+            0.5503271567987186
+          ],
+          "ST": [
+            0.0006121616232192089,
+            0.5750852121099204
+          ]
+        },
+        "sample_row": {
+          "parameter": "DOS",
+          "display_name": "DOS",
+          "S1": "0.002047199288339986",
+          "ST": "0.025928585350271493"
+        },
+        "truncated": false
+      },
+      "key_observations": [
+        "S1 values up to ~0.550 and ST up to ~0.575 suggest one or more parameters (likely E_vessel/E_FC/SBP/PP) strongly drive VI2 variability in LAP.",
+        "Sample DOS row shows S1 ~0.002 and ST ~0.025, indicating small direct effect."
+      ],
+      "uncertainties": [
+        "Which specific parameters are top contributors needs file content; linking these indices to the paper claim (E_vessel, E_FC, SBP, PP top4) should be confirmed by reading full CSV."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "messages": [
+    {
+      "t": "user",
+      "text": "I ran a 1,000-sample cost-effective FSI study on coronary plaque rupture risk. I want to define a rupture-risk index (ΔPSS / strength) and show what drives it, aimed at Computers in Biology and Medicine."
+    },
+    {
+      "t": "essentials"
+    }
+  ]
+}

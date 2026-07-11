@@ -17,7 +17,7 @@ def propose(ps: ProjectState, graph: ClaimGraph, sections: list[str]) -> dict:
             f"## SECTIONS TO STRUCTURE\n{', '.join(sections)}")
     try:
         raw = client.call_json("reasoning", prompt("structure"), user,
-                               step="structure", max_tokens=2000)
+                               step="structure", max_tokens=2000, effort="low")
     except Exception:
         raw = {}
     out: dict[str, dict] = {}

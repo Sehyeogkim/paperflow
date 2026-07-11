@@ -2,51 +2,58 @@
   "generation": "deferred (fal.ai nano-banana pro)",
   "figures": [
     {
-      "id": "F1",
+      "id": "F_sobol_group",
       "kind": "figure",
-      "message": "그룹별(Sobol) 민감도 막대그래프(형태 vs 재료 vs 혈류역학) — Material>Hemo>Morpho 시각화",
+      "message": "Figure: Group-level Sobol S1 and ST bars for LAP and CP for VI1 and VI2 (material vs hemo vs morpho)",
       "section": "result",
       "visualizes": [
-        "E_sobol_grp_LAP_VI2",
-        "E_sobol_grp_CP_VI1"
+        "E_material_dominant_group"
       ],
+      "caption_draft": "Figure: Group-level Sobol S1 and ST bars for LAP and CP for VI1 and VI2 (material vs hemo vs morpho) (Group-level Sobol results show the material-property group has the largest first-order contribution to VI variance for LAP·VI2 (material S1 ≈ 0.75) and similar dominance in CP results)",
+      "generation_prompt": "Produce a publication-quality figure that conveys ONE message: \"Figure: Group-level Sobol S1 and ST bars for LAP and CP for VI1 and VI2 (material vs hemo vs morpho)\". It should visualize: Group-level Sobol results show the material-property group has the largest first-order contribution to VI variance for LAP·VI2 (material S1 ≈ 0.75) and similar dominance in CP results. Use only the author's real data; do not fabricate values. Label axes/units; keep it self-contained via the caption.",
       "status": "planned",
-      "source": "claim_graph"
+      "source": "claim_graph",
+      "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"figure sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><line x1=\"20\" y1=\"96\" x2=\"190\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><line x1=\"20\" y1=\"20\" x2=\"20\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><rect x=\"26\" y=\"26\" width=\"20\" height=\"70\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"56\" y=\"50\" width=\"20\" height=\"46\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"86\" y=\"66\" width=\"20\" height=\"30\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"116\" y=\"74\" width=\"20\" height=\"22\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"146\" y=\"82\" width=\"20\" height=\"14\" rx=\"2\" fill=\"#CC785C\"/><text x=\"205\" y=\"40\" font-size=\"9\" fill=\"#6B5E54\">S1 / ST</text><text x=\"205\" y=\"54\" font-size=\"9\" fill=\"#6B5E54\">bar chart</text></svg>"
     },
     {
-      "id": "F2",
+      "id": "F_sobol_individual",
       "kind": "figure",
-      "message": "개별 파라미터별 Sobol S1·ST 막대그래프(상위 파라미터 강조, E_FC 등)",
+      "message": "Figure: Individual-parameter Sobol S1 bars (e.g., E_fc, E_vessel, SBP, PP) for LAP·VI2",
       "section": "result",
       "visualizes": [
-        "E_sobol_ind_LAP_VI2",
-        "E_sobol_ind_LAP_VI2"
+        "E_individual_parameters"
       ],
+      "caption_draft": "Figure: Individual-parameter Sobol S1 bars (e.g., E_fc, E_vessel, SBP, PP) for LAP·VI2 (Individual-parameter Sobol indicates E_fc and E_vessel are top contributors, followed by SBP and PP (e.g., E_fc S1 ≈ 0.55 for LAP·VI2))",
+      "generation_prompt": "Produce a publication-quality figure that conveys ONE message: \"Figure: Individual-parameter Sobol S1 bars (e.g., E_fc, E_vessel, SBP, PP) for LAP·VI2\". It should visualize: Individual-parameter Sobol indicates E_fc and E_vessel are top contributors, followed by SBP and PP (e.g., E_fc S1 ≈ 0.55 for LAP·VI2). Use only the author's real data; do not fabricate values. Label axes/units; keep it self-contained via the caption.",
       "status": "planned",
-      "source": "claim_graph"
+      "source": "claim_graph",
+      "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"figure sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><line x1=\"20\" y1=\"96\" x2=\"190\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><line x1=\"20\" y1=\"20\" x2=\"20\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><rect x=\"26\" y=\"26\" width=\"20\" height=\"70\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"56\" y=\"50\" width=\"20\" height=\"46\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"86\" y=\"66\" width=\"20\" height=\"30\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"116\" y=\"74\" width=\"20\" height=\"22\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"146\" y=\"82\" width=\"20\" height=\"14\" rx=\"2\" fill=\"#CC785C\"/><text x=\"205\" y=\"40\" font-size=\"9\" fill=\"#6B5E54\">S1 / ST</text><text x=\"205\" y=\"54\" font-size=\"9\" fill=\"#6B5E54\">bar chart</text></svg>"
     },
     {
-      "id": "T1",
+      "id": "F_VI_selection_table",
       "kind": "table",
-      "message": "VI 후보 6개의 수식 및 임상 7기준 부호일치 표(선택된 VI1, VI2 표시)",
-      "section": "method",
-      "visualizes": [
-        "E_vi_candidates",
-        "E_vi_selection"
-      ],
-      "status": "planned",
-      "source": "claim_graph"
-    },
-    {
-      "id": "T2",
-      "kind": "table",
-      "message": "개별 파라미터별 Sobol 결과 표(파일 기반 요약 표, S1·ST 포함)",
+      "message": "Table: Candidate VI sign-consistency scores against seven clinical high-risk plaque criteria with bootstrap CIs; highlights VI1 and VI2 achieving full consistency",
       "section": "result",
       "visualizes": [
-        "E_sobol_ind_LAP_VI2"
+        "E_VI_candidates_screening"
       ],
+      "caption_draft": "Table: Candidate VI sign-consistency scores against seven clinical high-risk plaque criteria with bootstrap CIs; highlights VI1 and VI2 achieving full consistency (Screening of six candidate VIs against seven clinical high-risk plaque criteria yielded two VIs (VI1=ΔPSS/E_fc^0.5, VI2=ΔPSS/E_fc^1.0) that satisfy all seven criteria with mean sign-consistency ≈1.00 (95% BCa CI 0.99–1.00))",
+      "generation_prompt": "Produce a publication-quality table that conveys ONE message: \"Table: Candidate VI sign-consistency scores against seven clinical high-risk plaque criteria with bootstrap CIs; highlights VI1 and VI2 achieving full consistency\". It should visualize: Screening of six candidate VIs against seven clinical high-risk plaque criteria yielded two VIs (VI1=ΔPSS/E_fc^0.5, VI2=ΔPSS/E_fc^1.0) that satisfy all seven criteria with mean sign-consistency ≈1.00 (95% BCa CI 0.99–1.00). Use only the author's real data; do not fabricate values. Label axes/units; keep it self-contained via the caption.",
       "status": "planned",
-      "source": "claim_graph"
+      "source": "claim_graph",
+      "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"table sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><rect x=\"16\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"45.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col1</text><rect x=\"74\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"103.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col2</text><rect x=\"132\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"161.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col3</text><rect x=\"190\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"219.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col4</text><rect x=\"16\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"16\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"16\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"140\" y=\"112\" font-size=\"9\" text-anchor=\"middle\" fill=\"#6B5E54\">table</text></svg>"
+    },
+    {
+      "id": "F_ROC_VI2",
+      "kind": "figure",
+      "message": "Figure: ROC curve of VI2 on synthetic high-risk label (AUC ≈0.84)",
+      "section": "result",
+      "visualizes": [],
+      "caption_draft": "Figure: ROC curve of VI2 on synthetic high-risk label (AUC ≈0.84)",
+      "generation_prompt": "Produce a publication-quality figure that conveys ONE message: \"Figure: ROC curve of VI2 on synthetic high-risk label (AUC ≈0.84)\". Use only the author's real data; do not fabricate values. Label axes/units; keep it self-contained via the caption.",
+      "status": "planned",
+      "source": "claim_graph",
+      "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"figure sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><line x1=\"20\" y1=\"96\" x2=\"190\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><line x1=\"20\" y1=\"20\" x2=\"20\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><rect x=\"26\" y=\"26\" width=\"20\" height=\"70\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"56\" y=\"50\" width=\"20\" height=\"46\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"86\" y=\"66\" width=\"20\" height=\"30\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"116\" y=\"74\" width=\"20\" height=\"22\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"146\" y=\"82\" width=\"20\" height=\"14\" rx=\"2\" fill=\"#CC785C\"/><text x=\"205\" y=\"40\" font-size=\"9\" fill=\"#6B5E54\">S1 / ST</text><text x=\"205\" y=\"54\" font-size=\"9\" fill=\"#6B5E54\">bar chart</text></svg>"
     }
   ]
 }

@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_003",
+  "study_archetype": "review of patient-specific CFD methods for coronary and intra-cardiac flow",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: review CFD methods, challenges and opportunities",
+      "category": "objective",
+      "sub_category": "review_scope",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: review article",
+      "category": "study_design",
+      "sub_category": "review_type",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Topics covered: image segmentation",
+      "category": "methods",
+      "sub_category": "image_segmentation",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Topics covered: geometry reconstruction and mesh generation",
+      "category": "methods",
+      "sub_category": "geometry_reconstruction_and_mesh_generation",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Topics covered: fluid-structure interaction and solver techniques",
+      "category": "methods",
+      "sub_category": "fluid_structure_interaction_and_solvers",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Includes review of market products and clinical trials",
+      "category": "data_or_sample",
+      "sub_category": "market_products_and_clinical_trials_review",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

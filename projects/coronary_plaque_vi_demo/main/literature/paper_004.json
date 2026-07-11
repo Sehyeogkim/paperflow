@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_004",
+  "study_archetype": "experimental characterization of tissue mechanical properties using indentation",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: characterize compressive mechanical properties of atherosclerotic plaques",
+      "category": "objective",
+      "sub_category": "primary objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: indentation test to assess local anisotropic behaviour",
+      "category": "study_design",
+      "sub_category": "experimental mechanical testing (indentation)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data/sample: atherosclerotic plaque tissue samples (local measurements)",
+      "category": "data_or_sample",
+      "sub_category": "biological tissue specimens",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": false,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: indentation testing (to probe local anisotropic compressive response)",
+      "category": "methods",
+      "sub_category": "mechanical indentation",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Outcomes: measures of compressive mechanical properties and anisotropy",
+      "category": "outcomes",
+      "sub_category": "mechanical property metrics (e.g., stiffness, anisotropy)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": false,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Limitations: detailed experimental settings and sample numbers not available in abstract-only record",
+      "category": "limitations",
+      "sub_category": "missing methodological details",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

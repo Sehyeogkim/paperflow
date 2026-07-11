@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_006",
+  "study_archetype": "imaging-based diagnostic characterization of tissue (ex vivo/in vitro)",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: measure fibrous cap thickness and characterize plaques with multiphoton microscopy",
+      "category": "objective",
+      "sub_category": "primary objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study type: imaging study demonstrating capability of multiphoton microscopy (MPM)",
+      "category": "study_design",
+      "sub_category": "study type",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data/sample: atherosclerotic plaques and healthy artery tissue (imaged to >65 µm depth)",
+      "category": "data_or_sample",
+      "sub_category": "tissue types imaged",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Primary methods: multiphoton microscopy producing second harmonic generation (SHG) and two-photon excited fluorescence (TPEF) contrast",
+      "category": "methods",
+      "sub_category": "imaging modalities/contrast mechanisms",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Outcome measure: collagen/elastin signal ratio used to detect plaques (sensitivity and specificity reported)",
+      "category": "outcomes",
+      "sub_category": "diagnostic metric",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Results: detection performance reported as sensitivity = 65% and specificity = 81%; MPM resolves collagen network structure and images >65 µm depth",
+      "category": "results",
+      "sub_category": "main findings",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

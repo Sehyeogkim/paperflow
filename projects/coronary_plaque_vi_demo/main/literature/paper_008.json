@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_008",
+  "study_archetype": "mathematical/computational model of synaptic mechanobiology under blast exposure",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: model synaptic mechanobiology and biomarker kinetics for acute and repeated injury",
+      "category": "objective",
+      "sub_category": "primary objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: computational/mathematical modeling study",
+      "category": "study_design",
+      "sub_category": "modelling study",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data or sample: single synaptic structure as modeling unit",
+      "category": "data_or_sample",
+      "sub_category": "modelled entity",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: integrated dynamics of synaptic cell adhesion molecules (CAMs) with deformation mechanics of the synaptic cleft",
+      "category": "methods",
+      "sub_category": "mechanobiology model components",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Numerical or experimental settings: resolves timescales from milliseconds to minutes–hours (hyperacute to acute/chronic phases)",
+      "category": "numerical_or_experimental_settings",
+      "sub_category": "temporal resolution",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Outcomes: simulations of synaptic injury responses to repeated blast loads",
+      "category": "outcomes",
+      "sub_category": "simulated outcomes",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

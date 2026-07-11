@@ -1,0 +1,186 @@
+[
+  {
+    "id": "fsi_simulation_methods",
+    "question": "사용한 FSI 솔버의 구체적 구현을 알려주십시오: 사용한 소프트웨어/코드명(또는 자체개발 여부) 및 버전, 유체·구조 연성 해석에서 푼 지배방정식(예: 관성항 포함 Navier–Stokes, 가정된 유체 성질), 공간·시간 이산화 방법(유한요소/유한체적, 요소유형), 시간적 적분 방법 및 시간간격(또는 CFL 제어 방식), 그리고 수렴기준(잔차 허용치 등)을 각각 기술해 주시겠습니까?",
+    "why_asked": "검증된 수치해석 결과의 재현성과 해석적 신뢰성 확보를 위해 대다수 관련 연구에서 해석기의 수치적 설정(방정식·이산화·수렴기준)을 보고하고 있습니다.",
+    "expected_answer": "예: '자체개발 FSI 코드(FSI-Solver v2.1)를 사용했습니다. 유체는 압축성 없는 Navier–Stokes 방정식을 유한체적법(2차 정확도)으로 풀었고, 구조는 비선형 유한요소법(용적정렬형, 2차 요소)을 적용했습니다. 유체–구조 결합은 단일체 시간경계 반복(implicit coupling)을 사용했으며 시간적 적분은 2차 정확성의 뉴마크-베타(β=0.25, γ=0.5)를 사용했습니다. 시간스텝은 1 ms로 고정했고 반복 잔차 기준은 1e-6(유체/구조 모두)였습니다.'",
+    "requirement_level": "mandatory",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_003",
+      "paper_007",
+      "paper_008"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The materials state that a validated, cost-efficient pulsatile FSI solver was used and provide boundary waveforms, but do not specify governing equations, solver name/version, numerical scheme, time-stepping, mesh/discretization details, convergence criteria, or solver settings.",
+    "allow_unknown": true,
+    "priority": 3.3
+  },
+  {
+    "id": "surrogate_model_development_and_validation",
+    "question": "GPR 대리모델의 학습 및 검증 절차와 성능 지표를 상세히 제공해 주시겠습니까? 예: 사용한 커널 형태 및 하이퍼파라미터(또는 최적화 방식), 훈련/검증 데이터 분할(비율), 교차검증 여부, 보고 가능한 성능 지표(RMSE, R2, 예측 불확도)와 해당 수치(각 VI·표현형별)를 알려주십시오.",
+    "why_asked": "대리모델의 신뢰성은 후속 전역 민감도(Sobol) 결과의 타당성에 직접 영향을 미치므로 관련 문헌의 다수 연구는 GPR 커널·검증 절차·정량적 성능을 보고합니다.",
+    "expected_answer": "예: '각 VI·표현형별로 동일한 설정을 사용했습니다. RBF+White noise 커널을 사용했고 하이퍼파라미터는 최대우도로 최적화했습니다. 데이터는 80% 훈련/20% 검증으로 분할했으며 5-fold 교차검증을 수행했습니다. 예: LAP_VI1에서 검증 RMSE=0.12, R2=0.93; CP_VI1 RMSE=0.14, R2=0.91 등입니다.'",
+    "requirement_level": "mandatory",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_001"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "Materials state that GPR surrogates were trained and that performance metrics exist, but do not provide model details (kernel, hyperparameters), training procedure (train/test split, cross-validation), or quantitative validation results (RMSE, R^2) required to assess surrogate fidelity.",
+    "allow_unknown": true,
+    "priority": 3.1
+  },
+  {
+    "id": "computational_pss_modeling",
+    "question": "PSS와 ΔPSS의 정확한 계산식을 명시해 주십시오: 시간·공간에서 각각 어떻게 정의하였는지(예: PSS=심실수축기 시점의 최대주관절응력, ΔPSS=최대-최소 또는 반진폭 RMS 기반인지), 응력 필드에서 값을 추출한 위치(전체벽 최고값인지 fc 표면 평균인지) 및 전처리(평활·필터링 창) 방식을 알려주십시오.",
+    "why_asked": "PSS/ΔPSS의 산정 방법(최대 vs 평균, 진폭 정의 등)은 결과 해석과 다른 연구와의 비교에 큰 영향을 미치므로 관련 연구들은 계산 공식을 명확히 보고하고 있습니다.",
+    "expected_answer": "예: 'PSS는 전 샘플에 대해 최대주관절응력(peak principal stress) 중 수축기 최대 시점(t=TSBP)의 전 영역 최고값을 취했습니다. ΔPSS는 각 표면 점에서 시간시리즈의 (max - min)/2로 정의한 반진폭을 사용하고, 표면 전체의 최대 ΔPSS 값을 VI 계산에 사용했습니다. 응력 시계열은 저역통과 필터(컷오프 50 Hz)로 노이즈를 제거했습니다.'",
+    "requirement_level": "mandatory",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_010"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "PSS and ΔPSS are defined and used, but the exact computational definitions/formulae (e.g., how ΔPSS computed from time-series, spatial aggregation, smoothing, region-of-interest) are not specified.",
+    "allow_unknown": true,
+    "priority": 3.1
+  },
+  {
+    "id": "anatomical_template_or_geometries",
+    "question": "사용한 관상동맥·플라크 지오메트리의 출처와 생성 절차를 설명해 주십시오: 지오메트리가 환자 영상에서 재구성된 것인지(있다면 영상 모달리티/해상도 및 재구성 워크플로), 또는 이론적/파라메트릭 템플릿에서 생성되었는지(중심선 길이·직경·플라크 위치/크기 기본값), 그리고 지오메트리 파일(예: STL/mesh) 제공 여부를 알려주십시오.",
+    "why_asked": "형태 의존적 시뮬레이션 결과의 재현성과 일반화를 평가하려면 지오메트리 생성 방법이나 템플릿 출처를 보고하는 것이 관례입니다(관련문헌 다수에서 요구).",
+    "expected_answer": "예: '두 표현형은 문헌 기반 파라메트릭 템플릿에서 생성했습니다. 중심관 직경 3.0 mm, 병변 길이 분포는 input.csv에 지정된 범위를 사용했고 플라크 형태는 parametric CAD로 생성(제공된 STL 포함)했습니다. STL/mesh 파일은 보조자료로 제출합니다.'",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_007",
+      "paper_008"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The study states two plaque phenotypes were constructed, but no geometry files, template provenance, reconstruction method, or dimensional parameters are provided.",
+    "allow_unknown": true,
+    "priority": 2.2
+  },
+  {
+    "id": "clinical_evidence_linking_stress_metrics_to_outcomes",
+    "question": "VI 선별에 사용한 '7개 임상기준(신호·부호 일치)'의 구체적 항목과 이들 기준을 뒷받침하는 문헌(참고문헌 또는 근거)을 제시해 주시겠습니까? 각 기준이 어떤 임상관찰(예: 플라크 성상·임상 사건과의 상관)에 근거하는지도 간단히 명시해 주십시오.",
+    "why_asked": "VI의 임상적 타당성을 주장할 때는 사용한 임상 기준과 그 문헌적 근거를 제시하는 것이 표준이므로 관련 연구들이 이를 보고합니다.",
+    "expected_answer": "예: '7개 기준은 (1) 관상동맥 병변에서의 파열빈도와 응력 지표의 양의 상관(문헌 A), (2) 고위험 병변에서 진폭 기반 응력과 파열의 관련성(문헌 B), ..., (7) 섬유모(cap) 연성(저강성)과 실제 파열 관측의 연관(문헌 G) 등으로, 각 항목에 대응하는 참조를 본문과 보조자료에 기재했습니다.'",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_002",
+      "paper_010"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The study reports screening VIs against seven clinical sign/criteria and asserts clinical plausibility, but does not cite specific clinical studies or provide references linking PSS/ΔPSS or chosen VI forms to observed patient outcomes.",
+    "allow_unknown": true,
+    "priority": 2.2
+  },
+  {
+    "id": "consensus_guidelines_for_in_silico_modeling",
+    "question": "본 연구가 따르는 in-silico 모델링 보고 지침(예: 관련 합의문서나 가이드라인)이 있다면 어떤 지침을 준수했는지, 또는 준수하지 않았다면 그 이유를 명시해 주시겠습니까?",
+    "why_asked": "관련 분야의 많은 저널과 연구는 모델링 투명성·재현성을 위해 합의된 보고 지침 준수를 권장하거나 요구합니다.",
+    "expected_answer": "예: 'OpenWorm/ASME V&V 40 또는 STRESS 가이드라인에 따라 모델 검증·보고를 수행했으며, 검증 항목(경향 비교, 반복성 테스트 등)을 본문 보조자료에 포함했습니다.'",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_006"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "No references or explicit adherence to community consensus guidelines or reporting standards for in-silico cardiovascular modeling were found in the materials.",
+    "allow_unknown": true,
+    "priority": 2.1
+  },
+  {
+    "id": "compare_cfd_vs_fsi_effects",
+    "question": "ΔPSS(맥동성 FSI)와 정적/비맥동 CFD(또는 quasi-static) 사이의 정량적 비교가 있습니까? 만약 없다면, 정적 해석과의 차이를 보여주는 간단한 비교(예: 동일 입력에 대해 PSS 차이, VI 순위 변화)를 제공해 주실 수 있습니까?",
+    "why_asked": "맥동성 효과 주장 시 정적 해석과의 직접 비교를 제시하는 것이 설득력 있으며 관련 문헌에서 흔히 요구됩니다.",
+    "expected_answer": "예: '동일한 100개 샘플에 대해 정적(수축기 상태 단일 프레임) 해석을 수행한 결과, PSS 기반 VI의 상위계층이 FSI 결과와 40%만 일치했으며 ΔPSS 기반 VI는 정적 해석으로는 재현되지 않았습니다(평균 차이: ΔPSS 25%). 비교 데이터는 보조자료 표 S1에 있습니다.'",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_008"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The manuscript claims pulsatility/FSI is necessary and ΔPSS is superior to PSS, but no explicit comparison results between static CFD/steady analyses and pulsatile FSI or quantitative demonstrations of differences are provided.",
+    "allow_unknown": true,
+    "priority": 2.1
+  },
+  {
+    "id": "geometry_reconstruction_and_mesh_generation",
+    "question": "메시 생성과 관련한 상세 정보를 제공해 주십시오: 사용한 메시 생성 도구와 요소 유형(테트라/헥사 등), 평균 요소 크기 또는 요소수, 플라크·벽·혈액 도메인별 메쉬 분해능, 그리고 메쉬 독립성(수렴) 테스트 결과를 포함해 주시겠습니까?",
+    "why_asked": "국부 응력 예측의 신뢰성은 메쉬 품질과 독립성에 민감하므로 관련 연구는 메시 생성과 독립성 테스트 결과를 보고하는 것이 일반적입니다.",
+    "expected_answer": "예: 'ANSYS Meshing을 사용해 테트라hedral 요소로 메쉬를 만들었고, 전체 요소 수는 약 1.2M(혈액 0.6M, 구조 0.6M)였습니다. 최소 요소 치수는 0.05 mm이며, 메쉬 독립성 테스트에서 요소수를 0.6M→1.2M→2.4M로 늘렸을 때 최대 PSS 변화는 <2%로 수렴하여 1.2M를 사용했습니다.'",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_003"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "While geometry types are described, there are no details on mesh generation (element type/size, refinement, mesh independence study) or reconstruction workflow; mesh-related files are not provided.",
+    "allow_unknown": true,
+    "priority": 2.1
+  },
+  {
+    "id": "surrogate_modeling_and_reduced_order",
+    "question": "GPR 대리모델의 입력 전처리(정규화/스케일링), 사용된 커널 및 하이퍼파라미터 최적화 방법, 훈련 샘플 수(각 VI·표현형별), 그리고 대리모델 예측 불확도(예: predictive variance)를 Sobol 계산에 어떻게 반영했는지 설명해 주시겠습니까?",
+    "why_asked": "전역 민감도 분석은 대리모델의 입력/학습 설정과 예측 불확도 처리 방식에 민감하므로 관련 연구들은 이러한 세부를 보고합니다.",
+    "expected_answer": "예: '입력 변수는 평균 0·표준편차 1로 표준화했습니다. 커널은 Matern 5/2로 하이퍼파라미터는 로그우도 최적화로 추정했습니다. 각 VI·표현형별로 1000 샘플 전체를 훈련에 사용했고, 예측 불확도는 Sobol 계산 시 Monte-Carlo 반복에서 샘플링하여 반영했습니다(예측분산 평균치 보고).'",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_001"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "Surrogate use is stated, but reduced-order or surrogate modeling details (kernel, input preprocessing/normalization, training sample budgets, uncertainty quantification of surrogate predictions) are not specified.",
+    "allow_unknown": true,
+    "priority": 2.1
+  },
+  {
+    "id": "clinical_correlation_of_PSS",
+    "question": "본 연구에서 '7개 임상기준'과 '임상적으로 더 적합'하다고 결론낸 근거로 사용된 구체적 임상 관찰·데이터 소스(논문명/데이터셋), 각 기준의 정의(수식 혹은 부호 규칙), 그리고 PSS·ΔPSS가 해당 임상 지표들과 보인 정량적 상관관계(예: 상관계수, 민감도/특이도, 혹은 기준별 부호 일치 표)를 각각 제공해 주시겠습니까?",
+    "why_asked": "대부분의 관련 연구들은 PSS 등 응력 지표와 임상 내재적 위험(예: 병변 파열, 임상사건) 사이의 정량적 상관 또는 근거자료를 함께 제시하여 임상 타당성을 뒷받침합니다(관련 문헌 관행).",
+    "expected_answer": "예: '7개 임상기준은 (1) 파열위치의 관찰된 분포와 응력 최대치의 일치 여부, (2) 병변 분류(증식·출혈 지표)와의 부호 일치, ... (7) 조직학적 취약성 지표와의 방향성 일치 등으로 정의되며(각 기준의 수식/정의 첨부). 임상 근거로는 Smith et al. 2018 (Coronary plaque stress vs events), Lee et al. 2020 (ΔPSS와 증상 연관성)을 참조하였고, 본 시뮬레이션에서 PSS와 ΔPSS의 각 기준별 부호 일치 비율은 표와 같이 제공된다 (예: ΔPSS: 기준1 0.85, 기준2 0.78; PSS: 기준1 0.62, 기준2 0.55).'",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_010"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The materials assert clinical relevance of ΔPSS versus PSS and state that six candidate VIs were screened against seven clinical criteria, but they do not explicitly report which clinical datasets/clinical endpoints were used, how PSS/ΔPSS correlate numerically with clinical outcomes, nor provide citations or quantitative measures of clinical correlation. The seven 'clinical criteria' are mentioned but not spelled out or sourced.",
+    "allow_unknown": true,
+    "priority": 2.1
+  },
+  {
+    "id": "computational_modeling_best_practices",
+    "question": "FSI 솔버 및 수치설정·대리모델·소볼 계산에 대한 구체 정보를 다음 항목별로 제공해 주시겠습니까: (1) 사용한 FSI 코드/버전과 주요 수치법(예: 유동/구조 분해법, 시간적·공간적 이산화 기법), (2) 메쉬 크기/요소 타입 및 메쉬·시간간격 수렴시험 결과(혹은 선택 근거), (3) 경계조건 적용 방식과 수치적 안정화를 위한 처리(예: 유입/심박 엘라스탄스 적용 방법), (4) GPR 커널 형태·하이퍼파라미터 튜닝 방법·학습·검증(교차검증) 성능 지표(RMSE, R2 등), (5) Sobol 지수 추정에 사용한 표본 수·추정기(예: Saltelli)·불확실성(신뢰구간) 산출 방법.",
+    "why_asked": "모델 재현성과 신뢰도 확보를 위해 많은 계산생체역학 연구들이 solver·메쉬 수렴·대리모델 학습/검증·소볼 추정 설정을 명시합니다; 해당 정보가 없으면 결과의 수치적 신뢰도를 평가하기 어렵습니다.",
+    "expected_answer": "예: 'FSI는 in-house FSIsolver v2.1(분할형 격자법, 유동: 유한체적 2차, 구조: 유한요소 2차)을 사용했고 메쉬는 tetrahedral, 평균 엘리먼트 길이 0.12 mm로 설정했다. 시간스텝 0.5 ms로 수렴시험(메쉬/refinement 3단계)에서 PSS 변화 <2%을 확인했다. 경계조건은 inflow.dat와 elastance.dat를 유입 유속 및 외부 압력으로 적용하였다. GPR은 RBF 커널을 사용했고 하이퍼파라미터는 최대우도로 추정, 5-fold CV에서 RMSE=0.12, R2=0.89였다. Sobol은 Saltelli 샘플링을 사용해 50,000 모델 평가(대리모델 기반)를 수행했고 부트스트랩으로 95% 신뢰구간을 산출하였다.'",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_006"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The pipeline (FSI simulations, GPR surrogates, Sobol indices) is described at a high level, and input/design files are provided, but technical details required by modeling best-practices are missing or not explicit: solver name/version, numerical schemes, mesh/timestep/resolution and convergence tests, boundary condition application details, GPR kernel choice and training/validation metrics, cross-validation or uncertainty quantification in surrogate, and exact Sobol estimation settings (sample sizes, estimators).",
+    "allow_unknown": true,
+    "priority": 2.1
+  },
+  {
+    "id": "wall_compliance_effects_on_hemodynamics",
+    "question": "맥동성 FSI가 정적/강체 모델보다 더 현실적이라고 주장하는 근거로서, 벽의 유연성(compliance)이 혈류동역학(예: 유속 파형, WSS) 및 응력지표(PSS, ΔPSS)에 미치는 영향을 정량적으로 보여주는 비교(예: 동일 입력에서 rigid-wall vs compliant-wall 시뮬레이션 비교 또는 E_vessel 극단값에 따른 영향 분석)를 제공해 주시겠습니까?",
+    "why_asked": "관련 문헌은 벽의 유연성이 파동전달과 전단응력 분포에 실질적 영향을 주므로(FSI가 필요한 이유를 주장할 때) 많은 연구들이 rigid vs compliant 비교를 제시합니다; 본 논문의 '맥동성 FSI 필요' 주장을 지지하려면 유사한 정량 비교가 필요합니다.",
+    "expected_answer": "예: '동일 입력(중심 케이스)에 대해 rigid-wall(탄성계수→∞)와 compliant-wall(E_vessel=0.3 MPa) 시뮬레이션을 비교한 결과, 유속 파형의 도달지연 Δt=12 ms, 평균 WSS 차이 18%, PSS 차이 9%, ΔPSS 차이 24%로 관찰되어 벽 유연성이 응력 진폭(ΔPSS)에 더 큰 영향을 주었고, 따라서 ΔPSS 기반 지표는 정적/강체 모델로는 과소추정될 수 있다.'",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_008"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "While the study includes vessel stiffness as an input and reports that material properties dominate VI variance, there is no explicit analysis or comparison that isolates wall compliance effects on hemodynamics (e.g., results comparing compliant vs rigid walls, quantification of how wall compliance changes flow waveforms, WSS, or PSS/ΔPSS). No experiments or numerical comparisons isolating compliance are provided.",
+    "allow_unknown": true,
+    "priority": 2.1
+  }
+]

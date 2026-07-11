@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_009",
+  "study_archetype": "narrative review of imaging modalities for atherosclerotic plaque characterization",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: review imaging modalities for plaque assessment",
+      "category": "objective",
+      "sub_category": "review objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: review/overview",
+      "category": "study_design",
+      "sub_category": "narrative review",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: vascular beds considered",
+      "category": "data_or_sample",
+      "sub_category": "carotid, aortic, and coronary plaques (clinical imaging studies)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: imaging modalities surveyed",
+      "category": "methods",
+      "sub_category": "invasive and noninvasive imaging techniques (including high-resolution multicontrast magnetic resonance)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: plaque features assessed",
+      "category": "outcomes",
+      "sub_category": "luminal diameter, stenosis, wall thickness, plaque volume, and plaque composition (lipid, fibrous, calcium, thrombus)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "limitations: standard techniques cannot characterize plaque composition",
+      "category": "limitations",
+      "sub_category": "inability of most standard techniques to identify high-risk plaques by composition",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

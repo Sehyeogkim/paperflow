@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_004",
+  "study_archetype": "seismic vulnerability assessment of RC buildings accounting for aging and SSI",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: assess seismic vulnerability of RC buildings including aging and soil-structure interaction",
+      "category": "objective",
+      "sub_category": "primary_objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: methodological/assessment study (development/application of vulnerability methodology)",
+      "category": "study_design",
+      "sub_category": "type",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data/sample: reinforced concrete buildings (general/undifferentiated sample)",
+      "category": "data_or_sample",
+      "sub_category": "building_stock",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: inclusion of aging effects (e.g., steel reinforcement corrosion) in vulnerability assessment",
+      "category": "methods",
+      "sub_category": "aging_mechanisms_considered",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: consideration of soil-structure interaction effects in seismic vulnerability",
+      "category": "methods",
+      "sub_category": "soil_structure_interaction",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Outcomes: claims about potential increases in damage/vulnerability when aging and SSI are considered",
+      "category": "outcomes",
+      "sub_category": "main_conclusion",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

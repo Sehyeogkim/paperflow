@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_001",
+  "study_archetype": "development of a structural hyperelastic constitutive model for arterial layers",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: represent dispersed collagen fibre orientations in arterial layers",
+      "category": "objective",
+      "sub_category": "modeling objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: structural continuum constitutive model development",
+      "category": "study_design",
+      "sub_category": "theoretical/model development",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data/sample: morphological observations via polarized light microscopy indicating fibre dispersion",
+      "category": "data_or_sample",
+      "sub_category": "histological evidence (polarized light microscopy)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Primary methods: hyperelastic constitutive modeling incorporating fibre orientation distributions",
+      "category": "methods",
+      "sub_category": "structural hyperelastic model with dispersed fibre orientations",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Outcomes: ability of model to capture stress-strain response of layers with dispersed fibres",
+      "category": "outcomes",
+      "sub_category": "model performance on stress-strain behavior",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Limitation (implicitly relevant): models that ignore fibre dispersion fail to capture adventitial/intimal response",
+      "category": "limitations",
+      "sub_category": "need to account for dispersion",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

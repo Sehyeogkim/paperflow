@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>진단 파이프라인 — 단계별 소요시간 보고서</title>
+<style>
+  :root{
+    --bg:#F0EEE6; --surface:#FAF9F5; --surface2:#E6E0D4;
+    --accent:#CC785C; --accent2:#E8D5C4; --border:#D4C5B0;
+    --ink:#1A1A1A; --body:#2D2D2D; --muted:#6B5E54;
+    --code-bg:#E6E0D4; --code-ink:#8B4513;
+    --ok:#7A9A6D; --err:#C25744; --mini:#9DB0C4; --full:#CC785C;
+    --radius:16px; --radius-sm:10px;
+    --shadow:0 1px 2px rgba(60,40,20,.05),0 8px 24px rgba(60,40,20,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--body);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo",Pretendard,sans-serif;
+    line-height:1.6}
+  .wrap{max-width:980px;margin:0 auto;padding:46px 26px 90px}
+  h1{font-size:2rem;letter-spacing:-.02em;color:var(--ink);margin:0 0 6px;font-weight:800}
+  .sub{color:var(--muted);font-size:1rem;margin:0}
+  .meta{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+  .tag{font-size:.72rem;font-weight:700;padding:4px 11px;border-radius:999px;border:1px solid var(--border);background:var(--surface)}
+  .tag.ok{background:#EAF0E5;color:#42603a}
+  .mono{font-family:ui-monospace,Menlo,monospace}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:22px 24px;margin-top:20px}
+  .card h2{font-size:1.15rem;color:var(--ink);margin:0 0 14px;font-weight:800}
+
+  /* gantt */
+  .gantt{margin-top:6px}
+  .row{display:grid;grid-template-columns:210px 1fr 64px;gap:12px;align-items:center;padding:6px 0}
+  .row .lbl{font-size:.84rem;font-weight:600;color:var(--ink)}
+  .row .lbl .m{font-size:.66rem;font-weight:700;padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:1px}
+  .m.mini{background:var(--mini);color:#1f2d3d} .m.full{background:var(--full);color:#fff} .m.io{background:var(--surface2);color:var(--code-ink)}
+  .track{height:20px;background:var(--code-bg);border-radius:6px;position:relative;overflow:hidden}
+  .bar{position:absolute;top:0;height:100%;border-radius:6px}
+  .bar.mini{background:var(--mini)} .bar.full{background:var(--full)} .bar.io{background:var(--surface2)}
+  .row .sec{font-size:.82rem;font-weight:800;color:var(--ink);text-align:right;font-family:ui-monospace,Menlo,monospace}
+  .axis{display:grid;grid-template-columns:210px 1fr 64px;gap:12px;font-size:.66rem;color:var(--muted);margin-top:4px}
+  .axis .ticks{display:flex;justify-content:space-between}
+
+  table{width:100%;border-collapse:collapse;margin-top:4px;font-size:.86rem}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)}
+  th{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800}
+  td.n{font-family:ui-monospace,Menlo,monospace;font-weight:700;color:var(--ink)}
+  .pill{font-size:.66rem;font-weight:700;padding:2px 8px;border-radius:999px}
+  .pill.mini{background:var(--mini);color:#1f2d3d} .pill.full{background:var(--full);color:#fff}
+  .delta{color:var(--ok);font-weight:800}
+
+  .note{background:var(--bg);border:1px dashed var(--border);border-radius:var(--radius-sm);padding:12px 15px;margin-top:14px;font-size:.85rem}
+  .note b{color:var(--accent)}
+  ul{margin:6px 0 0;padding-left:18px} li{margin:4px 0;font-size:.86rem}
+  .foot{margin-top:28px;font-size:.76rem;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>진단 파이프라인 — 단계별 소요시간</h1>
+  <p class="sub">literature-grounded requirement derivation · 라이브 측정 (coronary_plaque_VI_demo)</p>
+  <div class="meta">
+    <span class="tag ok">requirement_source: literature_derived</span>
+    <span class="tag">source_papers: 10</span>
+    <span class="tag">질문 3개</span>
+    <span class="tag">총 6분 14초</span>
+    <span class="tag">2026-06-26 22:34→22:40</span>
+  </div>
+
+  <!-- gantt -->
+  <div class="card">
+    <h2>단계별 타임라인 (튜닝 후, 총 374초)</h2>
+    <div class="gantt" id="gantt"></div>
+    <div class="axis"><div></div><div class="ticks"><span>0s</span><span>~94</span><span>~187</span><span>~280</span><span>374s</span></div><div></div></div>
+    <div class="note">
+      <b>병목</b>: 이제 가장 긴 건 <b>추출(94s)·normalize(98s)</b> 두 mini 단계.
+      compare(55s)·questions(82s)는 gpt-5 full이지만 합리적. OpenAlex 검색은 10초로 사실상 무료.
+    </div>
+  </div>
+
+  <!-- tuning before/after -->
+  <div class="card">
+    <h2>튜닝: 단계별 모델 + 효과</h2>
+    <table>
+      <thead><tr><th>단계</th><th>모델</th><th>소요</th><th>변경 전</th></tr></thead>
+      <tbody>
+        <tr><td>① 검색 쿼리 도출</td><td><span class="pill mini">mini</span></td><td class="n">~3s</td><td>—</td></tr>
+        <tr><td>② OpenAlex 검색·10편 선정</td><td>HTTP</td><td class="n">10s</td><td>16편→<b>10편</b>으로 축소</td></tr>
+        <tr><td>③ 논문 항목 추출 (병렬)</td><td><span class="pill mini">mini</span></td><td class="n">94s</td><td>16편→10편</td></tr>
+        <tr><td>④ normalize (개념 통합)</td><td><span class="pill mini">mini</span></td><td class="n">98s</td><td><span class="delta">full→mini</span> (full은 2분+ 타임아웃→fallback)</td></tr>
+        <tr><td>⑤ synthesize (schema 합성)</td><td><span class="pill mini">mini</span></td><td class="n">35s</td><td><span class="delta">110s→35s</span> (full→mini + 출력 간단화)</td></tr>
+        <tr><td>⑥ compare (보유 여부 판정)</td><td><span class="pill full">gpt-5 full</span></td><td class="n">55s</td><td><span class="delta">mini→full</span> + 엄격 프롬프트</td></tr>
+        <tr><td>⑦ questions (질문 생성)</td><td><span class="pill full">gpt-5 full</span></td><td class="n">82s</td><td>유지</td></tr>
+      </tbody>
+    </table>
+    <div class="note">
+      <b>설계 원칙</b>: 대량·분류 작업(추출·normalize·synthesize)은 <b>mini</b>로 빠르게,
+      미묘한 판단(compare)과 최종 사용자 노출(questions)은 <b>gpt-5 full</b>로 정확하게.
+    </div>
+  </div>
+
+  <!-- key fixes -->
+  <div class="card">
+    <h2>이번에 고친 것</h2>
+    <ul>
+      <li><b>normalize full→mini</b>: 155→92개 항목을 gpt-5 full로 클러스터링하면 2분+ 걸려 타임아웃 → 0클러스터 → <span class="mono">static_fallback</span>으로 떨어지던 문제. mini로 바꿔 ~98초에 17클러스터 정상 산출.</li>
+      <li><b>synthesize 출력 간단화</b>: <span class="mono">applicable_papers</span>를 LLM이 주는 대신 코드가 결정적 계산. prevalence가 죄다 1.0이던 버그 해결(0.9~0.1로 변별).</li>
+      <li><b>compare mini→full + 엄격 프롬프트</b>: mini가 "데이터 파일 있네 → present"로 과관대·비결정적이라 같은 입력에 질문 0개/3개 들쭉날쭉. full + "파일 존재 ≠ 방법론 서술" 규칙으로 실제 gap(설정·방정식·검증) 포착.</li>
+      <li><b>fallback 로깅</b>: 조용히 static으로 안 떨어지게 stderr + <span class="mono">_fallback.json</span>에 사유 기록.</li>
+      <li><b>도메인 YAML 삭제</b>: 고정 팩 제거. 파일 없으면 <span class="mono">load_pack()</span>이 universal 최소 6항목으로 안전 대체 → 크래시 없이 literature가 primary.</li>
+    </ul>
+  </div>
+
+  <!-- result -->
+  <div class="card">
+    <h2>이번 런 결과 (엄격 compare)</h2>
+    <table>
+      <thead><tr><th>요구사항 (선행연구 도출)</th><th>판정</th><th>질문</th></tr></thead>
+      <tbody>
+        <tr><td>experimental_and_numerical_settings</td><td>partial</td><td>✅</td></tr>
+        <tr><td>models_and_theoretical_framework</td><td>partial</td><td>✅</td></tr>
+        <tr><td>data_acquisition_and_devices</td><td>missing</td><td>✅</td></tr>
+        <tr><td>figures_and_supplementary_material</td><td>missing</td><td>✗ (common)</td></tr>
+        <tr><td>나머지 9개 (목적·설계·결과 등)</td><td>present</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div class="note">상태 분포: <b>present 9 · partial 2 · missing 2 · not_applicable 1</b> → 질문 3개. 각 질문엔 출처 논문(paper_id)이 연결됨.</div>
+  </div>
+
+  <p class="foot">PaperFlow · diagnose pipeline timing · coronary_plaque_VI_demo · 2026-06-26</p>
+
+  <script>
+    // render gantt from measured durations (seconds)
+    const TOTAL = 374;
+    const stages = [
+      {n:'① 검색 쿼리', m:'mini', s:0,   d:3},
+      {n:'② OpenAlex 검색', m:'io', s:3,  d:10},
+      {n:'③ 논문 추출 (10편)', m:'mini', s:13, d:94},
+      {n:'④ normalize', m:'mini', s:107, d:98},
+      {n:'⑤ synthesize', m:'mini', s:205, d:35},
+      {n:'⑥ compare', m:'full', s:240, d:55},
+      {n:'⑦ questions', m:'full', s:295, d:82},
+    ];
+    const g = document.getElementById('gantt');
+    const ml = {mini:'mini', full:'full', io:'I/O'};
+    for (const st of stages) {
+      const row = document.createElement('div'); row.className='row';
+      row.innerHTML = `<div class="lbl">${st.n}<span class="m ${st.m}">${ml[st.m]}</span></div>
+        <div class="track"><div class="bar ${st.m}" style="left:${st.s/TOTAL*100}%;width:${st.d/TOTAL*100}%"></div></div>
+        <div class="sec">${st.d}s</div>`;
+      g.appendChild(row);
+    }
+  </script>
+
+</div>
+</body>
+</html>

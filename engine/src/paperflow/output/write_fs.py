@@ -6,7 +6,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-from . import latex
+from . import latex, manuscript_state, write_docx
 from ..schemas.claim import ClaimGraph, SectionContract
 from ..schemas.eval import RunManifest
 from ..schemas.requirement import RequirementReport
@@ -35,7 +35,8 @@ def write_all(out_dir: Path, *, sections: dict[str, str], graph: ClaimGraph,
               contracts: dict[str, SectionContract], requirement: RequirementReport,
               figure_spec: dict, manifest: RunManifest,
               literature_md: str = "", found_references=None,
-              reference_table=None, validation_report=None, paper_meta=None) -> None:
+              reference_table=None, validation_report=None, paper_meta=None,
+              warnings=None, research_state=None, evidence_inventory=None) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     for name, md in sections.items():
         (out_dir / f"{name.capitalize()}.md").write_text(md)
@@ -43,8 +44,25 @@ def write_all(out_dir: Path, *, sections: dict[str, str], graph: ClaimGraph,
     found = [r.model_dump() for r in (found_references or [])]
     (out_dir / "paper.tex").write_text(latex.assemble(
         sections, reference_table=reference_table, found_references=found,
-        meta=paper_meta or {}))
+        meta=paper_meta or {}, figures=(figure_spec or {}).get("figures", [])))
     _compile_pdf(out_dir)
+
+    # canonical manuscript state -> manuscript.json + DOCX + HTML preview + grounding report
+    meta = dict(paper_meta or {})
+    if requirement and requirement.classification:
+        meta["classification"] = requirement.classification.value
+    ms = manuscript_state.build(
+        sections, graph=graph, figure_spec=figure_spec, meta=meta,
+        reference_table=reference_table, found_references=found, warnings=warnings)
+    (out_dir / "manuscript.json").write_text(ms.model_dump_json(indent=2))
+    (out_dir / "manuscript_preview.html").write_text(manuscript_state.to_html(ms))
+    _dump(out_dir / "grounding_report.json", ms.grounding.model_dump())
+    write_docx.write_docx(ms, out_dir / "paper.docx")
+    if research_state is not None:
+        (out_dir / "research_state.json").write_text(research_state.model_dump_json(indent=2))
+    if evidence_inventory is not None:
+        (out_dir / "evidence_inventory.json").write_text(
+            evidence_inventory.model_dump_json(indent=2))
     if literature_md:
         (out_dir / "Literature.md").write_text(literature_md)
     if found_references:

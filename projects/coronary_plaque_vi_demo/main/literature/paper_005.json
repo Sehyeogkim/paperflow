@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_005",
+  "study_archetype": "narrative/review perspective on imaging biomarkers for coronary plaque vulnerability",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: evaluate role of CCTA in identifying vulnerable plaques and risk prediction",
+      "category": "objective",
+      "sub_category": "role of CCTA in plaque characterization and prognostication",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: review/discussion of recent trials and imaging advances",
+      "category": "study_design",
+      "sub_category": "narrative review / perspective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: asymptomatic individuals and patients from recent trials (broadly referenced)",
+      "category": "data_or_sample",
+      "sub_category": "population referenced (asymptomatic and trial populations)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: use of Coronary Computed Tomography Angiography (CCTA) to assess plaque composition, morphology, and inflammatory activity",
+      "category": "methods",
+      "sub_category": "CCTA plaque characterization",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "outcomes: prognostic value of CAC score and CCTA-derived adverse plaque characteristics for myocardial infarction, stroke, and all-cause mortality",
+      "category": "outcomes",
+      "sub_category": "clinical event prediction (MI, stroke, mortality)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "results/conclusion: CCTA and CAC scoring provide incremental prognostic information beyond traditional risk factors and may guide revascularization decisions",
+      "category": "results",
+      "sub_category": "incremental prognostic value and potential clinical utility",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

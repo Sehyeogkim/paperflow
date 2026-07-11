@@ -1,0 +1,503 @@
+[
+  {
+    "key": "computational_simulation_and_surrogate_modeling",
+    "status": "present",
+    "found_evidence": [
+      "research_state.methods (FSI + GPR + Sobol described)",
+      "outline points 6,7,11,13",
+      "evidence_inventory (sobol_*.csv files, input.csv)"
+    ],
+    "reason": "Materials explicitly state that pulsatile FSI simulations produced PSS/ΔPSS, that GPR surrogates were trained for selected VIs, and that Sobol indices were computed on the surrogate; result files for Sobol and input design are provided.",
+    "source_requirements": [
+      "overall_schema:computational_simulation_and_surrogate_modeling"
+    ]
+  },
+  {
+    "key": "fsi_simulation_methods",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.methods (cost-efficient pulsatile FSI solver mentioned)",
+      "outline points 7,9,10",
+      "evidence_inventory (inflow.dat, elastance.dat, bc.md)"
+    ],
+    "reason": "The materials state that a validated, cost-efficient pulsatile FSI solver was used and provide boundary waveforms, but do not specify governing equations, solver name/version, numerical scheme, time-stepping, mesh/discretization details, convergence criteria, or solver settings.",
+    "source_requirements": [
+      "overall_schema:fsi_simulation_methods"
+    ]
+  },
+  {
+    "key": "simulation_input_design_matrix",
+    "status": "present",
+    "found_evidence": [
+      "data/uploads/input.csv",
+      "research_state.input_variables",
+      "outline point 9"
+    ],
+    "reason": "An input design matrix (input.csv) with listed parameter columns and n=1000 is provided and described in the methods and research_state.",
+    "source_requirements": [
+      "overall_schema:simulation_input_design_matrix"
+    ]
+  },
+  {
+    "key": "boundary_and_time_waveforms",
+    "status": "present",
+    "found_evidence": [
+      "data/uploads/inflow.dat",
+      "data/uploads/elastance.dat",
+      "data/uploads/bc.md",
+      "outline point 7"
+    ],
+    "reason": "Inflow and cardiac elastance waveform files and a boundary-conditions document are included in the evidence inventory and referenced in methods.",
+    "source_requirements": [
+      "overall_schema:boundary_and_time_waveforms"
+    ]
+  },
+  {
+    "key": "surrogate_model_development_and_validation",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.methods (Train GPR surrogate; mention of performance metrics)",
+      "outline point 13",
+      "evidence_inventory (sobol_*.csv implies surrogate used)"
+    ],
+    "reason": "Materials state that GPR surrogates were trained and that performance metrics exist, but do not provide model details (kernel, hyperparameters), training procedure (train/test split, cross-validation), or quantitative validation results (RMSE, R^2) required to assess surrogate fidelity.",
+    "source_requirements": [
+      "overall_schema:surrogate_model_development_and_validation"
+    ]
+  },
+  {
+    "key": "computational_pss_modeling",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.methods (Compute PSS and ΔPSS from time-resolved stresses)",
+      "outline points 10,11"
+    ],
+    "reason": "PSS and ΔPSS are defined and used, but the exact computational definitions/formulae (e.g., how ΔPSS computed from time-series, spatial aggregation, smoothing, region-of-interest) are not specified.",
+    "source_requirements": [
+      "overall_schema:computational_pss_modeling"
+    ]
+  },
+  {
+    "key": "surrogate_model_for_outputs",
+    "status": "present",
+    "found_evidence": [
+      "research_state.methods (GPR surrogate trained for selected VIs)",
+      "outline point 13",
+      "evidence_inventory (sobol_*.csv indicates surrogate-based Sobol)"
+    ],
+    "reason": "Materials explicitly state surrogates were used to compute Sobol indices and Sobol output files are provided, indicating surrogates for outputs exist and were used.",
+    "source_requirements": [
+      "overall_schema:surrogate_model_for_outputs"
+    ]
+  },
+  {
+    "key": "anatomical_template_or_geometries",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.methods (Construct two geometric plaque phenotypes LAP and CP)",
+      "outline points 8 and 18"
+    ],
+    "reason": "The study states two plaque phenotypes were constructed, but no geometry files, template provenance, reconstruction method, or dimensional parameters are provided.",
+    "source_requirements": [
+      "overall_schema:anatomical_template_or_geometries"
+    ]
+  },
+  {
+    "key": "clinical_evidence_linking_stress_metrics_to_outcomes",
+    "status": "partial",
+    "found_evidence": [
+      "outline point 12 (seven clinical criteria used to screen VIs)",
+      "research_state.key_observations (mention of seven clinical sign-consistency criteria)"
+    ],
+    "reason": "The study reports screening VIs against seven clinical sign/criteria and asserts clinical plausibility, but does not cite specific clinical studies or provide references linking PSS/ΔPSS or chosen VI forms to observed patient outcomes.",
+    "source_requirements": [
+      "overall_schema:clinical_evidence_linking_stress_metrics_to_outcomes"
+    ]
+  },
+  {
+    "key": "consensus_guidelines_for_in_silico_modeling",
+    "status": "missing",
+    "found_evidence": [
+      "review of provided materials (no mention of consensus guidelines such as ASME/IT'IS/Virtual Physiological Human or other in-silico modeling reporting standards)"
+    ],
+    "reason": "No references or explicit adherence to community consensus guidelines or reporting standards for in-silico cardiovascular modeling were found in the materials.",
+    "source_requirements": [
+      "overall_schema:consensus_guidelines_for_in_silico_modeling"
+    ]
+  },
+  {
+    "key": "compare_cfd_vs_fsi_effects",
+    "status": "partial",
+    "found_evidence": [
+      "core_message and outline (argue ΔPSS and pulsatility/F SI importance vs static)",
+      "research_state.key_observations (ΔPSS outperforms PSS; need for pulsatile FSI)"
+    ],
+    "reason": "The manuscript claims pulsatility/FSI is necessary and ΔPSS is superior to PSS, but no explicit comparison results between static CFD/steady analyses and pulsatile FSI or quantitative demonstrations of differences are provided.",
+    "source_requirements": [
+      "overall_schema:compare_cfd_vs_fsi_effects"
+    ]
+  },
+  {
+    "key": "geometry_reconstruction_and_mesh_generation",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.methods (models constructed for two phenotypes)",
+      "evidence_inventory lacks mesh/geometry files",
+      "outline points 8,21 (limitations mention representation range)"
+    ],
+    "reason": "While geometry types are described, there are no details on mesh generation (element type/size, refinement, mesh independence study) or reconstruction workflow; mesh-related files are not provided.",
+    "source_requirements": [
+      "overall_schema:geometry_reconstruction_and_mesh_generation"
+    ]
+  },
+  {
+    "key": "surrogate_modeling_and_reduced_order",
+    "status": "partial",
+    "found_evidence": [
+      "research_state.methods (GPR surrogate used for Sobol)",
+      "outline point 13",
+      "evidence_inventory (sobol_*.csv indicates surrogate outputs)"
+    ],
+    "reason": "Surrogate use is stated, but reduced-order or surrogate modeling details (kernel, input preprocessing/normalization, training sample budgets, uncertainty quantification of surrogate predictions) are not specified.",
+    "source_requirements": [
+      "overall_schema:surrogate_modeling_and_reduced_order"
+    ]
+  },
+  {
+    "key": "clinical_correlation_of_PSS",
+    "status": "partial",
+    "found_evidence": [
+      "core_message",
+      "research_state: key_observations (ΔPSS 기반 지표가 임상적으로 더 적합)",
+      "outline point 12 (7개 임상기준으로 후보 선별)",
+      "research_state: methods (evaluate candidate VIs against seven clinical sign/criteria)"
+    ],
+    "reason": "The materials assert clinical relevance of ΔPSS versus PSS and state that six candidate VIs were screened against seven clinical criteria, but they do not explicitly report which clinical datasets/clinical endpoints were used, how PSS/ΔPSS correlate numerically with clinical outcomes, nor provide citations or quantitative measures of clinical correlation. The seven 'clinical criteria' are mentioned but not spelled out or sourced.",
+    "source_requirements": [
+      "overall_schema:clinical_correlation_of_PSS"
+    ]
+  },
+  {
+    "key": "computational_modeling_best_practices",
+    "status": "partial",
+    "found_evidence": [
+      "research_state: methods (description of cost-efficient pulsatile FSI, GPR surrogate, Sobol analysis)",
+      "outline points 6-13 (pipeline)",
+      "data files: inflow.dat, elastance.dat, input.csv"
+    ],
+    "reason": "The pipeline (FSI simulations, GPR surrogates, Sobol indices) is described at a high level, and input/design files are provided, but technical details required by modeling best-practices are missing or not explicit: solver name/version, numerical schemes, mesh/timestep/resolution and convergence tests, boundary condition application details, GPR kernel choice and training/validation metrics, cross-validation or uncertainty quantification in surrogate, and exact Sobol estimation settings (sample sizes, estimators).",
+    "source_requirements": [
+      "overall_schema:computational_modeling_best_practices"
+    ]
+  },
+  {
+    "key": "wall_compliance_effects_on_hemodynamics",
+    "status": "missing",
+    "found_evidence": [
+      "core_message (claim: pulsatile FSI needed; ΔPSS more appropriate)",
+      "research_state: inputs include E_vessel and material parameters",
+      "sobol results indicating material (including E_vessel) importance (sobol_grp_* files)"
+    ],
+    "reason": "While the study includes vessel stiffness as an input and reports that material properties dominate VI variance, there is no explicit analysis or comparison that isolates wall compliance effects on hemodynamics (e.g., results comparing compliant vs rigid walls, quantification of how wall compliance changes flow waveforms, WSS, or PSS/ΔPSS). No experiments or numerical comparisons isolating compliance are provided.",
+    "source_requirements": [
+      "overall_schema:wall_compliance_effects_on_hemodynamics"
+    ]
+  },
+  {
+    "key": "primary_objective",
+    "status": "present",
+    "found_evidence": [
+      "core_message",
+      "research_state: objective",
+      "outline point 5 and 6"
+    ],
+    "reason": "The primary objective is clearly stated in the core message, research_state, and outline: generate 1,000-sample dataset using pulsatile FSI and define VI = stress/strength with sensitivity analysis.",
+    "source_requirements": [
+      "overall_schema:primary_objective"
+    ]
+  },
+  {
+    "key": "review_scope",
+    "status": "missing",
+    "found_evidence": [
+      "outline (intro/background) mentions prior studies generally"
+    ],
+    "reason": "There is no explicit statement defining the scope of any literature review (time window, inclusion criteria, topics covered) or whether a structured review was performed; only general contextual citations/claims are implied.",
+    "source_requirements": [
+      "overall_schema:review_scope"
+    ]
+  },
+  {
+    "key": "narrative_or_systematic_review_designation",
+    "status": "missing",
+    "found_evidence": [],
+    "reason": "No designation or methodology for a narrative vs systematic review is provided.",
+    "source_requirements": [
+      "overall_schema:narrative_or_systematic_review_designation"
+    ]
+  },
+  {
+    "key": "experimental_and_clinical_reference_datasets",
+    "status": "partial",
+    "found_evidence": [
+      "research_state: 'Simulation-derived PSS and rupture-location trends are consistent with prior studies' (claim)",
+      "outline point 14 (compare with prior literature)"
+    ],
+    "reason": "The manuscript claims consistency with prior observations but does not include or cite specific experimental or clinical datasets used for comparison, nor provide the numerical comparisons; thus reference datasets are not explicitly provided.",
+    "source_requirements": [
+      "overall_schema:experimental_and_clinical_reference_datasets"
+    ]
+  },
+  {
+    "key": "literature_and_market_review_for_context",
+    "status": "missing",
+    "found_evidence": [
+      "outline intro points referencing prior work at a high level"
+    ],
+    "reason": "There is no explicit literature or market review material included (e.g., systematic summary, citations or discussion about clinical adoption/measurement capabilities) to support clinical translation claims.",
+    "source_requirements": [
+      "overall_schema:literature_and_market_review_for_context"
+    ]
+  },
+  {
+    "key": "reproducibility_and_credibility_motivation",
+    "status": "present",
+    "found_evidence": [
+      "research_state: study_design and limitations note reproducibility concerns and cost-efficiency motivation",
+      "core_message and outline emphasize validated, cost-efficient FSI and surrogate modeling for tractability"
+    ],
+    "reason": "The materials explicitly state motivations related to computational cost, validated cost-efficient solver, and surrogate modeling to enable global sensitivity analysis, which addresses reproducibility and credibility motivations.",
+    "source_requirements": [
+      "overall_schema:reproducibility_and_credibility_motivation"
+    ]
+  },
+  {
+    "key": "methodological_review_objective",
+    "status": "missing",
+    "found_evidence": [],
+    "reason": "No methodological review objective (e.g., reviewing methods across literature) is stated; the study is computational and empirical rather than a methods review.",
+    "source_requirements": [
+      "overall_schema:methodological_review_objective"
+    ]
+  },
+  {
+    "key": "model_development_and_statistical_calibration",
+    "status": "partial",
+    "found_evidence": [
+      "research_state: 'Compare simulation-based stress outputs and rupture-location tendencies with trends reported in prior literature to assess model validity'",
+      "outline point 14"
+    ],
+    "reason": "There is an assertion that simulation outputs are consistent with prior studies, and GPR surrogates are trained, but detailed model calibration procedures, calibration targets, residuals, or statistical calibration metrics are not provided in the materials.",
+    "source_requirements": [
+      "overall_schema:model_development_and_statistical_calibration"
+    ]
+  },
+  {
+    "key": "hemodynamic_metrics_wss_osi",
+    "status": "missing",
+    "found_evidence": [
+      "research_state and outline list PSS and ΔPSS as outputs"
+    ],
+    "reason": "Common hemodynamic metrics such as wall shear stress (WSS) or oscillatory shear index (OSI) are not mentioned among outputs or analyses despite claims about hemodynamic contributions; no WSS/OSI data or discussion is present.",
+    "source_requirements": [
+      "overall_schema:hemodynamic_metrics_wss_osi"
+    ]
+  },
+  {
+    "key": "spectral_acquisition_performance",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "This requirement pertains to spectral acquisition performance (experimental instrumentation) which does not apply to a purely computational FSI/sensitivity analysis study.",
+    "source_requirements": [
+      "overall_schema:spectral_acquisition_performance"
+    ]
+  },
+  {
+    "key": "limitations_need_for_new_more_authentic_diagnostic_markers_and_earlier_stage_diagnosis_emphasized",
+    "status": "missing",
+    "found_evidence": [
+      "limitations (research_state: limitations list)"
+    ],
+    "reason": "Limitations mention validation needs and uniform FC thickness but do not discuss need for new/authentic diagnostic markers or earlier-stage diagnostic emphasis.",
+    "source_requirements": [
+      "overall_schema:limitations_need_for_new_more_authentic_diagnostic_markers_and_earlier_stage_diagnosis_emphasized"
+    ]
+  },
+  {
+    "key": "limitations_need_for_additional_biomarkers_due_to_low_mace_rates_per_plaque_implied_need_for_improved_risk_stratification",
+    "status": "missing",
+    "found_evidence": [
+      "limitations (research_state: limitations list)"
+    ],
+    "reason": "Materials list modeling and validation limitations but do not discuss clinical MACE rates per plaque or the implied need for additional biomarkers/biochemical risk stratification.",
+    "source_requirements": [
+      "overall_schema:limitations_need_for_additional_biomarkers_due_to_low_mace_rates_per_plaque_implied_need_for_improved_risk_stratification"
+    ]
+  },
+  {
+    "key": "model_parameters_anatomical_physiological_and_mechanical_considerations_used_to_set_parameters_and_flow_distribution_criteria",
+    "status": "partial",
+    "found_evidence": [
+      "input.csv (input design matrix)",
+      "inflow.dat (inflow waveform)",
+      "elastance.dat (cardiac elastance waveform)",
+      "bc.md (boundary conditions documentation)",
+      "methods and study_design (research_state)"
+    ],
+    "reason": "The input parameter list, inflow/elastance waveforms, and a boundary-conditions document are provided, and methods state parameterization of morphology/hemodynamics/materials, but explicit description of how anatomical/physiological/mechanical considerations determined parameter ranges, flow-distribution criteria, and exact parameter-setting rules is not spelled out.",
+    "source_requirements": [
+      "overall_schema:model_parameters_anatomical_physiological_and_mechanical_considerations_used_to_set_parameters_and_flow_distribution_criteria"
+    ]
+  },
+  {
+    "key": "guideline_or_consensus_document",
+    "status": "missing",
+    "found_evidence": [
+      "methods: candidate VI screening against seven clinical sign/criteria (research_state, outline points 11-12)"
+    ],
+    "reason": "Authors state 6 candidates were screened against seven clinical criteria, but no guideline or consensus document used to define those clinical sign/criteria is provided or cited.",
+    "source_requirements": [
+      "overall_schema:guideline_or_consensus_document"
+    ]
+  },
+  {
+    "key": "histological_or_ex_vivo_validation_data",
+    "status": "missing",
+    "found_evidence": [
+      "limitations state lack of direct patient-specific clinical validation (research_state)"
+    ],
+    "reason": "No histological or ex vivo tissue validation data or files are provided; the study is computational and notes lack of direct clinical validation.",
+    "source_requirements": [
+      "overall_schema:histological_or_ex_vivo_validation_data"
+    ]
+  },
+  {
+    "key": "diagnostic_performance_metrics",
+    "status": "partial",
+    "found_evidence": [
+      "research_state outcomes mention 'GPR surrogate model performance metrics' and training, but no numeric metrics are supplied",
+      "uploaded files include Sobol indices and input.csv but no GPR metrics file"
+    ],
+    "reason": "The materials state that GPR surrogates were trained and that performance metrics exist, but no explicit diagnostic performance numbers (AUC, sensitivity/specificity) or surrogate model metrics (R2, RMSE) are provided in the materials.",
+    "source_requirements": [
+      "overall_schema:diagnostic_performance_metrics"
+    ]
+  },
+  {
+    "key": "aging_and_material_strength_effects",
+    "status": "missing",
+    "found_evidence": [
+      "input variables include elastic moduli (E_vessel, E_fc, E_lipid, E_cal) in input.csv and research_state",
+      "limitations note strength scenarios limited to tested α values"
+    ],
+    "reason": "Material stiffness parameters are included, but there is no explicit modeling of aging effects or explicit inclusion/variation of age-dependent material-strength changes in the design.",
+    "source_requirements": [
+      "overall_schema:aging_and_material_strength_effects"
+    ]
+  },
+  {
+    "key": "in_vivo_optical_and_biomarker_methods",
+    "status": "not_applicable",
+    "found_evidence": [
+      "study_type: computational_biomechanics; methods describe simulations and surrogate modeling"
+    ],
+    "reason": "The requirement is marked 'unsupported' and the study is purely computational; no in vivo optical or biomarker methods are claimed or expected.",
+    "source_requirements": [
+      "overall_schema:in_vivo_optical_and_biomarker_methods"
+    ]
+  },
+  {
+    "key": "experimental_animal_study_design",
+    "status": "not_applicable",
+    "found_evidence": [
+      "study_type: computational_biomechanics; no animal experiments described"
+    ],
+    "reason": "Requirement is unsupported and not relevant to this computational study.",
+    "source_requirements": [
+      "overall_schema:experimental_animal_study_design"
+    ]
+  },
+  {
+    "key": "animal_model_or_preclinical_studies",
+    "status": "not_applicable",
+    "found_evidence": [
+      "study_type and methods indicate computational simulations only"
+    ],
+    "reason": "No animal or preclinical studies are included or claimed; requirement is unsupported.",
+    "source_requirements": [
+      "overall_schema:animal_model_or_preclinical_studies"
+    ]
+  },
+  {
+    "key": "aging_and_exogenous_domain_methods",
+    "status": "not_applicable",
+    "found_evidence": [
+      "study is computational; requirement is unsupported"
+    ],
+    "reason": "Requirement categorized as unsupported and not relevant to current study.",
+    "source_requirements": [
+      "overall_schema:aging_and_exogenous_domain_methods"
+    ]
+  },
+  {
+    "key": "physiological_measurement_methods",
+    "status": "not_applicable",
+    "found_evidence": [
+      "study is computational and does not perform physiological measurements"
+    ],
+    "reason": "Requirement is unsupported and not applicable to the computational study.",
+    "source_requirements": [
+      "overall_schema:physiological_measurement_methods"
+    ]
+  },
+  {
+    "key": "listed_biomarkers_as_outcomes",
+    "status": "not_applicable",
+    "found_evidence": [
+      "study does not claim biochemical or blood-biomarker based risk prediction (research_state outcomes)"
+    ],
+    "reason": "Requirement applies only when biochemical/blood biomarkers are claimed; this study does not include such outcomes and requirement is unsupported.",
+    "source_requirements": [
+      "overall_schema:listed_biomarkers_as_outcomes"
+    ]
+  },
+  {
+    "key": "in_procedure_strain_estimation",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state",
+      "core_message",
+      "outline points 6-13"
+    ],
+    "reason": "Requirement applies when studying intra-procedural or real-time strain monitoring; this study is a computational FSI sensitivity analysis generating a 1,000-sample virtual dataset for plaque phenotypes and does not address intra-procedural or real-time strain estimation.",
+    "source_requirements": [
+      "overall_schema:in_procedure_strain_estimation"
+    ]
+  },
+  {
+    "key": "HRV_and_biological_rhythm_outcomes",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state",
+      "core_message",
+      "outline points 6-13"
+    ],
+    "reason": "Requirement applies when the study addresses autonomic function or heart-rate variability; this study models hemodynamics and wall stress in pulsatile FSI and does not analyze HRV or autonomic metrics.",
+    "source_requirements": [
+      "overall_schema:HRV_and_biological_rhythm_outcomes"
+    ]
+  },
+  {
+    "key": "rodent_LF_HF_autonomic_metric_result",
+    "status": "not_applicable",
+    "found_evidence": [
+      "research_state",
+      "core_message",
+      "outline"
+    ],
+    "reason": "This requirement concerns rodent autonomic LF/HF metrics; the present work is a human-relevant computational biomechanics study (coronary plaque FSI) and does not involve rodent experiments or LF/HF results.",
+    "source_requirements": [
+      "overall_schema:rodent_LF_HF_autonomic_metric_result"
+    ]
+  }
+]

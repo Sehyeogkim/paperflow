@@ -1,0 +1,14 @@
+{
+  "study_archetype": "pulsatile FSI computational plaque vulnerability and Sobol sensitivity study",
+  "field": "computational biomechanics",
+  "queries": [
+    "pulsatile fluid-structure interaction coronary plaque stress ΔPSS",
+    "plaque vulnerability index stress over strength fibrous cap stiffness E_FC",
+    "fatigue amplitude ΔPSS versus peak systolic stress PSS plaque rupture",
+    "Gaussian process surrogate Sobol sensitivity analysis biomechanics FSI",
+    "global sensitivity analysis Material Hemodynamics Morphology plaque",
+    "cost-efficient pulsatile FSI solver coronary artery plaque simulations",
+    "vulnerability index normalization exponent α stiffness-normalized stress",
+    "Computers in Biology and Medicine plaque FSI rupture risk study"
+  ]
+}

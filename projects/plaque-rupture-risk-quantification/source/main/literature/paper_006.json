@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_006",
+  "study_archetype": "methods/guidelines consensus for computational cardiovascular modeling",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: provide consensus guidelines for in silico cardiovascular modeling",
+      "category": "objective",
+      "sub_category": "consensus guidelines for mechanistic model development and analysis",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: consensus/recommendation paper",
+      "category": "study_design",
+      "sub_category": "guideline/consensus document",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Scope of methods: mechanistic model development, model analysis, formal model calibration using statistics",
+      "category": "methods",
+      "sub_category": "mechanistic modeling, model analysis, statistical calibration",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data/sample: use in analysis of experimental and clinical data",
+      "category": "data_or_sample",
+      "sub_category": "experimental and clinical data (broad)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Main outcomes: best practices for rigorous, reproducible computational cardiovascular modeling",
+      "category": "outcomes",
+      "sub_category": "identified best practices and methods",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Motivation: need for reproducible credible practices given increasing model complexity",
+      "category": "objective",
+      "sub_category": "improve reproducibility and credibility",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

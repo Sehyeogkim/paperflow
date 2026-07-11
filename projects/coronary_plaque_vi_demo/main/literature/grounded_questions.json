@@ -1,0 +1,77 @@
+[
+  {
+    "id": "plaque_tissue_specimens",
+    "question": "사용하신 ex-vivo 인장시험 근거의 구체적 출처(논문 리스트), 각 연구에서 사용된 시료 개수/조직종류(예: 인간 관상동맥 몇점, 연령 범위, 부위)와 meta-analysis에서 포함/제외 기준을 알려주실 수 있나요?",
+    "why_asked": "많은 관련 연구(여러 메타분석)가 재료 범위 추정을 위해 사용한 시료 수와 출처를 보고하고 있으며(예: 다수 문헌에서 표준으로 제시), 원자료 출처가 명시되어야 독자의 신뢰를 얻을 수 있습니다.",
+    "expected_answer": "예: \"메타분석은 총 8개 논문을 포함했고(참고문헌 12–19), 인간 관상동맥 섬유막 시료 총 N=72(연령 45–88, 평균 67), 각 논문별 시료수는 [A:10, B:8, C:12 ...]이며 포함 기준은 ‘human coronary fibrous cap tensile tests’, exclusion은 ‘동물 연구·비교적 비동질적 실험조건’이었습니다.\"",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_004"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "Material ranges are said to derive from ex vivo tensile-test meta-analysis, but no explicit listing of tissue specimens, numbers, sources (studies) or cohort demographics is provided.",
+    "allow_unknown": true,
+    "priority": 2.1
+  },
+  {
+    "id": "experimental_mechanical_characterization",
+    "question": "E_fc 등 물성 범위를 산정한 근거 문헌들에서 사용된 실험 방법(예: uniaxial tensile vs biaxial, strain rate, 테스트 온도)과 이들 결과를 본 연구의 등가선형/준정적 파라미터 범위로 변환한 절차를 자세히 알려주실 수 있나요?",
+    "why_asked": "문헌 기반 물성 범위를 제시할 때는 실험 조건(예: 인장/전단, 변형률 속도 등)과 변환 절차를 보고하는 것이 관례이며, 물성값의 생리학적 의미와 민감도 결과 해석에 영향을 미칩니다.",
+    "expected_answer": "예: \"포함된 논문들은 주로 uniaxial tensile tests(스트레인율 0.1–1%/s)였고, 본 연구에서는 reported secant/Young’s modulus를 동일한 변형률 영역(10–20% strain)으로 재산정하여 E_fc 범위를 얻었습니다. 자세한 논문 리스트와 변환 공식(부록)을 제공하겠습니다.\"",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_004"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "Ranges are given and claimed to be literature-derived, but the methods of the experimental measurements (test type, strain rates, sample preparation, how strength scaling was inferred) are not described.",
+    "allow_unknown": true,
+    "priority": 2.1
+  },
+  {
+    "id": "model_layer_stress_strain_performance",
+    "question": "층별(예: 섬유막, 핵, 혈관벽)로 구분한 응력·변형률 결과(예: 각 층의 peak/mean PSS 및 ΔPSS 요약 통계, 대표 필드맵)를 제공해 주실 수 있나요? (논문 본문/보충에 포함될 표·도판 지정)",
+    "why_asked": "층별 응력·변형률 요약은 층간 파열 기전과 취약성 지수의 해석에 중요하며, 관련 분야 다수 논문이 layer-specific stress maps를 제시합니다.",
+    "expected_answer": "예: \"보충도표 S2에 LAP·CP 각각에 대해 섬유막/핵/벽의 peak PSS 및 ΔPSS 평균·표준편차와 대표 필드맵(최고/중간/최저 케이스)을 추가하겠습니다. 예: 섬유막 peak PSS median 180 kPa (IQR 120–240 kPa).\"",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_001"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "Peak PSS and ΔPSS are reported, and domains (wall, cap, core) defined, but explicit layer-by-layer stress/strain field summaries (e.g., mean/peak per layer, field maps, or layer-wise stress–strain curves) are not spelled out in the provided materials.",
+    "allow_unknown": true,
+    "priority": 2.1
+  },
+  {
+    "id": "pipeline_standardization_and_uncertainty",
+    "question": "전체 파이프라인(메쉬 생성 → FSI solver → VI 계산 → 대리모델 학습 → Sobol 분석)에 대한 재현성·불확실성 관리를 위해 사용한 소프트웨어(이름·버전), 랜덤시드 관리, 코드·입력파일 공개 계획 및 단계별 오차전파(예: surrogate 예측 불확실성이 Sobol 지수에 미치는 영향) 설명을 제공해 주실 수 있나요?",
+    "why_asked": "대규모 surrogate 기반 민감도 분석을 보고할 때는 파이프라인의 표준화·재현성(소프트웨어/버전, 시드, 코드 공개)과 단계별 불확실성 전파가 관례적으로 보고되며, 이는 결과 해석에 중요합니다.",
+    "expected_answer": "예: \"메쉬는 Gmsh v4.8.4로 생성, FSI 계산은 in-house solver 'XXX' v2.1(또는 상용 유한요소 패키지 YYY vZ)으로 수행, 모든 랜덤 시드는 고정(42)으로 재현 가능. 분석 코드와 입력파일은 GitHub에 공개(링크) 예정이며, surrogate 불확실성이 Sobol에 미치는 영향은 보충자료 S3에서 부트스트랩으로 평가했습니다.\"",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_009"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "Some uncertainty quantification (GPR posterior variance, CV, Sobol convergence) and limitations are mentioned, but there is no comprehensive statement about pipeline standardization, code/software versions, reproducibility, or propagated uncertainties across stages.",
+    "allow_unknown": true,
+    "priority": 2.1
+  },
+  {
+    "id": "solver_mesh_and_boundary_conditions",
+    "question": "FSI 해석에 사용한 소프트웨어(또는 in-house 코드)명과 버전, 유한요소/유한체적 솔버의 선형/비선형 솔버(예: 선형 해법기·전처리기) 설정, 그리고 출구 저항/무반사 BC의 수치적 구현(저항값, RCR 파라미터 또는 Neumann 처리 방식)을 구체적으로 알려주실 수 있나요?",
+    "why_asked": "해석 결과(특히 압력·응력)에는 솔버 구현과 BC 파라미터가 민감하게 작용하므로 관련 물리·수치적 설정을 명확히 보고하는 것이 관례입니다.",
+    "expected_answer": "예: \"FSI는 in-house solver 'FSI-Sim' v1.3(고정점 반복 구현)으로 수행했으며, 유체 선형시스템은 GMRES+ILU(절대허용오차 1e-8), 고체는 Newton-Raphson with direct solver(서드파티 MUMPS) 사용. 출구는 Windkessel(RCR) 모델로 설정(근단부 저항 R=1.2e9 Pa·s/m^3, 컴플라이언스 C=1.6e-9 m^3/Pa), bc.md에 상세 파라미터 표를 추가하겠습니다.\"",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_007"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "Boundary conditions, mesh sizes, time-stepping and coupling scheme are described; however, solver implementation details (software name/version, linear/nonlinear solver tolerances, preconditioners), and precise BC parameter values (outlet resistance values, reflection treatment) are not fully specified in provided materials.",
+    "allow_unknown": true,
+    "priority": 2.1
+  }
+]

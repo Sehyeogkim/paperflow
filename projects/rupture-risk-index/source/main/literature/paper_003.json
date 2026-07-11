@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_003",
+  "study_archetype": "clinical practice guideline",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: update treatment guidelines for aspergillosis",
+      "category": "objective",
+      "sub_category": "guideline update objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: clinical practice guidelines document",
+      "category": "study_design",
+      "sub_category": "guideline development",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Target population: immunocompromised patients (prolonged neutropenia, advanced HIV, inherited immunodeficiency, allogeneic HSCT and lung transplant recipients)",
+      "category": "data_or_sample",
+      "sub_category": "target patient populations",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Primary methods: guideline synthesis and recommendations (evidence review implied)",
+      "category": "methods",
+      "sub_category": "evidence synthesis/guideline formulation",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": false,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Main outcomes: recommendations for treatment of aspergillosis",
+      "category": "outcomes",
+      "sub_category": "treatment recommendations",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Result/Conclusion: replacement of 2000 practice guidelines with updated guidelines",
+      "category": "results",
+      "sub_category": "guideline replacement/conclusion",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

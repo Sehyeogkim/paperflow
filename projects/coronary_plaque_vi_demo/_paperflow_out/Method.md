@@ -1,23 +1,42 @@
-본 연구의 분석 파이프라인은 데이터 생성 → 취약성 지수(VI) 정의·선별 → surrogate 기반 전역 민감도분석의 세 연속 단계로 구성된다. 먼저 데이터 생성 단계에서는 1,000개 샘플로 구성된 입력 설계공간(데이터 파일: data/input_parameter/input.csv)을 기반으로 LAP·CP 등 표준 표현형에 대해 비용효율 맥동 FSI 해석을 수행하여 PSS, ΔPSS 및 파열위치 지표 등 필요한 출력변수를 산출한다. 다음으로 VI 정의·선별 단계에서는 취약성 지수를 $VI=\mathrm{stress}/\mathrm{strength}$로 규정하고, stress의 두 관점(예: 최대응력·최대진폭)과 strength의 세 시나리오를 조합하여 총 6개의 후보 VI를 구성한 뒤, 임상적으로 확립된 7개 고위험 기준에 대한 부호(일치) 검토를 통해 후보를 선별한다. 마지막으로 선택된 최종 VI에 대해 Gaussian process regression(GPR) 대리모델을 학습하고(LAP에서 784유효쌍, CP에서 727유효쌍 사용), 학습된 surrogate 위에서 Sobol 1차 및 전차(ST) 지수를 계산하여 전역 민감도분석을 수행한다(대략 1.5만 회에 해당하는 surrogate 평가에 상응). 다음 절(M-02)에서는 데이터 생성 단계의 수치적 설정(경계조건·입력파라미터 분포·시뮬레이션 절차)을 상세히 기술한다.
+### Computational FSI simulations: scope and objectives
+본 연구의 계산전략은 선행에서 검증된 비용‑효율적 맥동 FSI 파이프라인을 재사용하여 이상적 관상동맥 플라크 표현형 두 가지(저감쇠 플라크, LAP; 석회화 플라크, CP)에 대해 시간해상도가 확보된 대규모 입출력 데이터셋을 생성하고, 이를 바탕으로 취약성지수(VI) 후보를 도출·선별한 뒤 대리모델 및 전역 민감도분석을 수행하는 것이다. 구체적으로 본 연구에서는 맥동성(피로 관점) 응력 지표인 심주기 진폭 ΔPSS를 확보하기 위해 시간해상도 FSI 시뮬레이션을 적용하였고, 이후 GPR 대리모델의 학습 및 Sobol 전역 민감도분석을 통해 형태·혈류역학·재료군의 상대 기여를 정량화하는 것을 목표로 한다; 비용‑효율적 FSI 방법 자체의 제안·검증은 본 연구 범위를 벗어나며 해당 방법은 기존 문헌·도구를 재사용하였다 (참조: boundary condition 명세 및 파이프라인 설정 근거는 (Table 1)). 이 절차는 VI 정의가 stress/strength 비이며 stress는 ΔPSS(피로 관점)로 해석되어야 한다는 논리적 전제를 실증적 데이터 생성으로 뒷받침하기 위해 설계되었다. [cite:claireconway2014]
 
-구체적으로 데이터 생성 단계에서는 선행에서 검증된 비용효율적 맥동 FSI 기법을 이용하여 두 표현형(LAP: 3도메인, CP: 4도메인)에 대해 data/input_parameter/input.csv에 정의된 1,000-sample 설계공간(형태·혈류역학·재료 변수)을 무작위·라틴하이퍼큐브 등으로 샘플링한 입력 조합마다 맥동 FSI 해석을 수행하였다 [cite:terahara2020]. 경계조건 및 심근·유입 파형은 본 연구의 BC 파일을 직접 사용했으며(경계조건 상세: data/cost_effective_FSI_BC/bc.md; 예: Rp=232.44 dyn·s/cm^5, C=1.50E-03 cm^5/dyn, Rd=1317.18 dyn·s/cm^5, tcycle=1.0 s, CO=5.0 L/min, Emax=2.0 mmHg/cc 등), 심근 시간-탄성(elastance)과 관상동맥 유입파형은 각각 data/input_parameter/elastance.dat 및 data/input_parameter/inflow.dat 파일을 입력으로 사용하였다. 각 샘플에 대해 구조-유체 상호작용 해석으로부터 플라크 표면응력(PSS), 맥동성으로 인한 응력변동(ΔPSS; 구면평균 기준) 및 시뮬레이션 기반의 파열위치 지수를 계산하여 데이터셋으로 저장하였고, 이로써 후속 VI 정의·선별 및 surrogate 학습에 필요한 출력변수를 획득하였다. 다음 절(M-03)에서는 이렇게 생성된 출력으로부터 후보 취약성 지수의 수치적 계산 및 임상기준에 따른 선별 절차를 상세히 설명한다.
+본 문단 전환: 다음으로 사용한 연속체 방정식과 경계조건·수치 결합 방식을 기술한다.
 
-이어서, 데이터 생성 단계의 구체적 대상 모델과 가정은 다음과 같다. 본 연구에서는 두 가지 플라크 표현형을 명시적으로 고려하였는데, 저감쇠 플라크(LAP)는 3도메인(혈관벽·섬유막·지질/괴사핵)으로, 석회화 플라크(CP)는 4도메인(혈관벽·섬유막·지질/괴사핵·석회화)을 각각 분할하여 모델링하였다; 각 도메인의 탄성계수 등 재료 입력은 data/input_parameter/input.csv의 컬럼(E_vessel, E_fc, E_lipid, E_cal 등)으로 지정되었다. 섬유막(fibrous cap, FC)은 모델 전반에서 두께가 공간적으로 균일하다고 가정하고 단일 스칼라 파라미터('fc_av_th' 컬럼)를 통해 샘플별로 변동시켰으며, 이 값은 모든 샘플에 대해 동일한 균일 두께로 할당되어 VI 계산시 강도(strength) 및 응력(stress) 정규화에 일관되게 사용되었다. 형태(예: DOS, lesion_length, lumen_axial_skewness, lipid_length_ratio, d_fc_ca 등), 혈류역학(예: SBP, PP, DBP, PI, tau) 및 재료 파라미터는 data/input_parameter/input.csv에 정의된 1,000-sample 설계공간에서 샘플링된 값을 그대로 적용하여 각 표현형별로 맥동 FSI 해석을 수행하였다. 경계조건 및 심근·유입 파형은 앞절에서 언급한 BC 파일(data/cost_effective_FSI_BC/bc.md, data/input_parameter/elastance.dat, data/input_parameter/inflow.dat)을 사용하였다. 각 샘플·표현형 조합에 대해 얻은 출력(PSS, ΔPSS의 구면평균, 시뮬레이션 기반 파열위치 지수)은 다음 단계인 후보 VI의 수치 계산 및 임상기준 기반 선별에 입력으로 사용되며, 그 절차는 다음 절에서 상세히 기술한다.
+PDE/constitutive physics and numerical coupling
+유체 역학은 비압축성 3D Navier–Stokes 방정식을 뉴턴 점성 유체(ρ = 1060 kg·m⁻3, μ = 0.0035 Pa·s) 가정으로 풀었고, 고체는 유한변형 준정적(large‑deformation quasi‑static) 해를 가정한 거의비압축 Neo‑Hookean (혈관벽·섬유막) 및 선형탄성(핵·석회화) 모델을 사용하였다. 유입 경계조건은 관상동맥 유량 파형(inflow time series)으로 Dirichlet를 적용하고, 심근 관여는 시간의존 elastance 파형(elastance time series)을 이용하여 관련 출구/심근 BC를 구성하였으며 상세한 Windkessel/미세혈관 파라미터는 본문 도표에 요약하였다 (Table 1). 유체-고체 연성은 partitioned strong coupling(고정점 반복) 방식으로 처리하였고, 시간적분은 BDF2를 사용하였다. 본 절에서는 대안적 연속체 모델(예: 이방성 또는 점탄성 모델)을 사용하지 않았음을 명시한다.
 
-이에 따라 본 절에서는 입력 설계공간을 명확히 규정한다: 본 연구는 형태(morphology), 혈류역학(hemodynamics), 재료(material)의 세 그룹으로 입력변수를 분류하고, 각 그룹의 파라미터를 조합한 1,000-sample 설계공간(data/input_parameter/input.csv)을 사용하였다. 구체적으로 형태군 예시에는 DOS, lesion_length, lumen_axial_skewness, lipid_length_ratio, d_fc_ca, fraction, ca_axial_skewness, ca_shoulder_skewness, fc_av_th 등이 포함되며; 혈류역학군에는 SBP, PP, DBP, PI, tau 등이 포함되고; 재료군에는 E_vessel, E_fc, E_lipid, E_cal 및 ca_strength_ratio 등 재료·강도 관련 변수가 포함된다(전체 변수와 샘플값은 data/input_parameter/input.csv 참조). 설계는 전체 공간을 골고루 탐색하도록 라틴 하이퍼큐브 기반의 샘플링(또는 동등한 전역표집 전략)을 이용해 생성된 1,000개의 입력 조합을 사용하였고, 각 조합·표현형 쌍에 대해 경계조건 및 심근·유입 파형(data/cost_effective_FSI_BC/bc.md, data/input_parameter/elastance.dat, data/input_parameter/inflow.dat)을 적용하여 PSS, ΔPSS(구면평균) 및 시뮬레이션 기반 파열위치 지수를 산출하였다. 이로써 후속 단계인 후보 VI의 수치계산 및 임상기준 기반 선별에 사용할 일련의 입력·출력 쌍이 확보되었으며, 다음 절(M-05)에서는 확보된 출력으로부터 6개 후보 VI를 수치적으로 계산하고 임상 기준에 따라 선별하는 절차를 상세히 서술한다.
+본 문단 전환: 다음으로 수치 파라미터 및 검증(시간·메시 독립성) 절차를 서술한다.
 
-앞서 기술한 입력·해석 절차에 따라, 각 샘플(및 표현형)에서 다음 세 종류의 출력변수를 표준화된 형식으로 기록하였다. 첫째, PSS(peak stress)는 해당 샘플의 맥동 FSI 시계열에서 플라크 표면에 관찰되는 최대 표면응력 값을 의미하며 각 샘플별로 스칼라 피크값으로 저장했다. 둘째, ΔPSS(응력 진폭; 구면평균)는 각 표면 지점에서의 시간적 응력 진폭(예: max−min)을 계산한 뒤 그 값을 표면 전체에 대해 구면평균(spherical mean)하여 얻은 스칼라로 정의·저장하였다(출력 변수명 및 입력은 data/input_parameter/input.csv의 샘플 식별자와 대응시켜 기록). 셋째, 파열위치 지수는 해석 결과에서 최대응력 등 주요 응력특성의 공간적 분포를 요약한 스칼라 지표로서, 시뮬레이션 상의 위치 정보를 후속 분석에서 비교·정량화할 수 있도록 각 샘플마다 저장하였다. 이들 출력(PSS, ΔPSS(구면평균), 파열위치 지수)은 이후 절에서 설명할 후보 VI 수치계산 및 GPR surrogate 학습의 입력으로 사용되며, 다음 절(M-06)에서는 이 출력들로부터 6개 후보 VI를 실제로 계산하고 임상기준에 따라 선별하는 절차를 상세히 설명한다.
+Numerical implementation and verification
+시간이산화와 수렴 기준은 다음과 같다: BDF2 시간적분, Δt = 0.5 ms, 한 심주기당 1600 time step, 초기 3주기 계산 후 주기적 정상상태(상·하행 PSS 차 <1%)에 도달한 마지막 주기에서 통계량을 산출하였다. 연성 알고리즘의 고정점 반복은 상대 잔차 1e‑5 기준으로 수렴을 요구하였다. 메시 및 시간보폭 독립성 검증을 위해 유체 메시는 약 1.2M cells(최소 Δx ≈ 20 μm), 고체 메시는 약 0.45M 요소를 기준으로 coarse→fine 및 Δt/2 테스트를 수행하였고, peak PSS 변화가 <2%로 확인된 설정을 채택하였다(검증 결과 요약은 Supplementary 자료). 본 검증은 수치적 설정의 일관성을 확보하기 위한 수준이며, 본 연구에서 별도의 실험적 검증을 새로 수행하지는 않았다.
 
-이어서, 후보 취약성 지수(VI)는 앞서 수집한 출력변수(PSS, ΔPSS)를 분자로 하고 섬유막 강도(strength)를 분모로 취하는 일반적 비율식으로 규정하여, stress(2종) × strength(3시나리오) 조합으로 총 6개의 후보를 구성하였다(C3.1). 구체적으로 분모인 strength에 대해서는 (A) 문헌상 관례와 같이 환자별 강도를 고정된 기준값으로 취하는 고정강도 시나리오(기호: S_ref), (B) 섬유막 탄성계수 $E_{fc}$에 대해 지수 보정 $\alpha=0.5$를 적용하는 시나리오, (C) $E_{fc}$에 대해 $\alpha=1.0$을 적용하는 시나리오의 세 가지를 고려하였다. 일반식으로는 다음과 같이 쓸 수 있다(단, 고정강도 시나리오(A)에서는 분모를 상수 $S_{\mathrm{ref}}$로 표기한다): 
-$$
-VI_{s,\alpha}=\frac{s}{E_{fc}^{\alpha}}\qquad(\alpha>0),
-$$
-$$
-VI_{s,{\rm fixed}}=\frac{s}{S_{\mathrm{ref}}}\qquad({\rm fixed\ strength}),
-$$
-여기서 $s$는 stress 측정치(예: $s=\mathrm{PSS}$ 또는 $s=\Delta\mathrm{PSS}$)를 의미한다. 따라서 6개의 후보는 명명법으로 다음과 같다: VI_{PSS,fixed}=PSS/S_ref, VI_{PSS,0.5}=PSS/E_{fc}^{0.5}, VI_{PSS,1.0}=PSS/E_{fc}^{1.0}, VI_{\Delta PSS,fixed}=\Delta PSS/S_ref, VI_{\Delta PSS,0.5}=\Delta PSS/E_{fc}^{0.5}, VI_{\Delta PSS,1.0}=\Delta PSS/E_{fc}^{1.0}. 각 후보의 수식적 정의는 후보 정리 표에 요약되어 문서화하였다(표 참조: Table N — <정의된 6개 후보 VI 수식>). [DATA_NEEDED: S_ref — 고정강도 시나리오에서 사용된 기준 강도 값(문헌·정규화 상수) 기재].
+본 문단 전환: 다음으로 기하학·재료모델·샘플링 범위를 기술한다.
 
-이어서 후보 VI의 선별은 임상적으로 확립된 '7개 고위험 플라크 특징'에 대한 부호(일치/불일치) 검사라는 단순·명시적 규칙을 적용하여 수행하였다: 각 후보 VI에 대해 해당 지표가 임상기준이 기대하는 방향(예: 고위험 표지와 양(또는 음)의 상관관계으로 해석되는 부호)을 만족하는지 여부를 일곱 기준 모두에 대해 판정하고, 모든 기준과 부호가 일치하는 후보만을 통과시켰다(선택 절차 및 결과 요약: Table N — <선택 절차 및 7개 임상기준 부호일치 결과>); 임상기준의 근거는 관련 병리·임상 문헌에 근거한다 [cite:wal1999]. 이 부호일치 규칙에 따라 6개 후보 가운데 두 개가 선택되었으며, 선택된 지수는 각각 
-$VI_{1}=\Delta\mathrm{PSS}/E_{fc}^{0.5}$ 및 $VI_{2}=\Delta\mathrm{PSS}/E_{fc}^{1.0}$ 이다. 본 선별은 오직 임상기준과의 방향성(부호) 일치성만을 기준으로 한 절차임을 명확히 하며, 후보들의 정량적 성능 비교와 통계적 우수성 평가는 결과절에서 별도로 제시한다. 선정된 $VI_{1},VI_{2}$는 이후 절(M-08)에서 GPR 대리모델 학습 및 전역 민감도분석의 대상으로 사용된다.
+Geometry, material models and parameter ranges
+기하학적 모델은 두 전형적 표현형으로 구성하였다: LAP(3도메인: 섬유막, 핵, 혈관벽)과 CP(4도메인: 섬유막, 핵, 석회화, 혈관벽). 섬유막 두께는 공간적으로 균일하다고 가정하고 단일 스칼라 변수(fc_av_th)로 변동시켰다. 재료 모델은 혈관벽·섬유막에 거의비압축 Neo‑Hookean(문헌 기반 계수), 핵 및 석회화에는 선형탄성을 적용하였으며 점탄성·이방성은 고려하지 않았다. 재료 파라미터 샘플 범위는 문헌 메타분석을 기반으로 설정하였고(예: E_fc ∈ [0.1, 2.0] MPa, E_vessel ∈ [0.2, 1.5] MPa, E_lipid ∈ [2, 15] kPa, E_cal ∈ [1, 20] GPa), 이러한 범위를 균등분포 LHS로 샘플링하였다. 선택한 이상적 기하학은 대표적 표현형을 모사하되 환자별 전 범위 변동을 완전히 포괄하지는 않는다.
 
-위에서 선별된 $VI_{1},VI_{2}$에 대해서는 각 표현형별로 별도의 Gaussian process regression(GPR) 대리모델을 학습하였다(사용된 유효 학습쌍: LAP 784 유효쌍, CP 727 유효쌍). GPR 학습은 출력($VI_{1},VI_{2}$)을 목표로 입력 설계공간의 유효 샘플들에 대해 수행되었고[ cite:what_I_need — Gaussian process surrogate methodology for global sensitivity analysis ], 학습된 surrogate는 원래의 맥동 FSI 계산보다 계산비용이 현저히 낮아 약 1.5×10^4(≈1.5만)회의 저비용 평가를 가능하게 하여 전역 민감도분석을 위한 충분한 표본수를 확보하였다. 준비된 surrogate 위에서 Sobol 1차 지수($S_{1}$) 및 전차 지수($S_{T}$)를 그룹 수준(형태/재료/혈류역학)과 개별 파라미터 수준에서 계산하였으며, 그룹별 결과는 data/sobol/sobol_grp_LAP_VI1.csv, data/sobol/sobol_grp_LAP_VI2.csv, data/sobol/sobol_grp_CP_VI1.csv, data/sobol/sobol_grp_CP_VI2.csv에, 개별 파라미터 수준 결과는 data/sobol/sobol_ind_LAP_VI1.csv, data/sobol/sobol_ind_LAP_VI2.csv, data/sobol/sobol_ind_CP_VI1.csv, data/sobol/sobol_ind_CP_VI2.csv에 각각 저장하였다. 여기서 Sobol의 $S_{1}$는 특정 입력변수가 출력 분산에 기여하는 주효과(단독 기여)를, $S_{T}$는 해당 입력의 주효과와 다른 입력과의 상호작용을 포함한 총기여를 분해·정량화하는 지표로서 전역적(분산 기반) 민감도 정량화를 제공하며(이로써 민감도 기반 우선순위 도출의 통계적 근거를 마련한다) 분석은 위 파일들에 기록된 지수들을 근거로 수행되었다. 마지막으로 명시하건대, 본 surrogate는 전역 민감도분석을 위한 계산적 에뮬레이터로 사용되었으며, 맥동 FSI의 검증·대체를 의도하지는 않는다.
+본 문단 전환: 다음으로 입력 설계공간과 케이스 생성 절차를 설명한다.
+
+Input design-space sampling and case generation
+입력 설계공간은 형태(morphology), 혈류역학(hemodynamics) 및 재료(materials) 세 군을 포함하여 총 1,000개 파라미터 세트를 생성하였고, 각 행은 하나의 FSI 계산 케이스를 의미한다. 샘플링은 주로 LHS를 포함한 균등 분포 방식으로 수행하여 지정된 범위 내에서 광범위하게 탐색하였으며, 이 설계공간이 모든 생리학적 경우를 완전히 포함하지 않음을 명시한다. 각 설계점에 대해 동일한 시뮬레이션·후처리 파이프라인을 적용하여 일관된 출력 집합을 확보하였다.
+
+본 문단 전환: 다음은 각 케이스에서 계산된 출력 및 VI 후보 생성 방법이다.
+
+Output processing and candidate VI computation
+각 FSI 케이스에 대해 표면 기반 peak PSS와 심주기 진폭인 ΔPSS(구면평균)를 계산하였고, 추가로 FFR 유사 지표와 rupture‑location index를 산출하였다. 취약성지수(VI)는 일반 형태 VI = stress/strength으로 정의하였고, stress는 두 가지 관점(peak PSS, ΔPSS), strength는 섬유막 강도 정규화 E_fc^α의 세 시나리오(α 변수 포함)로 설정하여 총 2×3 = 6개의 후보 VI를 생성하였다. 후보 VI들에 대한 표준화된 계산 과정 및 각 출력 정의(예: ΔPSS의 구면평균 산술)는 본 절차에 따라 자동화된 후처리 스크립트로 수행되었다(세부 수식과 처리 흐름은 Supplementary Methods에 기술).
+
+본 문단 전환: 다음은 임상 기준과의 선별 절차를 기술한다.
+
+Clinical sign‑consistency screening of VI candidates
+6개 후보 VI는 문헌에서 보고된 7개의 임상적 고위험 플라크 특징과의 부호일치(sign‑consistency)를 기준으로 점수화하여 선별하였다(일치이면 1, 불일치이면 0). 각 VI별 평균 점수와 95% BCa 부트스트랩 신뢰구간은 1,000번 재표집으로 산출하였고, 동률 처리 시 ΔPSS 민감도를 우선하는 규칙을 적용하였다. 이 절차를 통해 VI1(ΔPSS/E_fc^0.5)와 VI2(ΔPSS/E_fc^1.0)이 7개 기준과 모두 일치하는 것으로 판정되어(평균 sign‑consistency = 1.00, 95% BCa CI 0.99–1.00) 최종 분석 대상 VI로 선정되었다(선정 결과 요약은 Table 3).
+
+본 문단 전환: 다음은 대리모델 학습 절차이다.
+
+Gaussian process surrogate training
+선정된 VI에 대해 Gaussian process regression(GPR) 대리모델을 학습하였다. 커널은 ARD Matérn 5/2에 white‑noise 항을 추가한 형태를 사용했고, 입력은 z‑score 정규화, 출력(VI)은 표준화하였다. 하이퍼파라미터 최적화는 L‑BFGS‑B를 사용하여 20회 재시작(restarts)으로 수행하였다. 교차검증은 5‑fold CV로 평가하였고, 유효 학습 집합 크기는 LAP 784 유효쌍 및 CP 727 유효쌍이었다; 대리모델의 예측 불확실성은 GPR의 posterior 분산으로 표현하였다. 모델 성능 평가는 5‑fold CV R² 및 RMSE로 보고하였고(요약 수치 및 분포는 Results에 제시), 대리모델은 이후의 전역 민감도분석을 위해 약 1.5만 회 이상의 빠른 반복 평가를 가능케 하는 인프라로 사용되었다.
+
+본 문단 전환: 마지막으로 대리모델 기반 Sobol 분석 절차를 기술한다.
+
+Global sensitivity analysis on the surrogate
+대리모델 위에서 전역 민감도분석은 Saltelli 샘플링 프로토콜을 사용하여 약 15,000개의 base 샘플을 생성하고, 이를 통해 Sobol 1차(S1) 및 total(ST) 지수를 그룹(형태/혈류/재료) 및 개별 파라미터 수준에서 추정하였다. 계산된 지수의 수렴성은 재현성 검증(반복실행 시 S1 변화 <0.01 수준)으로 확인하였고, 그룹·파라미터 수준의 결과는 data/sobol/*.csv 파일로 정리하였다; 결과 시각화는 그룹 수준(Fig. 4) 및 개별 파라미터 수준(Fig. 5)으로 제시하였다. 이 분석은 분산 기여도의 정량적 분해를 목적으로 하며, Sobol 지수는 인과성보다는 분산 기여도 측정임을 명확히 한다.

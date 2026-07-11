@@ -1,0 +1,14 @@
+{
+  "data/uploads/bc.md": "비용효율 맥동성 FSI 경계조건(BC) 설명 — Method 시뮬레이션 셋업 근거.",
+  "data/uploads/elastance.dat": "시간-심근 elastance 파형 — FSI 심근 경계조건.",
+  "data/uploads/inflow.dat": "관상동맥 입구 유량(inflow) 파형 — FSI 맥동성 경계조건.",
+  "data/uploads/input.csv": "1,000-sample 입력 설계공간: 형태·혈류역학·재료 3군 파라미터(DOS, E_vessel, E_fc, SBP, PP 등). Method 설계공간 근거.",
+  "data/uploads/sobol_grp_CP_VI1.csv": "CP·VI1: 그룹별 Sobol S1·ST.",
+  "data/uploads/sobol_grp_CP_VI2.csv": "CP·VI2: 그룹별(형태/재료/혈류역학) Sobol S1·ST.",
+  "data/uploads/sobol_grp_LAP_VI1.csv": "LAP·VI1: 그룹별 Sobol S1·ST.",
+  "data/uploads/sobol_grp_LAP_VI2.csv": "LAP·VI2: 그룹별(형태/재료/혈류역학) Sobol S1·ST. Material 그룹이 지배적 — Material>Hemo>Morpho 근거.",
+  "data/uploads/sobol_ind_CP_VI1.csv": "CP·VI1: 개별 파라미터별 Sobol S1·ST.",
+  "data/uploads/sobol_ind_CP_VI2.csv": "CP(석회화 플라크)·VI2: 개별 파라미터별 Sobol S1·ST.",
+  "data/uploads/sobol_ind_LAP_VI1.csv": "LAP·VI1: 개별 파라미터별 Sobol S1·ST 민감도.",
+  "data/uploads/sobol_ind_LAP_VI2.csv": "LAP(저감쇠 플라크)·VI2: 개별 파라미터별 Sobol S1·ST 민감도. E_fc가 1위, 상위 4인자=E_vessel·E_FC·SBP·PP. Result '재료물성 지배' 핵심 근거."
+}

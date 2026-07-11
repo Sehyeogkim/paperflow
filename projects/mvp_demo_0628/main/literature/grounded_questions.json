@@ -1,0 +1,78 @@
+[
+  {
+    "id": "gp_surrogate_modeling",
+    "question": "GPR 대리모델에 대한 구체적 설정을 알려주십시오: 사용한 커널 종류(예: RBF, Matern ν=...), 하이퍼파라미터 최적화 방법(예: 최대우도, MAP), 하이퍼파라미터 초기값 혹은 제약, 정규화/스케일링 처리, 학습-검증 분할(교차검증 여부 및 fold 수), 사용한 라이브러리와 버전(예: scikit-learn 0.24 또는 GPyTorch 1.4)과 훈련 시간/컴퓨팅 자원입니다.",
+    "why_asked": "관련 문헌에서는 GPR 성능과 Sobol 민감도 추정의 신뢰성이 커널·하이퍼파라미터 선택 및 검증 절차에 민감하여(다수 연구가 세부 설정을 보고함) 해당 정보가 필요합니다.",
+    "expected_answer": "예: \"LAP/CP 모두에 대해 Matern 5/2 커널을 사용했고, 로그 우도 최대화로 하이퍼파라미터를 학습했습니다. 입력/출력은 각각 z-점수 정규화하였고, 과적합 방지를 위해 5-fold 교차검증을 수행했습니다. 구현은 GPy 1.10.0을 사용했고, 훈련은 NVIDIA V100 1GPU에서 각각 약 15분/모델이 소요되었습니다.\"",
+    "requirement_level": "mandatory",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_002",
+      "paper_007"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "Materials state that Gaussian Process Regression surrogates were trained and give sample counts, but they do not provide the GPR model details (kernel choice, kernel hyperparameters, training/optimization procedure, cross-validation method, software/library and version, or uncertainty quantification procedure).",
+    "allow_unknown": true,
+    "priority": 3.2
+  },
+  {
+    "id": "surrogate_model_efficiency_and_accuracy",
+    "question": "GPR 대리모델의 정확도·효율성 지표를 수치로 제시해 주십시오: 학습/검증에서의 R², RMSE 또는 MAE(각 VI 및 phenotype별), 예측 불확실성의 캘리브레이션(예: 예측 신뢰구간의 포함율), 그리고 대리모델을 이용한 Sobol 평가 시 실제 시뮬레이션 대비 소요 시간·평가 횟수의 절감 비율입니다.",
+    "why_asked": "문헌에서는 대리모델 기반 전역 민감도분석의 신뢰성 판단을 위해 R²·RMSE 등 성능 지표와 예측 불확실성의 캘리브레이션을 보고하는 경우가 다수입니다(검증이 없으면 Sobol 지수가 대리모델 편향을 반영할 수 있음).",
+    "expected_answer": "예: \"LAP VI1: R²=0.92, RMSE=0.08 (5-fold CV), CP VI1: R²=0.89, RMSE=0.10. 95% 예측구간 포함율은 각각 93%/91%로 양호했고, GPR 예측 1만 샘플 평가에 30초 소요되어 원시 FSI(1만 시뮬레이션 가정 시 추정 1,000 CPU·시간) 대비 약 100× 시간 절감 효과를 보였습니다.\"",
+    "requirement_level": "mandatory",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_007"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The materials state that GPR surrogates were trained and mention that surrogate performance metrics are reported, but do not provide concrete performance numbers (e.g., R^2, RMSE, MAE, predictive log-likelihood), uncertainty calibration checks, or timing/throughput comparisons demonstrating computational efficiency gains.",
+    "allow_unknown": true,
+    "priority": 3.1
+  },
+  {
+    "id": "missing_methodological_details_in_abstracts",
+    "question": "초록에서 누락된 주요 방법론적 세부사항(심사자가 초록만 읽을 경우 알기 어려운 핵심 항목)을 간결히 적어주십시오(예: 유한요소 메쉬/요소종류, GPR 커널·검증 지표, Sobol 추정 시 샘플 수 등).",
+    "why_asked": "연구보고서 초록에서 핵심 방법 세부를 일부 생략하는 경우가 많으므로(문헌 관행) 심사자가 연구의 재현성·타당성을 빠르게 판단할 수 있도록 어떤 세부를 본문에 반드시 포함해야 하는지 명확히 할 필요가 있습니다.",
+    "expected_answer": "예: \"초록에는 메쉬 해상도와 요소종류(FE: 2차 삼각형 요소), GPR 커널(Matern 5/2) 및 CV 성능(R², RMSE), Sobol 계산을 위한 Monte Carlo 샘플 수(1e5) 등은 포함되지 않았습니다. 본문에 이들 세부를 명시합니다.\"",
+    "requirement_level": "mandatory",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_003"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The abstract/core message gives a high-level methods summary (cost-efficient FSI, dataset construction, GPR+Sobol) but does not explicitly state which methodological details are omitted from the abstract or list the most important missing specifics (e.g., GPR settings, FE discretization, mesh/timestep info).",
+    "allow_unknown": true,
+    "priority": 3.1
+  },
+  {
+    "id": "finite_element_stress_analysis",
+    "question": "유한요소 기반 응력해석 관련 구체적 설정을 알려주십시오: 구조체 메쉬(요소종류와 차수, 평균 엘리먼트 크기), 유체/고체 시간간격(timestep)과 안정화/수렴 기준, 사용한 솔버(상용/오픈소스·버전), 그리고 메쉬/시간간격 독립성 검증 결과(예: PSS 변화가 5% 이내인 해상도)입니다.",
+    "why_asked": "응력값과 VI가 유한요소 해석 설정에 민감하므로(문헌에서 메쉬·시간간격 민감도 검증을 보고하는 경우가 다수) 재현성과 신뢰성 확보를 위해 구체적 FE 설정과 수렴검증 결과가 필요합니다.",
+    "expected_answer": "예: \"고체는 2차 삼각형(선형 쉘 아님)을 사용했고 평균 엘리먼트 치수는 0.05 mm였습니다. 유체-고체 쪽은 준정적 절차와 함께 피크 주기에 Δt=1 ms를 사용했고, 뉴턴식 유동에 대해 압력-속도 연성 솔버(오픈FOAM v8 + 사용자 FSI 래퍼)를 사용했습니다. 메쉬 민감도 테스트에서 PSS는 엘리먼트 크기 0.1→0.05 mm로 변경 시 6% 변화, 0.05→0.025 mm로 변경 시 2% 변화하여 0.05 mm를 채택했습니다.\"",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_004"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "The study states that PSS and ΔPSS were computed from pulsatile FSI simulations using a cost-efficient solver and includes a boundary-conditions document, but does not specify finite element details (element type, mesh resolution, integration schemes, contact formulation, solver tolerances, code/library and version) or any mesh/timestep convergence tests.",
+    "allow_unknown": true,
+    "priority": 2.1
+  },
+  {
+    "id": "stress_metrics_reported",
+    "question": "PSS와 ΔPSS의 정확한 수학적 정의를 제시해 주십시오: PSS에 사용된 응력(예: 최대주응력, von Mises, 섬유축응력 등), ΔPSS 계산식(예: ΔPSS = max_t PSS(t) - min_t PSS(t) 또는 반진폭), 그리고 구면평균/표면평균의 수식적 정의(평균 영역, 가중치 등)를 알려주십시오.",
+    "why_asked": "문헌에서는 동일 명칭이라도 서로 다른 정의(예: peak vs amplitude, von Mises vs principal)가 사용되므로(관련 연구 다수) 정확한 재현과 비교를 위해 명확한 수학적 정의가 필요합니다.",
+    "expected_answer": "예: \"PSS는 섬유 캡 표면에서의 최대 주응력(principal stress σ1)을 의미하며, ΔPSS는 ΔPSS = max_{t∈cycle} σ1(t) - min_{t∈cycle} σ1(t)으로 계산했습니다. 표면평균은 캡 표면의 등면적 분할에 대해 단순 평균을 사용했습니다.\"",
+    "requirement_level": "strongly_expected",
+    "reviewer_risk": "high",
+    "sources": [
+      "paper_004"
+    ],
+    "applicability_reason": "",
+    "not_found_reason": "PSS and ΔPSS are listed as outputs and ΔPSS is described as spherical/surface-averaged stress amplitude, but there is no explicit mathematical definition/formula for PSS or ΔPSS (e.g., which stress component, how spherical averaging is computed, whether ΔPSS = max-min over cardiac cycle or amplitude of oscillation) or the spatial averaging procedure.",
+    "allow_unknown": true,
+    "priority": 2.1
+  }
+]

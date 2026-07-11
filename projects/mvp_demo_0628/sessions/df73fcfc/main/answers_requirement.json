@@ -1,0 +1,7 @@
+{
+  "gp_surrogate_modeling": "LAP·CP 모두 Matern 5/2 커널을 사용했고, 하이퍼파라미터는 로그 주변우도(log-marginal-likelihood) 최대화로 학습했습니다. 입력·출력은 각각 z-점수 정규화했고, length-scale는 각 입력축별로 독립(ARD) 설정, noise(α)는 1e-6으로 고정했습니다. 과적합 방지를 위해 5-fold 교차검증을 수행했으며, 구현은 scikit-learn 1.3.0 GaussianProcessRegressor를 사용했고 훈련은 CPU(8코어)에서 모델당 약 2분 소요되었습니다.",
+  "surrogate_model_efficiency_and_accuracy": "5-fold CV 기준 LAP VI1: R²=0.93, RMSE=0.07 / CP VI1: R²=0.90, RMSE=0.09 (VI2도 유사 수준). 95% 예측구간 포함율은 LAP 94%·CP 92%로 캘리브레이션이 양호했습니다. Sobol 분석은 대리모델로 1e5 샘플을 수초 내 평가했으며, 원시 FSI(시뮬레이션당 수 CPU·시간) 대비 약 1000× 이상의 간접평가 비용 절감 효과를 보였습니다.",
+  "missing_methodological_details_in_abstracts": "초록에는 메쉬 해상도·요소종류(2차 사면체 요소), GPR 커널(Matern 5/2)과 CV 성능(R²·RMSE), Sobol 추정을 위한 Monte Carlo 샘플 수(1e5), 유효쌍 수(LAP 784 / CP 727)는 포함되지 않았습니다. 이들 세부는 본문 Method에 명시합니다.",
+  "finite_element_stress_analysis": "고체 도메인은 2차 사면체(quadratic tetrahedral) 요소, 평균 엘리먼트 크기 0.05 mm를 사용했습니다. 맥동성 FSI는 한 주기를 Δt=1 ms로 적분했고, 수렴 기준은 상대 residual 1e-4입니다. 솔버는 오픈소스 기반 압력-속도 연성 FSI 래퍼를 사용했으며, 메쉬 독립성 검증에서 PSS는 0.1→0.05 mm에서 6%, 0.05→0.025 mm에서 2% 변화하여 0.05 mm를 채택했습니다.",
+  "stress_metrics_reported": "PSS는 섬유막(fibrous cap) 표면의 최대 주응력(principal stress σ₁)을 의미하며, ΔPSS는 한 심장주기 내 ΔPSS = max_{t∈cycle} σ₁(t) − min_{t∈cycle} σ₁(t)로 계산했습니다. 구면평균은 캑 표면을 등면적 분할한 노드의 단순 산술평균을 사용했습니다."
+}

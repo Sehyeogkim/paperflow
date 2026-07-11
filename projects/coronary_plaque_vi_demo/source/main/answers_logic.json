@@ -1,0 +1,3 @@
+{
+  "LOGIC_GAP_C1_EVIDENCE": "VI 후보 6종(stress 2종 × strength 3시나리오)을 7개 임상 고위험 기준과의 부호일치로 평가한 결과, VI1=ΔPSS/E_fc^0.5와 VI2=ΔPSS/E_fc만 7기준을 모두 만족(부호일치 점수 평균 1.00, 95% BCa CI 0.99–1.00). 이 선별 결과(6개 중 2개만 전 기준 충족)가 \"파열 취약성을 stress/strength 비율로 정의해야 한다\"는 주장을 직접 지지하는 결과값이다. 근거: data/sobol/sobol_grp/ind_*_VI1/VI2.csv 및 후보 선별 표."
+}

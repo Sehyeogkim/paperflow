@@ -1,0 +1,569 @@
+[
+  {
+    "key": "computational_modelling_study",
+    "status": "present",
+    "found_evidence": [
+      "research_state",
+      "methods",
+      "primary_methods_description",
+      "outline points 6-13"
+    ],
+    "reason": "Study design, objectives and full computational workflow (FSI simulations on idealized plaque models, sample sizes, outputs) are explicitly described in the research_state and methods.",
+    "source_requirements": [
+      "overall_schema:computational_modelling_study"
+    ]
+  },
+  {
+    "key": "develop_low_dimensional_surrogate_model",
+    "status": "present",
+    "found_evidence": [
+      "computational_modelling_surrogate_development",
+      "research_state",
+      "methods",
+      "data/sobol files"
+    ],
+    "reason": "Gaussian process surrogate model (ARD Matérn 5/2 + white noise), hyperparameter optimization, CV performance and use for Sobol sampling are explicitly provided.",
+    "source_requirements": [
+      "overall_schema:develop_low_dimensional_surrogate_model"
+    ]
+  },
+  {
+    "key": "target_biological_system_coronary_artery",
+    "status": "present",
+    "found_evidence": [
+      "core_message",
+      "research_state",
+      "outline point 1-5"
+    ],
+    "reason": "The biological target (coronary artery plaque rupture) is stated clearly as the study focus.",
+    "source_requirements": [
+      "overall_schema:target_biological_system_coronary_artery"
+    ]
+  },
+  {
+    "key": "plaque_geometry_and_composition_representation",
+    "status": "present",
+    "found_evidence": [
+      "outline points 8-11",
+      "research_state (LAP and CP descriptions)",
+      "data/input_parameter/input.csv"
+    ],
+    "reason": "Idealized plaque geometries (LAP 3-domain, CP 4-domain) and composition domains are described and parameterized; input design space file provided.",
+    "source_requirements": [
+      "overall_schema:plaque_geometry_and_composition_representation"
+    ]
+  },
+  {
+    "key": "material_constitutive_model",
+    "status": "present",
+    "found_evidence": [
+      "material_constitutive_model",
+      "primary_methods_description",
+      "research_state"
+    ],
+    "reason": "Constitutive choices (nearly-incompressible Neo-Hookean for wall/cap with parameter values, linear elastic for core and calcification with E and ν) are explicitly stated.",
+    "source_requirements": [
+      "overall_schema:material_constitutive_model"
+    ]
+  },
+  {
+    "key": "surrogate_model_development",
+    "status": "present",
+    "found_evidence": [
+      "computational_modelling_surrogate_development",
+      "research_state",
+      "data files (GPR performance)"
+    ],
+    "reason": "Surrogate model type, kernel, training procedure, normalization, CV metrics and use for Sobol sampling are explicitly given.",
+    "source_requirements": [
+      "overall_schema:surrogate_model_development"
+    ]
+  },
+  {
+    "key": "temporal_resolution_and_time_stepping",
+    "status": "present",
+    "found_evidence": [
+      "primary_methods_description",
+      "continuum_3d_navier_stokes_model",
+      "research_state"
+    ],
+    "reason": "Time integration scheme (BDF2), time step Δt=0.5 ms, steps per cardiac cycle (1600), number of cycles to steady periodic state (3) and convergence criterion are provided.",
+    "source_requirements": [
+      "overall_schema:temporal_resolution_and_time_stepping"
+    ]
+  },
+  {
+    "key": "simulation_pipeline_and_processing_steps",
+    "status": "present",
+    "found_evidence": [
+      "outline points 6-13",
+      "methods",
+      "primary_methods_description",
+      "data files (inflow.dat, elastance.dat, input.csv)"
+    ],
+    "reason": "Pipeline described as three stages (data generation → VI selection → surrogate-based GSA), with inputs, BCs, outputs (PSS, ΔPSS, rupture index) and data-flow described.",
+    "source_requirements": [
+      "overall_schema:simulation_pipeline_and_processing_steps"
+    ]
+  },
+  {
+    "key": "characterize_compressive_mechanical_properties_of_plaques",
+    "status": "present",
+    "found_evidence": [
+      "characterize_mechanical_properties_of_plaque_components",
+      "research_state",
+      "data/input_parameter/input.csv"
+    ],
+    "reason": "Material parameter ranges (E_fc, E_vessel, E_lipid, E_cal) and sampling method (uniform LHS) and source (ex vivo tensile test meta-analysis) are explicitly stated.",
+    "source_requirements": [
+      "overall_schema:characterize_compressive_mechanical_properties_of_plaques"
+    ]
+  },
+  {
+    "key": "plaque_tissue_specimens",
+    "status": "partial",
+    "found_evidence": [
+      "characterize_mechanical_properties_of_plaque_components",
+      "research_state (mentions ex vivo tensile test meta-analysis)"
+    ],
+    "reason": "Material ranges are said to derive from ex vivo tensile-test meta-analysis, but no explicit listing of tissue specimens, numbers, sources (studies) or cohort demographics is provided.",
+    "source_requirements": [
+      "overall_schema:plaque_tissue_specimens"
+    ]
+  },
+  {
+    "key": "experimental_mechanical_characterization",
+    "status": "partial",
+    "found_evidence": [
+      "characterize_mechanical_properties_of_plaque_components",
+      "research_state (meta-analysis mention)"
+    ],
+    "reason": "Ranges are given and claimed to be literature-derived, but the methods of the experimental measurements (test type, strain rates, sample preparation, how strength scaling was inferred) are not described.",
+    "source_requirements": [
+      "overall_schema:experimental_mechanical_characterization"
+    ]
+  },
+  {
+    "key": "model_layer_stress_strain_performance",
+    "status": "partial",
+    "found_evidence": [
+      "outcomes (Peak PSS, ΔPSS)",
+      "methods (layered domains described)"
+    ],
+    "reason": "Peak PSS and ΔPSS are reported, and domains (wall, cap, core) defined, but explicit layer-by-layer stress/strain field summaries (e.g., mean/peak per layer, field maps, or layer-wise stress–strain curves) are not spelled out in the provided materials.",
+    "source_requirements": [
+      "overall_schema:model_layer_stress_strain_performance"
+    ]
+  },
+  {
+    "key": "pipeline_standardization_and_uncertainty",
+    "status": "partial",
+    "found_evidence": [
+      "research_state (limitations mention GPR approximation and mesh/time independence)",
+      "computational_modelling_surrogate_development (GPR CV metrics)"
+    ],
+    "reason": "Some uncertainty quantification (GPR posterior variance, CV, Sobol convergence) and limitations are mentioned, but there is no comprehensive statement about pipeline standardization, code/software versions, reproducibility, or propagated uncertainties across stages.",
+    "source_requirements": [
+      "overall_schema:pipeline_standardization_and_uncertainty"
+    ]
+  },
+  {
+    "key": "solver_mesh_and_boundary_conditions",
+    "status": "partial",
+    "found_evidence": [
+      "primary_methods_description",
+      "continuum_3d_navier_stokes_model",
+      "data/cost_effective_FSI_BC/bc.md",
+      "data/input_parameter/inflow.dat"
+    ],
+    "reason": "Boundary conditions, mesh sizes, time-stepping and coupling scheme are described; however, solver implementation details (software name/version, linear/nonlinear solver tolerances, preconditioners), and precise BC parameter values (outlet resistance values, reflection treatment) are not fully specified in provided materials.",
+    "source_requirements": [
+      "overall_schema:solver_mesh_and_boundary_conditions"
+    ]
+  },
+  {
+    "key": "narrative_review_article",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "Requirement refers to review articles; current work is an original computational study.",
+    "source_requirements": [
+      "overall_schema:narrative_review_article"
+    ]
+  },
+  {
+    "key": "imaging_based_plaque_characterization",
+    "status": "missing",
+    "found_evidence": [
+      "outline (uses idealized models)"
+    ],
+    "reason": "Study uses idealized plaque models (LAP, CP) rather than imaging-derived, and there is no description of imaging-based geometry derivation or usage.",
+    "source_requirements": [
+      "overall_schema:imaging_based_plaque_characterization"
+    ]
+  },
+  {
+    "key": "missing_methodological_details_in_abstracts",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "This requirement concerns abstracts; materials give full methods rather than an abstract-only submission.",
+    "source_requirements": [
+      "overall_schema:missing_methodological_details_in_abstracts"
+    ]
+  },
+  {
+    "key": "assess_role_of_ccta_in_vulnerable_plaque_detection",
+    "status": "missing",
+    "found_evidence": [
+      "core_message (clinical implications)"
+    ],
+    "reason": "No analysis or comparison to CCTA/CAC scoring is provided.",
+    "source_requirements": [
+      "overall_schema:assess_role_of_ccta_in_vulnerable_plaque_detection"
+    ]
+  },
+  {
+    "key": "provide_recommendations_on_wss_assessment",
+    "status": "missing",
+    "found_evidence": [
+      "research_state (hemodynamics included)"
+    ],
+    "reason": "Wall shear stress (WSS) assessment or recommendations are not described in the materials.",
+    "source_requirements": [
+      "overall_schema:provide_recommendations_on_wss_assessment"
+    ]
+  },
+  {
+    "key": "review_methods_for_obtaining_accurate_hemodynamic_factors",
+    "status": "partial",
+    "found_evidence": [
+      "continuum_3d_navier_stokes_model",
+      "data/input_parameter/inflow.dat",
+      "data/cost_effective_FSI_BC/bc.md"
+    ],
+    "reason": "Inlet flow and elastance BCs are provided and outlet BCs described at a high level, but there is no review/justification of chosen hemodynamic parameter ranges or sensitivity of results to BC choices.",
+    "source_requirements": [
+      "overall_schema:review_methods_for_obtaining_accurate_hemodynamic_factors"
+    ]
+  },
+  {
+    "key": "expert_recommendations_consensus",
+    "status": "missing",
+    "found_evidence": [],
+    "reason": "No formal expert consensus or guideline process is reported.",
+    "source_requirements": [
+      "overall_schema:expert_recommendations_consensus"
+    ]
+  },
+  {
+    "key": "population_reference_description",
+    "status": "partial",
+    "found_evidence": [
+      "diagnostic_performance_metrics (synthetic high-risk label defined)",
+      "core_message (clinical implications)"
+    ],
+    "reason": "Synthetic high-risk label is defined (≥5 of 7 criteria) but there is no description of a population reference or how thresholds relate to epidemiologic cohorts.",
+    "source_requirements": [
+      "overall_schema:population_reference_description"
+    ]
+  },
+  {
+    "key": "imaging_modalities_used",
+    "status": "missing",
+    "found_evidence": [],
+    "reason": "No imaging-derived geometries or imaging modalities are used or described.",
+    "source_requirements": [
+      "overall_schema:imaging_modalities_used"
+    ]
+  },
+  {
+    "key": "compressive_mechanical_properties_and_anisotropy_metrics",
+    "status": "partial",
+    "found_evidence": [
+      "material_constitutive_model (isotropic Neo-Hookean, linear elastic)",
+      "characterize_mechanical_properties_of_plaque_components"
+    ],
+    "reason": "Isotropic elastic parameters are given, but no compressive-specific mechanical test metrics or anisotropy measures are reported.",
+    "source_requirements": [
+      "overall_schema:compressive_mechanical_properties_and_anisotropy_metrics"
+    ]
+  },
+  {
+    "key": "wss_assessment_recommendations",
+    "status": "missing",
+    "found_evidence": [],
+    "reason": "No WSS-focused analysis or recommendations are included.",
+    "source_requirements": [
+      "overall_schema:wss_assessment_recommendations"
+    ]
+  },
+  {
+    "key": "results_surrogate_enables_rapid_strain_estimation_qualitative",
+    "status": "present",
+    "found_evidence": [
+      "computational_modelling_surrogate_development",
+      "research_state (surrogate enables ~1.5e4 evals)"
+    ],
+    "reason": "Surrogate model reported to allow rapid evaluations and used for Sobol sampling; predictive metrics provided.",
+    "source_requirements": [
+      "overall_schema:results_surrogate_enables_rapid_strain_estimation_qualitative"
+    ]
+  },
+  {
+    "key": "results_conclusion_ccta_and_cac_scoring_provide_incremental_prognostic_information_beyond_traditional_risk_factors_and_may_guide_revascularization_decisions",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "Study does not analyze CCTA/CAC prognostic value.",
+    "source_requirements": [
+      "overall_schema:results_conclusion_ccta_and_cac_scoring_provide_incremental_prognostic_information_beyond_traditional_risk_factors_and_may_guide_revascularization_decisions"
+    ]
+  },
+  {
+    "key": "validation_ex_vivo_and_other_modal_validation_18f_naf_compared_with_carotid_endarterectomy_histology_and_intravascular_ultrasound",
+    "status": "missing",
+    "found_evidence": [],
+    "reason": "No such experimental/modal validation is reported.",
+    "source_requirements": [
+      "overall_schema:validation_ex_vivo_and_other_modal_validation_18f_naf_compared_with_carotid_endarterectomy_histology_and_intravascular_ultrasound"
+    ]
+  },
+  {
+    "key": "models_and_equations_use_of_computational_fluid_dynamics_finite_element_analysis_and_fluid_structure_interaction_simulations",
+    "status": "present",
+    "found_evidence": [
+      "continuum_3d_navier_stokes_model",
+      "primary_methods_description",
+      "material_constitutive_model"
+    ],
+    "reason": "Continuum equations and FSI approach are explicitly described (3D Navier–Stokes, Neo-Hookean elasticity, partitioned coupling).",
+    "source_requirements": [
+      "overall_schema:models_and_equations_use_of_computational_fluid_dynamics_finite_element_analysis_and_fluid_structure_interaction_simulations"
+    ]
+  },
+  {
+    "key": "represent_collagen_fibre_orientations",
+    "status": "missing",
+    "found_evidence": [
+      "material_constitutive_model (isotropic stated)"
+    ],
+    "reason": "Authors explicitly used isotropic constitutive models and did not model collagen fiber orientation or anisotropy.",
+    "source_requirements": [
+      "overall_schema:represent_collagen_fibre_orientations"
+    ]
+  },
+  {
+    "key": "computational_patient_specific_fsi",
+    "status": "missing",
+    "found_evidence": [
+      "outline (idealized models)"
+    ],
+    "reason": "Study uses idealized, non-patient-specific geometries; no patient-specific FSI performed.",
+    "source_requirements": [
+      "overall_schema:computational_patient_specific_fsi"
+    ]
+  },
+  {
+    "key": "experimental_mechanical_testing_indentation",
+    "status": "missing",
+    "found_evidence": [],
+    "reason": "No experimental indentation testing is reported.",
+    "source_requirements": [
+      "overall_schema:experimental_mechanical_testing_indentation"
+    ]
+  },
+  {
+    "key": "histological_fibre_dispersion",
+    "status": "missing",
+    "found_evidence": [],
+    "reason": "No histological fibre dispersion data are used or reported.",
+    "source_requirements": [
+      "overall_schema:histological_fibre_dispersion"
+    ]
+  },
+  {
+    "key": "thrombus_mechanical_properties",
+    "status": "missing",
+    "found_evidence": [],
+    "reason": "Thrombus component not modeled or discussed.",
+    "source_requirements": [
+      "overall_schema:thrombus_mechanical_properties"
+    ]
+  },
+  {
+    "key": "scope_and_topics_overview",
+    "status": "present",
+    "found_evidence": [
+      "outline",
+      "research_state",
+      "core_message"
+    ],
+    "reason": "Manuscript outline and research_state provide a clear scope and topic overview.",
+    "source_requirements": [
+      "overall_schema:scope_and_topics_overview"
+    ]
+  },
+  {
+    "key": "computational_test_bed_for_device_assessment",
+    "status": "missing",
+    "found_evidence": [],
+    "reason": "No device assessment or testbed claims are made.",
+    "source_requirements": [
+      "overall_schema:computational_test_bed_for_device_assessment"
+    ]
+  },
+  {
+    "key": "fiber_dispersion_limitations",
+    "status": "present",
+    "found_evidence": [
+      "limitations",
+      "material_constitutive_model"
+    ],
+    "reason": "Authors note use of isotropic models and list as limitation (fiber dispersion/anisotropy not modeled).",
+    "source_requirements": [
+      "overall_schema:fiber_dispersion_limitations"
+    ]
+  },
+  {
+    "key": "blood_rheology_and_inflow_variation",
+    "status": "partial",
+    "found_evidence": [
+      "continuum_3d_navier_stokes_model (Newtonian assumption)",
+      "data/input_parameter/inflow.dat"
+    ],
+    "reason": "Blood treated as Newtonian (ρ, μ given) and inlet flow defined, but no sensitivity analysis on non-Newtonian effects or justification beyond statement.",
+    "source_requirements": [
+      "overall_schema:blood_rheology_and_inflow_variation"
+    ]
+  },
+  {
+    "key": "mechanobiology_and_multiphysics_components",
+    "status": "not_applicable",
+    "found_evidence": [
+      "limitations (mechanobiology out of scope)"
+    ],
+    "reason": "Authors explicitly did not include biochemical/cell-scale mechanisms; requirement labeled unsupported.",
+    "source_requirements": [
+      "overall_schema:mechanobiology_and_multiphysics_components"
+    ]
+  },
+  {
+    "key": "investigate_surface_adhesion_microbubbles",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "Out of scope and unsupported by study.",
+    "source_requirements": [
+      "overall_schema:investigate_surface_adhesion_microbubbles"
+    ]
+  },
+  {
+    "key": "primary_endpoint_clinical_tbr_comparison",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "Clinical trial endpoints not part of this computational study.",
+    "source_requirements": [
+      "overall_schema:primary_endpoint_clinical_tbr_comparison"
+    ]
+  },
+  {
+    "key": "model_synaptic_mechanobiology_and_biomarker_kinetics",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "Unsupported and out of scope.",
+    "source_requirements": [
+      "overall_schema:model_synaptic_mechanobiology_and_biomarker_kinetics"
+    ]
+  },
+  {
+    "key": "develop_plaque_model_for_stent_testbed",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "No device/stent testbed development reported.",
+    "source_requirements": [
+      "overall_schema:develop_plaque_model_for_stent_testbed"
+    ]
+  },
+  {
+    "key": "prospective_clinical_trial",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "No patient outcomes or trial reported; study is computational.",
+    "source_requirements": [
+      "overall_schema:prospective_clinical_trial"
+    ]
+  },
+  {
+    "key": "single_patient_ct_geometry",
+    "status": "missing",
+    "found_evidence": [],
+    "reason": "No patient-specific CT geometry used.",
+    "source_requirements": [
+      "overall_schema:single_patient_ct_geometry"
+    ]
+  },
+  {
+    "key": "patient_cohort_and_procedures",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "No patients used.",
+    "source_requirements": [
+      "overall_schema:patient_cohort_and_procedures"
+    ]
+  },
+  {
+    "key": "modeling_unit_scale",
+    "status": "partial",
+    "found_evidence": [
+      "primary_methods_description (mesh resolution min Δx=20 μm)"
+    ],
+    "reason": "Some scale info (mesh resolution, element counts) given, but full statement of physical scales for all modeled phenomena is not comprehensively presented.",
+    "source_requirements": [
+      "overall_schema:modeling_unit_scale"
+    ]
+  },
+  {
+    "key": "fast_strain_estimation_performance",
+    "status": "partial",
+    "found_evidence": [
+      "computational_modelling_surrogate_development"
+    ],
+    "reason": "Surrogate performance metrics (R², RMSE) provided, but no explicit timing/throughput benchmarks for 'real-time' or fast strain estimation.",
+    "source_requirements": [
+      "overall_schema:fast_strain_estimation_performance"
+    ]
+  },
+  {
+    "key": "hemodynamic_effects_on_targeted_delivery",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "Not within study scope.",
+    "source_requirements": [
+      "overall_schema:hemodynamic_effects_on_targeted_delivery"
+    ]
+  },
+  {
+    "key": "clinical_prognostic_value_of_CAC_CCTA",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "Out of scope; no CCTA/CAC analysis.",
+    "source_requirements": [
+      "overall_schema:clinical_prognostic_value_of_CAC_CCTA"
+    ]
+  },
+  {
+    "key": "imaging_TBR_primary_outcome",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "Not relevant to computational study.",
+    "source_requirements": [
+      "overall_schema:imaging_TBR_primary_outcome"
+    ]
+  },
+  {
+    "key": "simulated_repeated_blast_injury_outcomes",
+    "status": "not_applicable",
+    "found_evidence": [],
+    "reason": "Irrelevant to plaque FSI study.",
+    "source_requirements": [
+      "overall_schema:simulated_repeated_blast_injury_outcomes"
+    ]
+  }
+]

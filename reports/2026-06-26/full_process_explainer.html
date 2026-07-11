@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaperFlow — 입력부터 논문까지 전 과정 (모델·시간)</title>
+<style>
+  :root{
+    --bg:#F0EEE6; --surface:#FAF9F5; --surface2:#E6E0D4;
+    --accent:#CC785C; --accent2:#E8D5C4; --border:#D4C5B0;
+    --ink:#1A1A1A; --body:#2D2D2D; --muted:#6B5E54;
+    --code-bg:#E6E0D4; --code-ink:#8B4513;
+    --ok:#7A9A6D; --err:#C25744; --info:#9DB0C4; --gold:#C9A24B;
+    --radius:16px; --radius-sm:10px;
+    --shadow:0 1px 2px rgba(60,40,20,.05),0 8px 24px rgba(60,40,20,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--body);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo",Pretendard,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:44px 24px 100px}
+  h1{font-size:2.05rem;letter-spacing:-.02em;color:var(--ink);margin:0 0 6px;font-weight:800}
+  .sub{color:var(--muted);font-size:1rem;margin:0}
+  .mono{font-family:ui-monospace,Menlo,monospace}
+
+  .banner{margin:18px 0 6px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:16px 20px;display:flex;flex-wrap:wrap;gap:10px 26px;align-items:center}
+  .banner .kv{font-size:.86rem} .banner .kv b{color:var(--accent)}
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .lg{font-size:.72rem;font-weight:700;padding:4px 11px;border-radius:999px;border:1px solid var(--border)}
+  .lg.mini{background:var(--info);color:#1f2d3d}.lg.http{background:var(--surface2);color:var(--code-ink)}
+  .lg.det{background:#EAF0E5;color:#42603a}.lg.par{background:var(--accent2);color:var(--code-ink)}
+  .lg.q{background:var(--accent);color:#fff}
+
+  .phase{margin-top:26px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);overflow:hidden}
+  .phase>h2{margin:0;padding:15px 22px;font-size:1.12rem;color:#fff;font-weight:800;display:flex;align-items:center;gap:12px}
+  .phase.s1>h2{background:linear-gradient(90deg,#B5654A,#CC785C)}
+  .phase.adv>h2{background:linear-gradient(90deg,#5f7b94,#9DB0C4)}
+  .phase.gen>h2{background:linear-gradient(90deg,#6b8560,#7A9A6D)}
+  .phase>h2 .tot{margin-left:auto;font-size:.82rem;font-weight:700;background:rgba(255,255,255,.22);padding:3px 11px;border-radius:999px}
+  .phase .intro{padding:12px 22px 4px;font-size:.88rem;color:var(--body)}
+  .phase .intro b{color:var(--accent)}
+
+  table{width:100%;border-collapse:collapse;font-size:.84rem}
+  thead th{font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800;
+    text-align:left;padding:9px 14px;border-bottom:1px solid var(--border)}
+  tbody td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+  tbody tr:last-child td{border-bottom:none}
+  .step{font-weight:700;color:var(--ink)}
+  .step .n{display:inline-block;width:22px;color:var(--muted);font-family:ui-monospace,Menlo,monospace}
+  .what{color:var(--muted);font-size:.8rem;margin-top:2px}
+  .model{font-family:ui-monospace,Menlo,monospace;font-size:.74rem;font-weight:700;padding:2px 7px;border-radius:6px;white-space:nowrap}
+  .model.mini{background:var(--info);color:#1f2d3d}.model.http{background:var(--surface2);color:var(--code-ink)}
+  .model.det{background:#EAF0E5;color:#42603a}
+  .eff{font-size:.7rem;font-weight:700;color:var(--code-ink)}
+  .time{font-family:ui-monospace,Menlo,monospace;font-weight:800;color:var(--ink);white-space:nowrap}
+  .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+  .tag{font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:999px}
+  .tag.par{background:var(--accent2);color:var(--code-ink)}
+  .tag.art{background:var(--code-bg);color:var(--code-ink);font-family:ui-monospace,Menlo,monospace}
+  .qrow{background:#FBF3EE}
+  .qrow .step{color:var(--accent)}
+
+  .gate{padding:11px 22px;background:var(--accent2);color:var(--code-ink);font-size:.84rem;font-weight:700;
+    display:flex;align-items:center;gap:10px}
+  .gate .b{background:var(--accent);color:#fff;border-radius:6px;padding:2px 9px;font-size:.72rem}
+
+  .arrow{text-align:center;color:var(--border);font-size:1.4rem;margin:6px 0}
+
+  .note{margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:16px 22px}
+  .note h3{margin:0 0 8px;font-size:1rem;color:var(--ink)} .note ul{margin:0;padding-left:18px}
+  .note li{font-size:.85rem;margin:4px 0} .note li b{color:var(--accent)}
+  .figbox{display:inline-block;border:1.5px solid var(--muted);border-radius:6px;padding:8px 12px;margin:6px 0;
+    font-size:.76rem;color:var(--muted);text-align:center;max-width:340px}
+  .foot{margin-top:28px;font-size:.76rem;color:var(--muted);text-align:center;line-height:1.7}
+  .pill{display:inline-block;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:3px 11px;font-size:.74rem;font-weight:600;margin:2px}
+  .pill.hot{background:var(--accent);color:#fff;border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>PaperFlow — 입력부터 논문까지 전 과정</h1>
+  <p class="sub">각 단계가 무엇을 하는지 · 어떤 모델로 · 얼마나 걸리는지 (라이브 실측, coronary_plaque_VI_demo)</p>
+
+  <div class="banner">
+    <div class="kv">현재 모델: <b>전부 gpt-5-mini</b></div>
+    <div class="kv">속도 레버: <b>reasoning_effort</b> (minimal/low)</div>
+    <div class="kv">질문 라운드: <b>최대 2회</b></div>
+    <div class="kv">측정일: 2026-06-27</div>
+    <div class="kv">전 과정 LLM 콜: <b>약 40~45회</b></div>
+  </div>
+  <div class="legend">
+    <span class="lg mini">● gpt-5-mini (LLM)</span>
+    <span class="lg http">● HTTP (OpenAlex)</span>
+    <span class="lg det">● 결정적 코드 (LLM 아님)</span>
+    <span class="lg par">▷ 병렬 실행</span>
+    <span class="lg q">★ 사용자 질문 라운드</span>
+  </div>
+
+  <!-- ============ STAGE 0 ============ -->
+  <div class="phase s1">
+    <h2>STAGE 0 · 입력 <span class="tot">사용자 작성 (LLM 0회)</span></h2>
+    <div class="intro">유저가 4개를 채운다: <b>journal info</b>(분야·저널·저자) · <b>core message</b>(한문단+novelty) · <b>outline</b>(섹션 흐름) · <b>data</b>(파일+한줄설명). 이게 모든 추론의 재료.</div>
+    <table><tbody>
+      <tr><td class="step"><span class="n">—</span>입력 수집<div class="what">폼 자동저장. LLM 호출 없음.</div></td>
+      <td><span class="model det">사용자</span></td><td class="eff">—</td><td class="time">즉시</td>
+      <td><div class="tags"><span class="tag art">main/0·1·3.md, data/, data_notes.json</span></div></td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="arrow">▼</div>
+
+  <!-- ============ STAGE 1 — DIAGNOSE ============ -->
+  <div class="phase s1">
+    <h2>STAGE 1 · 진단 = 문헌 기반 요구 도출 + 질문1 <span class="tot">≈ 141초</span></h2>
+    <div class="intro">유사 문헌에서 "이런 연구가 보통 뭘 보고하는가"를 학습해 <b>프로젝트 전용 요구 스키마</b>를 만들고, 유저 입력과 비교해 <b>빠진 핵심만 질문</b>. (고정 YAML은 fallback 전용)</div>
+    <table>
+      <thead><tr><th>단계</th><th>모델</th><th>effort</th><th>시간</th><th>병렬 · 산출물</th></tr></thead>
+      <tbody>
+        <tr><td class="step"><span class="n">1</span>검색 쿼리·archetype 도출<div class="what">입력에서 분야·연구유형·OpenAlex 검색어 4–8개 생성</div></td>
+          <td><span class="model mini">gpt-5-mini</span></td><td class="eff">minimal</td><td class="time">~3s</td>
+          <td><div class="tags"><span class="tag art">search_queries.json</span></div></td></tr>
+        <tr><td class="step"><span class="n">2</span>OpenAlex 검색 + 선정<div class="what">쿼리별 검색 → round-robin dedup → 10편 선정 (content_level 기록)</div></td>
+          <td><span class="model http">OpenAlex</span></td><td class="eff">—</td><td class="time">~10–19s</td>
+          <td><div class="tags"><span class="tag art">selected_papers.json</span></div></td></tr>
+        <tr><td class="step"><span class="n">3</span>논문별 항목 추출<div class="what">상위 category 고정·세부는 자유, 논문당 ≤6항목. abstract-only 제한</div></td>
+          <td><span class="model mini">gpt-5-mini</span></td><td class="eff">minimal</td><td class="time">~8s</td>
+          <td><div class="tags"><span class="tag par">▷ 10편 동시(10 worker)</span><span class="tag art">paper_001..010.json</span></div></td></tr>
+        <tr><td class="step"><span class="n">4</span>개념 정규화 (normalize)<div class="what">"mesh convergence/grid independence/…" → canonical key. category별 분할</div></td>
+          <td><span class="model mini">gpt-5-mini</span></td><td class="eff">low</td><td class="time">~19s</td>
+          <td><div class="tags"><span class="tag par">▷ category별 동시</span><span class="tag art">normalized_items.json</span></div></td></tr>
+        <tr><td class="step"><span class="n">5</span>overall_schema 합성<div class="what">키마다 requirement_level·applicability 판단. observed/prevalence는 코드 계산</div></td>
+          <td><span class="model mini">gpt-5-mini</span></td><td class="eff">minimal</td><td class="time">~32s</td>
+          <td><div class="tags"><span class="tag art">overall_schema.json</span></div></td></tr>
+        <tr><td class="step"><span class="n">6</span>비교 + 질문 생성 <i>(병합)</i><div class="what">키마다 present/partial/missing 판정 + missing/partial이면 질문까지 한 호출에</div></td>
+          <td><span class="model mini">gpt-5-mini</span></td><td class="eff">low</td><td class="time">~60s</td>
+          <td><div class="tags"><span class="tag art">requirement_status·grounded_questions.json</span></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="gate">★ <span class="b">질문 라운드 1</span> 유저가 빠진 <b>연구 사실</b>에 답함 (각 질문에 why_asked + 출처 논문) → "답변 제출 → 논리 구조 확인"</div>
+
+  <div class="arrow">▼</div>
+
+  <!-- ============ ADVANCE ============ -->
+  <div class="phase adv">
+    <h2>STAGE 2 준비 · 논리그래프 + 빈틈검사 <span class="tot">≈ 150초</span></h2>
+    <div class="intro">답변을 반영해 연구상태를 다시 만들고, <b>Claim–Evidence Logic Graph</b>를 구성한 뒤 <b>load-bearing 빈틈</b>(핵심 주장에 근거 없음 등)만 검사.</div>
+    <table>
+      <thead><tr><th>단계</th><th>모델</th><th>effort</th><th>시간</th><th>병렬 · 산출물</th></tr></thead>
+      <tbody>
+        <tr><td class="step"><span class="n">7</span>연구상태 재구성 (v1→v2)<div class="what">1차 답변을 "저자 제공 사실"로 반영. provenance 분리 보존</div></td>
+          <td><span class="model mini">gpt-5-mini</span></td><td class="eff">low</td><td class="time">~58s</td>
+          <td><div class="tags"><span class="tag art">research_state_v2.json (answer_provenance)</span></div></td></tr>
+        <tr><td class="step"><span class="n">8</span>잠정 Logic Graph (2-pass)<div class="what">Pass A 클레임 골격 → Pass B 근거/엣지. typed 노드 7종·엣지 9종</div></td>
+          <td><span class="model mini">gpt-5-mini</span></td><td class="eff">low</td><td class="time">~70s</td>
+          <td><div class="tags"><span class="tag art">preliminary_logic_graph.json (노드 51·엣지 46)</span></div></td></tr>
+        <tr><td class="step"><span class="n">9</span>빈틈 검사<div class="what">claim 근거·비교기준·추적성·정합성 5종 검사. load-bearing gap만 추림</div></td>
+          <td><span class="model det">결정적 코드</span></td><td class="eff">—</td><td class="time">즉시</td>
+          <td><div class="tags"><span class="tag art">graph_gap_report.json</span></div></td></tr>
+        <tr><td class="step"><span class="n">10</span>분기 — gap 있으면 질문2, 없으면 바로 생성<div class="what">빈틈 있으면 논리질문(최대 5), 없으면 의례적 화면 없이 즉시 생성</div></td>
+          <td><span class="model det">분기</span></td><td class="eff">—</td><td class="time">—</td>
+          <td><div class="tags"><span class="tag art">questions_logic.json</span></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="gate">★ <span class="b">질문 라운드 2 (조건부)</span> 빈틈이 남을 때만 — <b>논리 연결</b>만 물음(이 주장을 받치는 결과값?). "모름"이면 주장을 <b>약화/제거</b>(사실 안 지어냄) → "답변 제출 → 논문 생성"</div>
+
+  <div class="arrow">▼</div>
+
+  <!-- ============ GENERATE ============ -->
+  <div class="phase gen">
+    <h2>STAGE 3 · 최종 그래프 → 논문 컴파일 <span class="tot">≈ 126초</span></h2>
+    <div class="intro">최종 그래프가 정해지면 <b>확인 게이트 없이</b> 바로 컴파일: 계획 → 섹션 작성(병렬) → 인용 → 출력(PDF/DOCX).</div>
+    <table>
+      <thead><tr><th>단계</th><th>모델</th><th>effort</th><th>시간</th><th>병렬 · 산출물</th></tr></thead>
+      <tbody>
+        <tr><td class="step"><span class="n">11</span>최종 Logic Graph 확정<div class="what">2차 답변 반영(모름→약화), 추적불가 수치 evidence 거부, 재검증</div></td>
+          <td><span class="model det">결정적 코드</span></td><td class="eff">—</td><td class="time">즉시</td>
+          <td><div class="tags"><span class="tag art">final_logic_graph.json</span></div></td></tr>
+        <tr><td class="step"><span class="n">12</span>auto-plan (figure·구조·litsearch)<div class="what">최종 그래프에서 figure 계획 + 섹션 소제목 + 선행연구조사 자동</div></td>
+          <td><span class="model mini">gpt-5-mini</span></td><td class="eff">low</td><td class="time">~59s</td>
+          <td><div class="tags"><span class="tag art">_plan.json · figure_spec.json</span></div></td></tr>
+        <tr><td class="step"><span class="n">13</span>섹션 계약 (contracts) ×6<div class="what">섹션마다 문단 설계도: 각 문단이 어떤 주장·근거를 다룰지 매핑(환각 방지)</div></td>
+          <td><span class="model mini">gpt-5-mini</span></td><td class="eff">low</td><td class="time">~30s</td>
+          <td><div class="tags"><span class="tag par">▷ 6섹션 동시</span><span class="tag art">contracts.json</span></div></td></tr>
+        <tr><td class="step"><span class="n">14</span>본문 작성 (draft) ×6<div class="what">계약대로 실제 문장 작성. 소수점 4자리·데이터경로 제거·인용 마커 규칙</div></td>
+          <td><span class="model mini">gpt-5-mini</span></td><td class="eff">minimal</td><td class="time">~34s</td>
+          <td><div class="tags"><span class="tag par">▷ 6섹션 동시</span><span class="tag art">Method·Result·…md</span></div></td></tr>
+        <tr><td class="step"><span class="n">15</span>인용 채우기 (선택)<div class="what">[cite:what_I_need] 마커를 OpenAlex로 채움. 데모는 스킵 가능</div></td>
+          <td><span class="model mini">gpt-5-mini</span></td><td class="eff">—</td><td class="time">~수 초</td>
+          <td><div class="tags"><span class="tag art">reference_table</span></div></td></tr>
+        <tr><td class="step"><span class="n">16</span>출력 (elsarticle → PDF·DOCX)<div class="what">LaTeX 조립 + XeLaTeX 컴파일 + DOCX. figure는 <b>네모 박스(설명)+캡션</b>으로</div></td>
+          <td><span class="model det">결정적 코드</span></td><td class="eff">—</td><td class="time">즉시</td>
+          <td><div class="tags"><span class="tag art">paper.pdf(16p) · paper.docx · manuscript.json</span></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="arrow">▼</div>
+  <div class="phase gen"><h2>완료 · 16페이지 논문 <span class="tot">localhost 미리보기 + DOCX/PDF</span></h2>
+    <div class="intro" style="padding-bottom:14px">figure는 실제 그림 대신 <b>"여기에 이 그림을 그리세요" 네모 박스 + 무엇을 그릴지 설명 + 박스 밑 제목(캡션)</b>으로 들어감:
+      <div class="figbox"><b>[Table 1 — 여기에 이 그림을 그리세요]</b><br>Group-level Sobol S1/ST table (Material&gt;Hemo&gt;Morpho)<br><i style="font-size:.68rem">Produce a publication-quality table…</i></div>
+      <div style="font-size:.8rem"><b>Table 1.</b> Group-level Sobol indices for LAP·VI2. (→ result)</div>
+    </div>
+  </div>
+
+  <!-- timing summary -->
+  <div class="note">
+    <h3>⏱ 전체 시간 요약 (전부 gpt-5-mini, 실측)</h3>
+    <ul>
+      <li><b>질문1 (진단)</b> ≈ <b>141초</b> — 검색19 · 추출8 · normalize19 · synthesize32 · 비교+질문60</li>
+      <li><b>논리그래프 + 빈틈</b> ≈ <b>150초</b> — 상태재구성58 · 그래프70 · 검사 즉시</li>
+      <li><b>논문 생성</b> ≈ <b>126초</b> — auto-plan59 · contracts30(병렬) · draft34(병렬) · 출력 즉시</li>
+      <li>사용자 대기 = 위 3구간 + 답변 2라운드. 컴퓨팅 합계 ≈ <b>7분</b>.</li>
+    </ul>
+  </div>
+
+  <div class="note">
+    <h3>🔧 속도를 만든 핵심 결정 (모델 크기 ❌ → 구조 ⭕)</h3>
+    <ul>
+      <li><b>reasoning_effort</b> = 추론 모델의 진짜 레버. mini도 기본 medium이면 과사고 → minimal/low로 단계마다 차단.</li>
+      <li><b>병렬화</b> — 추출 10편, normalize category별, contracts·draft 6섹션을 동시에. (벽시계 = 가장 느린 하나)</li>
+      <li><b>호출 병합</b> — compare + questions를 한 호출로 (gpt-5 왕복 1회 제거).</li>
+      <li><b>출력 축소</b> — 추출 6필드→4필드·논문당 6항목 캡; synthesize 출력 간단화.</li>
+      <li><b>검증 OFF · 캐시</b> — 섹션 검증 끔(콜↓); 핵심 입력 동일하면 문헌분석 재사용(재실행 수십초↓).</li>
+    </ul>
+  </div>
+
+  <div class="note">
+    <h3>⚖️ 현재 trade-off (전부 mini)</h3>
+    <ul>
+      <li>mini는 빠르지만 <b>compare(보유 판정)가 더 관대</b> — 같은 입력에 질문 1~5개로 흔들릴 수 있음. (gpt-5 full은 일관·엄격하지만 느림)</li>
+      <li>품질이 중요한 발표용은 <b>compare·questions만 gpt-5 full + effort=low</b>로 올리는 게 균형점.</li>
+    </ul>
+  </div>
+
+  <p class="foot">
+    <span class="pill hot">입력</span> → <span class="pill">문헌 스키마</span> → <span class="pill q">질문1</span> →
+    <span class="pill">Logic Graph</span> → <span class="pill">빈틈검사</span> → <span class="pill q">질문2(조건부)</span> →
+    <span class="pill">최종 그래프</span> → <span class="pill hot">논문(PDF·DOCX)</span><br>
+    PaperFlow · coronary_plaque_VI_demo · 2026-06-27 · 전부 gpt-5-mini
+  </p>
+
+</div>
+</body>
+</html>

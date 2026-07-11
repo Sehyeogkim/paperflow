@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_008",
+  "study_archetype": "single-patient in vivo imaging-based computational FSI modeling study",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: assess effects of anisotropic vessel properties and cyclic bending on plaque mechanics",
+      "category": "objective",
+      "sub_category": "primary objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: in vivo IVUS imaging combined with computational modeling (FSI) on one patient dataset",
+      "category": "study_design",
+      "sub_category": "case study / single-subject modeling",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data/sample: 44-slice in vivo IVUS dataset from one coronary plaque (one patient)",
+      "category": "data_or_sample",
+      "sub_category": "imaging dataset",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Methods: construction of four 3-D fluid–structure interaction (FSI) models varying anisotropy, cyclic bending, and axial stretch",
+      "category": "methods",
+      "sub_category": "FSI model variants",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Outcomes: reported maximum principal stress (P1) comparisons and flow behavior changes (percent differences)",
+      "category": "outcomes",
+      "sub_category": "P1 stress and flow metrics",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Results: quantitative comparisons — model 2: +63% P1, model 3: +126% P1, model 4: +345% P1 vs model 1; cyclic bending effects on flow 5%–15%",
+      "category": "results",
+      "sub_category": "relative changes in stress and flow",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

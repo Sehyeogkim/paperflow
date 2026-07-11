@@ -5,17 +5,35 @@
       {
         "paragraph_id": "M-01",
         "section": "method",
-        "heading": "",
-        "purpose": "Summarize the overall analysis pipeline as three consecutive stages (data generation → vulnerability-index (VI) definition & selection → surrogate-based global sensitivity analysis).",
+        "heading": "Computational FSI simulations: scope and objectives",
+        "purpose": "State the overall computational strategy: use a previously validated cost‑effective pulsatile FSI pipeline to generate a large, time‑resolved dataset for two idealized plaque phenotypes (LAP, CP) to support VI development and sensitivity analysis.",
         "claim_ids": [
-          "M2"
+          "M1"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "M2",
+          "D_sobol_grp_LAP_VI2",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "W1",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
-          "data/input_parameter/input.csv"
+          "data/cost_effective_FSI_BC/bc.md"
         ],
         "must_not_claim": [
-          "any simulation results or sensitivity outcomes",
-          "that a particular VI is superior (selection/results belong in Results)"
+          "that the cost‑effective FSI method is newly developed or validated here (this work only reuses a prior validated tool)",
+          "any results or sensitivity findings"
         ],
         "transition_from": "",
         "transition_to": "M-02"
@@ -24,19 +42,40 @@
         "paragraph_id": "M-02",
         "section": "method",
         "heading": "",
-        "purpose": "Describe the computational data-generation step: the cost-effective pulsatile fluid–structure interaction (FSI) simulations used to produce the dataset, and reference boundary-condition and waveform inputs.",
+        "purpose": "Describe the PDE/constitutive physics and numerical coupling used in the FSI solver: incompressible 3D Navier–Stokes (Newtonian fluid) + finite‑deformation quasi‑static solid (Neo‑Hookean / linear elastic), partitioned strong coupling, and time integration.",
         "claim_ids": [
-          "M1"
+          "M1",
+          "M1.4"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "M2",
+          "D_inflow",
+          "D_elastance",
+          "D_bc_md",
+          "D_sobol_grp_LAP_VI2",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "W1",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
-          "data/cost_effective_FSI_BC/bc.md",
-          "data/input_parameter/elastance.dat",
           "data/input_parameter/inflow.dat",
-          "data/input_parameter/input.csv"
+          "data/input_parameter/elastance.dat",
+          "data/cost_effective_FSI_BC/bc.md"
         ],
         "must_not_claim": [
-          "any performance claims about the FSI method beyond citing prior validation (do not claim new validation here)",
-          "simulation outcomes or sensitivity results"
+          "that alternative continuum constitutive models (e.g., anisotropic, viscoelastic) were used",
+          "any performance/results (e.g., accuracy metrics) of the solver beyond numerical settings"
         ],
         "transition_from": "M-01",
         "transition_to": "M-03"
@@ -44,17 +83,36 @@
       {
         "paragraph_id": "M-03",
         "section": "method",
-        "heading": "",
-        "purpose": "Specify the two plaque phenotype models (LAP: 3-domain, CP: 4-domain) and modeling assumptions including the uniform fibrous cap (FC) thickness treated as a single scalar parameter.",
+        "heading": "Numerical implementation and verification",
+        "purpose": "Specify key numerical parameters and verification checks: time stepping (BDF2, Δt=0.5 ms, 1600 steps/cycle, 3 cycles to periodic steady state), partitioned fixed‑point residual tolerance, mesh and time‑step independence study and mesh sizes.",
         "claim_ids": [
-          "M1"
+          "M1",
+          "M1.1"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "M2",
+          "D_sobol_grp_LAP_VI2",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "W1",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
-          "data/input_parameter/input.csv"
+          "data/cost_effective_FSI_BC/bc.md"
         ],
         "must_not_claim": [
-          "that these two phenotypes exhaust clinical variability",
-          "any findings about which phenotype yields higher risk"
+          "that extensive new solver verification/validation against experimental data is performed here",
+          "that mesh/time independence implies zero numerical error"
         ],
         "transition_from": "M-02",
         "transition_to": "M-04"
@@ -62,16 +120,35 @@
       {
         "paragraph_id": "M-04",
         "section": "method",
-        "heading": "",
-        "purpose": "Define the input design space: three parameter groups (morphology, hemodynamics, material) and the 1,000-sample experimental design used to span that space.",
+        "heading": "Geometry, material models and parameter ranges",
+        "purpose": "Describe the idealized plaque geometries (LAP: 3 domains; CP: 4 domains), the material constitutive assumptions (Neo‑Hookean nearly incompressible for vessel and fibrous cap; linear elastic for core and calcification), and the literature‑based parameter ranges used for sampling.",
         "claim_ids": [
           "M1"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "M2",
+          "D_sobol_grp_LAP_VI2",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "W1",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
           "data/input_parameter/input.csv"
         ],
         "must_not_claim": [
-          "results of sensitivity analysis or dominance of any group"
+          "that the chosen geometries capture the full patient‑specific variability",
+          "that more complex material behaviours (anisotropy, viscoelasticity) were modelled"
         ],
         "transition_from": "M-03",
         "transition_to": "M-05"
@@ -80,15 +157,19 @@
         "paragraph_id": "M-05",
         "section": "method",
         "heading": "",
-        "purpose": "State the simulation outputs recorded for each sample: PSS (peak stress), ΔPSS (stress amplitude; spherical mean), and a rupture-location index.",
+        "purpose": "Explain the input design‑space sampling and case generation: 1,000 parameter sets sampling morphology, hemodynamics and materials (LHS/uniform ranges) as the basis for the FSI runs and downstream surrogates.",
         "claim_ids": [
-          "M1"
+          "M1.2",
+          "D_input"
         ],
+        "context_node_ids": [],
+        "required_edge_ids": [],
         "supports": [
           "data/input_parameter/input.csv"
         ],
         "must_not_claim": [
-          "that these outputs already demonstrate predictive superiority (interpretation reserved for Results/Discussion)"
+          "that the design space exhaustively covers all physiologic conditions",
+          "that sampling replaced any targeted clinical cohort sampling"
         ],
         "transition_from": "M-04",
         "transition_to": "M-06"
@@ -96,18 +177,31 @@
       {
         "paragraph_id": "M-06",
         "section": "method",
-        "heading": "",
-        "purpose": "Define the vulnerability-index (VI) candidates: stress/strength formulation with two stress measures (PSS, ΔPSS) and three strength scenarios (yielding 2×3=6 candidates); provide their formulaic expressions and indicate the candidate table.",
+        "heading": "Output processing and candidate VI computation",
+        "purpose": "Define the computed outputs from each FSI case (peak PSS, pulsatile amplitude ΔPSS spherical average, FFR surrogate, rupture‑location index) and describe how six candidate VIs were formed (stress: peak PSS and ΔPSS × strength normalizations E_fc^α for α scenarios).",
         "claim_ids": [
-          "C3.1",
-          "E_vi_candidates"
+          "M1.3",
+          "M4"
+        ],
+        "context_node_ids": [
+          "C4",
+          "C4.1",
+          "C4.2",
+          "E_VI_candidates_screening",
+          "F_VI_selection_table"
+        ],
+        "required_edge_ids": [
+          "L7",
+          "L8",
+          "L27",
+          "L28"
         ],
         "supports": [
-          "T1"
+          "data/input_parameter/input.csv"
         ],
         "must_not_claim": [
-          "that any candidate is preferred (selection is in a later paragraph/Results)",
-          "results of validation or clinical performance"
+          "that these outputs are clinical endpoints (no patient outcome data used)",
+          "that the candidate VI definitions are the only possible definitions"
         ],
         "transition_from": "M-05",
         "transition_to": "M-07"
@@ -115,18 +209,30 @@
       {
         "paragraph_id": "M-07",
         "section": "method",
-        "heading": "",
-        "purpose": "Describe the VI selection procedure: use of seven clinically established high-risk plaque sign criteria (sign/anti-sign matching) to screen the six candidates and select the final VIs (VI1=ΔPSS/E_FC^0.5, VI2=ΔPSS/E_FC^1.0); reference the selection table.",
+        "heading": "Clinical sign‑consistency screening of VI candidates",
+        "purpose": "Describe the screening procedure that scores the six candidate VIs against seven established clinical high‑risk plaque criteria via sign‑consistency (1/0) with 95% BCa bootstrap CIs (1,000 resamples) to select final VIs for surrogate/GSA.",
         "claim_ids": [
-          "C3.2",
-          "E_vi_selection"
+          "M4"
+        ],
+        "context_node_ids": [
+          "C4",
+          "C4.1",
+          "C4.2",
+          "E_VI_candidates_screening",
+          "F_VI_selection_table"
+        ],
+        "required_edge_ids": [
+          "L7",
+          "L8",
+          "L27",
+          "L28"
         ],
         "supports": [
-          "T1"
+          "data/input_parameter/input.csv"
         ],
         "must_not_claim": [
-          "quantitative superiority beyond the stated selection rule (statistical performance is in Results)",
-          "that the selected VIs are universally optimal for all clinical scenarios"
+          "that screening substitutes for outcome‑based clinical validation",
+          "that bootstrap CIs eliminate all sampling uncertainty"
         ],
         "transition_from": "M-06",
         "transition_to": "M-08"
@@ -134,27 +240,80 @@
       {
         "paragraph_id": "M-08",
         "section": "method",
-        "heading": "",
-        "purpose": "Explain surrogate modeling and global sensitivity analysis: training Gaussian-process regressors on the final VI outputs (report LAP 784 / CP 727 effective pairs), describe that the surrogate enables ≈1.5×10^4 inexpensive evaluations, and state that Sobol first-order and total-order indices were computed on the surrogate for group- and parameter-level sensitivity.",
+        "heading": "Gaussian process surrogate training",
+        "purpose": "Give the surrogate modelling workflow: ARD Matérn 5/2 + white‑noise kernel GPR, input z‑score normalization and output standardization, hyperparameter optimization with L‑BFGS‑B and 20 restarts, and 5‑fold cross‑validation reporting and effective training set sizes (LAP 784 / CP 727).",
         "claim_ids": [
-          "M2",
-          "W3"
+          "M2"
+        ],
+        "context_node_ids": [
+          "C3",
+          "C3.1",
+          "M1",
+          "M3",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_LAP_VI2",
+          "E_material_dominant_group",
+          "E_individual_parameters",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "F_sobol_group"
+        ],
+        "required_edge_ids": [
+          "L5",
+          "L24",
+          "L26"
         ],
         "supports": [
-          "data/sobol/sobol_grp_LAP_VI1.csv",
-          "data/sobol/sobol_grp_LAP_VI2.csv",
-          "data/sobol/sobol_grp_CP_VI1.csv",
-          "data/sobol/sobol_grp_CP_VI2.csv",
-          "data/sobol/sobol_ind_LAP_VI1.csv",
           "data/sobol/sobol_ind_LAP_VI2.csv",
-          "data/sobol/sobol_ind_CP_VI1.csv",
           "data/sobol/sobol_ind_CP_VI2.csv"
         ],
         "must_not_claim": [
-          "interpretations of sensitivity results (those belong in Results/Discussion)",
-          "that the surrogate replaces the need for any FSI validation (surrogate is an emulator for GSA purposes only)"
+          "that the surrogate perfectly reproduces the FSI model without error",
+          "any clinical diagnostic claims based solely on the surrogate"
         ],
         "transition_from": "M-07",
+        "transition_to": "M-09"
+      },
+      {
+        "paragraph_id": "M-09",
+        "section": "method",
+        "heading": "Global sensitivity analysis on the surrogate",
+        "purpose": "Describe the Saltelli sampling and Sobol index estimation protocol executed on the trained GPR surrogate (~15,000 base samples), with computation of first‑order (S1) and total (ST) indices at group (morphology/hemodynamics/materials) and parameter levels and convergence checks.",
+        "claim_ids": [
+          "M3"
+        ],
+        "context_node_ids": [
+          "C3",
+          "C3.1",
+          "C3.2",
+          "M2",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_LAP_VI2",
+          "E_material_dominant_group",
+          "E_individual_parameters",
+          "E_gpr_performance",
+          "F_sobol_group",
+          "F_sobol_individual",
+          "W3"
+        ],
+        "required_edge_ids": [
+          "L5",
+          "L6",
+          "L24",
+          "L25",
+          "L26"
+        ],
+        "supports": [
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "data/sobol/sobol_grp_CP_VI2.csv",
+          "data/sobol/sobol_ind_CP_VI2.csv"
+        ],
+        "must_not_claim": [
+          "that surrogate‑based Sobol indices are identical to indices computed from the raw FSI model without approximation",
+          "that Sobol analysis determines causation rather than variance attribution"
+        ],
+        "transition_from": "M-08",
         "transition_to": ""
       }
     ]
@@ -165,22 +324,38 @@
       {
         "paragraph_id": "R-01",
         "section": "result",
-        "heading": "",
-        "purpose": "Establish that the simulation outputs (PSS, FFR, rupture-location trends) are consistent with prior literature, thereby validating the cost‑effective pulsatile FSI pipeline used to generate the dataset.",
+        "heading": "Validation of simulation outputs",
+        "purpose": "Establish face validity of the pulsatile FSI outputs by reporting that simulated PSS, FFR and rupture-location trends are consistent with prior literature and that the simulation pipeline produced stable, interpretable outputs for downstream analysis.",
         "claim_ids": [
-          "C2.1",
-          "E_sim_validation"
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "M1",
+          "M2",
+          "M3",
+          "D_sobol_grp_LAP_VI2",
+          "E_material_dominant_group",
+          "W1",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
-          "data/cost_effective_FSI_BC/bc.md",
           "data/input_parameter/inflow.dat",
-          "data/input_parameter/elastance.dat",
-          "data/input_parameter/input.csv"
+          "data/cost_effective_FSI_BC/bc.md"
         ],
         "must_not_claim": [
-          "Do not claim perfect patient-specific fidelity or clinical outcome prediction from these simulations.",
-          "Do not claim novelty or validation of the cost‑effective FSI method itself (method is out of scope).",
-          "Do not assert causal clinical conclusions based solely on simulation agreement."
+          "Do not claim clinical outcome prediction or patient-specific prognostic validity from these simulation-only comparisons",
+          "Do not assert that the cost-effective FSI method is newly validated here (method/tool is cited from prior work)"
         ],
         "transition_from": "",
         "transition_to": "R-02"
@@ -189,21 +364,37 @@
         "paragraph_id": "R-02",
         "section": "result",
         "heading": "",
-        "purpose": "Report the set of six candidate vulnerability indices (2 stress × 3 strength scenarios), show the selection procedure against seven established clinical high‑risk plaque signs, and state that two indices (VI1, VI2) were chosen.",
+        "purpose": "Report the candidate vulnerability-index (VI) screening against seven established clinical high‑risk plaque criteria and identify which candidates fully satisfy those criteria.",
         "claim_ids": [
-          "C3.1",
-          "C3.2",
-          "E_vi_candidates",
-          "E_vi_selection"
+          "C4",
+          "C4.1",
+          "C2.1"
+        ],
+        "context_node_ids": [
+          "C2",
+          "C2.2",
+          "C4.2",
+          "M4",
+          "E_VI_candidates_screening",
+          "F_VI_selection_table",
+          "W2",
+          "R_Holzapfel2004"
+        ],
+        "required_edge_ids": [
+          "L3",
+          "L4",
+          "L7",
+          "L8",
+          "L27",
+          "L28"
         ],
         "supports": [
-          "T1",
+          "F_VI_selection_table",
           "data/input_parameter/input.csv"
         ],
         "must_not_claim": [
-          "Do not claim that the selected VIs have been prospectively clinically validated beyond the sign‑matching selection criterion.",
-          "Do not present method details that belong in Methods (keep to results of the selection).",
-          "Do not claim that alternative selection rules would not be reasonable."
+          "Do not claim these VIs are clinically validated with patient outcome data",
+          "Do not claim the screening substitutes for prospective clinical validation"
         ],
         "transition_from": "R-01",
         "transition_to": "R-03"
@@ -212,39 +403,168 @@
         "paragraph_id": "R-03",
         "section": "result",
         "heading": "",
-        "purpose": "Present the global sensitivity analysis results (group‑level and parameter‑level Sobol indices) that show material properties dominate variance in the selected VIs and identify the top individual drivers (E_vessel, E_FC, SBP, PP).",
+        "purpose": "Present surrogate-evaluated diagnostic separation for the selected VI(s) (synthetic high-risk label), giving ROC AUC and operating-point metrics to quantify potential discriminative utility.",
         "claim_ids": [
+          "C4.2",
+          "E_gpr_performance"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
           "C4",
           "C4.1",
-          "C4.2",
-          "E_sobol_grp_LAP_VI2",
-          "E_sobol_ind_LAP_VI2",
-          "E_sobol_grp_LAP_VI1",
-          "E_sobol_grp_CP_VI1",
-          "E_sobol_grp_CP_VI2",
-          "E_sobol_ind_LAP_VI1",
-          "E_sobol_ind_CP_VI1",
-          "E_sobol_ind_CP_VI2"
+          "M1",
+          "M2",
+          "M3",
+          "M4",
+          "D_sobol_grp_LAP_VI2",
+          "E_material_dominant_group",
+          "E_VI_candidates_screening",
+          "E_deltaPSS_vs_peakPSS",
+          "F_VI_selection_table"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L7",
+          "L8",
+          "L27",
+          "L28",
+          "L30",
+          "L31"
+        ],
+        "supports": [
+          "F_ROC_VI2",
+          "F_VI_selection_table"
+        ],
+        "must_not_claim": [
+          "Do not claim real-world diagnostic performance or clinical utility beyond the synthetic-label evaluation",
+          "Do not imply prospective patient-level validation has been performed"
+        ],
+        "transition_from": "R-02",
+        "transition_to": "R-04"
+      },
+      {
+        "paragraph_id": "R-04",
+        "section": "result",
+        "heading": "Global sensitivity: material dominance",
+        "purpose": "Summarize group-level Sobol sensitivity analysis showing that the material-property group explains the largest fraction of VI variance (Material > Hemodynamics > Morphology) and quantify the group-level indices supporting the material-dominant conclusion.",
+        "claim_ids": [
+          "C3",
+          "C3.1",
+          "E_material_dominant_group"
+        ],
+        "context_node_ids": [
+          "C3.2",
+          "M2",
+          "M3",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_LAP_VI2",
+          "E_individual_parameters",
+          "E_gpr_performance",
+          "F_sobol_group",
+          "F_sobol_individual",
+          "W3"
+        ],
+        "required_edge_ids": [
+          "L5",
+          "L6",
+          "L24",
+          "L25",
+          "L26"
         ],
         "supports": [
           "data/sobol/sobol_grp_LAP_VI2.csv",
-          "data/sobol/sobol_grp_LAP_VI1.csv",
-          "data/sobol/sobol_grp_CP_VI1.csv",
           "data/sobol/sobol_grp_CP_VI2.csv",
-          "data/sobol/sobol_ind_LAP_VI2.csv",
-          "data/sobol/sobol_ind_LAP_VI1.csv",
-          "data/sobol/sobol_ind_CP_VI1.csv",
-          "data/sobol/sobol_ind_CP_VI2.csv",
-          "F1",
-          "F2",
-          "T2"
+          "F_sobol_group"
         ],
         "must_not_claim": [
-          "Do not overinterpret Sobol indices as proof of causality in patients; they quantify contributions to output variance within the modeled design space and chosen VI definitions only.",
-          "Do not claim the identified ranking necessarily generalizes outside the sampled input ranges or alternative VI formulations without further study.",
-          "Do not provide clinical recommendations or policy implications here (leave to Discussion)."
+          "Do not claim that sensitivity results uniformly generalize to all patient geometries beyond the two phenotypes studied (LAP, CP)",
+          "Do not assert causal mechanistic pathways beyond variance attribution"
         ],
-        "transition_from": "R-02",
+        "transition_from": "R-03",
+        "transition_to": "R-05"
+      },
+      {
+        "paragraph_id": "R-05",
+        "section": "result",
+        "heading": "",
+        "purpose": "Report individual-parameter Sobol indices that rank the top contributors to VI variability (identifying E_vessel, E_fc, SBP, PP) and give representative first-order S1 values (e.g., E_fc S1 ≈ 0.55 for LAP·VI2).",
+        "claim_ids": [
+          "C3.2",
+          "E_individual_parameters"
+        ],
+        "context_node_ids": [
+          "C3",
+          "C3.1",
+          "M2",
+          "M3",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_LAP_VI2",
+          "E_material_dominant_group",
+          "F_sobol_group",
+          "F_sobol_individual",
+          "W3"
+        ],
+        "required_edge_ids": [
+          "L5",
+          "L6",
+          "L24",
+          "L25",
+          "L26"
+        ],
+        "supports": [
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "data/sobol/sobol_ind_CP_VI2.csv",
+          "F_sobol_individual"
+        ],
+        "must_not_claim": [
+          "Do not claim these parameter rankings are exhaustive for all physiologic ranges not sampled in the design space",
+          "Do not claim that changing one parameter in isolation will deterministically change rupture events in patients"
+        ],
+        "transition_from": "R-04",
+        "transition_to": "R-06"
+      },
+      {
+        "paragraph_id": "R-06",
+        "section": "result",
+        "heading": "Interpretation of stress metric and strength normalization",
+        "purpose": "Demonstrate that ΔPSS (pulsatile amplitude) yields better alignment with clinical high‑risk features than peak PSS and that normalizing stress by fibrous-cap strength (E_fc^α) materially affects VI behavior, motivating the selected VI definitions (VI1, VI2).",
+        "claim_ids": [
+          "C1",
+          "C1.1",
+          "C2",
+          "C2.1"
+        ],
+        "context_node_ids": [
+          "C1.2",
+          "C2.2",
+          "M1",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "W1",
+          "W2",
+          "R_Holzapfel2004",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L30",
+          "L31",
+          "L1"
+        ],
+        "supports": [
+          "F_VI_selection_table",
+          "data/sobol/sobol_grp_LAP_VI1.csv",
+          "data/sobol/sobol_grp_LAP_VI2.csv"
+        ],
+        "must_not_claim": [
+          "Do not claim that the chosen α values (0.5, 1.0) exhaustively represent the true biological scaling of cap strength",
+          "Do not claim that stress-only metrics are universally invalid in all contexts without further study"
+        ],
+        "transition_from": "R-05",
         "transition_to": ""
       }
     ]
@@ -255,22 +575,68 @@
       {
         "paragraph_id": "C-01",
         "section": "discussion",
-        "heading": "",
-        "purpose": "State and justify the finding that ΔPSS (stress amplitude, fatigue viewpoint) is a stronger predictor of plaque rupture vulnerability than peak PSS, and motivate the need for pulsatile (FSI) analyses.",
+        "heading": "Key findings",
+        "purpose": "Summarize the study's principal results succinctly, linking the primary contributions (VI definition, ΔPSS relevance, and material dominance) to evidence produced.",
         "claim_ids": [
-          "C2",
-          "C2.1",
-          "C2.2",
-          "W2"
+          "C1",
+          "C1.1",
+          "C3",
+          "C3.1",
+          "C3.2",
+          "C4"
+        ],
+        "context_node_ids": [
+          "C1.2",
+          "C4.1",
+          "C4.2",
+          "M1",
+          "M2",
+          "M3",
+          "M4",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_LAP_VI2",
+          "E_material_dominant_group",
+          "E_individual_parameters",
+          "E_VI_candidates_screening",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "F_sobol_group",
+          "F_sobol_individual",
+          "F_VI_selection_table",
+          "W1",
+          "W3",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L5",
+          "L6",
+          "L7",
+          "L8",
+          "L24",
+          "L25",
+          "L26",
+          "L27",
+          "L28",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
-          "E_sim_validation",
-          "R_arroyo1999",
-          "R_cheng1993"
+          "E_deltaPSS_vs_peakPSS",
+          "E_VI_candidates_screening",
+          "E_material_dominant_group",
+          "E_individual_parameters",
+          "F_VI_selection_table",
+          "F_sobol_group",
+          "F_sobol_individual",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_ind_LAP_VI2.csv"
         ],
         "must_not_claim": [
-          "Do not claim clinical causality or proven predictive value in patient populations beyond model-based evidence",
-          "Do not claim that peak PSS has no relevance in all contexts"
+          "That the selected VIs have been prospectively validated on patient outcome data",
+          "That causation (e.g., changing E_fc will necessarily change clinical rupture rates) has been established"
         ],
         "transition_from": "",
         "transition_to": "C-02"
@@ -278,22 +644,36 @@
       {
         "paragraph_id": "C-02",
         "section": "discussion",
-        "heading": "",
-        "purpose": "Discuss why vulnerability indices must be normalized by material strength (stress/strength), explain that the normalization exponent α matters, and link this to how the six candidate VIs were constructed and screened.",
+        "heading": "Interpreting stress: ΔPSS and the need for pulsatile FSI",
+        "purpose": "Explain why pulsatile amplitude (ΔPSS) is a more appropriate stress metric than instantaneous peak PSS, justify the fatigue perspective, and state the methodological implication that time-resolved FSI is required to compute ΔPSS.",
         "claim_ids": [
-          "C3",
-          "C3.1",
-          "C3.2",
+          "C1.1",
+          "C1.2",
           "W1"
         ],
+        "context_node_ids": [
+          "C1",
+          "M1",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L30",
+          "L31",
+          "L1"
+        ],
         "supports": [
-          "E_vi_candidates",
-          "E_vi_selection",
-          "T1"
+          "E_deltaPSS_vs_peakPSS",
+          "M1",
+          "data/input_parameter/inflow.dat",
+          "data/input_parameter/elastance.dat"
         ],
         "must_not_claim": [
-          "Do not claim a single universally optimal α (exponent) valid for all patients",
-          "Do not assert that strength normalization fully resolves all patient-level uncertainty"
+          "That quasi-static or steady simulations are never useful for any plaque assessment",
+          "That ΔPSS fully captures all mechanisms of plaque failure (e.g., biochemical/biological factors)"
         ],
         "transition_from": "C-01",
         "transition_to": "C-03"
@@ -301,27 +681,40 @@
       {
         "paragraph_id": "C-03",
         "section": "discussion",
-        "heading": "",
-        "purpose": "Interpret the global sensitivity results: show that material properties dominate over hemodynamic and morphological factors (Material > Hemo > Morpho), identify the top individual drivers, and draw implications for clinical risk-stratification priorities.",
+        "heading": "Strength-normalization of VIs and sensitivity to exponent α",
+        "purpose": "Discuss the rationale and empirical support for normalizing stress by fibrous-cap strength (E_fc^α), report how different α choices change VI behavior, and link this to the candidate-VI screening that selected VI1 and VI2.",
         "claim_ids": [
+          "C2",
+          "C2.1",
+          "C2.2",
           "C4",
-          "C4.1",
+          "C4.1"
+        ],
+        "context_node_ids": [
           "C4.2",
-          "W3"
+          "M4",
+          "E_VI_candidates_screening",
+          "F_VI_selection_table",
+          "W2",
+          "R_Holzapfel2004"
+        ],
+        "required_edge_ids": [
+          "L3",
+          "L4",
+          "L7",
+          "L8",
+          "L27",
+          "L28"
         ],
         "supports": [
-          "data/sobol/sobol_grp_LAP_VI2.csv",
-          "data/sobol/sobol_grp_LAP_VI1.csv",
-          "data/sobol/sobol_grp_CP_VI1.csv",
-          "data/sobol/sobol_grp_CP_VI2.csv",
-          "data/sobol/sobol_ind_LAP_VI2.csv",
-          "F1",
-          "F2",
-          "T2"
+          "E_VI_candidates_screening",
+          "E1",
+          "F_VI_selection_table",
+          "data/input_parameter/input.csv"
         ],
         "must_not_claim": [
-          "Do not claim immediate clinical guidelines or specify new diagnostic thresholds solely from these model-based sensitivity rankings",
-          "Do not claim morphology measurements are uninformative in all cases"
+          "That the simple E_fc^α model fully represents patient-specific strength or fracture mechanics",
+          "That the chosen α values are definitive for all contexts without further empirical validation"
         ],
         "transition_from": "C-02",
         "transition_to": "C-04"
@@ -329,21 +722,138 @@
       {
         "paragraph_id": "C-04",
         "section": "discussion",
-        "heading": "",
-        "purpose": "Enumerate study limitations and scope: model idealizations, assumptions (uniform fibrous cap thickness, ideal arterial geometry), surrogate approximation, and clarify that cost-effective FSI algorithm validation is out of scope (cited literature covers that).",
+        "heading": "Clinical and methodological implications of material dominance",
+        "purpose": "Interpret group- and parameter-level Sobol results to explain how material properties dominate VI variability and what this implies for clinical measurement priorities and mechanistic focus.",
+        "claim_ids": [
+          "C3",
+          "C3.1",
+          "C3.2"
+        ],
+        "context_node_ids": [
+          "M2",
+          "M3",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_LAP_VI2",
+          "E_material_dominant_group",
+          "E_individual_parameters",
+          "F_sobol_group",
+          "F_sobol_individual",
+          "W3"
+        ],
+        "required_edge_ids": [
+          "L5",
+          "L6",
+          "L24",
+          "L25",
+          "L26"
+        ],
+        "supports": [
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_LAP_VI2",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "F_sobol_group",
+          "F_sobol_individual"
+        ],
+        "must_not_claim": [
+          "That imaging morphology measurements (e.g., plaque shape) are clinically useless",
+          "That this dominance directly implies immediate changes in clinical management without prospective validation"
+        ],
+        "transition_from": "C-03",
+        "transition_to": "C-05"
+      },
+      {
+        "paragraph_id": "C-05",
+        "section": "discussion",
+        "heading": "Surrogate modelling, Sobol GSA and methodological advantages",
+        "purpose": "Explain why GPR surrogates plus Saltelli/Sobol analysis enabled the global sensitivity study at reasonable cost, summarize surrogate performance and convergence checks, and note practical implications for future computational studies.",
+        "claim_ids": [
+          "M2",
+          "M3",
+          "E_gpr_performance"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C3",
+          "C3.1",
+          "C3.2",
+          "M1",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_LAP_VI2",
+          "E_material_dominant_group",
+          "E_individual_parameters",
+          "E_deltaPSS_vs_peakPSS",
+          "F_sobol_group",
+          "F_sobol_individual",
+          "W3"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L5",
+          "L6",
+          "L24",
+          "L25",
+          "L26",
+          "L30",
+          "L31"
+        ],
+        "supports": [
+          "E_gpr_performance",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "data/sobol/sobol_ind_LAP_VI2.csv"
+        ],
+        "must_not_claim": [
+          "That surrogate-based Sobol results are exact replacements for exhaustive full-FSI sampling without approximation error",
+          "That the surrogate removes the need for any FSI simulations (original FSI data remain necessary)"
+        ],
+        "transition_from": "C-04",
+        "transition_to": "C-06"
+      },
+      {
+        "paragraph_id": "C-06",
+        "section": "discussion",
+        "heading": "Limitations and future work",
+        "purpose": "List the main limitations of the computational study (idealized geometry, uniform cap thickness, material/constitutive simplifications, surrogate approximation, lack of patient outcomes) and outline concrete next steps to address them.",
         "claim_ids": [
           "M1",
-          "M2"
+          "M1.1",
+          "M1.2",
+          "M1.4"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "M2",
+          "D_inflow",
+          "D_elastance",
+          "D_bc_md",
+          "D_input",
+          "D_sobol_grp_LAP_VI2",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "W1",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
           "data/cost_effective_FSI_BC/bc.md",
-          "data/input_parameter/input.csv"
+          "data/input_parameter/input.csv",
+          "data/input_parameter/inflow.dat",
+          "data/input_parameter/elastance.dat"
         ],
         "must_not_claim": [
-          "Do not claim that the cost-effective FSI method is newly validated here or that it outperforms other FSI techniques (this is out_of_scope)",
-          "Do not claim generalizability to all patient anatomies without additional validation"
+          "That these limitations invalidate the core sensitivity findings",
+          "That future work is guaranteed to change the directional conclusions (material dominance) without further evidence"
         ],
-        "transition_from": "C-03",
+        "transition_from": "C-05",
         "transition_to": ""
       }
     ]
@@ -354,19 +864,20 @@
       {
         "paragraph_id": "I-01",
         "section": "introduction",
-        "heading": "",
-        "purpose": "State the clinical importance: coronary plaque rupture is the principal cause of acute coronary syndromes and contributes substantially to cardiovascular mortality, motivating quantitative rupture-risk assessment.",
+        "heading": "Clinical importance of plaque rupture",
+        "purpose": "State the clinical burden: coronary atherosclerotic plaque rupture causes acute coronary syndromes (ACS) and a large share of cardiovascular mortality, motivating improved rupture-risk metrics.",
         "claim_ids": [
-          "R_members2008",
-          "R_brown2016"
+          "possible_claims"
         ],
+        "context_node_ids": [],
+        "required_edge_ids": [],
         "supports": [
-          "R_members2008",
-          "R_brown2016"
+          "R_Virmani2000",
+          "R_Stone2011"
         ],
         "must_not_claim": [
-          "method details (e.g., describe our simulations or dataset)",
-          "study results or conclusions about which factors dominate"
+          "Novel computational contributions or results from this study (methods/results belong later).",
+          "Any new clinical trial evidence or patient-outcome validation."
         ],
         "transition_from": "",
         "transition_to": "I-02"
@@ -375,18 +886,19 @@
         "paragraph_id": "I-02",
         "section": "introduction",
         "heading": "",
-        "purpose": "Explain that rupture vulnerability is determined by interacting morphological, hemodynamic, and material (strength) factors—establishing the multi-factor nature of the problem to be analyzed.",
+        "purpose": "Summarize mechanistic determinants of rupture risk (morphology, hemodynamics, material strength) and explain that these factors interact to set vulnerability.",
         "claim_ids": [
-          "R_brown2016",
-          "R_arroyo1999"
+          "possible_claims"
         ],
+        "context_node_ids": [],
+        "required_edge_ids": [],
         "supports": [
-          "R_brown2016",
-          "R_arroyo1999"
+          "R_Morris2016",
+          "R_Sankaran2017",
+          "R_Holzapfel2004"
         ],
         "must_not_claim": [
-          "that any single factor is already proven dominant",
-          "methodological specifics of how to quantify each factor"
+          "That any single factor is universally dominant (quantitative dominance is a study result)."
         ],
         "transition_from": "I-01",
         "transition_to": "I-03"
@@ -394,20 +906,29 @@
       {
         "paragraph_id": "I-03",
         "section": "introduction",
-        "heading": "",
-        "purpose": "Identify the gap: prior computational vulnerability indices commonly use stress-only metrics and ignore patient-specific strength; argue on structural-mechanics grounds that a stress/strength ratio is the appropriate physical frame to account for strength uncertainty.",
+        "heading": "Limitations of stress-only metrics and role of strength",
+        "purpose": "Explain the conceptual limitation of prior computational VI definitions that use stress-only metrics and fixed cap-strength constants, argue why a stress/strength ratio is a more physically meaningful metric, and cite prior literature noting stress/strength concerns.",
         "claim_ids": [
-          "C1",
-          "W1",
-          "R_cheng1993"
+          "C2",
+          "possible_claims"
+        ],
+        "context_node_ids": [
+          "C2.1",
+          "C2.2",
+          "W2",
+          "R_Holzapfel2004"
+        ],
+        "required_edge_ids": [
+          "L3",
+          "L4"
         ],
         "supports": [
-          "C1",
-          "R_cheng1993"
+          "R_Holzapfel2004",
+          "data/input_parameter/input.csv"
         ],
         "must_not_claim": [
-          "that existing stress-only studies are unusable in all clinical contexts",
-          "specific numerical results (these belong in Methods/Results)"
+          "Empirical proof that stress/strength outperforms stress-only metrics (this is a result shown later).",
+          "That the particular normalization exponent α is definitively correct (discussion later)."
         ],
         "transition_from": "I-02",
         "transition_to": "I-04"
@@ -415,17 +936,35 @@
       {
         "paragraph_id": "I-04",
         "section": "introduction",
-        "heading": "",
-        "purpose": "Motivate the need for a global sensitivity analysis that varies morphology, hemodynamics, and material properties simultaneously over a realistic vulnerability-index (VI) space to determine which factor-group should be prioritized clinically; note that high computational cost has prevented such comprehensive analyses to date.",
+        "heading": "Need for simultaneous, pulsatile FSI exploration",
+        "purpose": "Argue that identifying which factor group (morphology/hemodynamics/materials) dominates VI requires varying all three over a wide, realistic space under pulsatile (time-resolved) FSI — but high computational cost has prevented such studies.",
         "claim_ids": [
-          "W3"
+          "C1.2",
+          "possible_claims"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "M1",
+          "E_deltaPSS_vs_peakPSS",
+          "W1",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
-          "W3"
+          "data/cost_effective_FSI_BC/bc.md",
+          "data/input_parameter/inflow.dat",
+          "data/input_parameter/elastance.dat"
         ],
         "must_not_claim": [
-          "description of the specific computational technique used in this paper (save for the Methods)",
-          "any results about which group is dominant"
+          "That previous studies have attempted and failed with identical experimental designs (only state the general high-cost limitation).",
+          "Methodological details or validation of the cost-effective FSI (those belong to Methods)."
         ],
         "transition_from": "I-03",
         "transition_to": "I-05"
@@ -433,19 +972,66 @@
       {
         "paragraph_id": "I-05",
         "section": "introduction",
-        "heading": "",
-        "purpose": "State this study's aim and scope: using a previously validated, cost‑efficient pulsatile FSI pipeline to generate large datasets across realistic input-space (including strength) and to perform surrogate‑based Sobol global sensitivity analysis testing ΔPSS‑based stress/strength VIs to assess clinical plausibility and identify dominant determinants.",
+        "heading": "Study objective and approach",
+        "purpose": "State the study aim: using a previously validated cost-effective pulsatile FSI pipeline to generate a large design-space dataset for two idealized plaque phenotypes, define stress/strength VIs (including ΔPSS-based stress and E_fc^α strength normalization), select clinically consistent VIs, and quantify global sensitivity via GPR surrogates + Sobol to determine dominant factor groups.",
         "claim_ids": [
+          "main_contribution",
           "M1",
-          "M2"
+          "M1.2",
+          "M4",
+          "M2",
+          "M3"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "C3",
+          "C3.1",
+          "C3.2",
+          "C4",
+          "C4.1",
+          "C4.2",
+          "D_input",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_LAP_VI2",
+          "E_material_dominant_group",
+          "E_individual_parameters",
+          "E_VI_candidates_screening",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "F_sobol_group",
+          "F_sobol_individual",
+          "F_VI_selection_table",
+          "W1",
+          "W3",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L5",
+          "L6",
+          "L7",
+          "L8",
+          "L24",
+          "L25",
+          "L26",
+          "L27",
+          "L28",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
+          "data/input_parameter/input.csv",
           "data/cost_effective_FSI_BC/bc.md",
-          "data/input_parameter/input.csv"
+          "R_Holzapfel2004",
+          "R_Virmani2000"
         ],
         "must_not_claim": [
-          "presenting results (e.g., that ΔPSS is superior or that material properties dominate) — results must be reported in the Results section",
-          "claiming to introduce a new FSI algorithm (the cost-effective FSI is adopted from prior validated work)"
+          "Novelty or validation of the cost-effective FSI method itself (out_of_scope — cite only).",
+          "Final quantitative results (these belong in Results)."
         ],
         "transition_from": "I-04",
         "transition_to": ""
@@ -458,29 +1044,78 @@
       {
         "paragraph_id": "C-01",
         "section": "conclusion",
-        "heading": "",
-        "purpose": "Summarize the study's primary quantitative findings (ΔPSS-based VI selection and dominance of material properties and blood pressure in driving rupture vulnerability).",
+        "heading": "Summary of main findings",
+        "purpose": "Concisely restate the study's principal contributions: definition and selection of stress/strength VIs, superiority of ΔPSS as the stress metric, and material-property dominance identified by surrogate Sobol analysis.",
         "claim_ids": [
-          "main_contribution",
+          "C1",
+          "C1.1",
+          "C2",
           "C4",
+          "C3"
+        ],
+        "context_node_ids": [
+          "C1.2",
+          "C2.1",
+          "C2.2",
+          "C3.1",
+          "C3.2",
           "C4.1",
           "C4.2",
-          "C2",
-          "C2.1"
+          "M1",
+          "M2",
+          "M3",
+          "M4",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_LAP_VI2",
+          "E_material_dominant_group",
+          "E_individual_parameters",
+          "E_VI_candidates_screening",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "F_sobol_group",
+          "F_sobol_individual",
+          "F_VI_selection_table",
+          "W1",
+          "W2",
+          "W3",
+          "R_Holzapfel2004",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L5",
+          "L6",
+          "L7",
+          "L8",
+          "L24",
+          "L25",
+          "L26",
+          "L27",
+          "L28",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
+          "F_VI_selection_table",
+          "F_ROC_VI2",
+          "F_sobol_group",
+          "F_sobol_individual",
           "data/sobol/sobol_grp_LAP_VI2.csv",
           "data/sobol/sobol_ind_LAP_VI2.csv",
-          "data/sobol/sobol_grp_LAP_VI1.csv",
-          "data/sobol/sobol_grp_CP_VI1.csv",
-          "F1",
-          "F2",
-          "T2"
+          "E_VI_candidates_screening",
+          "E_deltaPSS_vs_peakPSS",
+          "E_material_dominant_group",
+          "E_individual_parameters",
+          "E_gpr_performance"
         ],
         "must_not_claim": [
-          "must_not_claim that these model results constitute direct patient-level clinical prediction",
-          "must_not_claim causal mechanisms in vivo beyond the scope of the simulations",
-          "must_not claim the FSI implementation itself as a novel methodological contribution"
+          "Do not claim clinical validation on patient outcomes",
+          "Do not claim that VIs are proven clinical diagnostic tools beyond surrogate-based synthetic-label evaluation",
+          "Do not assert novelty or validation of the cost-effective FSI solver itself"
         ],
         "transition_from": "",
         "transition_to": "C-02"
@@ -488,21 +1123,62 @@
       {
         "paragraph_id": "C-02",
         "section": "conclusion",
-        "heading": "",
-        "purpose": "State the practical implication for prioritizing measurement/stratification efforts (material-property characterization should be emphasized if material dominance holds).",
+        "heading": "Implications for modelling and clinical risk stratification",
+        "purpose": "State the practical implications: need for pulsatile FSI when assessing fatigue-driven rupture risk, necessity of strength-normalization (E_fc^α), and that material-property characterization (e.g., vessel and cap stiffness) should be prioritized for improved risk stratification.",
         "claim_ids": [
-          "C4",
-          "W1"
+          "C1.2",
+          "C2.2",
+          "C3.2"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C2",
+          "C2.1",
+          "C3",
+          "C3.1",
+          "M1",
+          "M3",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_LAP_VI2",
+          "E_material_dominant_group",
+          "E_individual_parameters",
+          "E_deltaPSS_vs_peakPSS",
+          "F_sobol_group",
+          "F_sobol_individual",
+          "W1",
+          "W2",
+          "W3",
+          "R_Holzapfel2004",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L5",
+          "L6",
+          "L24",
+          "L25",
+          "L26",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
+          "data/input_parameter/input.csv",
+          "data/input_parameter/inflow.dat",
+          "data/input_parameter/elastance.dat",
           "data/sobol/sobol_grp_LAP_VI2.csv",
-          "data/sobol/sobol_grp_LAP_VI1.csv",
-          "data/sobol/sobol_grp_CP_VI2.csv",
-          "F1"
+          "data/sobol/sobol_ind_LAP_VI2.csv",
+          "W1",
+          "W2"
         ],
         "must_not_claim": [
-          "must_not_claim that the study proves material measurement will definitively improve clinical outcomes",
-          "must_not_claim that morphology-based imaging is unimportant in all cases"
+          "Do not claim direct patient-level diagnostic superiority over established clinical tests",
+          "Do not imply that measuring all material properties is currently trivial or routinely available clinically",
+          "Do not assert causation between any single parameter and actual clinical rupture events"
         ],
         "transition_from": "C-01",
         "transition_to": "C-03"
@@ -510,160 +1186,254 @@
       {
         "paragraph_id": "C-03",
         "section": "conclusion",
-        "heading": "",
-        "purpose": "Conclude methodological implications: ΔPSS (stress amplitude) is a more clinically appropriate stress metric and vulnerability indices must normalize by strength (α matters); therefore pulsatile (fatigue-capable) analyses and careful strength-normalization are warranted in future work.",
+        "heading": "Limitations and future work",
+        "purpose": "Acknowledge study limitations that bound interpretation and specify concrete next steps (patient-specific geometry/data, richer material models, clinical outcome validation, and surrogate-refinement) to translate findings toward clinical applicability.",
         "claim_ids": [
-          "C2",
-          "C2.2",
-          "C3"
+          "M1",
+          "M1.1",
+          "M1.2",
+          "M3",
+          "C4.2"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
+          "C3",
+          "C3.1",
+          "C3.2",
+          "C4",
+          "C4.1",
+          "M2",
+          "M4",
+          "D_input",
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_LAP_VI2",
+          "E_material_dominant_group",
+          "E_individual_parameters",
+          "E_VI_candidates_screening",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "F_sobol_group",
+          "F_sobol_individual",
+          "F_VI_selection_table",
+          "W1",
+          "W3",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L5",
+          "L6",
+          "L7",
+          "L8",
+          "L24",
+          "L25",
+          "L26",
+          "L27",
+          "L28",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
-          "T1",
-          "data/input_parameter/input.csv",
           "data/cost_effective_FSI_BC/bc.md",
-          "data/input_parameter/inflow.dat",
-          "data/input_parameter/elastance.dat"
+          "data/input_parameter/input.csv",
+          "data/sobol/sobol_grp_LAP_VI2.csv",
+          "E_gpr_performance",
+          "F_ROC_VI2"
         ],
         "must_not_claim": [
-          "must_not_claim that the cost-effective FSI approach introduced here is being proposed as a novel validated solver (out_of_scope)",
-          "must_not claim that a single choice of α is universally correct without further validation"
+          "Do not claim that these limitations invalidate the central findings",
+          "Do not claim completed clinical validation or prospective utility without evidence",
+          "Do not claim that the surrogate-based Sobol results exactly equal direct repeated FSI evaluations (acknowledge approximation)"
         ],
         "transition_from": "C-02",
-        "transition_to": "C-04"
-      },
-      {
-        "paragraph_id": "C-04",
-        "section": "conclusion",
-        "heading": "",
-        "purpose": "Highlight limitations and concrete next steps: sensitivity to the strength-normalization exponent α, need for patient-specific material characterization and clinical validation of the proposed VIs.",
-        "claim_ids": [
-          "C3",
-          "main_contribution"
-        ],
-        "supports": [
-          "data/sobol/sobol_ind_LAP_VI2.csv",
-          "data/sobol/sobol_ind_LAP_VI1.csv",
-          "data/sobol/sobol_ind_CP_VI1.csv",
-          "T2"
-        ],
-        "must_not_claim": [
-          "must_not_claim that clinical validation has been performed",
-          "must_not claim that the identified VIs are ready for clinical deployment without prospective testing"
-        ],
-        "transition_from": "C-03",
         "transition_to": ""
       }
     ]
   },
   "abstract": {
-    "section": "abstract",
+    "section": "introduction",
     "paragraphs": [
       {
         "paragraph_id": "I-01",
-        "section": "abstract",
-        "heading": "",
-        "purpose": "State clinical importance of coronary plaque rupture and motivate need for better rupture-risk metrics.",
+        "section": "introduction",
+        "heading": "Background and clinical significance",
+        "purpose": "State the clinical importance of coronary plaque rupture and motivate why quantitative vulnerability assessment is needed.",
         "claim_ids": [
-          "C1",
-          "R_members2008",
-          "R_brown2016"
+          "possible_claims: 관상동맥 플라크 파열은 ACS의 주원인이고 심혈관 사망 부담이 크다.",
+          "R_Virmani2000",
+          "R_Stone2011"
         ],
-        "supports": [
-          "cite:members2008",
-          "cite:brown2016"
-        ],
+        "context_node_ids": [],
+        "required_edge_ids": [],
+        "supports": [],
         "must_not_claim": [
-          "presenting any new clinical trial or epidemiologic analysis",
-          "providing quantitative results from this study"
+          "Do not claim any new clinical outcome data or patient-study evidence beyond cited literature.",
+          "Do not assert that the proposed method has been clinically validated on patient outcomes."
         ],
         "transition_from": "",
         "transition_to": "I-02"
       },
       {
         "paragraph_id": "I-02",
-        "section": "abstract",
+        "section": "introduction",
         "heading": "",
-        "purpose": "Summarize the mechanistic determinants of rupture (morphology, hemodynamics, material strength) and structural-mechanics rationale for stress/strength framing.",
+        "purpose": "Describe the multivariate determinants of rupture risk (morphology, hemodynamics, material strength) and note that prior computational metrics often ignore patient-specific strength variability.",
         "claim_ids": [
-          "W1",
-          "R_cheng1993",
-          "R_brown2016"
+          "possible_claims: 파열 위험은 형태·혈류역학·재료(strength) 인자가 함께 작용해 결정된다.",
+          "possible_claims: 그러나 기존 파열위험지표는 응력(stress)만으로 정의되어 환자마다 다른 strength(물성)를 무시한다 → 정확한 지표는 stress/strength 비율이어야 한다. (strength를 고정상수 비율로 둔 선행 문헌 = 그 한계)",
+          "R_Holzapfel2004",
+          "R_Morris2016",
+          "R_Sankaran2017"
+        ],
+        "context_node_ids": [
+          "C2",
+          "C2.1",
+          "C2.2",
+          "W2"
+        ],
+        "required_edge_ids": [
+          "L3",
+          "L4"
         ],
         "supports": [
-          "cite:cheng1993",
-          "cite:brown2016"
+          "R_Holzapfel2004",
+          "R_Morris2016",
+          "R_Sankaran2017"
         ],
         "must_not_claim": [
-          "quantitatively ranking determinants (defer to Results)",
-          "that any single prior study fully resolved the multi-factor interaction"
+          "Do not assert that every prior study ignored strength — avoid overgeneralization; instead refer to common practice or representative examples.",
+          "Do not present results or data from this study in this paragraph."
         ],
         "transition_from": "I-01",
         "transition_to": "I-03"
       },
       {
         "paragraph_id": "I-03",
-        "section": "abstract",
+        "section": "introduction",
         "heading": "",
-        "purpose": "Identify the methodological gap: prior computational risk indices commonly use stress-only metrics and ignore patient-specific strength uncertainty, motivating a normalized stress/strength vulnerability index.",
+        "purpose": "Explain why stress/strength (load-to-strength) is a more physically meaningful vulnerability metric and argue that the stress term is best represented by pulsatile amplitude (ΔPSS), implying the need for pulsatile FSI.",
         "claim_ids": [
-          "C1"
+          "C1",
+          "W2",
+          "W1"
+        ],
+        "context_node_ids": [
+          "C1.1",
+          "C1.2",
+          "C2",
+          "C2.1",
+          "C2.2",
+          "M1",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "R_Holzapfel2004",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
-          "cite:cheng1993"
+          "W2",
+          "W1",
+          "L31"
         ],
         "must_not_claim": [
-          "that every prior paper ignored strength in all modelling contexts (avoid overgeneralization)"
+          "Do not claim proof that ΔPSS is the definitive clinical predictor — state it as a justified hypothesis supported by mechanistic reasoning and later results.",
+          "Do not describe novel methods or results here (reserve for Methods/Results paragraphs)."
         ],
         "transition_from": "I-02",
         "transition_to": "I-04"
       },
       {
         "paragraph_id": "I-04",
-        "section": "abstract",
+        "section": "introduction",
         "heading": "",
-        "purpose": "State the need for a global sensitivity analysis across morphology/hemodynamics/materials over a realistic vulnerability-index (VI) space and note prior computational cost barriers.",
+        "purpose": "Identify the knowledge gap: no prior study has simultaneously varied morphology, hemodynamics and material properties over a wide realistic space under pulsatile FSI to quantify which factor group dominates VI variability (and why this is needed for clinical prioritization).",
         "claim_ids": [
-          "W3"
+          "possible_claims: 어느 인자군이 위험을 지배하는지 알면 임상 측정·위험층화의 우선순위가 정해진다...",
+          "study_design",
+          "research_problem"
         ],
-        "supports": [
-          "cite:meng2013"
-        ],
+        "context_node_ids": [],
+        "required_edge_ids": [],
+        "supports": [],
         "must_not_claim": [
-          "that no previous study has attempted any sensitivity analysis in any simplified setting (avoid absolute negation)"
+          "Do not claim that no single prior work has ever addressed any aspects of this — restrict to the combined, wide-scope pulsatile-FSI sensitivity analysis gap.",
+          "Do not claim methodological details or results."
         ],
         "transition_from": "I-03",
         "transition_to": "I-05"
       },
       {
         "paragraph_id": "I-05",
-        "section": "abstract",
+        "section": "introduction",
         "heading": "",
-        "purpose": "Summarize this study's approach (cost-effective pulsatile FSI data generation, VI candidate definition and selection, GPR surrogate + Sobol global sensitivity) and state the main quantitative findings and implications (ΔPSS-based VI preferred; strength-normalized VI; material properties and SBP/PP dominate).",
+        "purpose": "State the study objective: using a validated cost-effective pulsatile FSI pipeline to generate large datasets across idealized plaque phenotypes and to (i) define clinically consistent stress/strength VIs, and (ii) quantify global sensitivities (material vs hemo vs morpho) via GPR surrogates and Sobol analysis.",
         "claim_ids": [
+          "possible_claims: 따라서 본 연구는 (선행 검증된) 비용효율 FSI를 활용해 strength 반영 현실적 VI에 대한 세 인자군 전체 공간 민감도 분석을 수행하여, ΔPSS 기반 지표의 임상 타당성과 재료물성의 지배성을 규명한다.",
+          "study_design",
           "M1",
           "M2",
+          "M3",
+          "M4"
+        ],
+        "context_node_ids": [
+          "C1",
+          "C1.1",
+          "C1.2",
           "C3",
-          "C2",
-          "C4",
-          "main_contribution",
+          "C3.1",
           "C3.2",
+          "C4",
           "C4.1",
           "C4.2",
-          "C2.1"
+          "D_sobol_grp_LAP_VI2",
+          "D_sobol_ind_LAP_VI2",
+          "E_material_dominant_group",
+          "E_individual_parameters",
+          "E_VI_candidates_screening",
+          "E_deltaPSS_vs_peakPSS",
+          "E_gpr_performance",
+          "F_sobol_group",
+          "F_sobol_individual",
+          "F_VI_selection_table",
+          "W1",
+          "W3",
+          "E1"
+        ],
+        "required_edge_ids": [
+          "L1",
+          "L2",
+          "L5",
+          "L6",
+          "L7",
+          "L8",
+          "L24",
+          "L25",
+          "L26",
+          "L27",
+          "L28",
+          "L30",
+          "L31",
+          "L1"
         ],
         "supports": [
           "data/cost_effective_FSI_BC/bc.md",
-          "data/input_parameter/input.csv",
-          "T1",
-          "data/sobol/sobol_grp_LAP_VI2.csv",
-          "data/sobol/sobol_ind_LAP_VI2.csv",
-          "F1",
-          "F2"
+          "data/input_parameter/input.csv"
         ],
         "must_not_claim": [
-          "that the cost-effective FSI algorithm itself is a novel methodological contribution (out of scope)",
-          "causal clinical recommendations beyond the study's sensitivity/association findings",
-          "that the selected VI(s) are validated in prospective clinical outcome cohorts"
+          "Do not claim results (e.g., material dominance or VI selection) here — limit to objectives and approach.",
+          "Do not claim that the cost-effective FSI method is newly proposed or validated here (it is used as a tool; cite prior validation)."
         ],
         "transition_from": "I-04",
         "transition_to": ""

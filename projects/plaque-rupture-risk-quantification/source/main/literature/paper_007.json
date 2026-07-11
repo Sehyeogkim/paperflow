@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_007",
+  "study_archetype": "development and presentation of a large-scale 1-D arterial network simulation model",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "objective: develop anatomically detailed 1-D arterial vasculature model for hemodynamics",
+      "category": "objective",
+      "sub_category": "primary objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "study_design: computational model development and simulation study",
+      "category": "study_design",
+      "sub_category": "model development / simulation",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: average male arterial vasculature outlined in 3-D space (anatomical template)",
+      "category": "data_or_sample",
+      "sub_category": "anatomical template",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "methods: one-dimensional blood flow equations / computational fluid dynamics to simulate wave propagation",
+      "category": "methods",
+      "sub_category": "1-D blood flow CFD / wave propagation simulation",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "data_or_sample: network composition of over 2000 arterial vessels down to perforator lumen scale",
+      "category": "data_or_sample",
+      "sub_category": "network size and resolution",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "model_parameters: anatomical, physiological, and mechanical considerations used to set parameters and flow distribution criteria",
+      "category": "models_and_equations",
+      "sub_category": "parameterization criteria",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

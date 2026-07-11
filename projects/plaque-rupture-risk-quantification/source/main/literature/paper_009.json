@@ -1,0 +1,79 @@
+{
+  "paper_id": "paper_009",
+  "study_archetype": "animal experimental study assessing autonomic function in disease model",
+  "content_level": "abstract_only",
+  "reported_items": [
+    {
+      "raw_name": "Objective: assess sympathetic over-activity and proarrhythmic risk in collagen-induced arthritis (CIA) rats",
+      "category": "objective",
+      "sub_category": "primary objective",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Study design: experimental animal study with collagen-induced arthritis model in Lewis rats and control group",
+      "category": "study_design",
+      "sub_category": "animal experimental (case-control style)",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Data/sample: 9 CIA rats and 9 control rats (Lewis rats) with arthritis induced by intradermal type II collagen emulsion",
+      "category": "data_or_sample",
+      "sub_category": "sample size and induction method",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Primary methods: single-lead ECG recorded 30 min every two days; HRV analysis including time- and frequency-domain parameters, LF/HF ratio, detrended fluctuation analysis (DFA), deceleration capacity (DC), and acceleration capacity (AC)",
+      "category": "methods",
+      "sub_category": "physiological measurement and HRV analyses",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Main outcome measures: differences in HRV parameters (including LF/HF) between CIA and control rats over time",
+      "category": "outcomes",
+      "sub_category": "HRV parameter comparisons",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    },
+    {
+      "raw_name": "Primary results (summary): LF/HF ratio significantly higher in CIA rats during first and second week versus controls (values and p<0.05 reported)",
+      "category": "results",
+      "sub_category": "key statistical result for LF/HF",
+      "description": "",
+      "section": "",
+      "evidence_text": "",
+      "importance_to_main_claim": "unknown",
+      "explicitly_reported": true,
+      "applies_to": [],
+      "source_location": ""
+    }
+  ]
+}

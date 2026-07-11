@@ -101,7 +101,7 @@ def validate(raw: dict) -> dict:
 def build(ps: ProjectState) -> ClaimGraph:
     ib = inputs_block(ps)
     # Pass A — claim skeleton
-    a = client.call_json("reasoning", prompt("claim_graph_a"), ib, step="claim_graph.a", max_tokens=2500)
+    a = client.call_json("reasoning", prompt("claim_graph_a"), ib, step="claim_graph.a", max_tokens=2500, effort="low")
     claims = [c for c in (a.get("claims") or []) if isinstance(c, dict) and c.get("id")]
     for c in claims:
         c["kind"] = "claim"
@@ -110,7 +110,7 @@ def build(ps: ProjectState) -> ClaimGraph:
     # Pass B — grounding for the given claims
     b = client.call_json("reasoning", prompt("claim_graph_b"),
                          f"{ib}\n\n## CLAIM SKELETON (do not restate these)\n{claim_block}",
-                         step="claim_graph.b", max_tokens=4096)
+                         step="claim_graph.b", max_tokens=4096, effort="low")
 
     merged = {
         "main_contribution": a.get("main_contribution", ""),
@@ -118,3 +118,18 @@ def build(ps: ProjectState) -> ClaimGraph:
         "edges": (a.get("claim_edges") or []) + (b.get("edges") or []),
     }
     return ClaimGraph.model_validate(validate(merged))
+
+
+def build_preliminary(ps: ProjectState) -> ClaimGraph:
+    """Preliminary Logic Graph — built AFTER Stage-1 answers (TWO_STAGE_QUESTIONS §6).
+    ps must already carry Research State v2 + Evidence Inventory (rendered via inputs_block)."""
+    return build(ps)
+
+
+def build_final(preliminary: ClaimGraph, logic_questions=None,
+                logic_answers: dict | None = None) -> ClaimGraph:
+    """Final Logic Graph — deterministically applies Stage-2 logic answers to the preliminary
+    graph (unknown → downgrade/qualify/remove; real → traceable author-answer evidence) and
+    rejects untraceable numeric evidence. No extra LLM call, so artifacts stay reproducible."""
+    from ..graph.finalize import finalize
+    return finalize(preliminary, list(logic_questions or []), logic_answers or {})

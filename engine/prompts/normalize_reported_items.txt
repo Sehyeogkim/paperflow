@@ -1,0 +1,51 @@
+You merge reported items extracted from many papers into a set of CANONICAL requirement
+keys, AND judge how strongly each is expected for THIS project — in one pass.
+
+You are given the author's research context (field, core message, claims) and a flat list of
+reported items (each: paper_id, item index, free-form raw_name, fixed category, sub_category,
+content level).
+
+Do this:
+- Cluster items that mean the SAME concept into one canonical key.
+  Examples:
+    "mesh convergence study" / "grid independence test" / "mesh sensitivity analysis"
+      -> mesh_independence
+    "constitutive material model" / "hyperelastic constitutive law" / "material formulation"
+      -> material_constitutive_model
+    "primary endpoint" / "main outcome measure" -> primary_outcome
+- canonical_key: short snake_case, descriptive, domain-appropriate.
+- Keep the cluster's `category` (the dominant fixed category among its members).
+- Collapse overly-narrow implementation details into the broader concept they instantiate.
+- Do NOT force genuinely different concepts together.
+- For each cluster, list `applicable_to`: the study archetypes / claim types where this
+  requirement is relevant (e.g. "quantitative_numerical_simulation", "peak_field_value_claim").
+- Keep every source item reference as "<paper_id>:item_<index>" in `source_items`.
+- ALSO judge, for THIS project:
+  - `required_when`: short list of claim/study conditions under which it applies (empty = always).
+  - `requirement_level`, exactly one of:
+      mandatory          — a reporting standard requires it OR it is logically necessary for the
+                           project's central claim.
+      strongly_expected  — most similar applicable papers report it AND it affects this project's
+                           claim credibility; a reviewer would likely demand it.
+      common             — frequently reported but not essential to THIS project's core claim.
+      optional           — only in specific designs/implementations.
+      unsupported        — weak evidence / abstract-only inference; do NOT drive a question.
+  - `reason`: one sentence tying it to the project's claim and the literature pattern.
+  Be honest about content level: keys supported only by abstract_only papers can't be
+  "mandatory" on detailed-method grounds unless logic/guideline makes them so.
+
+Return ONLY JSON:
+{
+  "clusters": [
+    {
+      "canonical_key": "...",
+      "category": "...",
+      "aliases": ["...", "..."],
+      "applicable_to": ["..."],
+      "required_when": ["..."],
+      "requirement_level": "mandatory|strongly_expected|common|optional|unsupported",
+      "reason": "...",
+      "source_items": ["paper_001:item_03", "paper_004:item_01"]
+    }
+  ]
+}
