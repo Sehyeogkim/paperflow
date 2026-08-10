@@ -327,28 +327,28 @@
     {
       "src": "M2",
       "dst": "M1",
-      "rel": "produces",
+      "rel": "feeds",
       "rationale": "시뮬레이션 학습셋이 네트워크 학습 입력이 된다",
       "grounding_status": "grounded"
     },
     {
       "src": "M3",
       "dst": "M1",
-      "rel": "produces",
+      "rel": "feeds",
       "rationale": "GENFIRE 재구성 tomogram이 augmentation의 입력",
       "grounding_status": "grounded"
     },
     {
       "src": "M1",
       "dst": "M4",
-      "rel": "produces",
+      "rel": "feeds",
       "rationale": "augmented tomogram에서 원자 좌표를 추출",
       "grounding_status": "grounded"
     },
     {
       "src": "M4",
       "dst": "M5",
-      "rel": "produces",
+      "rel": "feeds",
       "rationale": "자동 추적 결과를 사람이 보정",
       "grounding_status": "grounded"
     },
@@ -411,21 +411,21 @@
     {
       "src": "M5",
       "dst": "E1",
-      "rel": "supports",
+      "rel": "produces",
       "rationale": "최종 원자모델로 R-factor·정밀도 산출",
       "grounding_status": "grounded"
     },
     {
       "src": "M5",
       "dst": "E2",
-      "rel": "supports",
+      "rel": "produces",
       "rationale": "DL 전후 원자 비교",
       "grounding_status": "grounded"
     },
     {
       "src": "M6",
       "dst": "E1",
-      "rel": "supports",
+      "rel": "produces",
       "rationale": "PRISM 시뮬레이션이 정확도·정밀도를 검증",
       "grounding_status": "grounded"
     },

@@ -72,5 +72,35 @@ markers:
   node_provenance: "[ASK_AUTHOR]"    # 기존 "[DATA_NEEDED]"와 같은 자리
   edge_grounding_status: missing     # 기존 GEdge.grounding_status 값 그대로
 
+# ─────────────────────────────────────────────────────────────
+# 엔진 스키마 확장 요청 (engine/src/paperflow/schemas/claim.py::EdgeRel
+#                        + compile/claim_graph.py::_ALLOWED_EDGE)
+#
+# 이 그래프를 기존 검증기에 그대로 돌리면 27개 엣지 중 13개가 통과하고
+# 14개가 탈락한다. 탈락은 전부 아래 3개 rel 때문이며, 모델링 오류는 없다.
+# (검증 방법: _ALLOWED_EDGE 를 읽어 (src.kind, dst.kind) 조합을 대조)
+# ─────────────────────────────────────────────────────────────
+edge_extensions:
+
+  # Layer 1 안에서 필요한 것 — 기존 스키마에 '단계 순서'를 담을 rel이 없다.
+  # part_of 는 계층(하위 방법 -> 상위 방법)이지 순서가 아니다.
+  - rel: feeds
+    allowed: [[method, method]]
+    means: A의 산출물이 B의 입력이 된다 (파이프라인 순서)
+    used_by: 4 edges
+
+  # Layer 2 -> Layer 1 을 잇는 것 — 암묵지 레이어의 존재 이유
+  - rel: governs
+    allowed: [[threshold, data], [threshold, method], [decision, data], [decision, method]]
+    means: 이 규칙/판단이 저 파라미터·단계의 선택을 지배한다
+    used_by: 7 edges
+
+  - rel: warns_about
+    allowed: [[pitfall, method], [pitfall, data]]
+    means: 이 실패 양상이 저 단계에서 발생한다
+    used_by: 3 edges
+
+# 함께 필요한 NodeKind 확장: threshold | pitfall | decision (3종)
+
 # 이 pack을 2021 AET 논문에 적용한 결과: 채워짐 16 / 비어있음 10
 #   threshold 4 · pitfall 3 · decision 3
