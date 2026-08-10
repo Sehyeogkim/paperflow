@@ -536,7 +536,9 @@ const GRAPH = /*__GRAPH_JSON__*/
       "angle": 39.6,
       "radius": 245,
       "label_side": "right",
-      "answer": null
+      "answer": "실험 tomogram에서 잰 피크 폭과 시뮬레이션 피크 폭을 겹쳐 본다. 학습 B가 실제보다 좁으면 네트워크가 넓은 실험 피크를 인공물로 보고 눌러서, 강도가 약한 저배위 표면 원자가 무더기로 사라진다. 반대로 넓으면 피크가 둘로 쪼개지거나 표면 바깥에 약한 유령 피크가 생긴다. 그래서 값 하나로 확정하지 않고 ±1 Å² 범위로 세 벌 학습해 출력 좌표가 벌어지는 정도를 본다.",
+      "answer_is_example": true,
+      "answer_source": "demo_example_not_author_verified"
     },
     {
       "id": "TH2",
@@ -554,7 +556,9 @@ const GRAPH = /*__GRAPH_JSON__*/
       "angle": 50.8,
       "radius": 365,
       "label_side": "right",
-      "answer": null
+      "answer": "validation loss만 보지 않는다. 서로 다른 시드로 학습한 두 네트워크에 같은 실험 tomogram을 넣고, 나온 원자좌표 차이가 주장하려는 정밀도(15 pm)보다 작으면 충분한 것으로 본다. 크면 볼륨을 더 만든다.",
+      "answer_is_example": true,
+      "answer_source": "demo_example_not_author_verified"
     },
     {
       "id": "TH3",
@@ -572,7 +576,9 @@ const GRAPH = /*__GRAPH_JSON__*/
       "angle": 62.0,
       "radius": 285,
       "label_side": "right",
-      "answer": null
+      "answer": "입자 형상을 먼저 본다. twin boundary나 stacking fault 같은 면결함이 예상되면 무조건 올린다. survey 이미지에서 다면체(decahedral, icosahedral)로 의심되면 처음부터 27장 ±75°로 시작한다. 단결정에 가까울 때만 21장으로 간다.",
+      "answer_is_example": true,
+      "answer_source": "demo_example_not_author_verified"
     },
     {
       "id": "TH4",
@@ -590,7 +596,9 @@ const GRAPH = /*__GRAPH_JSON__*/
       "angle": 73.2,
       "radius": 405,
       "label_side": "right",
-      "answer": null
+      "answer": "실험 직후 0° 투영을 다시 찍어 첫 이미지와 겹쳐 본다. 파셋이 뭉개졌거나 입자 윤곽이 둥글어졌거나 표면 원자 배열이 달라졌으면 넘긴 것으로 보고, 그 데이터셋으로는 원자 수준 결론을 내지 않는다. 본 촬영 전에 절반 dose로 파일럿을 한 번 돌린다.",
+      "answer_is_example": true,
+      "answer_source": "demo_example_not_author_verified"
     },
     {
       "id": "PF1",
@@ -608,7 +616,9 @@ const GRAPH = /*__GRAPH_JSON__*/
       "angle": 84.4,
       "radius": 325,
       "label_side": "right",
-      "answer": null
+      "answer": "세 가지를 같이 본다. 최근접 이웃 수가 비정상적으로 적은지, 강도가 주변 원자보다 뚜렷하게 낮은지, fcc 격자 사이트에서 크게 벗어나 있는지. 둘 이상 걸리면 제거 후보로 본다. 그리고 이 단계는 사람이 들어가므로 결과를 모르는 다른 사람이 독립적으로 한 번 더 하게 해서 일치도를 확인한다.",
+      "answer_is_example": true,
+      "answer_source": "demo_example_not_author_verified"
     },
     {
       "id": "PF2",
@@ -626,7 +636,9 @@ const GRAPH = /*__GRAPH_JSON__*/
       "angle": 95.6,
       "radius": 445,
       "label_side": "left",
-      "answer": null
+      "answer": "학습에 없던 결함 밀도나 두꺼운 시료에서 표면 바깥쪽에 강도가 약한 가짜 피크가 생긴다 — R-factor가 개선되지 않으면 의심한다",
+      "answer_is_example": true,
+      "answer_source": "demo_example_not_author_verified"
     },
     {
       "id": "PF3",
@@ -644,7 +656,9 @@ const GRAPH = /*__GRAPH_JSON__*/
       "angle": 106.8,
       "radius": 205,
       "label_side": "left",
-      "answer": null
+      "answer": "자동 단계는 보수적으로 잡아 위양성을 줄이고, 수동 단계는 사람이 보면서 넣으므로 더 촘촘히 허용한다",
+      "answer_is_example": true,
+      "answer_source": "demo_example_not_author_verified"
     },
     {
       "id": "DC1",
@@ -662,7 +676,9 @@ const GRAPH = /*__GRAPH_JSON__*/
       "angle": 118.0,
       "radius": 365,
       "label_side": "left",
-      "answer": null
+      "answer": "실험은 한 번만 돌리므로 비용을 써서 DFT/1000 iteration으로 최고 품질을 뽑고, 학습셋은 12,000개를 만들어야 해서 FFT/100으로 속도를 택했다. 대신 학습셋 일부를 실험 설정으로도 재구성해서 네트워크 출력이 같은지 확인했다.",
+      "answer_is_example": true,
+      "answer_source": "demo_example_not_author_verified"
     },
     {
       "id": "DC2",
@@ -680,7 +696,9 @@ const GRAPH = /*__GRAPH_JSON__*/
       "angle": 129.2,
       "radius": 285,
       "label_side": "left",
-      "answer": null
+      "answer": "GAN 계열도 봤지만 원자 위치가 흔들려서 버렸다 / 순수 CNN은 큰 수용영역이 안 나와 missing wedge 방향 정보를 못 채웠다",
+      "answer_is_example": true,
+      "answer_source": "demo_example_not_author_verified"
     },
     {
       "id": "DC3",
@@ -698,7 +716,9 @@ const GRAPH = /*__GRAPH_JSON__*/
       "angle": 140.4,
       "radius": 405,
       "label_side": "left",
-      "answer": null
+      "answer": "amorphous는 '네트워크가 fcc를 외운 것 아니냐'는 반박을 막기 위해, 3.2 Å²는 최적값보다 유의미하게 좁은 폭을 주려고 고른 값이다",
+      "answer_is_example": true,
+      "answer_source": "demo_example_not_author_verified"
     },
     {
       "id": "K1",
@@ -1072,6 +1092,175 @@ const GRAPH = /*__GRAPH_JSON__*/
       "조언·판단의 근거가 된 노드는 [TH1] 처럼 id 를 대괄호로 인용하라. 추적 가능해야 한다.",
       "layer 1 은 원본 논문에서 재확인할 수 있다. layer 2 는 재확인할 곳이 없으니 그대로 신뢰하라.",
       "example 은 데모용 더미다. answer 가 있으면 answer 만 쓰고 example 은 무시하라."
+    ],
+    "recommended_entrypoint": "사용자가 작업 상황을 주면 applications 중 하나를 고르고 graph_traversal을 수행한 뒤 output_contract 형식으로 답하라. 일반 요약부터 하지 말고 실제 판정·체크리스트를 먼저 제시하라."
+  },
+  "completion": {
+    "layer2_filled": 10,
+    "layer2_total": 10,
+    "status": "demo_complete",
+    "warning": "All layer-2 answers are illustrative examples, not verified statements from the paper author."
+  },
+  "applications": {
+    "readiness_gate": {
+      "title": "실험 시작 전 GO / HOLD 판정",
+      "best_for": "새 시료·새 장비 조건으로 실제 실험을 시작하기 직전",
+      "input": [
+        "planned_sample",
+        "planned_parameters",
+        "instrument_constraints",
+        "success_criterion"
+      ],
+      "graph_traversal": [
+        "계획과 관련된 method/data 노드를 찾는다",
+        "그 노드로 들어오는 governs 엣지를 따라 threshold/decision을 수집한다",
+        "warns_about 엣지로 연결된 pitfall을 수집한다",
+        "각 layer-2 answer와 계획을 대조한다"
+      ],
+      "output_contract": {
+        "verdict": "GO | HOLD | AUTHOR_CHECK",
+        "blocking_checks": "실행 전에 확인해야 할 항목. 각 항목에 [node_id] 필수",
+        "parameter_changes": "기존 논문 조건에서 바뀐 값과 재검증 항목",
+        "stop_signals": "실험 중단 신호와 대응. 각 항목에 [node_id] 필수",
+        "unknowns": "answer가 없어서 저자 확인이 필요한 항목"
+      },
+      "value_metric": [
+        "불필요한 파일럿/실패 실험 수",
+        "저자에게 다시 물어본 질문 수",
+        "실험 전 발견된 위험 수"
+      ]
+    },
+    "failure_diagnosis": {
+      "title": "실패 증상에서 원인·확인·대응으로 역추적",
+      "best_for": "결과가 이상하거나 재현되지 않을 때",
+      "input": [
+        "observed_symptoms",
+        "changed_parameters",
+        "run_log"
+      ],
+      "graph_traversal": [
+        "증상과 일치하는 pitfall answer를 찾는다",
+        "warns_about 엣지의 대상 method/data를 찾는다",
+        "그 대상에 governs로 연결된 threshold/decision을 수집한다",
+        "후보 원인을 확인 비용과 위험도 순으로 정렬한다"
+      ],
+      "output_contract": {
+        "most_likely_causes": "우선순위·근거 노드·확인법",
+        "next_checks": "가장 싼 판별 실험부터 순서대로",
+        "do_not_conclude": "현재 증거로 주장하면 안 되는 것",
+        "escalate_to_author": "그래프로도 결정할 수 없는 것"
+      },
+      "value_metric": [
+        "원인 규명까지 걸린 시간",
+        "무작위 재실행 수",
+        "잘못된 결론 방지 수"
+      ]
+    },
+    "transfer_plan": {
+      "title": "다른 시료·물질·장비로 방법 이전",
+      "best_for": "논문 조건을 새로운 연구 대상으로 옮길 때",
+      "input": [
+        "source_setup",
+        "target_setup",
+        "known_differences"
+      ],
+      "graph_traversal": [
+        "모든 data/method 노드를 이전 대상과 비교한다",
+        "governs 엣지로 연결된 이전 규칙과 제약을 적용한다",
+        "warns_about 엣지의 실패 신호를 검증 계획으로 바꾼다",
+        "그대로 유지/재측정/재학습/저자 확인으로 분류한다"
+      ],
+      "output_contract": {
+        "keep": "그대로 유지 가능한 항목",
+        "remeasure": "새 대상에서 다시 측정할 항목",
+        "retrain_or_reconstruct": "다시 생성해야 하는 산출물",
+        "validation_plan": "이전이 성공했음을 보일 검사",
+        "author_checks": "answer가 없거나 적용 범위 밖인 질문"
+      },
+      "value_metric": [
+        "이전 준비 시간",
+        "뒤늦게 발견된 조건 불일치 수",
+        "재사용된 검증 절차 수"
+      ]
+    },
+    "handover_brief": {
+      "title": "후속 연구자를 위한 실행 가능한 인수인계",
+      "best_for": "프로젝트 담당자가 바뀔 때",
+      "warning": "전체 온보딩보다 특정 실행 단계의 인수인계에 사용해야 효과가 크다.",
+      "input": [
+        "assignee_background",
+        "assigned_task"
+      ],
+      "output_contract": {
+        "do": "실행 순서와 필수 조건",
+        "check": "각 단계에서 확인할 신호",
+        "do_not": "이미 실패했거나 버린 선택",
+        "ask_author": "answer가 비어 있는 항목"
+      },
+      "value_metric": [
+        "반복 질문 수",
+        "첫 성공 실행까지 시간",
+        "과거 실패 반복 수"
+      ]
+    }
+  },
+  "eval_cases": [
+    {
+      "id": "EVAL_READY_01",
+      "application": "readiness_gate",
+      "scenario": "B-factor를 6.5 Å²로 바꾸고 표면 원자가 4% 더 검출된 조건으로 본 실험을 진행하려 한다.",
+      "expected_behavior": [
+        "GO라고 단정하지 않는다",
+        "TH1·PF1·PF2를 인용한다",
+        "R-factor·PRISM·시드 재현성 검증을 요구한다"
+      ],
+      "pass_condition": "verdict가 HOLD 또는 AUTHOR_CHECK이고 expected_behavior 3개를 모두 충족"
+    },
+    {
+      "id": "EVAL_TRANSFER_01",
+      "application": "transfer_plan",
+      "scenario": "Pt 파이프라인을 새로운 Pd 나노입자와 다른 tilt holder로 이전한다.",
+      "expected_behavior": [
+        "5 Å²를 상수처럼 복사하지 않는다",
+        "새 시료에서 B-factor를 재측정한다",
+        "dose damage와 tilt 범위를 재검증한다",
+        "근거 노드를 인용한다"
+      ],
+      "pass_condition": "keep/remeasure/validation/author_checks를 분리하고 expected_behavior를 충족"
+    }
+  ],
+  "evaluation": {
+    "date": "2026-08-10",
+    "design": "동일 모델에 동일 readiness 시나리오를 주고, A는 시나리오만, B는 이 graph.json 하나만 추가했다.",
+    "scenario": "B-factor 5→6.5 Å² 변경 후 표면 원자가 4% 더 검출되어 본 실험 진행을 고려한다.",
+    "result": {
+      "baseline": {
+        "verdict": "HOLD",
+        "strength": "일반적인 precision/recall, seed, blind validation 검사를 제시",
+        "failure": "근거 없이 4%p, 1%p, 2%p, 10% 같은 stop threshold를 생성; 연구 고유 근거 추적 불가",
+        "cited_nodes": 0
+      },
+      "with_graph": {
+        "verdict": "HOLD",
+        "strength": "유령 피크, 피크 분열, R-factor, PRISM, 시드 간 15 pm 재현성을 구체적으로 제시",
+        "failure": "layer-2 답변이 예시이므로 저자 검증 전에는 실제 SOP로 사용할 수 없음",
+        "cited_nodes": [
+          "TH1",
+          "TH2",
+          "PF1",
+          "PF2",
+          "D3",
+          "M6",
+          "E1"
+        ]
+      }
+    },
+    "conclusion": "그래프는 모델의 최종 verdict를 바꾸지는 않았지만, 일반 검증 조언을 이 연구의 구체적 실패 신호와 검증 절차로 바꾸고 모든 판단을 출처 노드로 추적 가능하게 했다. 핵심 효용은 정답률보다 specificity, provenance, unsupported-threshold 억제다.",
+    "recommended_metrics": [
+      "근거 노드가 붙은 조언 비율",
+      "근거 없이 생성한 수치 임계값 수",
+      "저자 재확인 질문 수",
+      "실험 전 발견한 stop signal 수"
     ]
   }
 }
@@ -1189,20 +1378,30 @@ const SCRIPT = {
 };
 
 /* ================= 상태 ================= */
-const LS_KEY = 'paperflow_tacit_demo_v2';
+const LS_KEY = 'paperflow_tacit_demo_v3';
 let answers = {};        // {id: {text, isExample} | {fields:{symptom,cause,fix,signal}, isExample}}
 let selectedId = null;
 let editingId = null;
 let pendingExample = false;
 
 function loadState(){
+  let restored = false;
   try{
     const raw = localStorage.getItem(LS_KEY);
     if(raw){
       const o = JSON.parse(raw);
-      if(o && typeof o === 'object') answers = o;
+      if(o && typeof o === 'object') { answers = o; restored = true; }
     }
   }catch(e){ answers = {}; }
+  if(!restored){
+    L2.forEach(n => {
+      if(n.answer == null || n.answer === '') return;
+      answers[n.id] = {
+        text: (typeof n.answer === 'string') ? n.answer : JSON.stringify(n.answer),
+        isExample: !!n.answer_is_example
+      };
+    });
+  }
 }
 function saveState(){
   try{ localStorage.setItem(LS_KEY, JSON.stringify(answers)); }catch(e){}
