@@ -70,6 +70,7 @@
   .legend{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--muted);margin-left:auto;flex-wrap:wrap;}
   .legend span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
   .legend i{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .view-toggle{white-space:nowrap;padding:7px 11px;font-size:13px;}
 
   /* svg */
   .svgwrap{flex:1;min-height:0;padding:4px 6px 8px;}
@@ -77,6 +78,7 @@
   .node{cursor:pointer;}
   .node circle.dot{transition:stroke-width .12s, stroke .12s;}
   .node:hover circle.dot{stroke:#FFFFFF;stroke-width:3;}
+  .node:hover rect.box{stroke:#FFFFFF;stroke-width:2.6;}
   .node:hover text.lab{fill:#FFFFFF;}
   .node text{pointer-events:none;user-select:none;}
 
@@ -227,6 +229,7 @@
         <span class="lbl">진행 <span id="cProg">0/0</span></span>
         <span class="bar"><i id="barFill"></i></span>
       </span>
+      <button class="btn view-toggle" id="toggleView" type="button" aria-pressed="false">▦ 박스형으로 보기</button>
       <span class="legend">
         <span><i style="background:#6E9BD1"></i>논문</span>
         <span><i style="background:#D9A441"></i>코드</span>
@@ -1348,8 +1351,8 @@ const SCRIPT = {
   lines: [
     '논문 한 편과 공개된 코드·데이터를 전부 스캔했습니다. 파란 노드 16개와 주황 1개가 거기서 나온 전부입니다.',
     '회색 10개는 스키마가 "있어야 한다"고 말하는데 논문에도 코드에도 없는 자리입니다. 아래 부채꼴 안에 다 몰려 있습니다.',
-    '그런데 A/B를 실제로 돌려봤습니다. 다섯 가지 과제로요. 정오 판정으로 이긴 건 한 건도 없었습니다.',
-    '대신 다섯 개 전부에서 같은 게 나왔습니다. 모델은 방향을 맞히는데 "확인해 보세요"로 끝납니다. 그래프가 있으면 "이렇게 하세요"가 됩니다.'
+    '"답이 더 좋아지나"로 A/B를 다섯 번 돌렸습니다. 차이가 거의 없었습니다. 모델이 물리로 유도해내더라고요.',
+    '그래서 질문을 바꿨습니다. 이 파일 들고 실제로 인수인계 체크리스트를 만들어 보라고요. 17단계가 나왔는데, 빈칸이 비어 있을 때는 8개가 "저자 확인 필요"였고 채우니 3개로 줄었습니다.'
   ],
   pushbacks: [
     {
@@ -1358,11 +1361,11 @@ const SCRIPT = {
     },
     {
       q: '요즘 모델이면 알아서 채우지 않나요?',
-      a: '네, 상당 부분 채웁니다. B-factor를 잘못 잡으면 뭐가 먼저 깨지는지까지 물리로 유도해내더라고요. 저희가 틀렸던 부분입니다.'
+      a: '네, 상당 부분 채웁니다. B-factor를 잘못 잡으면 뭐가 먼저 깨지는지까지 물리로 유도해내더라고요. 저희가 틀렸던 부분입니다. 다만 유도한 것과 겪은 것은 다르고, 실제 작업을 시켜 보면 그 차이가 개수로 나옵니다.'
     },
     {
       q: '그럼 이거 왜 필요한가요?',
-      a: '정확도가 아니라 확인 비용입니다. tilt 각도 질문을 던졌더니 모델은 "홀더 한계를 dry-run으로 확인해 보세요"라고 했습니다. 그래프가 있는 쪽은 "71.6도가 최대이니 5.5도 간격으로 27장"이라고 했고요. 하루가 사라지느냐 마느냐입니다.'
+      a: '조언 품질로는 차이가 안 났습니다. 산출물을 만들게 하니 났습니다. 체크리스트 17단계 중 미확정이 8개에서 3개로, 열린 질문이 14개에서 9개로 줄었습니다. 판정은 저희가 한 게 아니라 산출물이 스스로 셌습니다.'
     },
     {
       q: '코드에 다 있지 않나요?',
@@ -1379,10 +1382,12 @@ const SCRIPT = {
 
 /* ================= 상태 ================= */
 const LS_KEY = 'paperflow_tacit_demo_v3';
+const GRAPH_VIEW_KEY = 'paperflow_graph_view_v1';
 let answers = {};        // {id: {text, isExample} | {fields:{symptom,cause,fix,signal}, isExample}}
 let selectedId = null;
 let editingId = null;
 let pendingExample = false;
+let graphView = 'radial';
 
 function loadState(){
   let restored = false;
@@ -1402,6 +1407,10 @@ function loadState(){
       };
     });
   }
+  try{
+    const savedView = localStorage.getItem(GRAPH_VIEW_KEY);
+    if(savedView === 'box' || savedView === 'radial') graphView = savedView;
+  }catch(e){}
 }
 function saveState(){
   try{ localStorage.setItem(LS_KEY, JSON.stringify(answers)); }catch(e){}
@@ -1588,7 +1597,7 @@ function edgeGeom(a, b, ra, rb){
   ];
 }
 
-function renderGraph(){
+function renderRadialGraph(){
   const cx = CANVAS.cx, cy = CANVAS.cy;
 
   let s = '<svg id="graph" viewBox="' + VIEWBOX + '" preserveAspectRatio="xMidYMid meet" '
@@ -1699,6 +1708,151 @@ function renderNode(n){
        + esc(labelText(n)) + '</text>';
   out += '</g>';
   return out;
+}
+
+/* ================= 박스형 레이어 뷰 ================= */
+const BOX_W = 1080, BOX_H = 900, BOX_DIVIDER_Y = 570;
+const boxGeom = {};
+
+function spreadRow(nodes, y, left, right, width, height){
+  const count = nodes.length;
+  nodes.forEach((n, i) => {
+    const x = count === 1 ? (left + right) / 2 : left + (right - left) * i / (count - 1);
+    boxGeom[n.id] = {x:x, y:y, w:width, h:height};
+  });
+}
+
+function computeBoxLayout(){
+  Object.keys(boxGeom).forEach(k => delete boxGeom[k]);
+  const claim = L1.filter(n => n.kind === 'claim');
+  const methods = L1.filter(n => n.kind === 'method');
+  const data = L1.filter(n => n.kind === 'data');
+  const tail = L1.filter(n => n.kind === 'evidence' || n.kind === 'code');
+  const topTacit = L2.slice(0, 6);
+  const bottomTacit = L2.slice(6);
+  spreadRow(claim, 70, 540, 540, 300, 72);
+  spreadRow(methods, 195, 95, 985, 140, 76);
+  spreadRow(data, 340, 70, 1010, 126, 76);
+  spreadRow(tail, 465, 350, 730, 170, 76);
+  spreadRow(topTacit, 690, 95, 985, 145, 84);
+  spreadRow(bottomTacit, 820, 270, 810, 160, 84);
+}
+
+function wrapBoxLabel(text, maxUnits, maxLines){
+  const chars = Array.from(String(text || ''));
+  const lines = [];
+  let line = '';
+  chars.forEach(ch => {
+    if(lines.length >= maxLines) return;
+    if(strW(line + ch) <= maxUnits){ line += ch; return; }
+    lines.push(line.trim());
+    line = ch;
+  });
+  if(line && lines.length < maxLines) lines.push(line.trim());
+  if(lines.length === maxLines){
+    const consumed = lines.join('').replace(/\s/g,'').length;
+    const original = String(text || '').replace(/\s/g,'').length;
+    if(consumed < original){
+      let last = lines[maxLines - 1];
+      while(last && strW(last + '…') > maxUnits) last = last.slice(0,-1);
+      lines[maxLines - 1] = last + '…';
+    }
+  }
+  return lines.length ? lines : [''];
+}
+
+function clipBoxLine(a, b){
+  const dx = b.x - a.x, dy = b.y - a.y;
+  if(!dx && !dy) return [a.x,a.y];
+  const sx = dx ? (a.w / 2 + 5) / Math.abs(dx) : Infinity;
+  const sy = dy ? (a.h / 2 + 5) / Math.abs(dy) : Infinity;
+  const t = Math.min(sx, sy, 1);
+  return [a.x + dx*t, a.y + dy*t];
+}
+
+function renderBoxGraph(){
+  computeBoxLayout();
+  let s = '<svg id="graph" viewBox="0 0 ' + BOX_W + ' ' + BOX_H + '" preserveAspectRatio="xMidYMid meet" '
+        + 'xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Apple SD Gothic Neo, Malgun Gothic, sans-serif">';
+  s += '<defs>' + arrowMarker('box-ar-g','#5A6472') + arrowMarker('box-ar-m','#454C58')
+     + arrowMarker('box-ar-a','#CC785C') + '</defs>';
+
+  s += '<rect x="0" y="' + BOX_DIVIDER_Y + '" width="' + BOX_W + '" height="' + (BOX_H-BOX_DIVIDER_Y)
+     + '" fill="#CC785C" fill-opacity="0.035"/>';
+  s += '<text x="28" y="31" font-size="13" font-weight="700" letter-spacing="1.2" fill="#8A8F99">논문 · 코드에서 추출</text>';
+
+  EDGES.forEach(e => {
+    const a = boxGeom[e.src], b = boxGeom[e.dst];
+    if(!a || !b) return;
+    const src = byId[e.src], dst = byId[e.dst];
+    const live = (src.layer === 2 && isAnswered(src.id)) || (dst.layer === 2 && isAnswered(dst.id));
+    let stroke, dash, opacity, marker, width;
+    if(live){ stroke='#CC785C'; dash=''; opacity=.95; marker='box-ar-a'; width=2; }
+    else if(e.grounding_status === 'missing'){ stroke='#454C58'; dash=' stroke-dasharray="7 6"'; opacity=.6; marker='box-ar-m'; width=1.4; }
+    else { stroke='#5A6472'; dash=''; opacity=.78; marker='box-ar-g'; width=1.4; }
+    const p1=clipBoxLine(a,b), p2=clipBoxLine(b,a);
+    s += '<line x1="'+p1[0].toFixed(1)+'" y1="'+p1[1].toFixed(1)+'" x2="'+p2[0].toFixed(1)+'" y2="'+p2[1].toFixed(1)
+       + '" stroke="'+stroke+'" stroke-width="'+width+'" opacity="'+opacity+'"'+dash+' marker-end="url(#'+marker+')">'
+       + '<title>'+esc(e.rel+' — '+(e.rationale||''))+'</title></line>';
+  });
+
+  s += '<line x1="20" y1="'+BOX_DIVIDER_Y+'" x2="1060" y2="'+BOX_DIVIDER_Y+'" stroke="#CC785C" stroke-width="1.6" stroke-dasharray="9 7" opacity=".8"/>';
+  const divider = META.divider_label || '논문에도 코드에도 없는 층 — 저자만 채울 수 있음';
+  s += '<rect x="315" y="552" width="450" height="36" rx="18" fill="#171B22" stroke="#CC785C"/>'
+     + '<text x="540" y="575" text-anchor="middle" font-size="13.5" font-weight="700" fill="#CC785C">'+esc(divider)+'</text>';
+  NODES.forEach(n => { s += renderBoxNode(n); });
+  s += '</svg>';
+  document.getElementById('svgbox').innerHTML = s;
+  document.querySelectorAll('#graph .node').forEach(g => {
+    g.addEventListener('click', () => selectNode(g.getAttribute('data-id')));
+  });
+}
+
+function renderBoxNode(n){
+  const g = boxGeom[n.id];
+  if(!g) return '';
+  const x=g.x-g.w/2, y=g.y-g.h/2;
+  let fill, stroke, dash='', textFill='#E6E4DF', kindFill='#BCC2CC', badge='';
+  if(n.layer === 1){
+    fill = n.kind === 'code' ? '#5B4820' : '#263E55';
+    stroke = n.kind === 'code' ? '#D9A441' : '#6E9BD1';
+  } else if(!isAnswered(n.id)){
+    fill='#20242C'; stroke='#5A616E'; dash=' stroke-dasharray="6 5"'; textFill='#A6ABB4';
+    badge='<circle cx="'+(x+g.w-8)+'" cy="'+(y+8)+'" r="11" fill="#171B22" stroke="#5A616E"/>'
+         + '<text x="'+(x+g.w-8)+'" y="'+(y+12)+'" text-anchor="middle" font-size="13" font-weight="800" fill="#C2C7D0">?</text>';
+  } else {
+    fill='#6B3F31'; stroke=isExampleFilled(n.id)?'#C9973F':'#CC785C';
+    badge=isExampleFilled(n.id)
+      ? '<rect x="'+(x+g.w-42)+'" y="'+(y-8)+'" width="40" height="21" rx="10.5" fill="#C9973F"/><text x="'+(x+g.w-22)+'" y="'+(y+7)+'" text-anchor="middle" font-size="11.5" font-weight="800" fill="#14161A">예시</text>'
+      : '<circle cx="'+(x+g.w-8)+'" cy="'+(y+8)+'" r="11" fill="#CC785C"/><text x="'+(x+g.w-8)+'" y="'+(y+12)+'" text-anchor="middle" font-size="12" font-weight="800" fill="#14161A">✓</text>';
+  }
+  const selected = selectedId === n.id;
+  const lines = wrapBoxLabel(n.text, (g.w-22)/13, 3);
+  let out='<g class="node box-node" data-id="'+esc(n.id)+'"><title>'+esc(n.text)+'</title>';
+  if(selected) out+='<rect x="'+(x-5)+'" y="'+(y-5)+'" width="'+(g.w+10)+'" height="'+(g.h+10)+'" rx="13" fill="none" stroke="#FFFFFF" stroke-width="1.4"/>';
+  out+='<rect class="box" x="'+x+'" y="'+y+'" width="'+g.w+'" height="'+g.h+'" rx="10" fill="'+fill+'" stroke="'+stroke+'" stroke-width="1.7"'+dash+'/>';
+  out+='<text x="'+(x+10)+'" y="'+(y+15)+'" font-size="10.5" font-weight="700" letter-spacing=".5" fill="'+kindFill+'">'
+     +esc((KIND_KO[n.kind]||n.kind)+' · '+n.id)+'</text>';
+  out+='<text x="'+g.x+'" y="'+(y+37)+'" text-anchor="middle" font-size="13" font-weight="600" fill="'+textFill+'">';
+  lines.forEach((line,i) => { out+='<tspan x="'+g.x+'" dy="'+(i?16:0)+'">'+esc(line)+'</tspan>'; });
+  out+='</text>'+badge;
+  if(n.layer===2 && n.risk==='high') out+='<circle cx="'+(x+g.w-12)+'" cy="'+(y+g.h-12)+'" r="4" fill="#C25744"/>';
+  out+='</g>';
+  return out;
+}
+
+function updateViewToggle(){
+  const btn=document.getElementById('toggleView');
+  if(!btn) return;
+  const box=graphView==='box';
+  btn.textContent=box?'◉ 방사형으로 보기':'▦ 박스형으로 보기';
+  btn.setAttribute('aria-pressed', box?'true':'false');
+  btn.setAttribute('aria-label', box?'Obsidian 방사형 그래프로 전환':'박스형 레이어 그래프로 전환');
+}
+
+function renderGraph(){
+  if(graphView==='box') renderBoxGraph(); else renderRadialGraph();
+  updateViewToggle();
 }
 
 /* ================= 카운터 ================= */
