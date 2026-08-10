@@ -136,6 +136,8 @@
             font-size:15px;line-height:1.75;color:#CFCDC8;}
   .scenbody .qtitle{font-size:12px;font-weight:800;letter-spacing:.8px;color:var(--muted);text-transform:uppercase;margin-bottom:7px;}
   .abrow{display:flex;gap:9px;margin:14px 0 8px;}
+  .abrow2{display:flex;gap:10px;align-items:center;margin:6px 0 4px;flex-wrap:wrap;}
+  .jhint{font-size:12.5px;color:var(--muted);}
   .abrow .btn{flex:1;}
   .btn.aBtn{background:#1C2028;border-color:#3B4450;color:#B8C6D6;}
   .btn.aBtn:hover{background:#232A34;}
@@ -254,6 +256,10 @@
         <button class="btn big bBtn" id="btnB">B · 그래프 복사</button>
       </div>
       <div class="warn" id="bWarn"></div>
+      <div class="abrow2">
+        <button class="btn" id="btnJson">그래프 JSON 복사 · 들고 갈 파일</button>
+        <span class="jhint" id="jsonHint"></span>
+      </div>
       <div class="pmeta" id="promptMeta">버튼을 누르면 프롬프트가 만들어지고 클립보드에 복사됩니다.</div>
       <pre class="prev" id="promptPre"></pre>
       <div id="abBox"></div>
@@ -529,7 +535,8 @@ const GRAPH = /*__GRAPH_JSON__*/
       "provenance": "[ASK_AUTHOR]",
       "angle": 39.6,
       "radius": 245,
-      "label_side": "right"
+      "label_side": "right",
+      "answer": null
     },
     {
       "id": "TH2",
@@ -546,7 +553,8 @@ const GRAPH = /*__GRAPH_JSON__*/
       "provenance": "[ASK_AUTHOR]",
       "angle": 50.8,
       "radius": 365,
-      "label_side": "right"
+      "label_side": "right",
+      "answer": null
     },
     {
       "id": "TH3",
@@ -563,7 +571,8 @@ const GRAPH = /*__GRAPH_JSON__*/
       "provenance": "[ASK_AUTHOR]",
       "angle": 62.0,
       "radius": 285,
-      "label_side": "right"
+      "label_side": "right",
+      "answer": null
     },
     {
       "id": "TH4",
@@ -580,7 +589,8 @@ const GRAPH = /*__GRAPH_JSON__*/
       "provenance": "[ASK_AUTHOR]",
       "angle": 73.2,
       "radius": 405,
-      "label_side": "right"
+      "label_side": "right",
+      "answer": null
     },
     {
       "id": "PF1",
@@ -597,7 +607,8 @@ const GRAPH = /*__GRAPH_JSON__*/
       "provenance": "[ASK_AUTHOR]",
       "angle": 84.4,
       "radius": 325,
-      "label_side": "right"
+      "label_side": "right",
+      "answer": null
     },
     {
       "id": "PF2",
@@ -614,7 +625,8 @@ const GRAPH = /*__GRAPH_JSON__*/
       "provenance": "[ASK_AUTHOR]",
       "angle": 95.6,
       "radius": 445,
-      "label_side": "left"
+      "label_side": "left",
+      "answer": null
     },
     {
       "id": "PF3",
@@ -631,7 +643,8 @@ const GRAPH = /*__GRAPH_JSON__*/
       "provenance": "[ASK_AUTHOR]",
       "angle": 106.8,
       "radius": 205,
-      "label_side": "left"
+      "label_side": "left",
+      "answer": null
     },
     {
       "id": "DC1",
@@ -648,7 +661,8 @@ const GRAPH = /*__GRAPH_JSON__*/
       "provenance": "[ASK_AUTHOR]",
       "angle": 118.0,
       "radius": 365,
-      "label_side": "left"
+      "label_side": "left",
+      "answer": null
     },
     {
       "id": "DC2",
@@ -665,7 +679,8 @@ const GRAPH = /*__GRAPH_JSON__*/
       "provenance": "[ASK_AUTHOR]",
       "angle": 129.2,
       "radius": 285,
-      "label_side": "left"
+      "label_side": "left",
+      "answer": null
     },
     {
       "id": "DC3",
@@ -682,7 +697,8 @@ const GRAPH = /*__GRAPH_JSON__*/
       "provenance": "[ASK_AUTHOR]",
       "angle": 140.4,
       "radius": 405,
-      "label_side": "left"
+      "label_side": "left",
+      "answer": null
     },
     {
       "id": "K1",
@@ -895,7 +911,169 @@ const GRAPH = /*__GRAPH_JSON__*/
       "rationale": "신경망·데이터생성 소스가 이 저장소에 공개돼 있음",
       "grounding_status": "grounded"
     }
-  ]
+  ],
+  "schema": {
+    "version": "tacit-graph/0.1",
+    "read_me": "논문 한 편에서 추출한 지식(layer 1)과, 논문·코드 어디에도 없어서 저자에게 직접 물어 채운 지식(layer 2)을 한 그래프에 담은 파일. layer 1은 원본만 있으면 언제든 다시 뽑을 수 있고, layer 2는 저자에게 묻지 않으면 영원히 얻을 수 없다. 이 파일의 가치는 layer 2에 있다.",
+    "layers": {
+      "1": {
+        "name": "문헌 유래",
+        "source": "논문 본문 + 공개 코드",
+        "reproducible": true,
+        "note": "원본에서 재추출 가능"
+      },
+      "2": {
+        "name": "암묵지",
+        "source": "저자 인터뷰",
+        "reproducible": false,
+        "note": "논문에도 코드에도 없음. 저자만 답할 수 있음"
+      }
+    },
+    "node_kinds": {
+      "claim": {
+        "layer": 1,
+        "means": "논문이 주장하는 것"
+      },
+      "method": {
+        "layer": 1,
+        "means": "실제로 수행한 단계"
+      },
+      "data": {
+        "layer": 1,
+        "means": "파라미터·측정 조건·수치"
+      },
+      "evidence": {
+        "layer": 1,
+        "means": "주장을 뒷받침하는 결과"
+      },
+      "code": {
+        "layer": 1,
+        "means": "공개된 코드·데이터 저장소"
+      },
+      "threshold": {
+        "layer": 2,
+        "label": "역치",
+        "answers": "얼마로 잡나 / 언제 바꾸나",
+        "must_capture": [
+          "decision_rule",
+          "observable_signal",
+          "transfer_condition"
+        ]
+      },
+      "pitfall": {
+        "layer": 2,
+        "label": "점검",
+        "answers": "무엇을 확인하나 / 틀린 걸 어떻게 아나",
+        "must_capture": [
+          "check",
+          "symptom",
+          "failure_mode",
+          "reproducibility_risk"
+        ]
+      },
+      "decision": {
+        "layer": 2,
+        "label": "판단",
+        "answers": "왜 이걸 골랐나 / 뭘 버렸나",
+        "must_capture": [
+          "rationale",
+          "alternatives_rejected",
+          "rejection_reason",
+          "constraint"
+        ]
+      }
+    },
+    "edge_rels": {
+      "produces": {
+        "from": [
+          "method"
+        ],
+        "to": [
+          "data",
+          "evidence"
+        ],
+        "means": "이 단계가 저것을 만들어낸다"
+      },
+      "uses": {
+        "from": [
+          "method"
+        ],
+        "to": [
+          "data",
+          "code"
+        ],
+        "means": "이 단계가 저것을 입력으로 쓴다"
+      },
+      "feeds": {
+        "from": [
+          "method"
+        ],
+        "to": [
+          "method"
+        ],
+        "means": "앞 단계의 산출물이 뒤 단계의 입력이 된다"
+      },
+      "supports": {
+        "from": [
+          "evidence"
+        ],
+        "to": [
+          "claim"
+        ],
+        "means": "이 결과가 저 주장을 뒷받침한다"
+      },
+      "governs": {
+        "from": [
+          "threshold",
+          "decision"
+        ],
+        "to": [
+          "data",
+          "method"
+        ],
+        "means": "이 규칙·판단이 저 파라미터/단계의 선택을 지배한다"
+      },
+      "warns_about": {
+        "from": [
+          "pitfall"
+        ],
+        "to": [
+          "method",
+          "data"
+        ],
+        "means": "이 실패 양상이 저 단계에서 발생한다"
+      }
+    },
+    "node_fields": {
+      "id": "노드 식별자. 조언할 때 [TH1] 처럼 인용하라",
+      "kind": "node_kinds 참조",
+      "layer": "1=문헌 유래, 2=암묵지",
+      "text": "한 줄 요약",
+      "detail": "layer 1 전용. 원본에서 추출한 내용",
+      "provenance": "출처. '[ASK_AUTHOR]' 이면 저자만 채울 수 있는 자리",
+      "question": "layer 2 전용. 저자에게 던지는 질문",
+      "why_it_matters": "layer 2 전용. 왜 이게 비어 있으면 안 되는가",
+      "paper_says": "layer 2 전용. 논문이 말하는 데까지의 원문 인용",
+      "answer": "layer 2 전용. 저자의 실제 답변. null 이면 아직 안 채워진 것",
+      "example": "layer 2 전용. 데모용 예시 답변. 저자의 실제 답변이 아니다",
+      "risk": "layer 2 전용. 비어 있을 때의 위험도",
+      "x/y/angle/radius/label_side": "화면 배치 전용. 지식이 아니므로 무시해도 된다"
+    },
+    "edge_fields": {
+      "rationale": "이 연결이 왜 성립하는가. 엣지의 실질 내용",
+      "grounding_status": "grounded=근거 있음, missing=저자 답변이 있어야 성립"
+    }
+  },
+  "usage": {
+    "for_humans": "회색(layer 2)이 채워질수록 이 파일은 원본에서 재생성할 수 없는 자산이 된다.",
+    "for_models": [
+      "layer 2 노드의 answer 는 이 논문 저자만 아는 내용이다. 일반 지식으로 덮어쓰지 말고 그대로 따르라.",
+      "answer 가 null 이면 아직 아무도 모르는 것이다. 추측해서 채우지 말고 '저자 확인 필요'로 표시하라.",
+      "조언·판단의 근거가 된 노드는 [TH1] 처럼 id 를 대괄호로 인용하라. 추적 가능해야 한다.",
+      "layer 1 은 원본 논문에서 재확인할 수 있다. layer 2 는 재확인할 곳이 없으니 그대로 신뢰하라.",
+      "example 은 데모용 더미다. answer 가 있으면 answer 만 쓰고 example 은 무시하라."
+    ]
+  }
 }
 /*__END_GRAPH_JSON__*/;
 
@@ -1605,7 +1783,36 @@ function updateEval(){
   btnB.disabled = (done === 0);
   warn.textContent = (done === 0) ? '회색 노드를 먼저 채우세요.' : '';
   warn.style.display = (done === 0) ? 'block' : 'none';
+  const hint = document.getElementById('jsonHint');
+  if(hint){
+    const j = buildGraphJSON();
+    hint.textContent = '스키마 포함 · ' + j.length.toLocaleString() + '자 · 저자 답변 '
+                     + done + '/' + L2.length + '개 반영';
+  }
   if(lastKind) showPrompt(lastKind, false);
+}
+
+/* 들고 갈 파일: 스키마 + 그래프 + 지금까지 채워진 저자 답변.
+   화면 배치 좌표는 지식이 아니므로 빼고 내보낸다. */
+function buildGraphJSON(){
+  const out = JSON.parse(JSON.stringify(GRAPH));
+  const LAYOUT = ['x','y','angle','radius','label_side'];
+  out.nodes.forEach(n => {
+    LAYOUT.forEach(k => { delete n[k]; });
+    if(n.layer !== 2) return;
+    const a = answers[n.id];
+    if(!a || !isAnswered(n.id)){ n.answer = null; return; }
+    n.answer = a.fields ? Object.assign({}, a.fields) : a.text;
+    n.answer_is_example = !!a.isExample;
+  });
+  delete out.meta.canvas;
+  delete out.meta.hub;
+  out.exported = {
+    filled: L2.filter(n => isAnswered(n.id)).length,
+    total_layer2: L2.length,
+    note: 'answer_is_example 가 true 인 항목은 데모용 예시이며 저자의 실제 답변이 아니다.'
+  };
+  return JSON.stringify(out, null, 2);
 }
 
 function showPrompt(kind, doCopy){
@@ -1757,6 +1964,14 @@ function init(){
 
   document.getElementById('btnA').addEventListener('click', () => showPrompt('A', true));
   document.getElementById('btnB').addEventListener('click', () => showPrompt('B', true));
+  document.getElementById('btnJson').addEventListener('click', () => {
+    const j = buildGraphJSON();
+    document.getElementById('promptPre').textContent = j;
+    document.getElementById('promptMeta').textContent =
+      '그래프 JSON — ' + j.length.toLocaleString() + '자 · 스키마 포함 · 이 파일 하나만 있으면 됩니다';
+    lastKind = null;
+    copyText(j);
+  });
 
   document.getElementById('fillAll').addEventListener('click', () => {
     L2.forEach(n => { if(!isAnswered(n.id)) fillExample(n); });

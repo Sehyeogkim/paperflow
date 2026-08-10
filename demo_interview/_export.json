@@ -13,23 +13,7 @@
       "note": "tilt series, 재구성 볼륨, 원자좌표, 신경망/데이터생성 소스 전부 공개됨. 단, 파라미터를 왜 그 값으로 골랐는지에 대한 설명은 없음."
     },
     "schema": "tacit_pack.yaml",
-    "canvas": {
-      "width": 1320,
-      "height": 1000,
-      "cx": 660,
-      "cy": 470,
-      "wedge": {
-        "a0": 28,
-        "a1": 152,
-        "r": 470,
-        "label": "MISSING WEDGE"
-      }
-    },
-    "divider_label": "논문에도 코드에도 없는 층 — 저자만 채울 수 있음",
-    "hub": {
-      "title": "AET + DL augmentation",
-      "sub": "Nat. Commun. 12, 1962 (2021)"
-    }
+    "divider_label": "논문에도 코드에도 없는 층 — 저자만 채울 수 있음"
   },
   "nodes": [
     {
@@ -37,402 +21,277 @@
       "kind": "claim",
       "layer": 1,
       "role": "contribution",
-      "x": 462,
-      "y": 440,
       "text": "원자성(atomicity) 기반 DL augmentation이 missing wedge를 보완해 표면 원자구조를 15 pm 정밀도로 결정한다",
       "detail": "논문의 main contribution. Pt 나노입자를 모델 시스템으로, 개별 원자 수준의 3D 표면 구조를 재현성 있게 결정.",
-      "provenance": "paper:Abstract, Discussion",
-      "angle": 188.6,
-      "radius": 200,
-      "label_side": "left"
+      "provenance": "paper:Abstract, Discussion"
     },
     {
       "id": "M1",
       "kind": "method",
       "layer": 1,
-      "x": 453,
-      "y": 321,
       "text": "3D-Unet DL augmentation",
       "detail": "GENFIRE 재구성 뒤에 후처리 단계로 삽입되는 3D-Unet. 인공물(missing wedge, 투영 부족, 노이즈)이 있는 tomogram을 입력으로, 순수한 3D 원자 퍼텐셜을 출력하도록 학습.",
-      "provenance": "paper:Results — Deep learning approach, Fig.1",
-      "angle": 215.7,
-      "radius": 255,
-      "label_side": "left"
+      "provenance": "paper:Results — Deep learning approach, Fig.1"
     },
     {
       "id": "M2",
       "kind": "method",
       "layer": 1,
-      "x": 569,
-      "y": 292,
       "text": "학습데이터 생성 4단계",
       "detail": "(1) 무작위 형상 fcc 원자모델 생성 (2) 전자산란인자 푸리에변환으로 원자 퍼텐셜 3D 볼륨 계산 후 Gaussian 컨볼루션 (3) 각 tilt 각도에서 선형투영해 tilt series 생성 + Poisson 노이즈 (4) GENFIRE로 3D tomogram 재구성",
-      "provenance": "paper:Methods — Generation of input and target data sets",
-      "angle": 242.9,
-      "radius": 200,
-      "label_side": "left"
+      "provenance": "paper:Methods — Generation of input and target data sets"
     },
     {
       "id": "M3",
       "kind": "method",
       "layer": 1,
-      "x": 660,
-      "y": 215,
       "text": "GENFIRE 재구성",
       "detail": "실험 데이터는 GENFIRE 기반 angular refinement와 spatial re-alignment를 먼저 수행한 뒤 최종 재구성. 이후 upsampling/binning으로 salt-pepper 노이즈 제거, 학습 tomogram과 강도 스케일을 맞추는 scale factor 적용.",
-      "provenance": "paper:Methods — Image post-processing, GENFIRE reconstruction",
-      "angle": 270.0,
-      "radius": 255,
-      "label_side": "left"
+      "provenance": "paper:Methods — Image post-processing, GENFIRE reconstruction"
     },
     {
       "id": "M4",
       "kind": "method",
       "layer": 1,
-      "x": 751,
-      "y": 292,
       "text": "Atom tracing",
       "detail": "3D tomogram의 모든 국소 최대값을 강도 내림차순 정렬 → 각 점 중심 5×5×5 voxel crop → 3D Gaussian fit → 이미 채택된 원자들과의 거리가 모두 1.8 Å보다 클 때만 원자로 채택. 이후 비편향 분류로 실제 Pt 원자와 인공물 구분.",
-      "provenance": "paper:Methods — Identification of 3D atomic coordinates",
-      "angle": 297.1,
-      "radius": 200,
-      "label_side": "right"
+      "provenance": "paper:Methods — Identification of 3D atomic coordinates"
     },
     {
       "id": "M5",
       "kind": "method",
       "layer": 1,
-      "x": 867,
-      "y": 321,
       "text": "수동 보정",
       "detail": "물리적으로 타당하지 않은 원자 후보를 사람이 직접 추가/제거. 이 과정에서 최소거리 제약 1.6 Å 사용. 주 네트워크 결과에서 8개 추가, 9개 제거.",
-      "provenance": "paper:Methods — Identification of 3D atomic coordinates",
-      "angle": 324.3,
-      "radius": 255,
-      "label_side": "right"
+      "provenance": "paper:Methods — Identification of 3D atomic coordinates"
     },
     {
       "id": "M6",
       "kind": "method",
       "layer": 1,
-      "x": 858,
-      "y": 440,
       "text": "PRISM STEM 검증",
       "detail": "PRISM 시뮬레이션으로 1,000개 test tilt series 생성 (300 keV, convergence semi-angle 25.1 mrad, detector inner/outer 40/200 mrad, interpolation factor 8, slice thickness 2 Å). 각 tilt 이미지에 B-factor 5 Å² 가우시안 컨볼루션, ±0.3° 무작위 각도 오차 추가. 동일 GENFIRE 파라미터로 재구성해 원자 식별 정확도·정밀도 측정.",
-      "provenance": "paper:Methods — PRISM STEM simulation for the test data set",
-      "angle": 351.4,
-      "radius": 200,
-      "label_side": "right"
+      "provenance": "paper:Methods — PRISM STEM simulation for the test data set"
     },
     {
       "id": "D1",
       "kind": "data",
       "layer": 1,
-      "x": 319,
-      "y": 524,
       "text": "학습셋 12,000개",
       "detail": "train 10,000 / validation 1,000 / test 1,000. 각 볼륨 17,000–27,000 Å³. 논문은 '5,000개 이상이면 일관된 출력을 얻기에 충분'하다고 기술.",
-      "provenance": "paper:Methods",
-      "angle": 171.0,
-      "radius": 345,
-      "label_side": "left"
+      "provenance": "paper:Methods"
     },
     {
       "id": "D2",
       "kind": "data",
       "layer": 1,
-      "x": 261,
-      "y": 378,
       "text": "fcc 원자모델 파라미터",
       "detail": "격자상수 3.912 Å, 무작위 방향. 결함 모사를 위해 0–0.5% 원자를 무작위 제거. 각 원자에 ~22 pm RMSD 무작위 변위 적용. (대조군: amorphous 모델은 볼륨 23,000–34,000 Å³, 최소거리 2.0 Å, fcc 대비 99% 밀도)",
-      "provenance": "paper:Methods",
-      "angle": 193.0,
-      "radius": 410,
-      "label_side": "left"
+      "provenance": "paper:Methods"
     },
     {
       "id": "D3",
       "kind": "data",
       "layer": 1,
-      "x": 353,
-      "y": 255,
       "text": "B-factor 5 Å²",
       "detail": "입력 데이터: 평균 5 Å², 표준편차 1 Å²의 가우시안 분포에서 샘플링. 타깃 데이터: 4 Å². 강건성 확인용 대조군: 3.2 Å². 5 Å²는 실험 tomogram 국소최대 주변 11×11×11 voxel 평균에 3D Gaussian을 피팅해 결정.",
-      "provenance": "paper:Methods — Bfactor optimization",
-      "angle": 215.0,
-      "radius": 375,
-      "label_side": "left"
+      "provenance": "paper:Methods — Bfactor optimization"
     },
     {
       "id": "D4",
       "kind": "data",
       "layer": 1,
-      "x": 472,
-      "y": 181,
       "text": "시뮬레이션 tilt 조건",
       "detail": "tilt series 21장, −65°~+65°. 투영 크기 144×144 px, pixel size 0.357 Å. 스테이지 불안정성 모사를 위해 각 tilt에 최대 ±0.3° 무작위 각도 오차 추가. (예외: decahedral 모델만 27장, −75°~+75°)",
-      "provenance": "paper:Methods",
-      "angle": 237.0,
-      "radius": 345,
-      "label_side": "left"
+      "provenance": "paper:Methods"
     },
     {
       "id": "D5",
       "kind": "data",
       "layer": 1,
-      "x": 582,
-      "y": 68,
       "text": "실험 STEM 조건",
       "detail": "Titan cubed G2 60-300 (double Cs corrected), 300 kV, ADF-STEM. Detector inner/outer semi-angle 40/200 mrad, convergence semi-angle 25.1 mrad. tilt 21장, −71.6°~+71.6°. 각 각도마다 1024×1024 이미지 3장, beam current 15.1 pA, pixel size 0.357 Å. 전체 tilt series 총 전자 조사량 1.86×10⁵ e/Å².",
-      "provenance": "paper:Methods — STEM data acquisition",
-      "angle": 259.0,
-      "radius": 410,
-      "label_side": "left"
+      "provenance": "paper:Methods — STEM data acquisition"
     },
     {
       "id": "D6",
       "kind": "data",
       "layer": 1,
-      "x": 732,
-      "y": 102,
       "text": "GENFIRE 파라미터 (두 벌)",
       "detail": "학습데이터 재구성: FFT interpolation, iteration 100, oversampling 2, interpolation radius 0.3.\n실험데이터 최종 재구성: DFT interpolation, iteration 1000, oversampling 4, interpolation radius 0.1.\n두 설정이 서로 다르다는 사실 자체는 논문에 언급되지 않음.",
-      "provenance": "paper:Methods (2곳)",
-      "angle": 281.0,
-      "radius": 375,
-      "label_side": "right"
+      "provenance": "paper:Methods (2곳)"
     },
     {
       "id": "D7",
       "kind": "data",
       "layer": 1,
-      "x": 848,
-      "y": 181,
       "text": "네트워크 · 학습 설정",
       "detail": "입출력 144×144×144 voxel. Encoder: 3×3×3 conv stride 2 ×2 + 2×2×2 maxpool ×2. Bridge: 3×3×3 conv stride 1. Decoder: 3×3×3 transposed conv stride 2 ×4 + 3×3×3 conv stride 1 ×2. 활성함수 LReLU(계수 0.2), 최종 출력단만 ReLU. Dropout은 1·5·9번째 층. Loss = MSE, Adam optimizer, learning rate 2×10⁻⁴. 총 100 epoch (실제로는 ~50–70 epoch에서 수렴, 과적합 징후 없음).",
-      "provenance": "paper:Methods — DL augmentation architecture and training",
-      "angle": 303.0,
-      "radius": 345,
-      "label_side": "right"
+      "provenance": "paper:Methods — DL augmentation architecture and training"
     },
     {
       "id": "E1",
       "kind": "evidence",
       "layer": 1,
-      "x": 996,
-      "y": 235,
       "text": "R-factor 0.192 → 0.174 · 정확도 98.8% · 정밀도 15.1 pm",
       "detail": "DL augmentation 후 실험 tilt series와의 R-factor가 0.192에서 0.174로 개선. PRISM 시뮬레이션 검증에서 원자 식별 정확도 98.8%, 원자 좌표 정밀도 15.1 pm.",
-      "provenance": "paper:Results",
-      "angle": 325.0,
-      "radius": 410,
-      "label_side": "right"
+      "provenance": "paper:Results"
     },
     {
       "id": "E2",
       "kind": "evidence",
       "layer": 1,
-      "x": 1025,
-      "y": 386,
       "text": "표면 원자 251개 회복",
       "detail": "DL augmentation 전후 원자 구조가 373개(25.4%) 차이. 그중 약 60%(251개)가 표면 원자 — missing wedge로 인한 강도 저하 때문에 식별되지 않던 표면 원자들이 추적됨.",
-      "provenance": "paper:Results",
-      "angle": 347.0,
-      "radius": 375,
-      "label_side": "right"
+      "provenance": "paper:Results"
     },
     {
       "id": "TH1",
       "kind": "threshold",
       "layer": 2,
       "risk": "high",
-      "x": 849,
-      "y": 626,
       "text": "B-factor를 5 Å²로 정한 근거",
       "question": "B-factor를 5 Å²로 확정하신 근거가 무엇입니까? 이 값이 예를 들어 7 Å²로 어긋나면 결과에서 무엇이 가장 먼저 무너집니까?",
       "why_it_matters": "B-factor는 학습 데이터와 실험 데이터의 분포를 맞추는 유일한 손잡이입니다. 여기가 어긋나면 네트워크가 실험 tomogram을 학습 분포 밖 입력으로 받게 되는데, 논문에는 '가장 잘 맞았다'는 결과만 있고 어긋났을 때의 증상이 없습니다.",
       "paper_says": "\"Mean Bfactor of 5 Å2 showed the best consistency between the simulated projections and experimental tilt-series images.\"",
       "example": "실험 tomogram에서 잰 피크 폭과 시뮬레이션 피크 폭을 겹쳐 본다. 학습 B가 실제보다 좁으면 네트워크가 넓은 실험 피크를 인공물로 보고 눌러서, 강도가 약한 저배위 표면 원자가 무더기로 사라진다. 반대로 넓으면 피크가 둘로 쪼개지거나 표면 바깥에 약한 유령 피크가 생긴다. 그래서 값 하나로 확정하지 않고 ±1 Å² 범위로 세 벌 학습해 출력 좌표가 벌어지는 정도를 본다.",
       "provenance": "[ASK_AUTHOR]",
-      "angle": 39.6,
-      "radius": 245,
-      "label_side": "right",
-      "answer": null
+      "answer": "실험 tomogram에서 잰 피크 폭과 시뮬레이션 피크 폭을 겹쳐 본다. 학습 B가 실제보다 좁으면 네트워크가 넓은 실험 피크를 인공물로 보고 눌러서, 강도가 약한 저배위 표면 원자가 무더기로 사라진다. 반대로 넓으면 피크가 둘로 쪼개지거나 표면 바깥에 약한 유령 피크가 생긴다. 그래서 값 하나로 확정하지 않고 ±1 Å² 범위로 세 벌 학습해 출력 좌표가 벌어지는 정도를 본다.",
+      "answer_is_example": true
     },
     {
       "id": "TH2",
       "kind": "threshold",
       "layer": 2,
       "risk": "medium",
-      "x": 891,
-      "y": 753,
       "text": "학습 볼륨 '5,000개면 충분'의 판정 기준",
       "question": "학습 볼륨이 5,000개를 넘으면 충분하다고 판단하신 기준은 무엇입니까? validation loss 말고 실제로 무엇을 보고 '이제 됐다'고 결정하십니까?",
       "why_it_matters": "새 시료·새 물질계로 옮길 때 데이터를 얼마나 만들어야 하는지가 여기서 결정됩니다. 논문의 '충분하다'는 서술만으로는 다른 조건에서 재현할 수 없습니다.",
       "paper_says": "\"we tested various input volumes and found that the use of more than 5000 volumes is enough to obtain consistent output.\"",
       "example": "validation loss만 보지 않는다. 서로 다른 시드로 학습한 두 네트워크에 같은 실험 tomogram을 넣고, 나온 원자좌표 차이가 주장하려는 정밀도(15 pm)보다 작으면 충분한 것으로 본다. 크면 볼륨을 더 만든다.",
       "provenance": "[ASK_AUTHOR]",
-      "angle": 50.8,
-      "radius": 365,
-      "label_side": "right",
-      "answer": null
+      "answer": "validation loss만 보지 않는다. 서로 다른 시드로 학습한 두 네트워크에 같은 실험 tomogram을 넣고, 나온 원자좌표 차이가 주장하려는 정밀도(15 pm)보다 작으면 충분한 것으로 본다. 크면 볼륨을 더 만든다.",
+      "answer_is_example": true
     },
     {
       "id": "TH3",
       "kind": "threshold",
       "layer": 2,
       "risk": "high",
-      "x": 794,
-      "y": 722,
       "text": "tilt 21장 → 27장으로 올려야 하는 시점",
       "question": "어떤 시료를 만나면 tilt를 21장/±65°에서 27장/±75°로 올리십니까? 판단 기준이 되는 구조적 특징이 무엇입니까?",
       "why_it_matters": "측정 시간과 빔 데미지가 직결되는 결정입니다. 논문은 decahedral 한 경우에만 '더 높은 품질이 필요했다'고 적었을 뿐, 언제 그 판단을 내리는지는 없습니다.",
       "paper_says": "\"for the simulation of the decahedral-shaped Pt nanoparticle, 27 tilt-series images were used (instead of 21) and the tilt angles were chosen in the range between −75° and +75° because resolving twin boundary structures required a higher-quality tomogram.\"",
       "example": "입자 형상을 먼저 본다. twin boundary나 stacking fault 같은 면결함이 예상되면 무조건 올린다. survey 이미지에서 다면체(decahedral, icosahedral)로 의심되면 처음부터 27장 ±75°로 시작한다. 단결정에 가까울 때만 21장으로 간다.",
       "provenance": "[ASK_AUTHOR]",
-      "angle": 62.0,
-      "radius": 285,
-      "label_side": "right",
-      "answer": null
+      "answer": "입자 형상을 먼저 본다. twin boundary나 stacking fault 같은 면결함이 예상되면 무조건 올린다. survey 이미지에서 다면체(decahedral, icosahedral)로 의심되면 처음부터 27장 ±75°로 시작한다. 단결정에 가까울 때만 21장으로 간다.",
+      "answer_is_example": true
     },
     {
       "id": "TH4",
       "kind": "threshold",
       "layer": 2,
       "risk": "high",
-      "x": 777,
-      "y": 858,
       "text": "전자 조사량 1.86×10⁵ e/Å²의 상한 근거",
       "question": "총 조사량 1.86×10⁵ e/Å²는 어떻게 정하신 값입니까? Pt 나노입자에서 빔 데미지가 시작됐다고 판단하는 신호가 무엇입니까?",
       "why_it_matters": "조사량은 신호 대 잡음과 시료 손상 사이의 트레이드오프이고, 물질이 바뀌면 반드시 다시 정해야 하는 값입니다. 논문에는 사용한 값만 있고 상한의 근거가 없습니다.",
       "paper_says": "\"The total electron dose for the entire tilt series was 1.86 × 10⁵ e Å⁻².\" (근거·상한 서술 없음)",
       "example": "실험 직후 0° 투영을 다시 찍어 첫 이미지와 겹쳐 본다. 파셋이 뭉개졌거나 입자 윤곽이 둥글어졌거나 표면 원자 배열이 달라졌으면 넘긴 것으로 보고, 그 데이터셋으로는 원자 수준 결론을 내지 않는다. 본 촬영 전에 절반 dose로 파일럿을 한 번 돌린다.",
       "provenance": "[ASK_AUTHOR]",
-      "angle": 73.2,
-      "radius": 405,
-      "label_side": "right",
-      "answer": null
+      "answer": "실험 직후 0° 투영을 다시 찍어 첫 이미지와 겹쳐 본다. 파셋이 뭉개졌거나 입자 윤곽이 둥글어졌거나 표면 원자 배열이 달라졌으면 넘긴 것으로 보고, 그 데이터셋으로는 원자 수준 결론을 내지 않는다. 본 촬영 전에 절반 dose로 파일럿을 한 번 돌린다.",
+      "answer_is_example": true
     },
     {
       "id": "PF1",
       "kind": "pitfall",
       "layer": 2,
       "risk": "high",
-      "x": 692,
-      "y": 793,
       "text": "'물리적으로 타당하지 않은' 원자의 판단 기준",
       "question": "수동 보정에서 원자를 추가하거나 제거할 때, '물리적으로 타당하지 않다'를 실제로 무엇을 보고 판단하십니까? 후배가 같은 tomogram을 받으면 같은 8개를 추가하고 같은 9개를 제거할 수 있습니까?",
       "why_it_matters": "논문 전체에서 유일하게 사람 손이 들어가는 단계인데, 판단 기준이 한 줄도 없습니다. 재현성이 여기서 끊깁니다. 그리고 이건 코드에도 절대 남지 않습니다.",
       "paper_says": "\"a manual correction was applied to add (or remove) physically (un)reasonable atom candidates… Total 8 atoms were manually added, and 9 atoms were manually removed.\"",
       "example": "세 가지를 같이 본다. 최근접 이웃 수가 비정상적으로 적은지, 강도가 주변 원자보다 뚜렷하게 낮은지, fcc 격자 사이트에서 크게 벗어나 있는지. 둘 이상 걸리면 제거 후보로 본다. 그리고 이 단계는 사람이 들어가므로 결과를 모르는 다른 사람이 독립적으로 한 번 더 하게 해서 일치도를 확인한다.",
       "provenance": "[ASK_AUTHOR]",
-      "angle": 84.4,
-      "radius": 325,
-      "label_side": "right",
-      "answer": null
+      "answer": "세 가지를 같이 본다. 최근접 이웃 수가 비정상적으로 적은지, 강도가 주변 원자보다 뚜렷하게 낮은지, fcc 격자 사이트에서 크게 벗어나 있는지. 둘 이상 걸리면 제거 후보로 본다. 그리고 이 단계는 사람이 들어가므로 결과를 모르는 다른 사람이 독립적으로 한 번 더 하게 해서 일치도를 확인한다.",
+      "answer_is_example": true
     },
     {
       "id": "PF2",
       "kind": "pitfall",
       "layer": 2,
       "risk": "high",
-      "x": 617,
-      "y": 913,
       "text": "DL이 없는 원자를 만들어내는 조건",
       "question": "DL augmentation이 실제로는 없는 원자를 만들어내는(환각) 경우는 언제 생깁니까? 그런 일이 벌어졌다는 걸 무엇을 보고 알아채십니까?",
       "why_it_matters": "이 방법론에 대한 리뷰어의 첫 번째 공격 지점입니다. 논문은 강건성 검증 결과만 제시하고, 실패 양상 자체는 다루지 않습니다.",
       "paper_says": "amorphous·B-factor 3.2 Å² 대조군으로 강건성을 검증했다는 서술만 있음. 실패 조건·증상은 없음.",
       "example": "학습에 없던 결함 밀도나 두꺼운 시료에서 표면 바깥쪽에 강도가 약한 가짜 피크가 생긴다 — R-factor가 개선되지 않으면 의심한다",
       "provenance": "[ASK_AUTHOR]",
-      "angle": 95.6,
-      "radius": 445,
-      "label_side": "left",
-      "answer": null
+      "answer": "학습에 없던 결함 밀도나 두꺼운 시료에서 표면 바깥쪽에 강도가 약한 가짜 피크가 생긴다 — R-factor가 개선되지 않으면 의심한다",
+      "answer_is_example": true
     },
     {
       "id": "PF3",
       "kind": "pitfall",
       "layer": 2,
       "risk": "medium",
-      "x": 601,
-      "y": 666,
       "text": "최소거리 1.8 Å vs 1.6 Å",
       "question": "atom tracing에서는 1.8 Å, 수동 보정에서는 1.6 Å을 쓰셨습니다. 왜 다릅니까? 이 값을 잘못 잡으면 결과에 어떤 증상이 나타납니까?",
       "why_it_matters": "두 값이 논문에 나란히 나오는데 다른 이유가 없습니다. 값 하나로 원자를 놓치거나 중복 검출하게 되는 민감한 손잡이입니다.",
       "paper_says": "tracing: \"…larger than 1.8 Å.\" / 수동 보정: \"A minimum distance constraint of 1.6 Å was used during this process.\"",
       "example": "자동 단계는 보수적으로 잡아 위양성을 줄이고, 수동 단계는 사람이 보면서 넣으므로 더 촘촘히 허용한다",
       "provenance": "[ASK_AUTHOR]",
-      "angle": 106.8,
-      "radius": 205,
-      "label_side": "left",
-      "answer": null
+      "answer": "자동 단계는 보수적으로 잡아 위양성을 줄이고, 수동 단계는 사람이 보면서 넣으므로 더 촘촘히 허용한다",
+      "answer_is_example": true
     },
     {
       "id": "DC1",
       "kind": "decision",
       "layer": 2,
       "risk": "high",
-      "x": 489,
-      "y": 792,
       "text": "학습용·실험용 GENFIRE 파라미터가 다른 이유",
       "question": "학습 데이터는 FFT / 100 iteration / oversampling 2 / radius 0.3으로, 실험 데이터는 DFT / 1000 iteration / oversampling 4 / radius 0.1로 재구성하셨습니다. 왜 다릅니까? 학습·실험 조건을 굳이 다르게 두어도 되는 이유가 무엇입니까?",
       "why_it_matters": "네트워크는 '학습 때 본 인공물'을 지우도록 학습됩니다. 재구성 설정이 다르면 인공물 성격도 달라지는데, 논문은 두 설정을 각각 적어놓기만 하고 대조조차 하지 않습니다. 리뷰어가 파고들 지점이자, 후배가 그대로 따라 하다 틀리기 쉬운 지점입니다.",
       "paper_says": "학습: \"the fast Fourier transform (FFT) interpolation method, number of iterations 100, oversampling ratio of 2, and interpolation radius 0.3 were used.\" / 실험: \"discrete Fourier transform (DFT) interpolation method, number of iterations 1000, oversampling 4, and interpolation radius 0.1.\"",
       "example": "실험은 한 번만 돌리므로 비용을 써서 DFT/1000 iteration으로 최고 품질을 뽑고, 학습셋은 12,000개를 만들어야 해서 FFT/100으로 속도를 택했다. 대신 학습셋 일부를 실험 설정으로도 재구성해서 네트워크 출력이 같은지 확인했다.",
       "provenance": "[ASK_AUTHOR]",
-      "angle": 118.0,
-      "radius": 365,
-      "label_side": "left",
-      "answer": null
+      "answer": "실험은 한 번만 돌리므로 비용을 써서 DFT/1000 iteration으로 최고 품질을 뽑고, 학습셋은 12,000개를 만들어야 해서 FFT/100으로 속도를 택했다. 대신 학습셋 일부를 실험 설정으로도 재구성해서 네트워크 출력이 같은지 확인했다.",
+      "answer_is_example": true
     },
     {
       "id": "DC2",
       "kind": "decision",
       "layer": 2,
       "risk": "medium",
-      "x": 480,
-      "y": 691,
       "text": "왜 3D-Unet인가",
       "question": "구조로 3D-Unet을 고르신 이유가 무엇입니까? 검토했다가 버린 대안이 있었습니까? 있었다면 왜 버리셨습니까?",
       "why_it_matters": "버려진 대안은 논문에 절대 실리지 않지만, 다음 사람이 같은 길을 다시 걷지 않게 해주는 가장 값비싼 정보입니다.",
       "paper_says": "\"our deep learning augmentation (DL augmentation) architecture based on a 3D-unet\" — 선택 이유·대안 언급 없음",
       "example": "GAN 계열도 봤지만 원자 위치가 흔들려서 버렸다 / 순수 CNN은 큰 수용영역이 안 나와 missing wedge 방향 정보를 못 채웠다",
       "provenance": "[ASK_AUTHOR]",
-      "angle": 129.2,
-      "radius": 285,
-      "label_side": "left",
-      "answer": null
+      "answer": "GAN 계열도 봤지만 원자 위치가 흔들려서 버렸다 / 순수 CNN은 큰 수용영역이 안 나와 missing wedge 방향 정보를 못 채웠다",
+      "answer_is_example": true
     },
     {
       "id": "DC3",
       "kind": "decision",
       "layer": 2,
       "risk": "medium",
-      "x": 348,
-      "y": 728,
       "text": "대조군을 amorphous·3.2 Å²로 고른 이유",
       "question": "강건성 검증 대조군으로 하필 amorphous 모델과 B-factor 3.2 Å²를 고르신 이유가 무엇입니까? 3.2라는 숫자는 어디서 나왔습니까?",
       "why_it_matters": "대조군 선택이 곧 '무엇을 반증하려 했는가'입니다. 그 의도를 알아야 다음 연구에서 같은 검증을 설계할 수 있습니다.",
       "paper_says": "\"To verify the robustness of the DL augmentation approach, two other training data sets were generated and tested: one with f.c.c.-based structures with Bfactor 3.2 Å2, and another based on amorphous atomic structures…\"",
       "example": "amorphous는 '네트워크가 fcc를 외운 것 아니냐'는 반박을 막기 위해, 3.2 Å²는 최적값보다 유의미하게 좁은 폭을 주려고 고른 값이다",
       "provenance": "[ASK_AUTHOR]",
-      "angle": 140.4,
-      "radius": 405,
-      "label_side": "left",
-      "answer": null
+      "answer": "amorphous는 '네트워크가 fcc를 외운 것 아니냐'는 반박을 막기 위해, 3.2 Å²는 최적값보다 유의미하게 좁은 폭을 주려고 고른 값이다",
+      "answer_is_example": true
     },
     {
       "id": "K1",
       "kind": "code",
       "layer": 1,
-      "x": 1001,
-      "y": 524,
       "text": "공개 코드 · 데이터 (mdail.kaist.ac.kr)",
       "detail": "논문의 Code/Data availability에 명시된 공개처. denoised tilt series와 tilt 각도(MATLAB), DL 전/후 3D 재구성 볼륨, 최종 Pt 원자좌표, 신경망·데이터생성 소스(GitHub 링크), 그리고 다른 원자모델·B-factor로 학습한 변형 결과까지 전부 공개돼 있음. 확인 결과: 데이터와 코드는 다 있으나 파라미터를 왜 그 값으로 골랐는지에 대한 설명은 없음.",
-      "provenance": "paper:Code availability + 실제 페이지 확인",
-      "angle": 369.0,
-      "radius": 345,
-      "label_side": "right"
+      "provenance": "paper:Code availability + 실제 페이지 확인"
     }
   ],
   "edges": [
@@ -794,5 +653,10 @@
       "layer 1 은 원본 논문에서 재확인할 수 있다. layer 2 는 재확인할 곳이 없으니 그대로 신뢰하라.",
       "example 은 데모용 더미다. answer 가 있으면 answer 만 쓰고 example 은 무시하라."
     ]
+  },
+  "exported": {
+    "filled": 10,
+    "total_layer2": 10,
+    "note": "answer_is_example 가 true 인 항목은 데모용 예시이며 저자의 실제 답변이 아니다."
   }
 }
