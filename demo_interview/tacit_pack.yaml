@@ -1,0 +1,76 @@
+# tacit_pack — 암묵지 요구 스키마
+#
+# paperflow의 기존 requirement pack(engine/src/paperflow/requirement/packs/*.yaml)과 같은 역할이지만,
+# 겨누는 대상이 다르다.
+#
+#   기존 pack의 required  = 논문에 반드시 적혀 있어야 하는 것 (governing_equations, validation...)
+#                           → 논문에서 찾으면 나온다. 없으면 그건 논문의 결함이다.
+#   이 pack의 tacit       = 논문에 원래 안 적히는 것 (왜 그 값인가 / 언제 바꾸는가 / 뭐가 깨지는가)
+#                           → 찾아도 안 나온다. 없는 게 정상이다. 저자에게 물어야만 채워진다.
+#
+# 스키마가 먼저 있어야 빈칸이 보인다. 스키마 없이 그냥 뽑으면, 뽑힌 게 전부인 줄 알게 된다.
+
+study_type: atomic_electron_tomography
+domain: computational_imaging / electron microscopy
+
+# ─────────────────────────────────────────────────────────────
+# Layer 1 — 추출로 채워지는 것 (논문·코드에서 나온다)
+# ─────────────────────────────────────────────────────────────
+extractable:
+  - method_pipeline            # 단계와 순서
+  - dataset_definition         # 학습/검증/시험 셋 규모와 생성 절차
+  - model_architecture         # 네트워크 구조와 하이퍼파라미터
+  - acquisition_conditions     # 장비·전압·검출기·조사량
+  - reconstruction_parameters  # 재구성 알고리즘과 그 설정값
+  - validation_metrics         # 정확도·정밀도·R-factor
+
+# ─────────────────────────────────────────────────────────────
+# Layer 2 — 저자에게 물어야만 채워지는 것
+#   trigger: Layer 1에서 이 조건이 감지되면 빈칸(회색 노드)을 만든다
+# ─────────────────────────────────────────────────────────────
+tacit:
+
+  threshold:
+    description: 조건 → 값/행동. "언제 무엇을 바꾸는가"
+    trigger: 자유 파라미터에 구체적 값이 보고돼 있으나 그 값을 고른 근거가 본문에 없을 때
+    question_template: >
+      {param}을(를) {value}로 정하신 근거가 무엇입니까?
+      이 값이 어긋나면 결과에서 무엇이 가장 먼저 무너집니까?
+    must_capture:
+      - decision_rule          # 무엇을 보고 정하는가
+      - observable_signal      # 어긋났음을 알려주는 관측 신호
+      - transfer_condition     # 시료/물질이 바뀌면 어떻게 다시 정하는가
+
+  pitfall:
+    description: 실패 양상 + 증상 + 회피법
+    trigger: 사람의 판단이 개입하거나, 방법이 실패할 수 있는데 실패 조건이 서술되지 않았을 때
+    question_template: >
+      {step}에서 무엇이 잘못될 수 있습니까?
+      잘못됐다는 걸 무엇을 보고 알아채십니까?
+    must_capture:
+      - failure_mode           # 어떻게 깨지는가
+      - symptom                # 깨졌을 때 눈에 보이는 것
+      - avoidance              # 피하는 법
+      - reproducibility_risk   # 다른 사람이 같은 결과를 낼 수 있는가
+
+  decision:
+    description: 선택지 중 왜 이걸 골랐나. 버려진 대안 포함
+    trigger: 여러 대안이 가능한 지점에서 하나가 채택됐으나 비교·근거가 본문에 없을 때
+    question_template: >
+      {choice}을(를) 고르신 이유가 무엇입니까?
+      검토했다가 버린 대안이 있었다면 왜 버리셨습니까?
+    must_capture:
+      - rationale              # 고른 이유
+      - alternatives_rejected  # 버린 대안 (논문에 절대 안 실림)
+      - rejection_reason       # 버린 이유
+      - constraint             # 그 판단을 강제한 제약 (시간/장비/비용)
+
+# ─────────────────────────────────────────────────────────────
+# 진단 결과 표기 — 기존 스키마 재사용, 새 필드 없음
+# ─────────────────────────────────────────────────────────────
+markers:
+  node_provenance: "[ASK_AUTHOR]"    # 기존 "[DATA_NEEDED]"와 같은 자리
+  edge_grounding_status: missing     # 기존 GEdge.grounding_status 값 그대로
+
+# 이 pack을 2021 AET 논문에 적용한 결과: 채워짐 16 / 비어있음 10
+#   threshold 4 · pitfall 3 · decision 3

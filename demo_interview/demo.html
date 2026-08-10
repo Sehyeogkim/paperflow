@@ -1,0 +1,1409 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PaperFlow — 암묵지 그래프 데모</title>
+<style>
+  :root{
+    --bg:#F0EEE6; --surface:#FFFFFF; --accent:#CC785C; --secondary:#E8D5C4;
+    --border:#D4C5B0; --heading:#1A1A1A; --body:#2D2D2D; --muted:#6B5E54;
+    --codebg:#E6E0D4; --codetext:#8B4513; --pos:#7A9A6D; --neg:#C25744;
+    --blue:#5B7C99; --amber:#C9973F;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--body);
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:15px; line-height:1.6;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:1560px;margin:0 auto;padding:0 22px 40px;}
+
+  header{display:flex;align-items:center;gap:16px;padding:16px 0 10px;flex-wrap:wrap;}
+  header h1{font-size:20px;margin:0;color:var(--heading);font-weight:700;letter-spacing:-.2px;}
+  header .sub{font-size:14px;color:var(--muted);}
+  header .spacer{flex:1;}
+
+  button{font-family:inherit;font-size:15px;cursor:pointer;}
+  .btn{
+    border:1px solid var(--border); background:var(--surface); color:var(--body);
+    border-radius:8px; padding:8px 14px; font-weight:600;
+  }
+  .btn:hover{background:var(--secondary);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .btn.primary:hover{background:#b96a50;}
+  .btn.ghost{background:transparent;border-color:transparent;color:var(--muted);text-decoration:underline;padding:8px 6px;font-weight:500;}
+  .btn.big{font-size:17px;padding:12px 20px;}
+
+  nav.tabs{display:flex;gap:8px;border-bottom:2px solid var(--border);margin-bottom:18px;}
+  nav.tabs button{
+    border:1px solid var(--border); border-bottom:none; background:transparent;
+    color:var(--muted); font-weight:600; padding:10px 20px;
+    border-radius:10px 10px 0 0; margin-bottom:-2px; font-size:16px;
+  }
+  nav.tabs button:hover{background:var(--secondary);}
+  nav.tabs button.active{background:var(--surface);color:var(--heading);border-color:var(--border);border-bottom:2px solid var(--surface);}
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;}
+  .muted{color:var(--muted);}
+  .small{font-size:13.5px;}
+
+  /* ---------- tab 1 ---------- */
+  .headline{font-size:30px;font-weight:800;color:var(--heading);margin:10px 0 6px;letter-spacing:-.5px;}
+  .headline-sub{font-size:16px;color:var(--muted);margin-bottom:22px;}
+  .srcgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .srccard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;min-height:230px;}
+  .srccard .tag{
+    display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.4px;
+    background:var(--codebg);color:var(--codetext);border-radius:999px;padding:4px 12px;margin-bottom:14px;
+  }
+  .srccard h3{margin:0 0 12px;font-size:19px;line-height:1.45;color:var(--heading);}
+  .srccard .row{font-size:14.5px;color:var(--muted);margin:5px 0;}
+  .srccard .row b{color:var(--body);font-weight:600;}
+  .srccard a{color:var(--accent);word-break:break-all;}
+  .gapline{
+    margin-top:26px;background:var(--codebg);border:1px solid var(--border);
+    border-left:5px solid var(--accent);border-radius:12px;padding:20px 24px;
+    display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+  }
+  .gapline .txt{font-size:19px;font-weight:600;color:var(--heading);flex:1;min-width:320px;}
+  .gapline .txt em{font-style:normal;color:var(--accent);font-weight:800;}
+
+  /* ---------- tab 2 ---------- */
+  .g2{display:flex;gap:20px;align-items:flex-start;}
+  .gleft{flex:1;min-width:0;}
+  .gright{width:400px;flex:0 0 400px;max-height:calc(100vh - 190px);overflow-y:auto;
+          background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;}
+  .counters{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px;}
+  .pill{display:inline-flex;align-items:baseline;gap:9px;border-radius:999px;padding:9px 20px;font-weight:700;font-size:17px;}
+  .pill .n{font-size:26px;font-weight:800;line-height:1;}
+  .pill.blue{background:var(--blue);color:#fff;}
+  .pill.gray{background:var(--codebg);color:var(--muted);border:2px dashed var(--border);}
+  .pill.gray.done{background:var(--pos);color:#fff;border-style:solid;border-color:var(--pos);}
+  .dot{color:var(--border);font-weight:700;}
+  .prog{display:flex;align-items:center;gap:10px;min-width:230px;flex:1;}
+  .prog .lbl{font-size:14px;color:var(--muted);white-space:nowrap;font-weight:600;}
+  .bar{flex:1;height:12px;background:var(--codebg);border:1px solid var(--border);border-radius:999px;overflow:hidden;min-width:120px;}
+  .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .35s ease;}
+  .successline{
+    background:rgba(122,154,109,.15);border:1px solid var(--pos);color:#3f5a37;
+    border-radius:10px;padding:11px 16px;font-weight:700;font-size:16px;margin-bottom:12px;display:none;
+  }
+  .successline.show{display:block;}
+  .svgbox{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:6px;}
+  svg#graph{display:block;width:100%;height:auto;}
+  .node{cursor:pointer;}
+  .node .box{transition:stroke .12s, stroke-width .12s;}
+  .node:hover{transform:translateY(-2px);}
+  .node:hover .box{stroke:#1A1A1A;stroke-width:2.5;}
+  .node.sel .box{stroke:#1A1A1A;stroke-width:3.5;}
+  .node text{pointer-events:none;}
+
+  /* right panel */
+  .ph{color:var(--muted);font-size:16px;line-height:1.75;}
+  .ph .big{font-size:18px;color:var(--heading);font-weight:700;display:block;margin-bottom:8px;}
+  .chip{display:inline-block;font-size:12.5px;font-weight:700;border-radius:999px;padding:3px 11px;margin:0 6px 8px 0;}
+  .chip.kind{background:var(--secondary);color:var(--codetext);}
+  .chip.kind.l1{background:#DCE5EC;color:#3E6180;}
+  .chip.risk{background:rgba(194,87,68,.15);color:var(--neg);border:1px solid var(--neg);}
+  .chip.ex{background:rgba(201,151,63,.18);color:#8a6420;border:1px solid var(--amber);}
+  .p-title{font-size:19px;font-weight:700;color:var(--heading);line-height:1.5;margin:4px 0 14px;}
+  .p-q{font-size:21px;font-weight:800;color:var(--heading);line-height:1.55;margin:2px 0 16px;letter-spacing:-.3px;}
+  .p-lbl{font-size:12.5px;font-weight:800;letter-spacing:.6px;color:var(--muted);text-transform:uppercase;margin:16px 0 6px;}
+  .p-body{font-size:15px;line-height:1.7;}
+  .quote{
+    background:var(--codebg);border-left:4px solid var(--border);border-radius:0 8px 8px 0;
+    padding:12px 14px;color:var(--muted);font-size:13.5px;line-height:1.65;
+    font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;white-space:pre-wrap;
+  }
+  .gright textarea{
+    width:100%;font-family:inherit;font-size:15px;line-height:1.65;color:var(--body);
+    border:1.5px solid var(--border);border-radius:10px;padding:11px 12px;background:#fff;resize:vertical;
+  }
+  .gright textarea:focus{outline:none;border-color:var(--accent);}
+  .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+  .saved{background:rgba(204,120,92,.10);border:1px solid var(--accent);border-radius:10px;padding:13px 15px;font-size:15.5px;line-height:1.7;white-space:pre-wrap;}
+  .saved.ex{background:rgba(201,151,63,.12);border-color:var(--amber);}
+
+  /* ---------- tab 3 ---------- */
+  .abq{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:18px;}
+  .abq .l{font-size:12.5px;font-weight:800;letter-spacing:.6px;color:var(--muted);}
+  .abq .q{font-size:22px;font-weight:800;color:var(--heading);line-height:1.5;margin-top:6px;letter-spacing:-.3px;}
+  .abgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .abcol{border:1px solid var(--border);border-radius:14px;padding:22px;}
+  .abcol.plain{background:#EAE7DE;color:var(--muted);}
+  .abcol.plain h4{color:var(--muted);}
+  .abcol.acc{background:var(--surface);border-color:var(--accent);border-width:2px;}
+  .abcol h4{margin:0 0 14px;font-size:17px;font-weight:800;color:var(--heading);}
+  .abcol p{margin:0 0 12px;font-size:15px;line-height:1.75;}
+  .abcol mark{background:rgba(204,120,92,.24);color:var(--heading);border-radius:4px;padding:1px 3px;font-weight:600;}
+  .citebar{margin-top:16px;border-top:1px dashed var(--border);padding-top:13px;}
+  .abclosing{margin-top:20px;font-size:16px;line-height:1.7;color:var(--heading);
+    background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);
+    border-radius:8px;padding:16px 18px;}
+  .abnote{margin-top:12px;font-size:14px;color:var(--muted);background:var(--codebg);
+    border:1px dashed var(--border);border-radius:8px;padding:12px 15px;line-height:1.65;}
+  .citebar .l{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:8px;}
+  .cchip{display:inline-block;background:var(--accent);color:#fff;font-size:12.5px;font-weight:700;
+         border-radius:999px;padding:4px 11px;margin:0 6px 6px 0;}
+
+  /* ---------- tab 4 ---------- */
+  .exprow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
+  .okmsg{color:var(--pos);font-weight:700;font-size:15px;opacity:0;transition:opacity .2s;}
+  .okmsg.show{opacity:1;}
+  pre.mdprev{
+    background:var(--codebg);border:1px solid var(--border);border-radius:12px;
+    padding:18px 20px;color:var(--codetext);font-size:13px;line-height:1.7;
+    font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    max-height:520px;overflow:auto;white-space:pre-wrap;word-break:break-word;margin:0;
+  }
+  .closing{
+    margin-top:24px;background:var(--surface);border:1px solid var(--border);
+    border-left:5px solid var(--accent);border-radius:14px;padding:26px 30px;
+    font-size:20px;font-weight:600;color:var(--heading);line-height:1.65;letter-spacing:-.2px;
+  }
+  .hidden-copy{position:fixed;left:-9999px;top:0;opacity:0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>PaperFlow</h1>
+    <span class="sub">논문에서 뽑을 수 있는 것 / 저자만 아는 것</span>
+    <span class="spacer"></span>
+    <button class="btn" id="fillAll">전부 예시로 채우기</button>
+    <button class="btn ghost" id="resetAll">초기화</button>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="1" class="active">스캔한 소스</button>
+    <button data-tab="2">지식그래프</button>
+    <button data-tab="3">A/B</button>
+    <button data-tab="4">내보내기</button>
+  </nav>
+
+  <!-- ================= TAB 1 ================= -->
+  <section class="panel active" id="panel1">
+    <div class="headline">여기서 뽑을 수 있는 건 다 뽑았습니다.</div>
+    <div class="headline-sub">논문 PDF 1편 + 공개된 코드/데이터 저장소를 스키마(<span id="schemaName"></span>) 기준으로 스캔했습니다.</div>
+    <div class="srcgrid">
+      <div class="srccard" id="srcPaper"></div>
+      <div class="srccard" id="srcCode"></div>
+    </div>
+    <div class="gapline">
+      <div class="txt">그런데 스키마 기준으로 보면 — 비어 있는 곳이 <em id="gapCount">0</em>군데 있습니다.</div>
+      <button class="btn primary big" id="goGraph">→ 그래프 보기</button>
+    </div>
+  </section>
+
+  <!-- ================= TAB 2 ================= -->
+  <section class="panel" id="panel2">
+    <div class="g2">
+      <div class="gleft">
+        <div class="counters">
+          <span class="pill blue"><span class="n" id="cFilled">0</span>채워짐</span>
+          <span class="dot">·</span>
+          <span class="pill gray" id="pillEmpty"><span class="n" id="cEmpty">0</span>비어있음</span>
+          <span class="dot">·</span>
+          <span class="prog">
+            <span class="lbl">진행 <span id="cProg">0/0</span></span>
+            <span class="bar"><i id="barFill"></i></span>
+          </span>
+        </div>
+        <div class="successline" id="successLine">빈칸 <span id="sN">0</span>개가 전부 채워졌습니다 — 이 그래프는 이제 논문에 없는 정보를 담고 있습니다.</div>
+        <div class="svgbox" id="svgbox"></div>
+      </div>
+      <aside class="gright" id="detail"></aside>
+    </div>
+  </section>
+
+  <!-- ================= TAB 3 ================= -->
+  <section class="panel" id="panel3">
+    <div class="abq">
+      <div class="l">같은 질문</div>
+      <div class="q" id="abQ"></div>
+    </div>
+    <div class="abgrid">
+      <div class="abcol plain"><h4 id="abLeftLabel"></h4><div id="abLeftBody"></div></div>
+      <div class="abcol acc"><h4 id="abRightLabel"></h4><div id="abRightBody"></div>
+        <div class="citebar"><div class="l">이 답변이 인용한 노드</div><div id="abCites"></div></div>
+      </div>
+    </div>
+    <div class="abclosing" id="abClosing"></div>
+    <div class="abnote" id="abNote"></div>
+  </section>
+
+  <!-- ================= TAB 4 ================= -->
+  <section class="panel" id="panel4">
+    <div class="exprow">
+      <button class="btn primary big" id="copyMd">마크다운 복사</button>
+      <button class="btn big" id="copyJson">JSON 복사</button>
+      <span class="okmsg" id="okMsg">복사됨 ✓</span>
+    </div>
+    <pre class="mdprev" id="mdPrev"></pre>
+    <div class="closing">「이렇게 채워놓은 게 3년 뒤에도 쓸모가 있을까요? 아니면 그때쯤이면 AI가 알아서 다 할까요?」</div>
+  </section>
+
+</div>
+<textarea class="hidden-copy" id="copySink" readonly></textarea>
+
+<script>
+// ------------------------------------------------------------------
+// 데이터 교체 안내:
+// 그래프는 아래 /*__GRAPH_JSON__*/ 와 /*__END_GRAPH_JSON__*/ 사이 객체를
+// 실제 graph.json 내용으로 통째로 갈아끼우면 됩니다.
+// A/B 카피는 /*__AB_COPY__*/ 와 /*__END_AB_COPY__*/ 사이입니다.
+// ------------------------------------------------------------------
+const GRAPH = /*__GRAPH_JSON__*/
+{
+  "meta": {
+    "paper": {
+      "title": "Single-atom level determination of 3-dimensional surface atomic structure via neural network-assisted atomic electron tomography",
+      "authors": "Juhyeok Lee, Chaehwa Jeong, Yongsoo Yang",
+      "venue": "Nature Communications 12, 1962 (2021)",
+      "doi": "10.1038/s41467-021-22204-1",
+      "file": "s41467-021-22204-1.pdf"
+    },
+    "code": {
+      "label": "공개 데이터 · 소스코드",
+      "url": "http://mdail.kaist.ac.kr/DLaugmentation",
+      "note": "tilt series, 재구성 볼륨, 원자좌표, 신경망/데이터생성 소스 전부 공개됨. 단, 파라미터를 왜 그 값으로 골랐는지에 대한 설명은 없음."
+    },
+    "schema": "tacit_pack.yaml",
+    "canvas": {
+      "width": 1080,
+      "height": 760,
+      "divider_y": 500
+    },
+    "divider_label": "여기서부터는 논문에도 코드에도 없는 층 — 저자만 채울 수 있음"
+  },
+  "nodes": [
+    {
+      "id": "CL1",
+      "kind": "claim",
+      "layer": 1,
+      "role": "contribution",
+      "x": 540,
+      "y": 60,
+      "text": "원자성(atomicity) 기반 DL augmentation이 missing wedge를 보완해 표면 원자구조를 15 pm 정밀도로 결정한다",
+      "detail": "논문의 main contribution. Pt 나노입자를 모델 시스템으로, 개별 원자 수준의 3D 표면 구조를 재현성 있게 결정.",
+      "provenance": "paper:Abstract, Discussion"
+    },
+    {
+      "id": "M1",
+      "kind": "method",
+      "layer": 1,
+      "x": 425,
+      "y": 175,
+      "text": "3D-Unet DL augmentation",
+      "detail": "GENFIRE 재구성 뒤에 후처리 단계로 삽입되는 3D-Unet. 인공물(missing wedge, 투영 부족, 노이즈)이 있는 tomogram을 입력으로, 순수한 3D 원자 퍼텐셜을 출력하도록 학습.",
+      "provenance": "paper:Results — Deep learning approach, Fig.1"
+    },
+    {
+      "id": "M2",
+      "kind": "method",
+      "layer": 1,
+      "x": 95,
+      "y": 175,
+      "text": "학습데이터 생성 4단계",
+      "detail": "(1) 무작위 형상 fcc 원자모델 생성 (2) 전자산란인자 푸리에변환으로 원자 퍼텐셜 3D 볼륨 계산 후 Gaussian 컨볼루션 (3) 각 tilt 각도에서 선형투영해 tilt series 생성 + Poisson 노이즈 (4) GENFIRE로 3D tomogram 재구성",
+      "provenance": "paper:Methods — Generation of input and target data sets"
+    },
+    {
+      "id": "M3",
+      "kind": "method",
+      "layer": 1,
+      "x": 260,
+      "y": 175,
+      "text": "GENFIRE 재구성",
+      "detail": "실험 데이터는 GENFIRE 기반 angular refinement와 spatial re-alignment를 먼저 수행한 뒤 최종 재구성. 이후 upsampling/binning으로 salt-pepper 노이즈 제거, 학습 tomogram과 강도 스케일을 맞추는 scale factor 적용.",
+      "provenance": "paper:Methods — Image post-processing, GENFIRE reconstruction"
+    },
+    {
+      "id": "M4",
+      "kind": "method",
+      "layer": 1,
+      "x": 590,
+      "y": 175,
+      "text": "Atom tracing",
+      "detail": "3D tomogram의 모든 국소 최대값을 강도 내림차순 정렬 → 각 점 중심 5×5×5 voxel crop → 3D Gaussian fit → 이미 채택된 원자들과의 거리가 모두 1.8 Å보다 클 때만 원자로 채택. 이후 비편향 분류로 실제 Pt 원자와 인공물 구분.",
+      "provenance": "paper:Methods — Identification of 3D atomic coordinates"
+    },
+    {
+      "id": "M5",
+      "kind": "method",
+      "layer": 1,
+      "x": 755,
+      "y": 175,
+      "text": "수동 보정",
+      "detail": "물리적으로 타당하지 않은 원자 후보를 사람이 직접 추가/제거. 이 과정에서 최소거리 제약 1.6 Å 사용. 주 네트워크 결과에서 8개 추가, 9개 제거.",
+      "provenance": "paper:Methods — Identification of 3D atomic coordinates"
+    },
+    {
+      "id": "M6",
+      "kind": "method",
+      "layer": 1,
+      "x": 920,
+      "y": 175,
+      "text": "PRISM STEM 검증",
+      "detail": "PRISM 시뮬레이션으로 1,000개 test tilt series 생성 (300 keV, convergence semi-angle 25.1 mrad, detector inner/outer 40/200 mrad, interpolation factor 8, slice thickness 2 Å). 각 tilt 이미지에 B-factor 5 Å² 가우시안 컨볼루션, ±0.3° 무작위 각도 오차 추가. 동일 GENFIRE 파라미터로 재구성해 원자 식별 정확도·정밀도 측정.",
+      "provenance": "paper:Methods — PRISM STEM simulation for the test data set"
+    },
+    {
+      "id": "D1",
+      "kind": "data",
+      "layer": 1,
+      "x": 95,
+      "y": 300,
+      "text": "학습셋 12,000개",
+      "detail": "train 10,000 / validation 1,000 / test 1,000. 각 볼륨 17,000–27,000 Å³. 논문은 '5,000개 이상이면 일관된 출력을 얻기에 충분'하다고 기술.",
+      "provenance": "paper:Methods"
+    },
+    {
+      "id": "D2",
+      "kind": "data",
+      "layer": 1,
+      "x": 260,
+      "y": 300,
+      "text": "fcc 원자모델 파라미터",
+      "detail": "격자상수 3.912 Å, 무작위 방향. 결함 모사를 위해 0–0.5% 원자를 무작위 제거. 각 원자에 ~22 pm RMSD 무작위 변위 적용. (대조군: amorphous 모델은 볼륨 23,000–34,000 Å³, 최소거리 2.0 Å, fcc 대비 99% 밀도)",
+      "provenance": "paper:Methods"
+    },
+    {
+      "id": "D3",
+      "kind": "data",
+      "layer": 1,
+      "x": 425,
+      "y": 300,
+      "text": "B-factor 5 Å²",
+      "detail": "입력 데이터: 평균 5 Å², 표준편차 1 Å²의 가우시안 분포에서 샘플링. 타깃 데이터: 4 Å². 강건성 확인용 대조군: 3.2 Å². 5 Å²는 실험 tomogram 국소최대 주변 11×11×11 voxel 평균에 3D Gaussian을 피팅해 결정.",
+      "provenance": "paper:Methods — Bfactor optimization"
+    },
+    {
+      "id": "D4",
+      "kind": "data",
+      "layer": 1,
+      "x": 590,
+      "y": 300,
+      "text": "시뮬레이션 tilt 조건",
+      "detail": "tilt series 21장, −65°~+65°. 투영 크기 144×144 px, pixel size 0.357 Å. 스테이지 불안정성 모사를 위해 각 tilt에 최대 ±0.3° 무작위 각도 오차 추가. (예외: decahedral 모델만 27장, −75°~+75°)",
+      "provenance": "paper:Methods"
+    },
+    {
+      "id": "D5",
+      "kind": "data",
+      "layer": 1,
+      "x": 755,
+      "y": 300,
+      "text": "실험 STEM 조건",
+      "detail": "Titan cubed G2 60-300 (double Cs corrected), 300 kV, ADF-STEM. Detector inner/outer semi-angle 40/200 mrad, convergence semi-angle 25.1 mrad. tilt 21장, −71.6°~+71.6°. 각 각도마다 1024×1024 이미지 3장, beam current 15.1 pA, pixel size 0.357 Å. 전체 tilt series 총 전자 조사량 1.86×10⁵ e/Å².",
+      "provenance": "paper:Methods — STEM data acquisition"
+    },
+    {
+      "id": "D6",
+      "kind": "data",
+      "layer": 1,
+      "x": 920,
+      "y": 300,
+      "text": "GENFIRE 파라미터 (두 벌)",
+      "detail": "학습데이터 재구성: FFT interpolation, iteration 100, oversampling 2, interpolation radius 0.3.\n실험데이터 최종 재구성: DFT interpolation, iteration 1000, oversampling 4, interpolation radius 0.1.\n두 설정이 서로 다르다는 사실 자체는 논문에 언급되지 않음.",
+      "provenance": "paper:Methods (2곳)"
+    },
+    {
+      "id": "D7",
+      "kind": "data",
+      "layer": 1,
+      "x": 425,
+      "y": 395,
+      "text": "네트워크 · 학습 설정",
+      "detail": "입출력 144×144×144 voxel. Encoder: 3×3×3 conv stride 2 ×2 + 2×2×2 maxpool ×2. Bridge: 3×3×3 conv stride 1. Decoder: 3×3×3 transposed conv stride 2 ×4 + 3×3×3 conv stride 1 ×2. 활성함수 LReLU(계수 0.2), 최종 출력단만 ReLU. Dropout은 1·5·9번째 층. Loss = MSE, Adam optimizer, learning rate 2×10⁻⁴. 총 100 epoch (실제로는 ~50–70 epoch에서 수렴, 과적합 징후 없음).",
+      "provenance": "paper:Methods — DL augmentation architecture and training"
+    },
+    {
+      "id": "E1",
+      "kind": "evidence",
+      "layer": 1,
+      "x": 755,
+      "y": 395,
+      "text": "R-factor 0.192 → 0.174 · 정확도 98.8% · 정밀도 15.1 pm",
+      "detail": "DL augmentation 후 실험 tilt series와의 R-factor가 0.192에서 0.174로 개선. PRISM 시뮬레이션 검증에서 원자 식별 정확도 98.8%, 원자 좌표 정밀도 15.1 pm.",
+      "provenance": "paper:Results"
+    },
+    {
+      "id": "E2",
+      "kind": "evidence",
+      "layer": 1,
+      "x": 920,
+      "y": 395,
+      "text": "표면 원자 251개 회복",
+      "detail": "DL augmentation 전후 원자 구조가 373개(25.4%) 차이. 그중 약 60%(251개)가 표면 원자 — missing wedge로 인한 강도 저하 때문에 식별되지 않던 표면 원자들이 추적됨.",
+      "provenance": "paper:Results"
+    },
+    {
+      "id": "TH1",
+      "kind": "threshold",
+      "layer": 2,
+      "risk": "high",
+      "x": 95,
+      "y": 580,
+      "text": "B-factor를 5 Å²로 정한 근거",
+      "question": "B-factor를 5 Å²로 확정하신 근거가 무엇입니까? 이 값이 예를 들어 7 Å²로 어긋나면 결과에서 무엇이 가장 먼저 무너집니까?",
+      "why_it_matters": "B-factor는 학습 데이터와 실험 데이터의 분포를 맞추는 유일한 손잡이입니다. 여기가 어긋나면 네트워크가 실험 tomogram을 학습 분포 밖 입력으로 받게 되는데, 논문에는 '가장 잘 맞았다'는 결과만 있고 어긋났을 때의 증상이 없습니다.",
+      "paper_says": "\"Mean Bfactor of 5 Å2 showed the best consistency between the simulated projections and experimental tilt-series images.\"",
+      "example": "예: 실험 tomogram의 국소최대 주변 강도 프로파일 폭과 시뮬레이션 프로파일 폭을 겹쳐 보고, 어긋나면 재구성 원자 피크가 ○○하게 나타난다 — 그때 B-factor를 다시 맞춘다",
+      "provenance": "[ASK_AUTHOR]"
+    },
+    {
+      "id": "TH2",
+      "kind": "threshold",
+      "layer": 2,
+      "risk": "medium",
+      "x": 260,
+      "y": 580,
+      "text": "학습 볼륨 '5,000개면 충분'의 판정 기준",
+      "question": "학습 볼륨이 5,000개를 넘으면 충분하다고 판단하신 기준은 무엇입니까? validation loss 말고 실제로 무엇을 보고 '이제 됐다'고 결정하십니까?",
+      "why_it_matters": "새 시료·새 물질계로 옮길 때 데이터를 얼마나 만들어야 하는지가 여기서 결정됩니다. 논문의 '충분하다'는 서술만으로는 다른 조건에서 재현할 수 없습니다.",
+      "paper_says": "\"we tested various input volumes and found that the use of more than 5000 volumes is enough to obtain consistent output.\"",
+      "example": "예: 서로 다른 시드로 학습한 두 네트워크의 출력 원자좌표 차이가 ○○ pm 이내로 들어오면 충분하다고 본다",
+      "provenance": "[ASK_AUTHOR]"
+    },
+    {
+      "id": "TH3",
+      "kind": "threshold",
+      "layer": 2,
+      "risk": "high",
+      "x": 425,
+      "y": 580,
+      "text": "tilt 21장 → 27장으로 올려야 하는 시점",
+      "question": "어떤 시료를 만나면 tilt를 21장/±65°에서 27장/±75°로 올리십니까? 판단 기준이 되는 구조적 특징이 무엇입니까?",
+      "why_it_matters": "측정 시간과 빔 데미지가 직결되는 결정입니다. 논문은 decahedral 한 경우에만 '더 높은 품질이 필요했다'고 적었을 뿐, 언제 그 판단을 내리는지는 없습니다.",
+      "paper_says": "\"for the simulation of the decahedral-shaped Pt nanoparticle, 27 tilt-series images were used (instead of 21) and the tilt angles were chosen in the range between −75° and +75° because resolving twin boundary structures required a higher-quality tomogram.\"",
+      "example": "예: twin boundary나 stacking fault처럼 면 결함이 예상되면 무조건 올린다 / 입자 크기가 ○ nm를 넘으면 올린다",
+      "provenance": "[ASK_AUTHOR]"
+    },
+    {
+      "id": "TH4",
+      "kind": "threshold",
+      "layer": 2,
+      "risk": "high",
+      "x": 590,
+      "y": 580,
+      "text": "전자 조사량 1.86×10⁵ e/Å²의 상한 근거",
+      "question": "총 조사량 1.86×10⁵ e/Å²는 어떻게 정하신 값입니까? Pt 나노입자에서 빔 데미지가 시작됐다고 판단하는 신호가 무엇입니까?",
+      "why_it_matters": "조사량은 신호 대 잡음과 시료 손상 사이의 트레이드오프이고, 물질이 바뀌면 반드시 다시 정해야 하는 값입니다. 논문에는 사용한 값만 있고 상한의 근거가 없습니다.",
+      "paper_says": "\"The total electron dose for the entire tilt series was 1.86 × 10⁵ e Å⁻².\" (근거·상한 서술 없음)",
+      "example": "예: 실험 직후 0° 투영을 다시 찍어 초기 이미지와 비교했을 때 ○○이 보이면 넘은 것으로 본다",
+      "provenance": "[ASK_AUTHOR]"
+    },
+    {
+      "id": "PF1",
+      "kind": "pitfall",
+      "layer": 2,
+      "risk": "high",
+      "x": 755,
+      "y": 580,
+      "text": "'물리적으로 타당하지 않은' 원자의 판단 기준",
+      "question": "수동 보정에서 원자를 추가하거나 제거할 때, '물리적으로 타당하지 않다'를 실제로 무엇을 보고 판단하십니까? 후배가 같은 tomogram을 받으면 같은 8개를 추가하고 같은 9개를 제거할 수 있습니까?",
+      "why_it_matters": "논문 전체에서 유일하게 사람 손이 들어가는 단계인데, 판단 기준이 한 줄도 없습니다. 재현성이 여기서 끊깁니다. 그리고 이건 코드에도 절대 남지 않습니다.",
+      "paper_says": "\"a manual correction was applied to add (or remove) physically (un)reasonable atom candidates… Total 8 atoms were manually added, and 9 atoms were manually removed.\"",
+      "example": "예: 최근접 이웃 수가 ○개 미만이면서 강도가 주변 원자의 ○% 이하면 제거 / fcc 격자 사이트에서 ○ Å 이상 벗어나 있으면 의심한다",
+      "provenance": "[ASK_AUTHOR]"
+    },
+    {
+      "id": "PF2",
+      "kind": "pitfall",
+      "layer": 2,
+      "risk": "high",
+      "x": 920,
+      "y": 580,
+      "text": "DL이 없는 원자를 만들어내는 조건",
+      "question": "DL augmentation이 실제로는 없는 원자를 만들어내는(환각) 경우는 언제 생깁니까? 그런 일이 벌어졌다는 걸 무엇을 보고 알아채십니까?",
+      "why_it_matters": "이 방법론에 대한 리뷰어의 첫 번째 공격 지점입니다. 논문은 강건성 검증 결과만 제시하고, 실패 양상 자체는 다루지 않습니다.",
+      "paper_says": "amorphous·B-factor 3.2 Å² 대조군으로 강건성을 검증했다는 서술만 있음. 실패 조건·증상은 없음.",
+      "example": "예: 학습에 없던 결함 밀도나 두꺼운 시료에서 표면 바깥쪽에 강도가 약한 가짜 피크가 생긴다 — R-factor가 개선되지 않으면 의심한다",
+      "provenance": "[ASK_AUTHOR]"
+    },
+    {
+      "id": "PF3",
+      "kind": "pitfall",
+      "layer": 2,
+      "risk": "medium",
+      "x": 240,
+      "y": 690,
+      "text": "최소거리 1.8 Å vs 1.6 Å",
+      "question": "atom tracing에서는 1.8 Å, 수동 보정에서는 1.6 Å을 쓰셨습니다. 왜 다릅니까? 이 값을 잘못 잡으면 결과에 어떤 증상이 나타납니까?",
+      "why_it_matters": "두 값이 논문에 나란히 나오는데 다른 이유가 없습니다. 값 하나로 원자를 놓치거나 중복 검출하게 되는 민감한 손잡이입니다.",
+      "paper_says": "tracing: \"…larger than 1.8 Å.\" / 수동 보정: \"A minimum distance constraint of 1.6 Å was used during this process.\"",
+      "example": "예: 자동 단계는 보수적으로 잡아 위양성을 줄이고, 수동 단계는 사람이 보면서 넣으므로 더 촘촘히 허용한다",
+      "provenance": "[ASK_AUTHOR]"
+    },
+    {
+      "id": "DC1",
+      "kind": "decision",
+      "layer": 2,
+      "risk": "high",
+      "x": 440,
+      "y": 690,
+      "text": "학습용·실험용 GENFIRE 파라미터가 다른 이유",
+      "question": "학습 데이터는 FFT / 100 iteration / oversampling 2 / radius 0.3으로, 실험 데이터는 DFT / 1000 iteration / oversampling 4 / radius 0.1로 재구성하셨습니다. 왜 다릅니까? 학습·실험 조건을 굳이 다르게 두어도 되는 이유가 무엇입니까?",
+      "why_it_matters": "네트워크는 '학습 때 본 인공물'을 지우도록 학습됩니다. 재구성 설정이 다르면 인공물 성격도 달라지는데, 논문은 두 설정을 각각 적어놓기만 하고 대조조차 하지 않습니다. 리뷰어가 파고들 지점이자, 후배가 그대로 따라 하다 틀리기 쉬운 지점입니다.",
+      "paper_says": "학습: \"the fast Fourier transform (FFT) interpolation method, number of iterations 100, oversampling ratio of 2, and interpolation radius 0.3 were used.\" / 실험: \"discrete Fourier transform (DFT) interpolation method, number of iterations 1000, oversampling 4, and interpolation radius 0.1.\"",
+      "example": "예: 실험은 한 번만 돌리므로 비용을 써서 최고 품질로 뽑고, 학습은 12,000개를 만들어야 해서 속도를 택했다 — 대신 ○○을 확인해 차이가 무해함을 봤다",
+      "provenance": "[ASK_AUTHOR]"
+    },
+    {
+      "id": "DC2",
+      "kind": "decision",
+      "layer": 2,
+      "risk": "medium",
+      "x": 640,
+      "y": 690,
+      "text": "왜 3D-Unet인가",
+      "question": "구조로 3D-Unet을 고르신 이유가 무엇입니까? 검토했다가 버린 대안이 있었습니까? 있었다면 왜 버리셨습니까?",
+      "why_it_matters": "버려진 대안은 논문에 절대 실리지 않지만, 다음 사람이 같은 길을 다시 걷지 않게 해주는 가장 값비싼 정보입니다.",
+      "paper_says": "\"our deep learning augmentation (DL augmentation) architecture based on a 3D-unet\" — 선택 이유·대안 언급 없음",
+      "example": "예: GAN 계열도 봤지만 원자 위치가 흔들려서 버렸다 / 순수 CNN은 큰 수용영역이 안 나와 missing wedge 방향 정보를 못 채웠다",
+      "provenance": "[ASK_AUTHOR]"
+    },
+    {
+      "id": "DC3",
+      "kind": "decision",
+      "layer": 2,
+      "risk": "medium",
+      "x": 840,
+      "y": 690,
+      "text": "대조군을 amorphous·3.2 Å²로 고른 이유",
+      "question": "강건성 검증 대조군으로 하필 amorphous 모델과 B-factor 3.2 Å²를 고르신 이유가 무엇입니까? 3.2라는 숫자는 어디서 나왔습니까?",
+      "why_it_matters": "대조군 선택이 곧 '무엇을 반증하려 했는가'입니다. 그 의도를 알아야 다음 연구에서 같은 검증을 설계할 수 있습니다.",
+      "paper_says": "\"To verify the robustness of the DL augmentation approach, two other training data sets were generated and tested: one with f.c.c.-based structures with Bfactor 3.2 Å2, and another based on amorphous atomic structures…\"",
+      "example": "예: amorphous는 '네트워크가 fcc를 외운 것 아니냐'는 반박을 막기 위해, 3.2 Å²는 최적값보다 유의미하게 좁은 폭을 주려고 고른 값이다",
+      "provenance": "[ASK_AUTHOR]"
+    }
+  ],
+  "edges": [
+    {
+      "src": "M2",
+      "dst": "M1",
+      "rel": "produces",
+      "rationale": "시뮬레이션 학습셋이 네트워크 학습 입력이 된다",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M3",
+      "dst": "M1",
+      "rel": "produces",
+      "rationale": "GENFIRE 재구성 tomogram이 augmentation의 입력",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M1",
+      "dst": "M4",
+      "rel": "produces",
+      "rationale": "augmented tomogram에서 원자 좌표를 추출",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M4",
+      "dst": "M5",
+      "rel": "produces",
+      "rationale": "자동 추적 결과를 사람이 보정",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M2",
+      "dst": "D2",
+      "rel": "uses",
+      "rationale": "fcc 원자모델 파라미터로 볼륨 생성",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M2",
+      "dst": "D3",
+      "rel": "uses",
+      "rationale": "B-factor로 가우시안 브로드닝 결정",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M2",
+      "dst": "D4",
+      "rel": "uses",
+      "rationale": "tilt 조건대로 투영 생성",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M2",
+      "dst": "D1",
+      "rel": "produces",
+      "rationale": "4단계 절차의 산출물이 학습셋",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M3",
+      "dst": "D5",
+      "rel": "uses",
+      "rationale": "실험 tilt series를 재구성",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M3",
+      "dst": "D6",
+      "rel": "uses",
+      "rationale": "재구성 파라미터",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M1",
+      "dst": "D7",
+      "rel": "uses",
+      "rationale": "네트워크 구조·학습 하이퍼파라미터",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M1",
+      "dst": "D1",
+      "rel": "uses",
+      "rationale": "학습셋 10,000개로 학습",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M5",
+      "dst": "E1",
+      "rel": "supports",
+      "rationale": "최종 원자모델로 R-factor·정밀도 산출",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M5",
+      "dst": "E2",
+      "rel": "supports",
+      "rationale": "DL 전후 원자 비교",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "M6",
+      "dst": "E1",
+      "rel": "supports",
+      "rationale": "PRISM 시뮬레이션이 정확도·정밀도를 검증",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "E1",
+      "dst": "CL1",
+      "rel": "supports",
+      "rationale": "정량 지표가 핵심 주장을 뒷받침",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "E2",
+      "dst": "CL1",
+      "rel": "supports",
+      "rationale": "표면 원자 회복이 주장의 핵심 근거",
+      "grounding_status": "grounded"
+    },
+    {
+      "src": "TH1",
+      "dst": "D3",
+      "rel": "governs",
+      "rationale": "B-factor 값 선택을 지배하는 규칙",
+      "grounding_status": "missing"
+    },
+    {
+      "src": "TH2",
+      "dst": "D1",
+      "rel": "governs",
+      "rationale": "학습셋 규모 결정을 지배하는 규칙",
+      "grounding_status": "missing"
+    },
+    {
+      "src": "TH3",
+      "dst": "D4",
+      "rel": "governs",
+      "rationale": "tilt 개수·범위 결정을 지배하는 규칙",
+      "grounding_status": "missing"
+    },
+    {
+      "src": "TH4",
+      "dst": "D5",
+      "rel": "governs",
+      "rationale": "조사량 상한을 지배하는 규칙",
+      "grounding_status": "missing"
+    },
+    {
+      "src": "PF1",
+      "dst": "M5",
+      "rel": "warns_about",
+      "rationale": "수동 보정의 재현성 위험",
+      "grounding_status": "missing"
+    },
+    {
+      "src": "PF2",
+      "dst": "M1",
+      "rel": "warns_about",
+      "rationale": "DL augmentation의 환각 위험",
+      "grounding_status": "missing"
+    },
+    {
+      "src": "PF3",
+      "dst": "M4",
+      "rel": "warns_about",
+      "rationale": "최소거리 임계값 오설정 위험",
+      "grounding_status": "missing"
+    },
+    {
+      "src": "DC1",
+      "dst": "D6",
+      "rel": "governs",
+      "rationale": "두 벌의 재구성 설정을 가른 판단",
+      "grounding_status": "missing"
+    },
+    {
+      "src": "DC2",
+      "dst": "M1",
+      "rel": "governs",
+      "rationale": "아키텍처 선택 판단",
+      "grounding_status": "missing"
+    },
+    {
+      "src": "DC3",
+      "dst": "D3",
+      "rel": "governs",
+      "rationale": "대조군 설계 판단",
+      "grounding_status": "missing"
+    }
+  ]
+}
+/*__END_GRAPH_JSON__*/;
+
+const AB = /*__AB_COPY__*/
+{
+  "question": "이번에 새로 받은 Pd 나노입자 시료로 같은 AET + DL augmentation 파이프라인을 돌리려고 합니다. B-factor는 뭘로 잡고, tilt는 몇 장부터 시작하면 될까요? 조심할 건 없습니까?",
+  "without": {
+    "label": "그래프 없이 — 일반 AI 답변",
+    "body": [
+      "논문에 보고된 값을 기준으로 말씀드리면, B-factor는 5 Å²를 출발점으로 잡으시면 됩니다. 해당 연구에서는 학습 입력 데이터의 B-factor 평균을 5 Å²(표준편차 1 Å²), target을 4 Å², 강건성 확인용을 3.2 Å²로 두었습니다. 5 Å²는 실험 tomogram의 국소최대 주변 11×11×11 voxel 평균에 3D Gaussian을 피팅해 얻은 값으로, 시뮬레이션 투영과 실험 tilt-series 이미지 사이의 일치도가 가장 좋았다고 보고되어 있습니다. 같은 파이프라인을 재현하시는 것이라면 이 구성을 그대로 따르시는 것이 가장 안전합니다.",
+      "tilt series는 21장, −65°에서 +65° 범위가 기본 설정입니다. 실험 데이터에서는 −71.6°에서 +71.6° 범위의 21개 각도가 사용되었고, 픽셀 크기 0.357 Å에 최대 ±0.3°의 각도 오차를 가정했습니다. 다만 decahedral 구조 모델에서는 27장, −75°에서 +75°를 사용했으므로, 더 높은 품질의 tomogram이 필요하다고 판단되시면 장수와 각도 범위를 늘리는 것도 방법입니다.",
+      "재구성 설정은 GENFIRE 기준으로 학습 데이터가 FFT interpolation, 100 iteration, oversampling 2, interpolation radius 0.3이고, 실험 데이터는 DFT, 1000 iteration, oversampling 4, radius 0.1입니다. 원자 추적 최소 거리는 1.8 Å, 수동 보정 시 1.6 Å이 사용되었습니다. 학습셋은 12,000개 볼륨(10,000/1,000/1,000)을 썼고 5000개 이상이면 충분하다고 보고되어 있으므로, Pd에서도 비슷한 규모로 준비하시면 됩니다.",
+      "다만 Pd는 원자번호와 산란 특성이 Pt와 다르기 때문에 최적값이 동일하다고 보장할 수는 없습니다. B-factor와 tilt 장수 모두 시료에 따라 달라지므로, 몇 가지 값을 시험해 보시면서 실험적으로 튜닝하시기를 권장합니다. 조사량도 빔 손상에 유의하시고, 일반적으로는 재구성 품질 지표(R-factor)와 원자 식별 정확도를 비교 기준으로 삼으시면 됩니다."
+    ]
+  },
+  "with": {
+    "label": "그래프 주입 — 선배님이 채운 10개 반영",
+    "body": [
+      "먼저 B-factor 5 Å²를 그대로 옮겨 쓰지 마십시오. 이 값은 Pt tomogram의 국소최대 주변 11×11×11 voxel 평균에 3D Gaussian을 피팅해서 얻은 값이지, 파이프라인의 상수가 아닙니다. Pd는 Pt보다 가벼워 같은 조사량에서 피크가 더 퍼지므로, 5 Å²를 그대로 쓰면 학습 분포보다 좁은 입력이 들어갑니다. 새 Pd 실험 tomogram에서 국소최대 주변 강도 프로파일 폭을 직접 재서 다시 피팅한 값을 중심으로 쓰시고, 그 중심값에 논문과 같은 σ 1 Å² 폭의 분포를 씌워 학습 입력을 만드십시오. target과 강건성 확인용 값도 새로 잡은 중심값 기준으로 같은 간격만큼 옮기시면 됩니다.",
+      "tilt 장수는 입자의 예상 결함 구조를 보고 정하십시오. 논문 기본값이 21장 −65°~+65°인데 decahedral 모델만 27장 −75°~+75°로 올린 이유는 twin boundary를 풀어야 했기 때문입니다. 새 Pd 입자에서 twin boundary나 stacking fault 같은 면결함이 예상되면 무조건 올리십시오. 입자 형상이 decahedral이나 icosahedral로 의심되면 처음부터 27장 ±75°로 시작하시는 편이 낫습니다. 단결정에 가깝다고 판단되실 때만 21장으로 시작하십시오.",
+      "조사량 상한은 계산으로 정하지 마시고 실험으로 확인하십시오. 논문의 1.86×10⁵ e/Å²는 Pt 기준 총 조사량이고, Pd에 그대로 적용된다는 근거는 어디에도 없습니다. 확인 방법은 단순합니다. 실험 직후 0° 투영을 다시 찍어 초기 이미지와 비교하십시오. 형상 변화나 강도 변화가 보이면 상한을 넘긴 것으로 보시고, 그 데이터셋으로 원자 수준 결론을 내지 않으시는 편이 낫습니다.",
+      "DL augmentation 결과는 무조건 믿지 마십시오. 학습에 없던 결함 밀도나 더 두꺼운 시료에서는 표면 바깥쪽에 약한 가짜 피크가 생깁니다. 판정 기준은 R-factor입니다. 논문에서는 0.192에서 0.174로 개선되었는데, 새 시료에서 R-factor가 개선되지 않으면 augmentation을 믿지 않는 편이 안전합니다. 특히 DL 전후로 바뀌는 원자(373개, 25.4%)의 약 60%가 표면에 몰려 있으므로, 표면 구조를 논문의 주장으로 삼으실 계획이면 이 확인은 건너뛰실 수 없습니다.",
+      "마지막으로 수동 보정 단계입니다. 최근접 이웃 수가 비정상적으로 적으면서 강도가 주변 원자보다 뚜렷이 낮은 후보를 의심하십시오. 이 단계는 사람이 들어가는 단계이므로 반드시 두 사람이 독립적으로 해보고 결과를 대조하십시오. 그리고 GENFIRE 설정이 학습용과 실험용으로 두 벌인 이유는, 실험은 한 번만 돌리므로 비용을 써서 DFT/1000 iteration으로 뽑고 학습셋은 12,000개를 만들어야 해서 FFT/100으로 속도를 택한 것입니다. Pd에서도 이 구분은 그대로 유지하십시오."
+    ],
+    "citations": [
+      {
+        "node_id": "TH1",
+        "quote": "5 Å²를 그대로 쓰면 학습 분포보다 좁은 입력이 들어갑니다"
+      },
+      {
+        "node_id": "TH3",
+        "quote": "면결함이 예상되면 무조건 올리십시오"
+      },
+      {
+        "node_id": "TH4",
+        "quote": "실험 직후 0° 투영을 다시 찍어 초기 이미지와 비교하십시오"
+      },
+      {
+        "node_id": "PF2",
+        "quote": "R-factor가 개선되지 않으면 augmentation을 믿지 않는"
+      },
+      {
+        "node_id": "PF1",
+        "quote": "두 사람이 독립적으로 해보고 결과를 대조하십시오"
+      },
+      {
+        "node_id": "DC1",
+        "quote": "학습셋은 12,000개를 만들어야 해서 FFT/100으로 속도를 택한"
+      }
+    ]
+  },
+  "closing": "두 답변의 차이는 모델이 더 좋아져서 생긴 것이 아니라, 선배님이 직접 채워 주신 10개의 답에서 전부 나온 것입니다.",
+  "note": "※ 오른쪽 답변은 예시 답변을 넣고 미리 생성해 둔 것입니다. 선배님이 실제로 답해 주신 내용으로 채우면 인용되는 문장도 그에 맞게 바뀝니다."
+}
+/*__END_AB_COPY__*/;
+
+/* ================= state ================= */
+const LS_KEY = 'paperflow_tacit_demo_v1';
+let answers = {};      // {id: {text, isExample}}
+let selectedId = null;
+let pendingExample = false;
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(raw){
+      const o = JSON.parse(raw);
+      if(o && typeof o === 'object') answers = o;
+    }
+  }catch(e){ answers = {}; }
+}
+function saveState(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(answers)); }catch(e){}
+}
+
+/* ================= helpers ================= */
+const NODES = GRAPH.nodes;
+const EDGES = GRAPH.edges || [];
+const byId = {};
+NODES.forEach(n => byId[n.id] = n);
+const L1 = NODES.filter(n => n.layer === 1);
+const L2 = NODES.filter(n => n.layer === 2);
+
+const KIND_KO = {
+  claim:'핵심주장', method:'방법', data:'데이터', evidence:'근거',
+  threshold:'역치', pitfall:'함정', decision:'판단'
+};
+const L1_FILL = { claim:'#3E6180', method:'#5B7C99', data:'#6D8CA6', evidence:'#4F7290' };
+const L1_STROKE = { claim:'#2F4B63', method:'#476277', data:'#567185', evidence:'#3C5B73' };
+
+function esc(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function isAnswered(id){ return !!(answers[id] && answers[id].text && answers[id].text.trim()); }
+function isExampleFilled(id){ return isAnswered(id) && !!answers[id].isExample; }
+
+/* ---- text width / wrapping (character budget, no foreignObject) ---- */
+function unitW(ch){
+  const c = ch.codePointAt(0);
+  if(c > 0x1100) return 1.0;      // CJK / Hangul / 전각
+  if('iljItfr.,()[]|!:; '.indexOf(ch) >= 0) return 0.36;
+  return 0.56;
+}
+function strW(s){ let w = 0; for(const ch of String(s)) w += unitW(ch); return w; }
+
+function wrapAll(text, maxUnits){
+  const lines = [];
+  let cur = '';
+  const tokens = String(text).split(/\s+/).filter(Boolean);
+  for(let t of tokens){
+    // token longer than a full line -> hard split
+    while(strW(t) > maxUnits){
+      if(cur){ lines.push(cur); cur = ''; }
+      let part = '';
+      for(const ch of t){
+        if(strW(part + ch) > maxUnits) break;
+        part += ch;
+      }
+      if(!part) part = t.charAt(0);
+      lines.push(part);
+      t = t.slice(part.length);
+    }
+    if(!t) continue;
+    const cand = cur ? cur + ' ' + t : t;
+    if(strW(cand) <= maxUnits){ cur = cand; }
+    else { if(cur) lines.push(cur); cur = t; }
+  }
+  if(cur) lines.push(cur);
+  return lines.length ? lines : [''];
+}
+function wrapText(text, maxUnits, maxLines){
+  const all = wrapAll(text, maxUnits);
+  if(all.length <= maxLines) return all;
+  const out = all.slice(0, maxLines);
+  let last = out[maxLines - 1];
+  while(last.length && strW(last + '…') > maxUnits) last = last.slice(0, -1);
+  out[maxLines - 1] = last + '…';
+  return out;
+}
+
+/* ---- node geometry ---- */
+const FONT = 13.5;
+const LINE_H = 17;
+const PAD_TOP = 17;
+const PAD_BOTTOM = 12;
+const MAX_LINES = 4;
+
+function nodeWidth(n){
+  if(n.layer === 2) return 160;
+  if(n.kind === 'claim') return 300;
+  if(n.kind === 'data') return 136;
+  if(n.kind === 'evidence') return 172;
+  return 150;
+}
+const MIN_W = 118;
+const H_GAP = 13;       // 같은 줄에 있는 이웃 노드 사이 최소 간격
+const BAND = 70;        // 이 정도 y 차이면 "같은 줄"로 본다
+
+const geom = {};   // id -> {x,y,w,h,lines}
+function computeGeom(){
+  // 1) 이웃까지의 거리로 폭 상한을 잡는다 (박스가 겹치지 않도록)
+  const widths = {};
+  NODES.forEach(n => {
+    let minDx = Infinity;
+    NODES.forEach(m => {
+      if(m.id === n.id) return;
+      if(Math.abs(m.y - n.y) > BAND) return;
+      const d = Math.abs(m.x - n.x);
+      if(d < minDx) minDx = d;
+    });
+    let w = nodeWidth(n);
+    if(minDx !== Infinity) w = Math.min(w, Math.max(MIN_W, minDx - H_GAP));
+    widths[n.id] = Math.round(w);
+  });
+  // 2) 확정된 폭으로 줄바꿈 + 높이
+  NODES.forEach(n => {
+    const w = widths[n.id];
+    const maxUnits = (w - 22) / FONT;
+    const lines = wrapText(n.text, maxUnits, MAX_LINES);
+    const h = PAD_TOP + lines.length * LINE_H + PAD_BOTTOM;
+    geom[n.id] = { x:n.x, y:n.y, w:w, h:h, lines:lines };
+  });
+}
+
+function clipToBox(g, tx, ty){
+  const dx = tx - g.x, dy = ty - g.y;
+  if(dx === 0 && dy === 0) return [g.x, g.y];
+  const hw = g.w / 2 + 5, hh = g.h / 2 + 5;
+  const sx = dx === 0 ? Infinity : hw / Math.abs(dx);
+  const sy = dy === 0 ? Infinity : hh / Math.abs(dy);
+  const s = Math.min(sx, sy, 1);
+  return [g.x + dx * s, g.y + dy * s];
+}
+
+/* ================= SVG render ================= */
+function renderGraph(){
+  const cw = (GRAPH.meta.canvas && GRAPH.meta.canvas.width) || 1080;
+  const ch = (GRAPH.meta.canvas && GRAPH.meta.canvas.height) || 760;
+  const dy = (GRAPH.meta.canvas && GRAPH.meta.canvas.divider_y) || 500;
+
+  let s = '<svg id="graph" viewBox="0 0 ' + cw + ' ' + ch + '" preserveAspectRatio="xMidYMid meet" '
+        + 'xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">';
+
+  // defs: arrow markers
+  s += '<defs>';
+  s += arrowMarker('ar-g', '#8FA3B5');
+  s += arrowMarker('ar-m', '#B9AC98');
+  s += arrowMarker('ar-a', '#CC785C');
+  s += '</defs>';
+
+  // tacit region tint
+  s += '<rect x="0" y="' + dy + '" width="' + cw + '" height="' + (ch - dy) + '" fill="#E6E0D4" opacity="0.45"/>';
+
+  // edges
+  EDGES.forEach(e => {
+    const a = geom[e.src], b = geom[e.dst];
+    if(!a || !b) return;
+    const srcN = byId[e.src], dstN = byId[e.dst];
+    const touchesL2 = (srcN && srcN.layer === 2) || (dstN && dstN.layer === 2);
+    const live = touchesL2 &&
+      ((srcN && srcN.layer === 2 && isAnswered(srcN.id)) || (dstN && dstN.layer === 2 && isAnswered(dstN.id)));
+    let stroke, dash, op, mk;
+    if(live){ stroke = '#CC785C'; dash = ''; op = 1; mk = 'ar-a'; }
+    else if(e.grounding_status === 'missing'){ stroke = '#B9AC98'; dash = ' stroke-dasharray="7 6"'; op = 0.5; mk = 'ar-m'; }
+    else { stroke = '#8FA3B5'; dash = ''; op = 0.85; mk = 'ar-g'; }
+    const p1 = clipToBox(a, b.x, b.y);
+    const p2 = clipToBox(b, a.x, a.y);
+    s += '<line x1="' + p1[0].toFixed(1) + '" y1="' + p1[1].toFixed(1) + '" x2="' + p2[0].toFixed(1) + '" y2="' + p2[1].toFixed(1)
+      + '" stroke="' + stroke + '" stroke-width="' + (live ? 2.4 : 1.8) + '" opacity="' + op + '"' + dash
+      + ' marker-end="url(#' + mk + ')"><title>' + esc(e.rel + ' — ' + (e.rationale || '')) + '</title></line>';
+  });
+
+  // divider line + label chip
+  s += '<line x1="0" y1="' + dy + '" x2="' + cw + '" y2="' + dy + '" stroke="#CC785C" stroke-width="2" stroke-dasharray="10 7" opacity="0.85"/>';
+  const dlabel = GRAPH.meta.divider_label || '';
+  const chipW = Math.min(cw - 40, Math.round(strW(dlabel) * 14) + 40);
+  const chipX = Math.round((cw - chipW) / 2);
+  s += '<rect x="' + chipX + '" y="' + (dy - 17) + '" width="' + chipW + '" height="34" rx="17" fill="#FFFFFF" stroke="#CC785C" stroke-width="1.5"/>';
+  s += '<text x="' + (cw / 2) + '" y="' + (dy + 5) + '" text-anchor="middle" font-size="14.5" font-weight="700" fill="#CC785C">' + esc(dlabel) + '</text>';
+
+  // nodes
+  NODES.forEach(n => s += renderNode(n));
+
+  s += '</svg>';
+  document.getElementById('svgbox').innerHTML = s;
+
+  // wire clicks
+  document.querySelectorAll('#graph .node').forEach(g => {
+    g.addEventListener('click', () => selectNode(g.getAttribute('data-id')));
+  });
+}
+
+function arrowMarker(id, color){
+  return '<marker id="' + id + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">'
+       + '<path d="M0,1 L10,5 L0,9 z" fill="' + color + '"/></marker>';
+}
+
+function renderNode(n){
+  const g = geom[n.id];
+  const x = g.x - g.w / 2, y = g.y - g.h / 2;
+  const sel = (selectedId === n.id) ? ' sel' : '';
+  let fill, stroke, sw, dash, textFill, kindFill, badge = '', extra = '';
+
+  if(n.layer === 1){
+    fill = L1_FILL[n.kind] || '#5B7C99';
+    stroke = L1_STROKE[n.kind] || '#476277';
+    sw = n.kind === 'claim' ? 2 : 1.5;
+    dash = '';
+    textFill = '#FFFFFF';
+    kindFill = 'rgba(255,255,255,0.78)';
+  } else {
+    const ans = isAnswered(n.id);
+    const exf = isExampleFilled(n.id);
+    if(!ans){
+      fill = '#E6E0D4'; stroke = '#D4C5B0'; sw = 2; dash = ' stroke-dasharray="6 5"';
+      textFill = '#6B5E54'; kindFill = 'rgba(107,94,84,0.75)';
+      badge = badgeMark(g, '?', '#FFFFFF', '#6B5E54', '#D4C5B0');
+    } else if(exf){
+      fill = '#CC785C'; stroke = '#C9973F'; sw = 3; dash = '';
+      textFill = '#FFFFFF'; kindFill = 'rgba(255,255,255,0.85)';
+      badge = badgeText(g, '예시', '#FFFFFF', '#8a6420', '#C9973F');
+    } else {
+      fill = '#CC785C'; stroke = '#A85C42'; sw = 2; dash = '';
+      textFill = '#FFFFFF'; kindFill = 'rgba(255,255,255,0.85)';
+      badge = badgeMark(g, '✓', '#FFFFFF', '#CC785C', '#A85C42');
+    }
+    if(n.risk === 'high'){
+      extra += '<circle cx="' + (x + g.w - 11) + '" cy="' + (y + g.h - 11) + '" r="4.5" fill="#C25744"/>';
+    }
+  }
+
+  let out = '<g class="node' + sel + '" data-id="' + esc(n.id) + '">';
+  out += '<title>' + esc(n.text) + '</title>';
+  out += '<rect class="box" x="' + x + '" y="' + y + '" width="' + g.w + '" height="' + g.h
+       + '" rx="11" fill="' + fill + '" stroke="' + stroke + '" stroke-width="' + sw + '"' + dash + '/>';
+  out += '<text x="' + (x + 12) + '" y="' + (y + 14) + '" font-size="10.5" font-weight="800" letter-spacing="0.6" fill="' + kindFill + '">'
+       + esc((KIND_KO[n.kind] || n.kind) + ' · ' + n.id) + '</text>';
+  out += '<text x="' + g.x + '" y="' + (y + PAD_TOP + 13) + '" text-anchor="middle" font-size="' + FONT + '" font-weight="600" fill="' + textFill + '">';
+  g.lines.forEach((ln, i) => {
+    out += '<tspan x="' + g.x + '" dy="' + (i === 0 ? 0 : LINE_H) + '">' + esc(ln) + '</tspan>';
+  });
+  out += '</text>';
+  out += badge + extra;
+  out += '</g>';
+  return out;
+}
+// 배지는 박스 오른쪽-위 모서리에 걸치게 둔다 (본문 텍스트를 가리지 않도록)
+function badgeMark(g, sym, bg, fg, bd){
+  const cx = g.x + g.w / 2 - 5, cy = g.y - g.h / 2 + 5;
+  return '<circle cx="' + cx + '" cy="' + cy + '" r="11.5" fill="' + bg + '" stroke="' + bd + '" stroke-width="1.5"/>'
+       + '<text x="' + cx + '" y="' + (cy + 5) + '" text-anchor="middle" font-size="14" font-weight="800" fill="' + fg + '">' + sym + '</text>';
+}
+function badgeText(g, label, bg, fg, bd){
+  const w = 36, h = 21;
+  const bx = g.x + g.w / 2 - w + 8, by = g.y - g.h / 2 - 7;
+  return '<rect x="' + bx + '" y="' + by + '" width="' + w + '" height="' + h + '" rx="10.5" fill="' + bg + '" stroke="' + bd + '" stroke-width="1.5"/>'
+       + '<text x="' + (bx + w / 2) + '" y="' + (by + 15) + '" text-anchor="middle" font-size="11.5" font-weight="800" fill="' + fg + '">' + esc(label) + '</text>';
+}
+
+/* ================= counters ================= */
+function updateCounters(){
+  const filled = L1.length + L2.filter(n => isAnswered(n.id)).length;
+  const done = L2.filter(n => isAnswered(n.id)).length;
+  const empty = L2.length - done;
+  document.getElementById('cFilled').textContent = filled;
+  document.getElementById('cEmpty').textContent = empty;
+  document.getElementById('cProg').textContent = done + '/' + L2.length;
+  document.getElementById('barFill').style.width = (L2.length ? (done / L2.length * 100) : 0) + '%';
+  document.getElementById('pillEmpty').classList.toggle('done', empty === 0);
+  document.getElementById('sN').textContent = L2.length;
+  document.getElementById('successLine').classList.toggle('show', empty === 0 && L2.length > 0);
+}
+
+/* ================= right panel ================= */
+function selectNode(id){
+  selectedId = id;
+  pendingExample = false;
+  renderGraph();
+  renderPanel();
+}
+
+function renderPanel(){
+  const el = document.getElementById('detail');
+  if(!selectedId || !byId[selectedId]){
+    el.innerHTML = '<div class="ph"><span class="big">회색 노드를 클릭하세요.</span>논문에 없어서 비어 있는 자리입니다.<br><br>'
+      + '<span class="small">파란 노드 = 논문·코드에서 그대로 뽑아낸 것.<br>회색 노드 = 스키마가 있어야 한다고 말하지만 논문 어디에도 없는 것.</span></div>';
+    return;
+  }
+  const n = byId[selectedId];
+  if(n.layer === 1){ renderPanelL1(el, n); } else { renderPanelL2(el, n); }
+}
+
+function renderPanelL1(el, n){
+  let h = '';
+  h += '<div><span class="chip kind l1">' + esc(KIND_KO[n.kind] || n.kind) + '</span>'
+     + '<span class="chip kind l1">' + esc(n.id) + '</span></div>';
+  h += '<div class="p-title">' + esc(n.text) + '</div>';
+  if(n.detail){ h += '<div class="p-lbl">내용</div><div class="p-body">' + esc(n.detail) + '</div>'; }
+  if(n.provenance){ h += '<div class="p-lbl">출처</div><div class="p-body small muted">' + esc(n.provenance) + '</div>'; }
+  el.innerHTML = h;
+}
+
+function renderPanelL2(el, n){
+  const ans = answers[n.id];
+  const answered = isAnswered(n.id);
+  let h = '';
+  h += '<div><span class="chip kind">' + esc(KIND_KO[n.kind] || n.kind) + '</span>';
+  if(n.risk === 'high') h += '<span class="chip risk">리스크 높음</span>';
+  if(answered && ans.isExample) h += '<span class="chip ex">예시로 채움</span>';
+  h += '<span class="chip kind">' + esc(n.id) + '</span></div>';
+
+  h += '<div class="p-q">' + esc(n.question || n.text) + '</div>';
+
+  if(n.why_it_matters){
+    h += '<div class="p-lbl">왜 필요한가</div><div class="p-body">' + esc(n.why_it_matters) + '</div>';
+  }
+  if(n.paper_says){
+    h += '<div class="p-lbl">논문이 말하는 데까지</div><div class="quote">' + esc(n.paper_says) + '</div>';
+  }
+
+  if(answered){
+    h += '<div class="p-lbl">저자 답변</div>';
+    h += '<div class="saved' + (ans.isExample ? ' ex' : '') + '">' + esc(ans.text) + '</div>';
+    h += '<div class="btnrow"><button class="btn primary" id="btnEdit">수정</button>'
+       + '<button class="btn" id="btnClear">지우기</button></div>';
+  } else {
+    h += '<div class="p-lbl">저자 답변</div>';
+    h += '<textarea id="ansBox" rows="5" placeholder="' + esc(n.example || '') + '"></textarea>';
+    h += '<div class="btnrow"><button class="btn primary" id="btnSave">저장</button>'
+       + '<button class="btn" id="btnExample">예시로 채우기</button>'
+       + '<button class="btn" id="btnClear">지우기</button></div>';
+  }
+  el.innerHTML = h;
+  wirePanel(n);
+}
+
+function wirePanel(n){
+  const box = document.getElementById('ansBox');
+  const save = document.getElementById('btnSave');
+  const ex = document.getElementById('btnExample');
+  const clr = document.getElementById('btnClear');
+  const edit = document.getElementById('btnEdit');
+
+  if(box) box.addEventListener('input', () => { pendingExample = false; });
+
+  if(save) save.addEventListener('click', () => {
+    const v = box ? box.value.trim() : '';
+    if(!v){ if(box) box.focus(); return; }
+    answers[n.id] = { text:v, isExample: pendingExample };
+    pendingExample = false;
+    commit();
+  });
+
+  if(ex) ex.addEventListener('click', () => {
+    const v = (n.example || '').trim();
+    if(box) box.value = v;
+    pendingExample = true;
+    if(v){ answers[n.id] = { text:v, isExample:true }; commit(); }
+  });
+
+  if(clr) clr.addEventListener('click', () => {
+    delete answers[n.id];
+    pendingExample = false;
+    commit();
+  });
+
+  if(edit) edit.addEventListener('click', () => {
+    const cur = answers[n.id] ? answers[n.id].text : '';
+    const wasEx = answers[n.id] ? !!answers[n.id].isExample : false;
+    delete answers[n.id];
+    saveState();
+    renderPanelL2(document.getElementById('detail'), n);
+    const b = document.getElementById('ansBox');
+    if(b){ b.value = cur; b.focus(); }
+    pendingExample = wasEx;
+    renderGraph();
+    updateCounters();
+    updateExport();
+  });
+}
+
+function commit(){
+  saveState();
+  renderGraph();
+  renderPanel();
+  updateCounters();
+  updateExport();
+}
+
+/* ================= tab 1 ================= */
+function renderSources(){
+  const p = GRAPH.meta.paper || {}, c = GRAPH.meta.code || {};
+  document.getElementById('schemaName').textContent = GRAPH.meta.schema || 'schema';
+  document.getElementById('srcPaper').innerHTML =
+      '<span class="tag">논문 PDF</span>'
+    + '<h3>' + esc(p.title || '') + '</h3>'
+    + '<div class="row"><b>저자</b> · ' + esc(p.authors || '') + '</div>'
+    + '<div class="row"><b>게재</b> · ' + esc(p.venue || '') + '</div>'
+    + '<div class="row"><b>DOI</b> · ' + esc(p.doi || '') + '</div>'
+    + (p.file ? '<div class="row"><b>파일</b> · ' + esc(p.file) + '</div>' : '');
+  document.getElementById('srcCode').innerHTML =
+      '<span class="tag">공개 저장소</span>'
+    + '<h3>' + esc(c.label || '') + '</h3>'
+    + '<div class="row"><b>주소</b> · <a href="' + esc(c.url || '#') + '" target="_blank" rel="noopener">' + esc(c.url || '') + '</a></div>'
+    + (c.note ? '<div class="row" style="margin-top:12px;line-height:1.7">' + esc(c.note) + '</div>' : '');
+  document.getElementById('gapCount').textContent = L2.length;
+}
+
+/* ================= tab 3 ================= */
+function renderAB(){
+  document.getElementById('abQ').textContent = AB.question || '';
+  document.getElementById('abLeftLabel').textContent = (AB.without && AB.without.label) || '';
+  document.getElementById('abRightLabel').textContent = (AB.with && AB.with.label) || '';
+  document.getElementById('abLeftBody').innerHTML =
+    ((AB.without && AB.without.body) || []).map(t => '<p>' + esc(t) + '</p>').join('');
+
+  const cites = (AB.with && AB.with.citations) || [];
+  document.getElementById('abRightBody').innerHTML =
+    ((AB.with && AB.with.body) || []).map(t => {
+      let html = esc(t);
+      cites.forEach(c => {
+        const q = esc(c.quote || '');
+        if(q && html.indexOf(q) !== -1){
+          html = html.split(q).join('<mark>' + q + '</mark>');
+        }
+      });
+      return '<p>' + html + '</p>';
+    }).join('');
+
+  document.getElementById('abCites').innerHTML =
+    cites.map(c => '<span class="cchip">' + esc(c.node_id) + '</span>').join('');
+
+  const cl = document.getElementById('abClosing');
+  cl.textContent = AB.closing || '';
+  cl.style.display = AB.closing ? 'block' : 'none';
+  const note = document.getElementById('abNote');
+  note.textContent = AB.note || '';
+  note.style.display = AB.note ? 'block' : 'none';
+}
+
+/* ================= tab 4 ================= */
+function buildMarkdown(){
+  const p = GRAPH.meta.paper || {};
+  const lines = [];
+  lines.push('# ' + (p.title || ''));
+  lines.push((p.authors || '') + ' · ' + (p.venue || ''));
+  lines.push('');
+  lines.push('## 논문에서 추출한 것');
+  L1.forEach(n => {
+    lines.push('### ' + (KIND_KO[n.kind] || n.kind) + ' — ' + n.text);
+    if(n.detail) lines.push(n.detail);
+    if(n.provenance) lines.push('(출처: ' + n.provenance + ')');
+    lines.push('');
+  });
+  lines.push('## 논문에 없어서 저자에게 물어 채운 것');
+  L2.forEach(n => {
+    if(!isAnswered(n.id)) return;
+    const a = answers[n.id];
+    lines.push('### [' + (KIND_KO[n.kind] || n.kind) + '] ' + n.text);
+    lines.push('**질문:** ' + (n.question || ''));
+    lines.push('**답변:** ' + a.text + (a.isExample ? '  _(예시)_' : ''));
+    lines.push('**논문이 말하는 데까지:** ' + (n.paper_says || ''));
+    lines.push('');
+  });
+  const doneN = L2.filter(n => isAnswered(n.id)).length;
+  if(doneN === 0){
+    lines.push('_(아직 채워진 항목이 없습니다 — 회색 노드에 답하면 여기에 쌓입니다.)_');
+    lines.push('');
+  }
+  return lines.join('\n');
+}
+function buildJSON(){
+  const out = JSON.parse(JSON.stringify(GRAPH));
+  out.nodes.forEach(n => {
+    if(n.layer === 2 && isAnswered(n.id)){
+      n.answer = answers[n.id].text;
+      n.answer_is_example = !!answers[n.id].isExample;
+      n.provenance = answers[n.id].isExample ? 'demo:example' : 'author:interview';
+    }
+  });
+  out.edges.forEach(e => {
+    const s = byId[e.src], d = byId[e.dst];
+    const live = (s && s.layer === 2 && isAnswered(s.id)) || (d && d.layer === 2 && isAnswered(d.id));
+    if(live) e.grounding_status = 'grounded';
+  });
+  return JSON.stringify(out, null, 2);
+}
+function updateExport(){
+  const pre = document.getElementById('mdPrev');
+  if(pre) pre.textContent = buildMarkdown();
+}
+function copyText(txt){
+  let ok = false;
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(showOk, () => fallbackCopy(txt));
+      return;
+    }
+  }catch(e){}
+  ok = fallbackCopy(txt);
+  return ok;
+}
+function fallbackCopy(txt){
+  const ta = document.getElementById('copySink');
+  ta.removeAttribute('readonly');
+  ta.value = txt;
+  ta.select();
+  ta.setSelectionRange(0, txt.length);
+  let ok = false;
+  try{ ok = document.execCommand('copy'); }catch(e){ ok = false; }
+  ta.setAttribute('readonly', 'readonly');
+  if(ok) showOk();
+  return ok;
+}
+function showOk(){
+  const m = document.getElementById('okMsg');
+  m.classList.add('show');
+  clearTimeout(showOk._t);
+  showOk._t = setTimeout(() => m.classList.remove('show'), 1800);
+}
+
+/* ================= tabs ================= */
+function switchTab(t){
+  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === String(t)));
+  for(let i = 1; i <= 4; i++){
+    document.getElementById('panel' + i).classList.toggle('active', String(i) === String(t));
+  }
+  if(String(t) === '4') updateExport();
+}
+
+/* ================= init ================= */
+function init(){
+  loadState();
+  computeGeom();
+  renderSources();
+  renderAB();
+  renderGraph();
+  renderPanel();
+  updateCounters();
+  updateExport();
+
+  document.querySelectorAll('#tabs button').forEach(b => {
+    b.addEventListener('click', () => switchTab(b.dataset.tab));
+  });
+  document.getElementById('goGraph').addEventListener('click', () => switchTab(2));
+
+  document.getElementById('fillAll').addEventListener('click', () => {
+    L2.forEach(n => {
+      if(!isAnswered(n.id) && n.example) answers[n.id] = { text:n.example, isExample:true };
+    });
+    commit();
+    switchTab(2);
+  });
+  document.getElementById('resetAll').addEventListener('click', () => {
+    if(confirm('채워진 답변을 전부 지웁니다. 계속할까요?')){
+      answers = {};
+      selectedId = null;
+      saveState();
+      commit();
+    }
+  });
+  document.getElementById('copyMd').addEventListener('click', () => copyText(buildMarkdown()));
+  document.getElementById('copyJson').addEventListener('click', () => copyText(buildJSON()));
+}
+init();
+</script>
+</body>
+</html>

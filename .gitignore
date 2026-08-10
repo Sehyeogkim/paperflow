@@ -14,3 +14,7 @@ master_thesis/data/paraview_model/*.vtu
 
 # temp verification runs
 projects/_verify_run/
+
+# demo_interview: local-only material (real name / interview strategy / paper PDF)
+demo_interview/DEMO_SCRIPT.md
+demo_interview/*.pdf
