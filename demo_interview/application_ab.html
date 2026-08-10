@@ -5,157 +5,69 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PaperFlow — Graph JSON A/B</title>
 <style>
-  :root{
-    --bg:#f0eee6;--panel:#fffdf8;--surface:#e8e3d9;--surface2:#ded7ca;
-    --border:#d4c5b0;--text:#1a1a1a;--muted:#6b5e54;--terra:#b95f42;
-    --blue:#6e9bd1;--amber:#d9a441;--green:#7a9a6d;--red:#c25744;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo",sans-serif}
+  :root{--bg:#f0eee6;--paper:#fffdf8;--soft:#e8e3d9;--border:#d4c5b0;--text:#1a1a1a;--body:#3d3833;--muted:#6b5e54;--terra:#b95f42;--amber:#b88a25}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo",sans-serif}
   header{height:62px;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid var(--border);gap:14px}
-  header h1{font-size:20px;margin:0;font-weight:750}
-  header .sub{color:var(--muted);font-size:14px}
-  header .spacer{flex:1}
-  .run{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
-  main{max-width:1500px;margin:0 auto;padding:22px}
-  .scenario-nav{display:flex;gap:8px;margin-bottom:18px}
-  button{font:inherit;cursor:pointer}
-  .scenario-nav button{border:1px solid var(--border);background:rgba(255,253,248,.74);color:var(--muted);padding:9px 15px;border-radius:8px;font-weight:700}
-  .scenario-nav button.active{color:var(--terra);border-color:var(--terra);background:rgba(204,120,92,.12)}
-  .question{border-left:3px solid var(--terra);padding:4px 0 4px 15px;margin:0 0 18px}
-  .question .label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:7px}
-  .question .text{font-size:18px;line-height:1.65;font-weight:650}
-  .compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
-  .answer{border:1px solid var(--border);background:var(--panel);border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(74,59,43,.045)}
-  .answer.graph{border-color:rgba(185,95,66,.6);background:#fffaf5}
-  .answer-head{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border)}
-  .answer-head h2{font-size:15px;margin:0;font-weight:800}
-  .answer-head .tag{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);margin-left:auto}
-  .answer.graph .answer-head h2{color:var(--terra)}
-  .answer-body{padding:16px 18px 18px}
-  .verdict{display:flex;align-items:center;gap:9px;margin-bottom:14px;font-weight:800}
-  .verdict i{width:9px;height:9px;border-radius:50%;background:var(--amber)}
-  .answer.graph .verdict i{background:var(--terra)}
-  .section{margin-top:16px}
-  .section:first-child{margin-top:0}
-  .section h3{font-size:11px;color:var(--muted);letter-spacing:.9px;text-transform:uppercase;margin:0 0 8px}
-  ul{margin:0;padding-left:19px}
-  li{font-size:14px;line-height:1.7;color:#3d3833;margin-bottom:7px}
-  code{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--terra);background:rgba(204,120,92,.12);padding:2px 5px;border-radius:4px}
-  .delta{margin-top:16px;border-top:1px solid var(--border);padding-top:16px}
-  .delta-title{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.9px;text-transform:uppercase;margin-bottom:10px}
-  .delta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
-  .delta-item{background:var(--surface);border:1px solid var(--border);padding:11px 12px;border-radius:9px}
-  .delta-item b{display:block;font-size:13px;color:var(--terra);margin-bottom:5px}
-  .delta-item span{display:block;font-size:13px;line-height:1.55;color:#514a43}
-  .honesty{margin-top:14px;padding:11px 13px;border:1px dashed #bcae9c;background:rgba(255,253,248,.58);color:var(--muted);font-size:12.5px;line-height:1.65;border-radius:8px}
-  .hidden{display:none}
-  @media(max-width:850px){
-    header{padding:0 15px}.run{display:none}main{padding:15px}.compare{grid-template-columns:1fr}.delta-grid{grid-template-columns:1fr}.question .text{font-size:16px}
-  }
+  header h1{font-size:20px;margin:0} header .sub{color:var(--muted);font-size:14px} header .rule{margin-left:auto;font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
+  main{max-width:1440px;margin:auto;padding:22px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:17px}button{font:inherit;cursor:pointer}
+  .tabs button{padding:9px 14px;border:1px solid var(--border);border-radius:8px;background:rgba(255,253,248,.72);color:var(--muted);font-weight:750}.tabs button.active{color:var(--terra);border-color:var(--terra);background:rgba(185,95,66,.08)}
+  .prompt{display:grid;grid-template-columns:145px 1fr;gap:14px;padding:14px 16px;background:var(--soft);border:1px solid var(--border);border-radius:10px;margin-bottom:13px}.prompt b{font-size:12px;color:var(--terra);letter-spacing:.6px;text-transform:uppercase}.prompt p{font-size:13px;line-height:1.6;margin:0;color:var(--body)}
+  .question{border-left:3px solid var(--terra);padding:3px 0 3px 14px;margin:0 0 17px}.question small{display:block;color:var(--muted);font-weight:800;margin-bottom:6px}.question strong{font-size:17px;line-height:1.55}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:14px}.answer{background:var(--paper);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(74,59,43,.045)}.answer.graph{border-color:rgba(185,95,66,.62);background:#fffaf5}
+  .answer-head{height:48px;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);gap:8px}.answer-head h2{font-size:15px;margin:0}.answer.graph h2{color:var(--terra)}.tag{margin-left:auto;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
+  .input{padding:12px 16px;border-bottom:1px solid var(--border);font-size:12px;color:var(--muted)}.input b{color:var(--body)}
+  .response{padding:18px 18px 20px;min-height:140px}.response-label{font-size:11px;color:var(--muted);letter-spacing:.8px;font-weight:800;text-transform:uppercase;margin-bottom:10px}.response p{margin:0;font-size:16px;line-height:1.72;color:var(--body);font-weight:560}.response code{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--terra);background:rgba(185,95,66,.09);padding:2px 4px;border-radius:4px}
+  .count{margin-top:13px;text-align:right;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}.takeaway{margin-top:14px;padding:12px 14px;border:1px dashed #bcae9c;border-radius:9px;color:var(--muted);font-size:13px;line-height:1.6}.takeaway b{color:var(--terra)}.hidden{display:none}
+  @media(max-width:850px){header{padding:0 15px}.rule{display:none}main{padding:15px}.prompt{grid-template-columns:1fr;gap:5px}.compare{grid-template-columns:1fr}.response{min-height:0}}
 </style>
 </head>
 <body>
-<header>
-  <h1>PaperFlow</h1><span class="sub">Graph JSON application test</span><span class="spacer"></span>
-  <span class="run">same system prompt · same question · graph only differs</span>
-</header>
+<header><h1>PaperFlow</h1><span class="sub">Graph JSON application test</span><span class="rule">same model · same system prompt · source only differs</span></header>
 <main>
-  <nav class="scenario-nav" aria-label="평가 시나리오">
-    <button type="button" class="active" data-scenario="research">연구 확장</button>
-    <button type="button" data-scenario="handover">인수인계</button>
+  <nav class="tabs" aria-label="활용 시나리오">
+    <button class="active" data-page="handover">1. 인수인계</button><button data-page="proposal">2. 제안서 작성</button><button data-page="brainstorm">3. 연구 Brainstorming</button><button data-page="cv">4. 연구 CV·Resume</button>
   </nav>
 
-  <section id="research" class="scenario">
-    <div class="question"><div class="label">동일 질문</div><div class="text">이 연구를 다음 논문으로 확장한다면, 기존 연구를 반복하지 않으면서 가장 가치 있는 후속 연구 방향 6개를 제안해 주세요.</div></div>
+  <section id="handover" class="page">
+    <div class="prompt"><b>Exact system prompt</b><p>당신은 연구 작업 지원 AI입니다. 제공된 자료만 근거로 답하고, 자료에 없는 사실은 추측하지 말고 ‘알 수 없음’으로 표시하세요. 결론과 실행 항목을 한국어 200자 이내로 작성하세요. graph.json이 제공되면 근거 노드 ID를 [ID]로 인용하세요.</p></div>
+    <div class="question"><small>동일 질문</small><strong>새 연구원이 이 AET + DL augmentation 연구를 재현합니다. 실행 순서, 주의사항과 중단 기준을 인수인계 문장으로 정리해 주세요.</strong></div>
     <div class="compare">
-      <article class="answer">
-        <div class="answer-head"><h2>A · System prompt only</h2><span class="tag">graph 없음</span></div>
-        <div class="answer-body">
-          <div class="verdict"><i></i>일반 지식으로 가능한 확장 방향</div>
-          <div class="section"><h3>제안 결과</h3><ul>
-            <li>선형투영 대신 multislice/PRISM으로 학습 데이터를 생성해 두꺼운 입자로 확장</li>
-            <li>재구성 파라미터와 tilt 기하를 무작위화한 domain randomization</li>
-            <li>projection-consistency를 이용한 자기지도 fine-tuning</li>
-            <li>앙상블·MC-dropout으로 원자별 불확실도 출력</li>
-            <li>합금·다원소계에서 원자 좌표와 화학종을 함께 예측</li>
-            <li>tilt 장수와 dose를 낮추며 성능 붕괴 경계 탐색</li>
-          </ul></div>
-        </div>
-      </article>
-      <article class="answer graph">
-        <div class="answer-head"><h2>B · System prompt + graph.json</h2><span class="tag">27 nodes · 28 edges</span></div>
-        <div class="answer-body">
-          <div class="verdict"><i></i>기존 판단·실패 지식을 뒤집어 연구 질문으로 전환</div>
-          <div class="section"><h3>제안 결과</h3><ul>
-            <li>R-factor 재투영 물리 손실로 유령 피크를 학습 단계에서 억제 <code>[PF2][E1]</code></li>
-            <li>B-factor와 GENFIRE 설정을 조건 입력으로 받는 단일 네트워크 <code>[TH1][DC1]</code></li>
-            <li>수동 보정 대상을 줄이는 원자 좌표 직접 회귀·불확실도 헤드 <code>[PF1][M5]</code></li>
-            <li>선형투영을 multislice/PRISM 동역학 산란으로 교체 <code>[M2][M6]</code></li>
-            <li>twin boundary·stacking fault를 학습셋에 넣어 27장 증가 규칙 자체를 제거 <code>[TH3]</code></li>
-            <li>원소별 퍼텐셜을 이용한 species-resolved 합금 구조 복원 <code>[M2][E2]</code></li>
-          </ul></div>
-        </div>
-      </article>
-    </div>
-    <div class="delta"><div class="delta-title">그래프가 만든 차이</div><div class="delta-grid">
-      <div class="delta-item"><b>일반 아이디어 → 문제 연결</b><span>각 제안이 실제 실패·판단 노드에서 출발합니다.</span></div>
-      <div class="delta-item"><b>새로운 고유 제안</b><span>면결함을 학습셋에 넣어 tilt 증가 필요를 없애는 방향은 <code>[TH3]</code>에서 나왔습니다.</span></div>
-      <div class="delta-item"><b>추적 가능성</b><span>아이디어마다 어떤 관찰과 판단에서 나왔는지 다시 확인할 수 있습니다.</span></div>
-    </div></div>
-    <div class="honesty">실측에서는 두 답변의 아이디어 대부분이 겹쳤습니다. 그래프의 효과는 아이디어 개수 증가보다 연구자의 실제 제약에 연결된 제안과 근거 추적에서 나타났습니다.</div>
+      <article class="answer"><div class="answer-head"><h2>A · 논문 원문 + System prompt</h2><span class="tag">paper.pdf</span></div><div class="input"><b>입력 자료</b> 논문 원문</div><div class="response"><div class="response-label">Response</div><p data-answer>학습 데이터 생성, GENFIRE 재구성, 3D-Unet 학습, atom tracing, PRISM 검증 순으로 수행하세요. 새 시료의 B-factor와 tilt 조건을 확인하고, R-factor와 식별 정확도로 결과를 검증하세요.</p><div class="count"></div></div></article>
+      <article class="answer graph"><div class="answer-head"><h2>B · graph.json + System prompt</h2><span class="tag">27 nodes · 28 edges</span></div><div class="input"><b>입력 자료</b> 논문 지식 + 연구자 판단·실패 경험</div><div class="response"><div class="response-label">Response</div><p data-answer>B-factor는 실험 피크 폭에서 다시 정하고[D3][TH1], 면결함 시 27장·±75°를 검토하세요[TH3]. 유령 피크·R-factor 미개선이면 중단하고[PF2], 수동 보정은 독립 검토하세요[PF1].</p><div class="count"></div></div></article>
+    </div><div class="takeaway"><b>차이:</b> 논문은 재현 순서를 전달하고, 그래프는 연구자가 실제로 사용한 변경 조건과 실패 중단 신호까지 전달합니다.</div>
   </section>
 
-  <section id="handover" class="scenario hidden">
-    <div class="question"><div class="label">동일 질문</div><div class="text">새 연구원이 이 AET + DL augmentation 파이프라인을 재현해야 합니다. 실행 순서, 확인 사항, 하지 말아야 할 것, 저자에게 물어야 할 것을 정리해 주세요.</div></div>
+  <section id="proposal" class="page hidden">
+    <div class="prompt"><b>Exact system prompt</b><p>당신은 연구 작업 지원 AI입니다. 제공된 자료만 근거로 답하고, 자료에 없는 사실은 추측하지 말고 ‘알 수 없음’으로 표시하세요. 결론과 실행 항목을 한국어 200자 이내로 작성하세요. graph.json이 제공되면 근거 노드 ID를 [ID]로 인용하세요.</p></div>
+    <div class="question"><small>동일 질문</small><strong>이 연구를 바탕으로 후속 연구 제안서의 문제 정의, 핵심 가설과 검증 실험을 작성해 주세요.</strong></div>
     <div class="compare">
-      <article class="answer">
-        <div class="answer-head"><h2>A · System prompt only</h2><span class="tag">graph 없음</span></div>
-        <div class="answer-body">
-          <div class="verdict"><i></i>논문 절차 중심 체크리스트</div>
-          <div class="section"><h3>실행</h3><ul>
-            <li>환경과 공개 코드를 설치하고 제공된 데이터로 파이프라인을 재현</li>
-            <li>학습 데이터 생성 → GENFIRE → 네트워크 학습 → atom tracing → 검증 순으로 수행</li>
-            <li>새 시료에서는 B-factor·dose·tilt 범위를 다시 튜닝</li>
-          </ul></div>
-          <div class="section"><h3>확인 필요</h3><ul>
-            <li>학습 데이터의 Poisson noise 수준</li><li>학습·실험 tilt 기하 불일치</li><li>강도 scale factor 계산법</li><li>원자·인공물 분류 기준</li>
-          </ul></div>
-        </div>
-      </article>
-      <article class="answer graph">
-        <div class="answer-head"><h2>B · System prompt + graph.json</h2><span class="tag">schema + answers</span></div>
-        <div class="answer-body">
-          <div class="verdict"><i></i>실행 규칙과 실패 신호를 포함한 인수인계</div>
-          <div class="section"><h3>Do</h3><ul>
-            <li>B-factor는 상수로 복사하지 말고 실험 피크 폭을 다시 피팅 <code>[D3][TH1]</code></li>
-            <li>면결함이 예상되면 처음부터 27장·±75° 조건을 검토 <code>[TH3]</code></li>
-            <li>수동 보정은 독립된 두 사람이 수행하고 일치도를 확인 <code>[PF1]</code></li>
-          </ul></div>
-          <div class="section"><h3>Check / Do not</h3><ul>
-            <li>유령 피크·피크 분열·R-factor 미개선이 보이면 결과를 믿지 않음 <code>[TH1][PF2]</code></li>
-            <li>학습용과 실험용 GENFIRE 설정을 이유 없이 통일하지 않음 <code>[DC1]</code></li>
-            <li>1.8 Å과 1.6 Å을 같은 단계에 섞어 쓰지 않음 <code>[PF3]</code></li>
-          </ul></div>
-        </div>
-      </article>
-    </div>
-    <div class="delta"><div class="delta-title">그래프가 만든 차이</div><div class="delta-grid">
-      <div class="delta-item"><b>절차 → 실행 규칙</b><span>값만 전달하지 않고 언제 바꾸고 무엇을 확인하는지 함께 전달합니다.</span></div>
-      <div class="delta-item"><b>실패 재발 방지</b><span>하지 말아야 할 것과 중단 신호가 인수인계에 포함됩니다.</span></div>
-      <div class="delta-item"><b>질문은 줄지 않음</b><span>실측에서 저자 질문은 5개→7개였습니다. 대신 더 깊은 누락 지식을 드러냈습니다.</span></div>
-    </div></div>
-    <div class="honesty">인수인계 실측에서는 graph가 질문 수를 줄이지 않았습니다. 효용은 빠른 온보딩보다 숨은 판단·실패 기준을 노출하고 다음 인터뷰 질문을 정확하게 만드는 데 있었습니다.</div>
+      <article class="answer"><div class="answer-head"><h2>A · 논문 원문 + System prompt</h2><span class="tag">paper.pdf</span></div><div class="input"><b>입력 자료</b> 논문 원문</div><div class="response"><div class="response-label">Response</div><p data-answer>문제는 제한된 tilt와 낮은 SNR에서 표면 원자 복원이 어렵다는 점입니다. 물리 기반 학습과 불확실도 추정을 결합하면 정확도가 향상된다는 가설을 세우고, PRISM test set과 R-factor로 검증합니다.</p><div class="count"></div></div></article>
+      <article class="answer graph"><div class="answer-head"><h2>B · graph.json + System prompt</h2><span class="tag">27 nodes · 28 edges</span></div><div class="input"><b>입력 자료</b> 논문 지식 + 연구자 판단·실패 경험</div><div class="response"><div class="response-label">Response</div><p data-answer>문제는 B-factor·재구성 설정 불일치가 유령 피크를 만들 수 있다는 점입니다[TH1][PF2][DC1]. 조건부 네트워크와 재투영 손실이 이를 억제한다는 가설을 세우고, PRISM·R-factor·시드 재현성으로 검증합니다.</p><div class="count"></div></div></article>
+    </div><div class="takeaway"><b>차이:</b> 그래프는 일반적 성능 향상보다 연구자가 이미 목격한 실패 원인을 제안서의 문제 정의와 위험관리로 전환합니다.</div>
+  </section>
+
+  <section id="brainstorm" class="page hidden">
+    <div class="prompt"><b>Exact system prompt</b><p>당신은 연구 작업 지원 AI입니다. 제공된 자료만 근거로 답하고, 자료에 없는 사실은 추측하지 말고 ‘알 수 없음’으로 표시하세요. 결론과 실행 항목을 한국어 200자 이내로 작성하세요. graph.json이 제공되면 근거 노드 ID를 [ID]로 인용하세요.</p></div>
+    <div class="question"><small>동일 질문</small><strong>기존 연구를 단순 반복하지 않는 후속 연구 방향 3개를 제안하고, 가장 우선할 하나를 선택해 주세요.</strong></div>
+    <div class="compare">
+      <article class="answer"><div class="answer-head"><h2>A · 논문 원문 + System prompt</h2><span class="tag">paper.pdf</span></div><div class="input"><b>입력 자료</b> 논문 원문</div><div class="response"><div class="response-label">Response</div><p data-answer>① 합금·다원소 원자 식별 ② 저선량·소수 tilt 복원 ③ 원자별 불확실도 추정. 촉매 표면의 조성과 구조를 함께 분석할 수 있어 응용 범위가 가장 크게 확장되는 ①을 우선합니다.</p><div class="count"></div></div></article>
+      <article class="answer graph"><div class="answer-head"><h2>B · graph.json + System prompt</h2><span class="tag">27 nodes · 28 edges</span></div><div class="input"><b>입력 자료</b> 논문 지식 + 연구자 판단·실패 경험</div><div class="response"><div class="response-label">Response</div><p data-answer>① 면결함 포함 학습으로 27장 규칙 제거[TH3] ② B-factor·GENFIRE 조건부 학습[TH1][DC1] ③ 유령 피크 억제 물리 손실[PF2]. 기존 실험 병목을 직접 줄이는 ①을 우선합니다.</p><div class="count"></div></div></article>
+    </div><div class="takeaway"><b>차이:</b> 논문은 분야의 일반 확장을 제안하고, 그래프는 연구자의 실제 판단 규칙을 제거하거나 자동화하는 방향을 제안합니다.</div>
+  </section>
+
+  <section id="cv" class="page hidden">
+    <div class="prompt"><b>Exact system prompt</b><p>당신은 연구 작업 지원 AI입니다. 제공된 자료만 근거로 답하고, 자료에 없는 사실은 추측하지 말고 ‘알 수 없음’으로 표시하세요. 결론과 실행 항목을 한국어 200자 이내로 작성하세요. graph.json이 제공되면 근거 노드 ID를 [ID]로 인용하세요.</p></div>
+    <div class="question"><small>동일 질문</small><strong>이 연구에서 연구자가 보여준 기여와 역량을 CV용 bullet 2개로 작성해 주세요. 자료로 확인되지 않는 개인 역할은 만들지 마세요.</strong></div>
+    <div class="compare">
+      <article class="answer"><div class="answer-head"><h2>A · 논문 원문 + System prompt</h2><span class="tag">paper.pdf</span></div><div class="input"><b>입력 자료</b> 논문 원문</div><div class="response"><div class="response-label">Response</div><p data-answer>• 신경망 보조 AET로 Pt 나노입자의 3차원 표면 원자 구조를 복원하고 98.8% 식별 정확도와 15.1 pm 정밀도를 달성함. • 데이터 생성·3D-Unet·원자 추적·PRISM 검증 파이프라인을 구축함.</p><div class="count"></div></div></article>
+      <article class="answer graph"><div class="answer-head"><h2>B · graph.json + System prompt</h2><span class="tag">27 nodes · 28 edges</span></div><div class="input"><b>입력 자료</b> 논문 지식 + 연구자 판단·실패 경험</div><div class="response"><div class="response-label">Response</div><p data-answer>• B-factor·tilt 조건의 적용 경계와 유령 피크 실패 신호를 정의해 원자 복원의 신뢰성을 높임[TH1][TH3][PF2]. • 수동 보정과 재구성 설정의 판단 기준을 체계화해 재현 가능한 AET 워크플로를 설계함[PF1][DC1].</p><div class="count"></div></div></article>
+    </div><div class="takeaway"><b>주의:</b> 한 논문 그래프로는 해당 프로젝트 역량만 표현할 수 있습니다. 연구자 전체 CV는 여러 논문의 그래프와 개인 역할 확인이 필요합니다.</div>
   </section>
 </main>
 <script>
-  const buttons=[...document.querySelectorAll('[data-scenario]')];
-  const sections=[...document.querySelectorAll('.scenario')];
-  buttons.forEach(button=>button.addEventListener('click',()=>{
-    const key=button.dataset.scenario;
-    buttons.forEach(b=>b.classList.toggle('active',b===button));
-    sections.forEach(section=>section.classList.toggle('hidden',section.id!==key));
-  }));
+  const buttons=[...document.querySelectorAll('[data-page]')],pages=[...document.querySelectorAll('.page')];
+  buttons.forEach(button=>button.addEventListener('click',()=>{buttons.forEach(b=>b.classList.toggle('active',b===button));pages.forEach(page=>page.classList.toggle('hidden',page.id!==button.dataset.page));}));
+  document.querySelectorAll('[data-answer]').forEach(answer=>{const count=answer.parentElement.querySelector('.count'),length=[...answer.textContent].length;count.textContent=`${length} / 200자`;if(length>200)count.style.color='#c25744';});
 </script>
 </body>
 </html>
