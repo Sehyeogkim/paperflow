@@ -41,16 +41,20 @@ tacit:
       - observable_signal      # 어긋났음을 알려주는 관측 신호
       - transfer_condition     # 시료/물질이 바뀌면 어떻게 다시 정하는가
 
-  pitfall:
-    description: 실패 양상 + 증상 + 회피법
-    trigger: 사람의 판단이 개입하거나, 방법이 실패할 수 있는데 실패 조건이 서술되지 않았을 때
+  pitfall:                     # 화면 표기: 「점검」
+    description: 무엇을 확인하는가 — 틀렸다는 걸 알아채는 법
+    trigger: 사람의 판단이 개입하거나, 방법이 실패할 수 있는데 그 확인 방법이 서술되지 않았을 때
+    # 표기를 '함정'에서 '점검'으로 바꾼 이유:
+    #   "뭐가 잘못될 수 있습니까?" -> 연구자가 생각해야 하고 방어적이 된다
+    #   "뭘 확인하십니까?"        -> 매일 하는 일이라 즉답이 나온다
+    # 같은 정보를 얻는데 대답 문턱이 다르다. 이 pack은 인터뷰 도구이므로 후자를 택한다.
     question_template: >
-      {step}에서 무엇이 잘못될 수 있습니까?
-      잘못됐다는 걸 무엇을 보고 알아채십니까?
+      {step}에서 무엇을 확인하십니까?
+      결과가 틀렸다는 걸 무엇을 보고 아십니까?
     must_capture:
-      - failure_mode           # 어떻게 깨지는가
+      - check                  # 실제로 무엇을 보는가
       - symptom                # 깨졌을 때 눈에 보이는 것
-      - avoidance              # 피하는 법
+      - failure_mode           # 어떻게 깨지는가
       - reproducibility_risk   # 다른 사람이 같은 결과를 낼 수 있는가
 
   decision:
