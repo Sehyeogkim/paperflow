@@ -2317,6 +2317,11 @@ function init(){
 
   document.getElementById('btnA').addEventListener('click', () => showPrompt('A', true));
   document.getElementById('btnB').addEventListener('click', () => showPrompt('B', true));
+  document.getElementById('toggleView').addEventListener('click', () => {
+    graphView = graphView === 'radial' ? 'box' : 'radial';
+    try{ localStorage.setItem(GRAPH_VIEW_KEY, graphView); }catch(e){}
+    renderGraph();
+  });
   document.getElementById('btnJson').addEventListener('click', () => {
     const j = buildGraphJSON();
     document.getElementById('promptPre').textContent = j;
