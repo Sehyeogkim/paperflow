@@ -6,8 +6,8 @@
 <title>PaperFlow — Graph JSON A/B</title>
 <style>
   :root{
-    --bg:#0f1115;--panel:#15181e;--surface:#1b1f27;--surface2:#20252e;
-    --border:#2d333e;--text:#e8e6e1;--muted:#9298a3;--terra:#cc785c;
+    --bg:#f0eee6;--panel:#fffdf8;--surface:#e8e3d9;--surface2:#ded7ca;
+    --border:#d4c5b0;--text:#1a1a1a;--muted:#6b5e54;--terra:#b95f42;
     --blue:#6e9bd1;--amber:#d9a441;--green:#7a9a6d;--red:#c25744;
   }
   *{box-sizing:border-box}
@@ -20,14 +20,14 @@
   main{max-width:1500px;margin:0 auto;padding:22px}
   .scenario-nav{display:flex;gap:8px;margin-bottom:18px}
   button{font:inherit;cursor:pointer}
-  .scenario-nav button{border:1px solid var(--border);background:var(--surface);color:var(--muted);padding:9px 15px;border-radius:8px;font-weight:700}
+  .scenario-nav button{border:1px solid var(--border);background:rgba(255,253,248,.74);color:var(--muted);padding:9px 15px;border-radius:8px;font-weight:700}
   .scenario-nav button.active{color:var(--terra);border-color:var(--terra);background:rgba(204,120,92,.12)}
   .question{border-left:3px solid var(--terra);padding:4px 0 4px 15px;margin:0 0 18px}
   .question .label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:7px}
   .question .text{font-size:18px;line-height:1.65;font-weight:650}
   .compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
-  .answer{border:1px solid var(--border);background:var(--panel);border-radius:12px;overflow:hidden}
-  .answer.graph{border-color:rgba(204,120,92,.65);background:rgba(204,120,92,.035)}
+  .answer{border:1px solid var(--border);background:var(--panel);border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(74,59,43,.045)}
+  .answer.graph{border-color:rgba(185,95,66,.6);background:#fffaf5}
   .answer-head{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border)}
   .answer-head h2{font-size:15px;margin:0;font-weight:800}
   .answer-head .tag{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);margin-left:auto}
@@ -40,15 +40,15 @@
   .section:first-child{margin-top:0}
   .section h3{font-size:11px;color:var(--muted);letter-spacing:.9px;text-transform:uppercase;margin:0 0 8px}
   ul{margin:0;padding-left:19px}
-  li{font-size:14px;line-height:1.7;color:#cbc9c4;margin-bottom:7px}
+  li{font-size:14px;line-height:1.7;color:#3d3833;margin-bottom:7px}
   code{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--terra);background:rgba(204,120,92,.12);padding:2px 5px;border-radius:4px}
   .delta{margin-top:16px;border-top:1px solid var(--border);padding-top:16px}
   .delta-title{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.9px;text-transform:uppercase;margin-bottom:10px}
   .delta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
   .delta-item{background:var(--surface);border:1px solid var(--border);padding:11px 12px;border-radius:9px}
   .delta-item b{display:block;font-size:13px;color:var(--terra);margin-bottom:5px}
-  .delta-item span{display:block;font-size:13px;line-height:1.55;color:#bbb9b4}
-  .honesty{margin-top:14px;padding:11px 13px;border:1px dashed #444b57;color:var(--muted);font-size:12.5px;line-height:1.65;border-radius:8px}
+  .delta-item span{display:block;font-size:13px;line-height:1.55;color:#514a43}
+  .honesty{margin-top:14px;padding:11px 13px;border:1px dashed #bcae9c;background:rgba(255,253,248,.58);color:var(--muted);font-size:12.5px;line-height:1.65;border-radius:8px}
   .hidden{display:none}
   @media(max-width:850px){
     header{padding:0 15px}.run{display:none}main{padding:15px}.compare{grid-template-columns:1fr}.delta-grid{grid-template-columns:1fr}.question .text{font-size:16px}
