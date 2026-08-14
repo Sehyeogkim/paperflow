@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import os
 from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 
 from . import graph_slice
 from ..llm import client
@@ -52,8 +53,17 @@ def validate_section(graph: ClaimGraph, contract: SectionContract, section_md: s
     try:
         res = client.call_json("reasoning", prompt("section_validator"), user,
                                step="validator", max_tokens=6000)
-    except Exception:
-        return {"ok": True, "issues": [], "revised": ""}  # validator failure must not kill the run
+    except Exception as exc:
+        # Keep the run recoverable, but never report an unavailable validator as success.
+        return {
+            "ok": False,
+            "issues": [{
+                "code": "validator_unavailable",
+                "severity": "blocking",
+                "message": str(exc)[:240],
+            }],
+            "revised": "",
+        }
     return {
         "ok": bool(res.get("ok", True)),
         "issues": res.get("issues", []) or [],
@@ -85,8 +95,13 @@ def validate_sections(graph: ClaimGraph, contracts: dict[str, SectionContract],
         progress(f"validate: {sec}")
         return sec, v
 
+    # ContextVars do not automatically cross thread-pool boundaries. Copy the active
+    # run manifest into every worker so validation token usage remains attributable to
+    # this project without returning to a process-global mutable manifest.
     with ThreadPoolExecutor(max_workers=min(6, len(items))) as ex:
-        for sec, v in ex.map(_work, items):  # results assembled in the main thread
+        futures = [ex.submit(copy_context().run, _work, item) for item in items]
+        for future in futures:
+            sec, v = future.result()  # results assembled in the main thread
             report["sections"][sec] = {"ok": v["ok"], "issues": v["issues"]}
             if not v["ok"] and v["revised"]:
                 revised_md[sec] = v["revised"].rstrip() + "\n"

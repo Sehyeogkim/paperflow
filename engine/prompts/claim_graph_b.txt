@@ -35,6 +35,10 @@ grounding_status: "grounded" (data present), "partial", or "missing" ([DATA_NEED
 Rules:
 - Every evidence MUST trace to a data node or method (no floating evidence).
 - A data file path is a `data` node, NEVER a bare string inside an edge.
+- When EXTRACTED SOURCE CHUNKS are supplied, every file-grounded data/evidence node must
+  include `provenance_refs` using only a supplied logical_id and locator. Set
+  source_type="file", asset_id=<logical_id>, locator=<exact page/row/sheet/line locator>,
+  and verification_status="verified". Never cite a chunk or locator not present there.
 - NEVER invent numbers, results, or citations — mark gaps with data node provenance
   "[DATA_NEEDED]" and grounding_status "missing".
 

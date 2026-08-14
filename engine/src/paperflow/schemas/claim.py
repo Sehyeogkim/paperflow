@@ -14,7 +14,7 @@ graphs: `kind` = epistemic role, `represented_as`/`section` = document realizati
 """
 from __future__ import annotations
 
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -25,12 +25,40 @@ from pydantic import BaseModel, Field
 # method (an action that produced/analyzed data) / data (a real object: CSV/image/sim
 # output/measurement) / warrant (a principle licensing evidence->claim) / source (a
 # reference) / artifact (figure|table|equation that DISPLAYS evidence or method).
-NodeKind = Literal["claim", "evidence", "method", "data", "warrant", "source", "artifact"]
+NodeKind = Literal[
+    "claim", "evidence", "method", "data", "warrant", "source", "artifact",
+    # Tacit-knowledge layer: why a parameter/action was chosen, what can fail, and
+    # which alternative was selected. These are knowledge slots, not paper claims.
+    "threshold", "pitfall", "decision",
+]
 
-# 9 edge relations (directional). Allowed src->dst kind combinations are enforced in
-# compile/claim_graph.py (_ALLOWED_EDGE); violations are dropped, not silently coerced.
+# Directional relations. Allowed src->dst kind combinations are enforced and reported by
+# compile/claim_graph.py; the compatibility adapter returns only the safe validated subset.
 EdgeRel = Literal["supports", "produces", "uses", "derived_from", "part_of",
-                  "visualizes", "justifies", "qualifies", "contradicts"]
+                  "visualizes", "justifies", "qualifies", "contradicts",
+                  "feeds", "governs", "warns_about"]
+
+KnowledgeStatus = Literal[
+    "unverified", "missing", "partial", "answered", "author_attested",
+    "verified", "rejected", "unknown",
+]
+
+
+class ProvenanceRef(BaseModel):
+    """A machine-checkable pointer to the origin of one graph fact.
+
+    ``GNode.provenance`` remains for backward compatibility with existing plans. New
+    integrations should add structured refs so a file claim can point to a page, sheet,
+    cell range, line range, or JSON path instead of merely naming a file.
+    """
+
+    source_type: Literal["file", "author", "external", "model", "system"]
+    asset_id: str = ""
+    locator: str = ""
+    quote: str = ""
+    quote_hash: str = ""
+    verification_status: Literal["unverified", "author_attested", "verified", "rejected"] = "unverified"
+    metadata: dict[str, Any] = Field(default_factory=dict)
 
 
 class GNode(BaseModel):
@@ -43,6 +71,15 @@ class GNode(BaseModel):
     represented_as: Literal["figure", "table", "text"] | None = None  # document design (artifacts)
     section: str | None = None    # introduction|method|result|discussion|conclusion|abstract
     provenance: str | None = None  # CSV path / cite key / "[DATA_NEEDED]" / "user_statement"
+    provenance_refs: list[ProvenanceRef] = Field(default_factory=list)
+    knowledge_status: KnowledgeStatus = "unverified"
+    layer: Literal["documented", "tacit"] | None = None
+    detail: str = ""             # answer/long-form knowledge; `text` stays the stable label
+    question: str = ""           # tacit-slot question shown to the author
+    why_it_matters: str = ""
+    must_capture: list[str] = Field(default_factory=list)
+    risk: Literal["low", "medium", "high"] = "medium"
+    last_modified_revision: int = 0
 
 
 class GEdge(BaseModel):
@@ -52,9 +89,15 @@ class GEdge(BaseModel):
     rel: EdgeRel
     rationale: str = ""           # WHY this link holds — the edge's evaluable content
     grounding_status: Literal["grounded", "partial", "missing", "unverified"] = "unverified"
+    provenance_refs: list[ProvenanceRef] = Field(default_factory=list)
+    last_modified_revision: int = 0
 
 
 class ClaimGraph(BaseModel):
+    schema_version: str = "1.0"
+    revision: int = 0
+    built_from_source_revision: int = 0
+    confirmed_revision: int | None = None
     main_contribution: str = ""
     nodes: list[GNode] = Field(default_factory=list)
     edges: list[GEdge] = Field(default_factory=list)
@@ -75,6 +118,25 @@ class ClaimGraph(BaseModel):
 
     def edges_out(self, nid: str) -> list[GEdge]:
         return [e for e in self.edges if e.src == nid]
+
+
+class GraphValidationIssue(BaseModel):
+    """One deterministic schema/relationship problem found in raw graph input."""
+
+    code: str
+    message: str
+    location: str = ""
+    item_id: str = ""
+    severity: Literal["warning", "error"] = "error"
+    value: Any = None
+
+
+class GraphValidationResult(BaseModel):
+    """Strict validation output suitable for an API response or persisted audit."""
+
+    ok: bool
+    graph: dict[str, Any]
+    issues: list[GraphValidationIssue] = Field(default_factory=list)
 
 
 class ParagraphContract(BaseModel):

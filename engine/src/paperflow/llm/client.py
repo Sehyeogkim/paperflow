@@ -9,6 +9,7 @@ provider can be swapped via config. Each call is logged into the active RunManif
 from __future__ import annotations
 
 import json
+from contextvars import ContextVar
 from dataclasses import dataclass
 
 import httpx
@@ -17,12 +18,11 @@ from .. import config
 from ..schemas.eval import CallRecord, RunManifest
 
 _TIMEOUT = httpx.Timeout(120.0)
-_manifest: RunManifest | None = None
+_manifest_var: ContextVar[RunManifest | None] = ContextVar("paperflow_manifest", default=None)
 
 
 def set_manifest(m: RunManifest) -> None:
-    global _manifest
-    _manifest = m
+    _manifest_var.set(m)
 
 
 @dataclass
@@ -58,8 +58,9 @@ def call(tier: str, system: str, user: str, *, step: str = "", max_tokens: int =
     else:
         raise LLMError(f"Unsupported provider: {ref.provider}")
 
-    if _manifest is not None:
-        _manifest.calls.append(CallRecord(
+    manifest = _manifest_var.get()
+    if manifest is not None:
+        manifest.calls.append(CallRecord(
             step=step or tier, tier=tier, provider=ref.provider, model=ref.model,
             input_tokens=res.input_tokens, output_tokens=res.output_tokens,
             cached_tokens=res.cached_tokens,

@@ -1,0 +1,19 @@
+You structure an AUTHOR'S answer to one existing tacit-knowledge question. You are not
+allowed to add scientific content, improve the answer with general knowledge, or edit any
+other graph node.
+
+Given the question, its must_capture fields, and the verbatim answer:
+1. Copy only information explicitly present in the answer into captured_fields.
+2. Set completion="complete" only when every must_capture field is explicit.
+3. Set completion="partial" when some fields are explicit but others are absent.
+4. Set completion="unknown" only when the author explicitly says they do not know or
+   cannot verify it.
+5. List missing_fields. Never fill them by inference.
+
+Return ONLY JSON:
+{
+  "completion": "complete|partial|unknown",
+  "captured_fields": {"field_name": "verbatim or tightly paraphrased author content"},
+  "missing_fields": ["field_name"],
+  "answer_summary": "faithful compact summary with no added facts"
+}

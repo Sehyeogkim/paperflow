@@ -136,6 +136,50 @@
   .q textarea::placeholder { color: var(--muted); opacity: .65; font-style: italic; }
   .skipbtn { margin-top: 6px; border: 1px dashed var(--border); background: transparent; color: var(--muted); font: inherit; font-size: .72rem; padding: 4px 10px; border-radius: 6px; cursor: pointer; }
   .skipbtn:hover { border-color: var(--accent); color: var(--accent); }
+  /* six-stage product flow */
+  .stage-kicker { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .stage-kicker .num { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: var(--accent); color: #fff; font-size: .72rem; font-weight: 800; }
+  .stage-kicker .name { color: var(--accent); font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; }
+  .stage-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .stage-actions .secondary { border: 1px solid var(--border); background: var(--surface); color: var(--body); }
+  .source-summary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 9px; margin: 12px 0; }
+  .source-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; }
+  .source-stat b { display: block; color: var(--ink); font-size: 1.1rem; }
+  .source-stat span { color: var(--muted); font-size: .68rem; }
+  .interview-wrap { max-width: 860px; margin: 0 auto; width: 100%; }
+  .interview-progress { display: flex; align-items: center; gap: 10px; margin: 10px 0 16px; }
+  .interview-progress .bar { flex: 1; height: 7px; overflow: hidden; border-radius: 99px; background: var(--code-bg); }
+  .interview-progress .bar span { display: block; height: 100%; background: var(--ok); transition: width .2s; }
+  .interview-progress small { color: var(--muted); font-weight: 700; }
+  .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  .question-meta { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 12px; }
+  .qstatus { font-size: .6rem; font-weight: 800; text-transform: uppercase; padding: 3px 7px; border-radius: 999px; background: var(--code-bg); color: var(--muted); }
+  .qstatus.resolved { background: #EAF0E6; color: #4f6a44; }
+  .qstatus.unknown { background: var(--accent-2); color: var(--err); }
+  .question-card .risk { font-size: .6rem; font-weight: 800; text-transform: uppercase; padding: 3px 7px; border-radius: 999px; background: var(--code-bg); color: var(--code-ink); }
+  .question-card .risk.high { background: var(--accent-2); color: var(--err); }
+  .question-text { color: var(--ink); font-size: 1.05rem; font-weight: 700; line-height: 1.55; margin-bottom: 14px; }
+  .question-context { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 13px; }
+  .question-context > div { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 11px; color: var(--muted); font-size: .78rem; line-height: 1.55; }
+  .question-context b { display: block; color: var(--accent); font-size: .62rem; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 3px; }
+  .answer-area { width: 100%; min-height: 106px; border: 1px solid var(--border); border-radius: 9px; background: var(--bg); color: var(--ink); padding: 11px 12px; font: inherit; line-height: 1.55; resize: vertical; }
+  .answer-area:focus { outline: none; border-color: var(--accent); }
+  .question-history { margin-top: 11px; border-top: 1px dashed var(--border); padding-top: 9px; }
+  .question-history details { font-size: .76rem; color: var(--muted); margin: 4px 0; }
+  .question-history summary { cursor: pointer; font-weight: 700; }
+  .resolved-list { margin-top: 13px; display: flex; flex-wrap: wrap; gap: 5px; }
+  .resolved-list button { border: 1px solid var(--border); background: var(--surface); color: var(--muted); border-radius: 999px; padding: 4px 9px; font: inherit; font-size: .68rem; cursor: pointer; }
+  .revisionbar { display: flex; align-items: center; gap: 9px; padding: 9px 11px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface); margin: 9px 0 12px; }
+  .revisionbar code { color: var(--code-ink); font-weight: 700; }
+  .revisionbar .spacer { flex: 1; }
+  .revisionbar .confirmed { color: var(--ok); font-size: .75rem; font-weight: 800; }
+  .revisionbar .unconfirmed { color: var(--err); font-size: .75rem; font-weight: 800; }
+  .edge-note { display: block; margin-top: 3px; color: var(--muted); font-size: .66rem; font-style: italic; }
+  .output-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(130px,1fr)); gap: 8px; margin: 12px 0; }
+  .output-card { display: block; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-weight: 750; font-size: .82rem; }
+  .output-card:hover { border-color: var(--accent); background: var(--highlight); }
+  .output-card small { display: block; color: var(--muted); font-weight: 500; margin-top: 3px; }
+  @media (max-width: 760px) { .source-summary,.question-context,.output-grid { grid-template-columns: 1fr; } }
   /* generated-paper viewer (center) */
   .paperBtn { width: 100%; margin-top: 8px; border: 1px solid var(--accent); background: var(--highlight); color: var(--accent); font: inherit; font-size: .86rem; font-weight: 700; padding: 10px; border-radius: var(--radius-sm); cursor: pointer; }
   .paperBtn:hover { background: var(--accent); color: #fff; }
@@ -295,9 +339,9 @@
   <div class="shell">
     <!-- LEFT: clickable nav only -->
     <nav class="rail">
-      <div class="rail-title">입력 항목</div>
+      <div class="rail-title">프로젝트 준비</div>
       <div id="nav"></div>
-      <button class="createBtn" id="createBtn" disabled>＋ Create Journal</button>
+      <button class="createBtn" id="createBtn" disabled>자료 추출 시작 →</button>
       <button class="paperBtn" id="paperBtn" style="display:none">📄 생성된 논문 보기</button>
       <div class="railspace"></div>
       <div class="openexist">
@@ -312,7 +356,7 @@
       <div class="canvas" id="canvas"></div>
       <div class="chatdock" id="dock" style="display:none">
         <div class="dock-title">❓ 추가 정보가 필요해요</div>
-        <div class="dock-hint">각 칸의 회색 예시처럼 답해주세요. 빈 칸은 건너뛰어도 됩니다.</div>
+        <div class="dock-hint">질문은 한 번에 하나씩 저장됩니다. 모르는 내용도 명시적으로 표시해 주세요.</div>
         <div id="questions"></div>
         <div class="composer-bar">
           <button class="send" id="answerBtn">답변 제출 → 생성 시작</button>
@@ -335,13 +379,13 @@ let projectDir = null;
 let stepIndex = {};
 
 const FIELDS = [
-  {key:"journal", label:"journal info", icon:"🎯", composite:true,
-   hint:"받을 정보가 정해져 있어 칸을 나눴습니다. <b>*</b>=필수. Target journal에 가이드라인 URL을 넣으면 글자수·figure 제한을 자동으로 긁어옵니다."},
-  {key:"core", label:"core message", icon:"💡", coreform:true,
-   hint:"이 논문이 증명하는 것. <b>One paragraph</b>와 <b>Novelty(기여)</b>가 필수 — Novelty는 claim graph의 핵심 주장이 됩니다. <b>＋</b>로 여러 개 추가하세요."},
-  {key:"outline", label:"outline", icon:"🗂️", outlineform:true,
-   hint:"섹션은 고정. 각 섹션에 <b>전하고 싶은 메시지를 자유롭게</b> 적어주세요. 소제목을 미리 생각해뒀다면 <b>1. 2.</b> 처럼 줄로 나눠도 됩니다(선택). <b>Method·Result</b>만 필수, 나머지는 비워도 AI가 채웁니다."},
-  {key:"data", label:"data", icon:"📎", dataform:true,
+  {key:"journal", label:"연구 프로필", icon:"🎯", composite:true,
+   hint:"연구 분야만 필수입니다. Target journal과 저자 정보는 알고 있을 때 추가하세요."},
+  {key:"core", label:"기본 목적", icon:"💡", coreform:true,
+   hint:"연구 목적(One paragraph)만 필수입니다. Novelty 후보는 알고 있을 때 추가하면 claim graph의 출발점으로 사용합니다."},
+  {key:"outline", label:"문서 설계", icon:"🗂️", outlineform:true,
+   hint:"모든 항목이 선택입니다. 알고 있는 Method·Result를 적으면 추출과 질문 수를 줄일 수 있고, 비워 두면 업로드 자료와 인터뷰에서 보완합니다."},
+  {key:"data", label:"자료 업로드", icon:"📎", dataform:true,
    hint:"실험 결과·측정값·참고자료를 올려주세요. AI가 글을 쓸 때 이 파일들을 근거로 삼습니다. <b>CSV·TXT·DAT</b>는 내용까지, <b>PDF·PNG·XLSX</b>는 파일 존재를 인식합니다. (선택 — 없어도 진행됩니다)"},
 ];
 const inputs = {journal:"", core:"", outline:""};
@@ -350,11 +394,28 @@ let selectedData = null;  // rel path of the file whose note is open
 let current = null;
 let diskMode = false;  // existing project with on-disk inputs but no saved UI state
 let paperReady = false;  // a compiled paper.pdf exists for this project
+let workflowState = null;
+let workflowStage = "profile";
+let workflowQuestions = [];
+let activeQuestionId = null;
+let legacyAnswers = {};
+let graphRevision = null;
+let graphConfirmed = false;
+let activeEventSource = null;
+let legacyInterviewMode = false;
+const FLOW_STAGES = [
+  {id:"profile", label:"프로필·목적", aliases:["draft","profile"]},
+  {id:"upload", label:"자료 업로드", aliases:["sources_ready","upload"]},
+  {id:"extract", label:"자동 추출", aliases:["extracting","extract","sources_extracted","questions_pending"]},
+  {id:"questions", label:"에이전트 질문", aliases:["questioning","questions"]},
+  {id:"graph", label:"논리 그래프 검토", aliases:["graph_building","graph_review","graph","ready"]},
+  {id:"output", label:"문서 생성·다운로드", aliases:["generating","complete","output","failed","interrupted"]},
+];
 
 // journal info is structured (fixed fields we always need)
 const JSUB = [
   {k:"field",         label:"Author's field",        req:true,  type:"input", ph:"Computational biomechanics"},
-  {k:"target",        label:"Target journal(s)",     req:true,  type:"list", reorder:true,  ph:"Journal of Biomechanics — https://www.example.com/author-guidelines"},
+  {k:"target",        label:"Target journal(s)",     req:false, type:"list", reorder:true,  ph:"Journal of Biomechanics — https://www.example.com/author-guidelines"},
   {k:"title",         label:"Paper title",           req:false, type:"input", ph:"관상동맥 플라크 파열 위험지표 정의 및 민감도 분석 (비우면 마지막에 AI가 제안)"},
   {k:"authors",       label:"Authors (저자 순서대로)",  req:false, type:"list", reorder:true,  ph:"Jeff Kim"},
   {k:"corresponding", label:"Corresponding author(s)", req:false, type:"list", reorder:false, ph:"Advisor Name"},
@@ -372,8 +433,8 @@ const NOVELTY_PH = ["ΔPSS가 정적 PSS보다 파열 위험을 더 잘 설명�
 // outline = fixed sections, each ONE free-text message (user numbers 1./2. if they want)
 const SECTIONS = [
   {key:"introduction", label:"Introduction", req:false},
-  {key:"method",       label:"Method",       req:true},
-  {key:"result",       label:"Result",       req:true},
+  {key:"method",       label:"Method",       req:false},
+  {key:"result",       label:"Result",       req:false},
   {key:"discussion",   label:"Discussion",   req:false},
   {key:"conclusion",   label:"Conclusion",   req:false},
 ];
@@ -407,9 +468,9 @@ function assembleOutlineMd() {
 }
 
 function isFilled(key) {
-  if (key === "journal") return !!(JF.field.trim() && JF.target.some(t => t.trim()));  // title optional
-  if (key === "core") return !!(CM.paragraph.trim() && novelty.some(n => n.trim()));
-  if (key === "outline") return secHasContent("method") && secHasContent("result");  // A안: Method+Result
+  if (key === "journal") return !!JF.field.trim();
+  if (key === "core") return !!CM.paragraph.trim();
+  if (key === "outline") return SECTIONS.some(s => secHasContent(s.key));
   if (key === "data") return dataFiles.length > 0;  // optional — never gates Create
   return !!inputs[key].trim();
 }
@@ -443,6 +504,26 @@ async function postJSON(url, body) {
   if (!r.ok) throw new Error(await r.text());
   return r.json();
 }
+async function getJSONMaybe(url) {
+  try {
+    const r = await fetch(url);
+    if (!r.ok) return null;
+    return await r.json();
+  } catch (_) { return null; }
+}
+async function postJSONMaybe(url, body) {
+  try { return await postJSON(url, body); }
+  catch (_) { return null; }
+}
+function stageFor(raw) {
+  const value = String(raw || "").toLowerCase();
+  const hit = FLOW_STAGES.find(s => s.id === value || s.aliases.includes(value));
+  return hit ? hit.id : "profile";
+}
+function setWorkflowStage(stage, detail) {
+  workflowStage = stageFor(stage);
+  renderWorkflowTree(workflowStage, detail);
+}
 function setProviders(list) {
   const el = $("providers");
   if (list && list.length) { el.textContent = "providers: " + list.join(", "); el.classList.remove("warn"); }
@@ -468,7 +549,8 @@ function openField(key) {
   const f = FIELDS.find(x => x.key === key);
 
   if (f.composite) {  // journal info — structured sub-form
-    let html = `<div class="crumb">입력 / ${f.label}</div>
+    setWorkflowStage("profile", "연구 프로필");
+    let html = `<div class="stage-kicker"><span class="num">1</span><span class="name">프로필·목적</span></div><div class="crumb">입력 / ${f.label}</div>
       <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div><div class="subform">`;
     for (const s of JSUB) {
       const tag = s.req ? '<span class="req">*</span>' : '<span class="opt">선택</span>';
@@ -497,11 +579,12 @@ function openField(key) {
   }
 
   if (f.coreform) {  // core message — paragraph + variable novelty list + optionals
-    $("canvas").innerHTML = `<div class="crumb">입력 / ${f.label}</div>
+    setWorkflowStage("profile", "기본 목적");
+    $("canvas").innerHTML = `<div class="stage-kicker"><span class="num">1</span><span class="name">프로필·목적</span></div><div class="crumb">입력 / ${f.label}</div>
       <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div><div class="subform">
       <label class="sflabel">One paragraph <span class="req">*</span></label>
       <textarea class="sfinput" id="cm_paragraph" rows="4"></textarea>
-      <label class="sflabel">Novelty <span class="req">*</span> <span class="opt">기여/새로움 — claim graph의 핵심 주장</span></label>
+      <label class="sflabel">Novelty <span class="opt">선택 · 기여/새로움 — claim graph의 핵심 주장 후보</span></label>
       <div id="noveltyList"></div>
       <button class="addbtn" id="addNovelty">＋ novelty 추가</button>
       <label class="sflabel">One sentence <span class="opt">선택 · 비우면 paragraph에서 자동</span></label>
@@ -514,7 +597,7 @@ function openField(key) {
       </div><div class="savednote" id="savednote"></div>`;
     const bindCM = (id, k, ph) => {
       const el = $(id); el.value = CM[k]; el.placeholder = ph;
-      el.oninput = () => { CM[k] = el.value; renderNav(); refreshStep0(); $("savednote").textContent = "✓ 자동 저장됨"; };
+      el.oninput = () => { CM[k] = el.value; invalidateGraph(); renderNav(); refreshStep0(); $("savednote").textContent = "✓ 자동 저장됨"; };
     };
     bindCM("cm_paragraph", "paragraph", "이 논문의 핵심을 한 문단으로…");
     bindCM("cm_sentence", "sentence", "예) 플라크 파열 위험은 ΔPSS로 더 잘 설명된다");
@@ -528,7 +611,8 @@ function openField(key) {
   }
 
   if (f.outlineform) {  // fixed sections, one free-text message each
-    let html = `<div class="crumb">입력 / ${f.label}</div>
+    setWorkflowStage("profile", "문서 설계");
+    let html = `<div class="stage-kicker"><span class="num">1</span><span class="name">프로필·목적</span></div><div class="crumb">입력 / ${f.label}</div>
       <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div><div class="subform">`;
     for (const sec of SECTIONS) {
       const req = sec.req ? '<span class="reqd">필수</span>' : '<span class="opt">선택</span>';
@@ -548,7 +632,8 @@ function openField(key) {
   }
 
   if (f.dataform) {  // file uploads (experiment data / references the writer grounds claims on)
-    $("canvas").innerHTML = `<div class="crumb">입력 / ${f.label}</div>
+    setWorkflowStage("upload", dataFiles.length ? `${dataFiles.length}개 파일` : "자료 추가");
+    $("canvas").innerHTML = `<div class="stage-kicker"><span class="num">2</span><span class="name">자료 업로드</span></div><div class="crumb">입력 / ${f.label}</div>
       <h2 class="title serif">${f.label}</h2><div class="ehint">${f.hint}</div>
       <input type="file" id="fileInput" multiple
         accept=".csv,.txt,.dat,.md,.pdf,.png,.jpg,.jpeg,.xlsx,.xls,.json,.bib"
@@ -598,7 +683,10 @@ function mkBtn(label, title, disabled, onclick, isRm) {
   b.disabled = !!disabled; b.onclick = onclick;
   return b;
 }
-function note() { const el = $("savednote"); if (el) el.textContent = "✓ 자동 저장됨"; }
+function invalidateGraph() {
+  if (graphRevision || graphConfirmed) { graphConfirmed = false; graphRevision = null; }
+}
+function note() { invalidateGraph(); const el = $("savednote"); if (el) el.textContent = "✓ 자동 저장됨"; }
 
 // reusable +row list: ordered (▲▼) when reorder=true, removable (✕) when >1 item
 function renderList(box, arr, getPh, reorder) {
@@ -633,7 +721,7 @@ function renderNoveltyRows() {
     const inp = document.createElement("input");
     inp.type = "text"; inp.className = "sfinput"; inp.value = val;
     inp.placeholder = "예) " + (NOVELTY_PH[i] || `novelty ${i+1}`);
-    inp.oninput = () => { novelty[i] = inp.value; renderNav(); refreshStep0(); $("savednote").textContent = "✓ 자동 저장됨"; };
+    inp.oninput = () => { novelty[i] = inp.value; invalidateGraph(); renderNav(); refreshStep0(); $("savednote").textContent = "✓ 자동 저장됨"; };
     row.appendChild(num); row.appendChild(inp);
     if (novelty.length > 1) {
       const rm = document.createElement("button"); rm.className = "rmbtn"; rm.textContent = "✕";
@@ -645,36 +733,29 @@ function renderNoveltyRows() {
   });
 }
 
-// ---------- right tree: STEP 0 (inputs) ----------
-function renderStep0() {
-  const ul = $("steps");
-  ul.innerHTML = `
-    <li class="step" id="s0">
-      <span class="node">0</span>
-      <span class="meta"><span class="k">STEP 0</span>
-      <span class="t">입력 수집</span><span class="s" id="s0s">0 / 4 작성됨</span></span>
-    </li>
-    <ul class="subs" id="s0subs"></ul>`;
-  refreshStep0();
+// ---------- right tree: stable six-stage journey ----------
+function renderStep0() { renderWorkflowTree(workflowStage); }
+function renderWorkflowTree(stage, detail) {
+  const ul = $("steps"); if (!ul) return;
+  const active = Math.max(0, FLOW_STAGES.findIndex(s => s.id === stageFor(stage)));
+  stepIndex = {};
+  ul.innerHTML = FLOW_STAGES.map((s, i) => {
+    const done = i < active || (s.id === "output" && paperReady);
+    const cls = done ? "done" : (i === active ? "active" : "locked");
+    const mark = done ? "✓" : String(i + 1);
+    const status = done ? "완료" : (i === active ? (detail || "진행 중") : "대기");
+    return `<li class="step ${cls}" data-flow="${s.id}"><span class="node">${mark}</span>
+      <span class="meta"><span class="k">STEP ${i + 1}</span><span class="t">${s.label}</span><span class="s">${esc(status)}</span></span></li>`;
+  }).join("");
+  FLOW_STAGES.forEach(s => { stepIndex[s.id] = ul.querySelector(`[data-flow="${s.id}"]`); });
 }
 function refreshStep0() {
-  const subs = $("s0subs"); if (!subs) return;
-  subs.innerHTML = "";
-  let done = 0;
-  FIELDS.forEach(f => {
-    const filled = isFilled(f.key);
-    if (filled) done++;
-    const li = document.createElement("li");
-    li.className = filled ? "on" : "";
-    li.innerHTML = `<span class="sdot"></span>${f.label}`;
-    subs.appendChild(li);
-  });
-  $("s0s").textContent = `${done} / ${FIELDS.length} 작성됨`;
-  const allCore = isFilled("journal") && isFilled("core") && isFilled("outline");  // data optional
-  const s0 = $("s0");
-  if (allCore) { s0.className = "step done"; s0.querySelector(".node").textContent = "✓"; }
-  else { s0.className = "step active"; s0.querySelector(".node").textContent = "0"; }
-  $("createBtn").disabled = diskMode ? false : !allCore;  // journal+core+outline required
+  const allCore = !!(JF.field.trim() && CM.paragraph.trim());
+  if (workflowStage === "profile" || workflowStage === "upload") {
+    const nextStage = allCore && dataFiles.length ? "upload" : "profile";
+    renderWorkflowTree(nextStage, allCore ? `${dataFiles.length}개 파일` : "필수 입력 확인");
+  }
+  $("createBtn").disabled = diskMode ? false : !allCore;
 }
 
 // ---------- save inputs + diagnose ----------
@@ -682,13 +763,24 @@ $("createBtn").onclick = async () => {
   $("createBtn").disabled = true;
   try {
     if (!diskMode) {
+      const profile = await postJSON("/api/projects/profile", {
+        project_dir: projectDir,
+        name: JF.title,
+        field: JF.field,
+        target_journal: (JF.target.find(t => t.trim()) || "").trim(),
+        objective: CM.paragraph,
+        methods_summary: outlineData.method,
+        results_summary: outlineData.result,
+      });
+      if (profile.error) throw new Error(profile.error);
       await postJSON("/api/projects/save", {
         project_dir: projectDir,
         journal_info_md: assembleJournalMd(), coremessage_md: assembleCoreMd(),
-        outline_md: assembleOutlineMd(), ui_state: uiState(),
+        outline_md: SECTIONS.some(s => secHasContent(s.key)) ? assembleOutlineMd() : "",
+        ui_state: uiState(),
       });
     }
-    await runDiagnose();
+    await startExtraction();
   } catch (e) { showStatus("오류", "오류", String(e), "warn"); $("createBtn").disabled = false; }
 };
 $("openBtn").onclick = () => {
@@ -697,95 +789,273 @@ $("openBtn").onclick = () => {
 };
 
 async function runDiagnose() {
-  showStatus("진단 중…", "진단", "누락 정보를 찾고 있습니다. (ingest + requirement)");
+  setWorkflowStage("extract", "입력 진단");
+  showStatus("추출 중…", "자동 추출", "자료에서 주장·근거·누락 정보를 찾고 있습니다.");
   markStep0Done();
   const diag = await postJSON("/api/projects/diagnose", {project_dir: projectDir});
   renderQuestions(diag);
 }
 function markStep0Done() {
-  const s0 = $("s0"); if (s0) { s0.className = "step done"; s0.querySelector(".node").textContent = "✓"; s0.querySelector(".s").textContent = "완료"; }
+  setWorkflowStage("extract", "자료 분석 중");
 }
 function showStatus(badge, crumb, msg, kind) {
-  $("canvas").innerHTML = `<div class="crumb">${crumb}</div>
-    <div class="card"><h3>${crumb} <span class="badge ${kind||''}">${badge}</span></h3>
-    <p class="muted">${msg}</p></div>`;
+  $("canvas").innerHTML = `<div class="crumb">${esc(crumb)}</div>
+    <div class="card"><h3>${esc(crumb)} <span class="badge ${kind||''}">${esc(badge)}</span></h3>
+    <p class="muted">${esc(msg)}</p></div>`;
+}
+
+async function startExtraction() {
+  setWorkflowStage("extract", "추출 시작");
+  logLines = [];
+  $("dock").style.display = "none";
+  $("canvas").innerHTML = `<div class="stage-kicker"><span class="num">3</span><span class="name">자동 추출</span></div>
+    <h2 class="title serif">자료를 읽고 논리 구조를 찾는 중입니다</h2>
+    <div class="ehint">파일별 출처를 보존하면서 주장·근거·방법·데이터와 저자에게 확인할 질문을 분리합니다.</div>
+    <div class="source-summary"><div class="source-stat"><b>${dataFiles.length}</b><span>업로드 파일</span></div>
+      <div class="source-stat"><b>—</b><span>추출 노드</span></div><div class="source-stat"><b>—</b><span>확인 질문</span></div></div>
+    <div class="card"><h3>추출 진행 <span class="badge">running</span></h3><div class="log" id="logbox">작업을 시작합니다…</div></div>`;
+
+  const res = await postJSONMaybe("/api/projects/extract", {project_dir: projectDir});
+  if (!res) { await runDiagnose(); return; }
+  if (res.error) { showExtractionError(res.error, res.retryable !== false); return; }
+  if (res.ok === false) {
+    showExtractionError("지원되는 텍스트·CSV·JSON·PDF·XLSX 자료를 찾지 못했습니다.", false); return;
+  }
+  if (res.questions || res.items || res.question) { renderQuestions(res); return; }
+  if (res.graph || res.nodes) { await showGraphReview(res); return; }
+  if (!res.job_id) { await loadQuestionsOrPlan(); return; }
+
+  const streamUrl = res.stream_url || `/api/projects/extract/${encodeURIComponent(res.job_id)}/stream`;
+  listenToJob(streamUrl, "extract");
+}
+function listenToJob(url, kind) {
+  if (activeEventSource) activeEventSource.close();
+  const es = new EventSource(url); activeEventSource = es;
+  es.onmessage = async (ev) => {
+    let m; try { m = JSON.parse(ev.data); } catch (_) { return; }
+    const type = m.type || m.event;
+    if (["progress","step_started","artifact_saved"].includes(type)) {
+      logLine(m.raw || m.message || m.label || type);
+      setWorkflowStage(kind === "generate" ? "output" : "extract", m.label || m.message || "진행 중");
+    } else if (type === "questions_ready" || type === "waiting_for_user") {
+      es.close(); activeEventSource = null; await loadQuestionsOrPlan(m);
+    } else if (type === "graph_ready" || type === "plan_ready") {
+      es.close(); activeEventSource = null;
+      // A newly built graph can create interview questions; enforce that gate first.
+      if (type === "plan_ready") await loadQuestionsOrPlan(m);
+      else await loadQuestionsOrPlan(m);
+    } else if (["done","job_completed"].includes(type)) {
+      es.close(); activeEventSource = null;
+      if (kind === "generate") { paperReady = true; $("paperBtn").style.display = ""; markAllDone(); showPaper(m); }
+      else await loadQuestionsOrPlan(m);
+    } else if (["error","job_failed"].includes(type)) {
+      es.close(); activeEventSource = null;
+      if (kind === "generate") showGenerationError(m.error || m.message || "문서 생성에 실패했습니다.", m.retryable !== false);
+      else showExtractionError(m.error || m.message || "작업에 실패했습니다.", m.retryable !== false);
+    }
+  };
+  es.onerror = () => {
+    es.close(); activeEventSource = null;
+    if (kind === "generate") showGenerationError("연결이 끊겼습니다. 승인된 그래프에서 생성을 다시 시도할 수 있습니다.", true);
+    else showExtractionError("연결이 끊겼습니다. 저장된 상태에서 다시 이어갈 수 있습니다.", true);
+  };
+}
+function showGenerationError(message, retryable) {
+  setWorkflowStage("output", "재시도 가능");
+  showStatus("중단됨", "문서 생성", message, "warn");
+  $("canvas").insertAdjacentHTML("beforeend", `<div class="stage-actions">
+    ${retryable ? '<button class="send" id="retryGenerate">생성 다시 시도</button>' : ''}
+    <button class="send secondary" id="backGraph">승인된 그래프 보기</button></div>`);
+  if ($("retryGenerate")) $("retryGenerate").onclick = startGenerate;
+  $("backGraph").onclick = loadGraphOrPlan;
+}
+function showExtractionError(message, retryable) {
+  setWorkflowStage("extract", "재시도 가능");
+  showStatus("중단됨", "자동 추출", message, "warn");
+  $("canvas").insertAdjacentHTML("beforeend", `<div class="stage-actions">
+    ${retryable ? '<button class="send" id="retryExtract">다시 시도</button>' : ''}
+    <button class="send secondary" id="backSources">자료 확인</button></div>`);
+  if ($("retryExtract")) $("retryExtract").onclick = startExtraction;
+  $("backSources").onclick = () => openField("data");
+}
+async function loadQuestionsOrPlan(seed) {
+  const q = await getJSONMaybe(`/api/projects/questions?project_dir=${encodeURIComponent(projectDir)}`);
+  if (q && !q.error && ((q.questions || q.items || []).length || q.question || q.pending_count != null)) {
+    legacyInterviewMode = false; renderQuestions(q);
+  }
+  else if (seed && (seed.questions || seed.items || seed.question)) renderQuestions(seed);
+  else {
+    const graph = await getJSONMaybe(`/api/projects/graph?project_dir=${encodeURIComponent(projectDir)}`);
+    if (graph && !graph.error) await showGraphReview(graph);
+    else await startPlan();
+  }
 }
 
 // ---------- questions ----------
 const _UNKNOWN = "(모름 — 나중에 보완)";
-function renderQuestions(diag) {
-  showStatus(diag.classification || "진단 완료", "진단 완료",
-    `분류: <b>${diag.classification||'-'}</b> · 확보된 항목 ${(diag.present||[]).length}개. ${diag.notes||''}`);
-  const wrap = $("questions"); wrap.innerHTML = "";
-  if (!diag.questions || !diag.questions.length) {
-    wrap.innerHTML = `<p class="muted">추가 질문이 없습니다. 바로 생성할 수 있어요.</p>`;
-  } else {
-    for (const q of diag.questions) {
-      const risk = q.reviewer_risk === "high" ? "risk high" : "risk";
-      const div = document.createElement("div"); div.className = "q";
-      div.innerHTML = `<div class="qq"><span>${q.question}</span><span class="${risk}">${q.reviewer_risk||''}</span></div>`;
-      const ta = document.createElement("textarea");
-      ta.placeholder = q.example ? ("예) " + q.example) : "여기에 답변…";
-      ta.dataset.field = q.field;
-      ta.oninput = refreshAnswerGate;
-      const skip = document.createElement("button");
-      skip.className = "skipbtn"; skip.type = "button"; skip.textContent = "모름 / 나중에";
-      skip.onclick = () => { ta.value = _UNKNOWN; refreshAnswerGate(); };
-      div.append(ta, skip); wrap.appendChild(div);
-    }
+const _NOT_APPLICABLE = "(해당 없음)";
+function normalizeQuestions(payload) {
+  const rows = Array.isArray(payload) ? payload : (payload.questions || payload.pending_questions || payload.items || (payload.question ? [payload.question] : []));
+  const normalized = rows.map((q, i) => {
+    const rawStatus = String(q.status || (q.answer ? "resolved" : "pending")).toLowerCase();
+    return ({...q,
+    id: String(q.id || q.field || `Q${i + 1}`),
+    field: String(q.field || q.id || `Q${i + 1}`),
+    question: q.question || q.text || q.followup_question || "추가 확인이 필요합니다.",
+    why: q.why || q.why_it_matters || q.reason || "이 답변은 주장과 근거의 연결을 검증하는 데 필요합니다.",
+    provenance: q.provenance || q.source || q.paper_says || (q.target_node_id ? `그래프 노드 ${q.target_node_id} · revision ${q.created_revision || "-"}` : "자동 추출 결과"),
+    risk: String(q.risk || q.reviewer_risk || "medium").toLowerCase(),
+    status: rawStatus === "complete" ? "resolved" : rawStatus,
+    answer_event_id: q.answer_event_id || null,
+    history: q.history || q.turns || [],
+  });});
+  const byId = Object.fromEntries(normalized.map(q => [q.id, q]));
+  for (const a of (payload.answers || [])) {
+    const id = String(a.question_id || a.id || ""); if (!id || byId[id]) continue;
+    const prior = workflowQuestions.find(q => q.id === id);
+    byId[id] = {
+      ...(prior || {}), id, field:id,
+      question:(prior && prior.question) || `완료된 질문 ${id}`,
+      why:(prior && prior.why) || "이 답변은 그래프에 반영되었습니다.",
+      provenance:(prior && prior.provenance) || (a.target_node_id ? `그래프 노드 ${a.target_node_id}` : "저자 답변"),
+      risk:(prior && prior.risk) || "medium",
+      status:a.completion === "unknown" ? "unknown" : "resolved",
+      answer_event_id:a.id || null,
+      answer:a.text || "", history:[...((prior && prior.history) || []), {role:"author",content:a.text || a.completion}],
+    };
   }
-  $("dock").style.display = "block";
-  refreshAnswerGate();
+  return Object.values(byId);
 }
-// hard gate: every question needs a response (an answer OR an explicit '모름')
-function refreshAnswerGate() {
-  const tas = [...document.querySelectorAll("#questions textarea")];
-  const pending = tas.filter(ta => !ta.value.trim()).length;
-  $("answerBtn").disabled = pending > 0;
-  $("answerNote").textContent = pending > 0
-    ? `${pending}개 미응답 — 답하거나 '모름'을 눌러주세요`
-    : (tas.length ? "모든 질문 응답됨 · 생성 가능" : "");
+function renderQuestions(diag) {
+  if (diag && diag.graph_revision != null) graphRevision = diag.graph_revision;
+  workflowQuestions = normalizeQuestions(diag || {});
+  const pending = workflowQuestions.find(q => !["resolved","partial","unknown","not_applicable","n/a"].includes(q.status));
+  activeQuestionId = pending ? pending.id : null;
+  $("dock").style.display = "none";
+  setWorkflowStage("questions", pending ? "답변 필요" : "질문 완료");
+  renderInterview();
 }
-$("answerBtn").onclick = async () => {
-  $("answerBtn").disabled = true;
-  try {
-    const answers = {};
-    document.querySelectorAll("#questions textarea").forEach(ta => {
-      const v = ta.value.trim(); if (v) answers[ta.dataset.field] = v;  // '모름' included
+function renderInterview() {
+  const total = workflowQuestions.length;
+  const closed = workflowQuestions.filter(q => ["resolved","partial","unknown","not_applicable","n/a"].includes(q.status));
+  const q = workflowQuestions.find(x => x.id === activeQuestionId) || workflowQuestions.find(x => !closed.includes(x));
+  if (!q) {
+    const reopen = closed.map(x => `<button type="button" data-reopen-qid="${esc(x.id)}">${esc(x.id)} · ${esc(x.status)}</button>`).join("");
+    $("canvas").innerHTML = `<div class="interview-wrap"><div class="stage-kicker"><span class="num">4</span><span class="name">에이전트 질문</span></div>
+      <h2 class="title serif">확인 질문을 모두 정리했습니다</h2>
+      <div class="ehint">답변과 명시적 미확인 항목이 논리 그래프의 근거 상태에 반영됩니다.</div>
+      <div class="card"><h3>인터뷰 완료 <span class="badge ok">${closed.length}/${total}</span></h3>
+      <p class="muted">이제 주장–근거–방법–데이터 연결을 검토하세요.</p>
+      ${reopen ? `<div class="resolved-list">${reopen}</div><p class="muted">수정할 답변을 선택할 수 있습니다.</p>` : ""}
+      <div class="stage-actions"><button class="send" id="buildGraphBtn">논리 그래프 보기 →</button></div></div></div>`;
+    $("buildGraphBtn").onclick = () => loadGraphOrPlan();
+    document.querySelectorAll("[data-reopen-qid]").forEach(b => b.onclick = () => {
+      activeQuestionId = b.dataset.reopenQid; renderInterview();
     });
-    await postJSON("/api/projects/answers", {project_dir: projectDir, answers});
-    $("answerNote").textContent = `${Object.keys(answers).length}개 저장됨 · 계획 수립`;
-    $("dock").style.display = "none";
-    await startPlan();   // Stage 3: build the plan, then confirm via chat
-  } catch (e) { $("answerNote").textContent = "오류: " + e; refreshAnswerGate(); }
-};
+    return;
+  }
+  activeQuestionId = q.id;
+  const pct = total ? Math.round(closed.length / total * 100) : 100;
+  const riskClass = q.risk === "high" ? "risk high" : "risk";
+  const history = (q.history || []).map((h, i) => `<details><summary>${i + 1}차 ${esc(h.role || "대화")}</summary>${esc(h.content || h.text || h.answer || "")}</details>`).join("");
+  const doneChips = closed.map(x => `<button type="button" data-qid="${esc(x.id)}">${esc(x.id)} · ${esc(x.status)}</button>`).join("");
+  $("canvas").innerHTML = `<div class="interview-wrap"><div class="stage-kicker"><span class="num">4</span><span class="name">에이전트 질문</span></div>
+    <h2 class="title serif">한 번에 하나씩 확인할게요</h2>
+    <div class="interview-progress"><div class="bar"><span style="width:${pct}%"></span></div><small>${closed.length}/${total} 정리됨</small></div>
+    <div class="question-card"><div class="question-meta"><span class="qstatus">${esc(q.id)}</span><span class="${riskClass}">${esc(q.risk)}</span><span class="qstatus">${esc(q.status)}</span></div>
+      <div class="question-text">${esc(q.question)}</div>
+      <div class="question-context"><div><b>왜 필요한가</b>${esc(q.why)}</div><div><b>출처·현재 근거</b>${esc(q.provenance)}</div></div>
+      <textarea class="answer-area" id="activeAnswer" placeholder="${esc(q.example ? `예) ${q.example}` : "판단 기준과 실제 관찰을 구체적으로 적어주세요.")}"></textarea>
+      ${history ? `<div class="question-history">${history}</div>` : ""}
+      <div class="stage-actions"><button class="send" id="submitOneAnswer">답변 저장</button>
+        <button class="send secondary" id="resolveUnknown">모름 / 나중에</button><span class="muted" id="questionNote"></span></div>
+    </div>${doneChips ? `<div class="resolved-list">${doneChips}</div>` : ""}</div>`;
+  $("submitOneAnswer").onclick = submitActiveAnswer;
+  $("resolveUnknown").onclick = () => resolveActiveQuestion("unknown");
+  $("activeAnswer").oninput = () => { $("submitOneAnswer").disabled = !$("activeAnswer").value.trim(); };
+  $("submitOneAnswer").disabled = true;
+  document.querySelectorAll("[data-qid]").forEach(b => b.onclick = () => { activeQuestionId = b.dataset.qid; renderInterview(); });
+}
+function refreshAnswerGate() { /* retained for legacy callers; the interview saves one answer at a time */ }
+async function submitActiveAnswer() {
+  const q = workflowQuestions.find(x => x.id === activeQuestionId), ta = $("activeAnswer");
+  if (!q || !ta || !ta.value.trim()) return;
+  const answer = ta.value.trim(); $("submitOneAnswer").disabled = true; $("questionNote").textContent = "답변을 확인하는 중…";
+  const res = await postJSONMaybe("/api/projects/questions/answer", {
+    project_dir: projectDir, question_id: q.id, id: q.id, field: q.field, answer,
+    base_revision: graphRevision, supersedes_answer_id: q.answer_event_id || undefined,
+  });
+  if (res && res.error === "no_graph" && legacyInterviewMode) {
+    legacyAnswers[q.field] = answer;
+    await postJSON("/api/projects/answers", {project_dir:projectDir, answers:legacyAnswers});
+    q.answer = answer; q.status = "resolved"; advanceLegacyInterview(); return;
+  }
+  if (res && res.error) { $("questionNote").textContent = `저장 실패: ${res.error}`; $("submitOneAnswer").disabled = false; return; }
+  if (res && res.graph && res.graph.revision != null) graphRevision = res.graph.revision;
+  legacyAnswers[q.field] = answer;
+  const followObj = res && typeof res.question === "object" ? res.question : null;
+  const followText = res && (res.followup_question || res.followup || (followObj ? followObj.question || followObj.text : res.question));
+  if (followText && !["resolved","complete"].includes(String(res.status || "").toLowerCase())) {
+    q.history = [...(q.history || []), {role:"author", content:answer}];
+    q.question = followText;
+    q.why = res.why || res.why_it_matters || (followObj && (followObj.why || followObj.why_it_matters)) || q.why;
+    q.provenance = (followObj && (followObj.provenance || followObj.source)) || q.provenance;
+    q.status = "followup";
+    renderInterview(); return;
+  }
+  if (!res) await postJSONMaybe("/api/projects/answers", {project_dir:projectDir, answers:legacyAnswers});
+  q.answer = answer; q.status = "resolved";
+  await refreshQuestionsAfterAnswer();
+}
+async function resolveActiveQuestion(resolution) {
+  const q = workflowQuestions.find(x => x.id === activeQuestionId); if (!q) return;
+  const res = await postJSONMaybe("/api/projects/questions/resolve", {
+    project_dir:projectDir, question_id:q.id, id:q.id, field:q.field, resolution,
+    base_revision:graphRevision, supersedes_answer_id:q.answer_event_id || undefined,
+  });
+  if (res && res.error === "no_graph" && legacyInterviewMode) {
+    legacyAnswers[q.field] = _UNKNOWN;
+    await postJSON("/api/projects/answers", {project_dir:projectDir, answers:legacyAnswers});
+    q.status = "unknown"; advanceLegacyInterview(); return;
+  }
+  if (res && res.error) { const n=$("questionNote"); if(n) n.textContent=`저장 실패: ${res.error}`; return; }
+  if (res && res.graph && res.graph.revision != null) graphRevision = res.graph.revision;
+  legacyAnswers[q.field] = resolution === "unknown" ? _UNKNOWN : _NOT_APPLICABLE;
+  if (!res) await postJSONMaybe("/api/projects/answers", {project_dir:projectDir, answers:legacyAnswers});
+  q.status = resolution;
+  await refreshQuestionsAfterAnswer();
+}
+async function refreshQuestionsAfterAnswer() {
+  if (legacyInterviewMode) { advanceLegacyInterview(); return; }
+  const fresh = await getJSONMaybe(`/api/projects/questions?project_dir=${encodeURIComponent(projectDir)}`);
+  if (fresh) {
+    const incoming = normalizeQuestions(fresh);
+    const incomingIds = new Set(incoming.map(q => q.id));
+    const closed = workflowQuestions.filter(q => ["resolved","partial","unknown","not_applicable","n/a"].includes(q.status) && !incomingIds.has(q.id));
+    workflowQuestions = [...closed, ...incoming];
+  }
+  const pending = workflowQuestions.find(q => !["resolved","partial","unknown","not_applicable","n/a"].includes(q.status));
+  activeQuestionId = pending ? pending.id : null;
+  renderInterview();
+}
+function advanceLegacyInterview() {
+  const pending = workflowQuestions.find(q => !["resolved","partial","unknown","not_applicable","n/a"].includes(q.status));
+  activeQuestionId = pending ? pending.id : null;
+  renderInterview();
+}
+$("answerBtn").onclick = () => { /* legacy dock is intentionally no longer the source of truth */ };
 
 // ---------- generate + live tree (STEP 0 stays done on top) ----------
 function renderPipeline(steps) {
-  const ul = $("steps");
-  ul.innerHTML = `<li class="step done"><span class="node">✓</span>
-    <span class="meta"><span class="k">STEP 0</span><span class="t">입력 수집</span><span class="s">완료</span></span></li>`;
-  stepIndex = {};
-  steps.forEach((s, i) => {
-    const li = document.createElement("li");
-    li.className = "step locked";
-    li.innerHTML = `<span class="node">${i+1}</span><span class="meta">
-      <span class="k">STEP ${i+1}</span><span class="t">${s.label}</span><span class="s">대기</span></span>`;
-    ul.appendChild(li); stepIndex[s.id] = li;
-  });
+  const isGeneration = (steps || []).some(s => ["write","validate","citation","output"].includes(s.id));
+  renderWorkflowTree(isGeneration ? "output" : "graph", isGeneration ? "문서 생성 중" : "그래프 구성 중");
+  (steps || []).forEach(s => { stepIndex[s.id] = stepIndex[isGeneration ? "output" : "graph"]; });
 }
 function setStepActive(stepId, label) {
-  let passed = true;
-  for (const [id, li] of Object.entries(stepIndex)) {
-    if (id === stepId) { li.className = "step active"; li.querySelector(".s").textContent = label || "진행 중…"; passed = false; }
-    else if (passed && !li.classList.contains("done")) {
-      li.className = "step done"; li.querySelector(".node").textContent = "✓"; li.querySelector(".s").textContent = "완료";
-    }
-  }
+  const li = stepIndex[stepId];
+  if (li) { li.className = "step active"; li.querySelector(".s").textContent = label || "진행 중…"; }
 }
-function markAllDone() {
-  for (const li of Object.values(stepIndex)) { li.className = "step done"; li.querySelector(".node").textContent = "✓"; li.querySelector(".s").textContent = "완료"; }
-}
+function markAllDone() { renderWorkflowTree(workflowStage, "완료"); }
 let logLines = [];
 function logLine(s) { logLines.push(s); if (logLines.length>200) logLines.shift(); const el=$("logbox"); if (el){ el.textContent=logLines.join("\n"); el.scrollTop=el.scrollHeight; } }
 
@@ -794,55 +1064,116 @@ let planProposal = null, chatHistory = [];
 const SEC_LABEL = {introduction:"Introduction", method:"Methods", result:"Results", discussion:"Discussion", conclusion:"Conclusion", abstract:"Abstract"};
 async function startPlan() {
   logLines = []; chatHistory = [];
+  setWorkflowStage("graph", "논리 그래프 구성");
   $("canvas").innerHTML = `<div class="crumb">제작 계획</div>
     <div class="card"><h3>계획 수립 중… <span class="badge">planning</span></h3>
     <p class="muted">claim graph · 섹션 구조 · figure를 설계하고 있어요. 우측 트리 참고.</p>
     <div class="log" id="logbox"></div></div>`;
   const res = await postJSON("/api/projects/plan", {project_dir: projectDir});
   if (res.error === "unanswered_questions") {
+    legacyInterviewMode = true;
     showStatus("미응답", "계획 차단", `미응답 질문 ${(res.pending||[]).length}개. 답하거나 '모름'을 눌러주세요.`, "warn");
-    $("dock").style.display = "block"; refreshAnswerGate(); return;
+    await loadQuestionsOrPlan({questions:(res.pending||[]).map((id,i)=>({id,field:id,question:`${id} 항목을 확인해 주세요.`,risk:"high"}))}); return;
   }
+  if (res.error) { showExtractionError(res.error, res.retryable !== false); return; }
   renderPipeline(res.steps);
   const es = new EventSource(`/api/projects/plan/${res.job_id}/stream`);
-  es.onmessage = (ev) => {
+  es.onmessage = async (ev) => {
     const m = JSON.parse(ev.data);
     if (m.type === "progress") { if (m.step_id && stepIndex[m.step_id]) setStepActive(m.step_id, m.label); logLine(m.raw||m.label); }
-    else if (m.type === "plan_ready") { markAllDone(); es.close(); planProposal = m.proposal;
+    else if (m.type === "plan_ready") { markAllDone(); es.close();
       chatHistory = [{role:"assistant", content:"아래 구성으로 작성할게요. 소제목·figure를 보고 바꿀 게 있으면 채팅으로 말해주세요. 좋으면 ‘제작 시작’을 누르면 됩니다."}];
-      renderPlanView(); }
+      await loadQuestionsOrPlan(m); }
     else if (m.type === "error") { es.close(); showStatus("실패","오류", m.error, "warn"); }
   };
   es.onerror = () => es.close();
 }
-function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function esc(s){ return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+async function loadGraphOrPlan() {
+  setWorkflowStage("graph", "검토 준비");
+  const payload = await getJSONMaybe(`/api/projects/graph?project_dir=${encodeURIComponent(projectDir)}`);
+  if (payload && !payload.error) return showGraphReview(payload);
+  const legacy = await getJSONMaybe(`/api/projects/plan/state?project_dir=${encodeURIComponent(projectDir)}`);
+  if (legacy && legacy.proposal) {
+    planProposal = legacy.proposal; graphRevision = "legacy-plan"; graphConfirmed = false; renderPlanView(); return;
+  }
+  await startPlan();
+}
+function graphToProposal(payload) {
+  if (payload.proposal) return payload.proposal;
+  const raw = payload.graph || payload.claim_graph || payload;
+  if (Array.isArray(raw)) return {...payload, graph:raw};
+  const nodes = raw.nodes || payload.nodes || [], edges = raw.edges || payload.edges || [];
+  const byId = Object.fromEntries(nodes.filter(n => n && n.id).map(n => [n.id,n]));
+  const claims = nodes.filter(n => n.kind === "claim");
+  const children = {};
+  claims.forEach(c => { if (c.parent_id) (children[c.parent_id] ||= []).push(c); });
+  const mains = claims.filter(c => !c.parent_id).length ? claims.filter(c => !c.parent_id) : claims;
+  const supportFor = (claim) => {
+    const out = {evidence:[], methods:[], data:[], figures:[], refs:[], edges:[]};
+    const connected = edges.filter(e => e.dst === claim.id || e.src === claim.id);
+    connected.forEach(e => {
+      const other = byId[e.src === claim.id ? e.dst : e.src]; if (!other) return;
+      const item = {id:other.id,text:other.text,rationale:e.rationale,rel:e.rel};
+      if (other.kind === "evidence") out.evidence.push(item);
+      else if (other.kind === "method") out.methods.push(item);
+      else if (other.kind === "data") out.data.push(item);
+      else if (other.kind === "artifact") out.figures.push(item);
+      else if (["source","warrant"].includes(other.kind)) out.refs.push(item);
+      out.edges.push(e);
+    });
+    return out;
+  };
+  return {
+    ...payload,
+    main_contribution: payload.main_contribution || raw.main_contribution || "",
+    claims: claims.map(c => ({id:c.id,text:c.text})),
+    graph: mains.map(m => ({claim:{id:m.id,text:m.text}, subclaims:[m,...(children[m.id] || [])].map(c => ({id:c.id,text:c.text,...supportFor(c)}))})),
+    figures: payload.figures || nodes.filter(n => n.kind === "artifact").map(n => ({id:n.id,kind:n.represented_as,message:n.text,section:n.section})),
+    structure: payload.structure || {}, sections: payload.sections || [],
+  };
+}
+async function showGraphReview(payload) {
+  planProposal = graphToProposal(payload || {});
+  graphRevision = payload.graph_revision || payload.revision || planProposal.graph_revision || planProposal.revision || "current";
+  graphConfirmed = !!(payload.confirmed || payload.is_confirmed || payload.confirmed_graph_revision === graphRevision);
+  setWorkflowStage("graph", graphConfirmed ? "승인됨" : "검토 필요");
+  if (!chatHistory.length) chatHistory = [{role:"assistant",content:"주장마다 근거·방법·데이터가 연결됐는지 검토해 주세요. 수정은 아래 채팅으로 요청할 수 있습니다."}];
+  renderPlanView();
+}
 function renderPlanView() {
   const p = planProposal || {};
   const claims = (p.claims||[]).map(c => `<li>${esc(c.text)}</li>`).join("");
-  const structure = (p.sections||[]).map(sec => {
+  const sectionKeys = (p.sections && p.sections.length) ? p.sections : Object.keys(p.structure || {});
+  const structure = sectionKeys.map(sec => {
     const s = (p.structure||{})[sec] || {}; const subs = (s.subheadings||[]);
     const subhtml = subs.length ? `<ul class="subs">${subs.map(h=>`<li>${esc(h)}</li>`).join("")}</ul>` : `<div class="nosubs">소제목 없음</div>`;
     return `<div class="secblock"><div class="sechead">${esc(SEC_LABEL[sec]||sec)}</div>
       <div class="secsum">${esc(s.summary||"")}</div>${subhtml}</div>`;
   }).join("");
-  const figs = (p.figures||[]).map(f => `<div class="figcard">${f.svg||""}
+  const figureRows = Array.isArray(p.figures) ? p.figures : ((p.figures && p.figures.figures) || []);
+  const figs = figureRows.map(f => `<div class="figcard"><div class="fig-placeholder">Figure / Table preview</div>
       <div class="figmeta"><span class="fkind">${esc(f.kind||"figure")}</span> ${esc(f.section||"")}<br>${esc(f.message||"")}</div></div>`).join("");
-  const chips = (arr, cls) => (arr||[]).map(x => `<span class="gchip ${cls}">${esc(x.text||x.id||"")}</span>`).join("");
+  const chips = (arr, cls) => (arr||[]).map(x => `<span class="gchip ${cls}" title="${esc(x.rationale||x.rel||x.id||"")}">${esc(x.text||x.id||"")}</span>`).join("");
   const subRow = (sc) => {
     const groups = [
       chips(sc.evidence, "ev"), chips(sc.methods, "me"), chips(sc.data, "da"),
       chips(sc.figures, "fi"), chips(sc.refs, "re"),
     ].filter(Boolean).join("");
+    const rationale = (sc.edges||[]).filter(e => e.rationale).map(e => `${e.src} ${e.rel} ${e.dst}: ${e.rationale}`).join(" · ");
     return `<div class="gsub"><div class="gsubtext">${esc(sc.text||"")}</div>
-      <div class="gchips">${groups || "<span class='gnone'>근거 노드 없음</span>"}</div></div>`;
+      <div class="gchips">${groups || "<span class='gnone'>근거 노드 없음</span>"}</div>
+      ${rationale ? `<span class="edge-note">${esc(rationale)}</span>` : ""}</div>`;
   };
   const graph = (p.graph||[]).map(g => `<div class="gcard">
       <div class="gclaim">${esc((g.claim||{}).text||"")}</div>
       ${(g.subclaims||[]).map(subRow).join("")}</div>`).join("");
   const chat = chatHistory.map(m => `<div class="cmsg ${m.role}"><b>${m.role==="user"?"나":"agent"}</b> ${esc(m.content)}</div>`).join("");
-  $("canvas").innerHTML = `<div class="crumb">제작 계획 · 확인/수정</div>
-    <h2 class="title serif">제작 계획 — 확인하고 수정하세요</h2>
-    <div class="ehint">분류 <b>${esc(p.classification||"-")}</b>. claim graph·소제목·figure를 검토하고, 바꿀 게 있으면 아래 채팅으로. 좋으면 <b>제작 시작</b>.</div>
+  $("canvas").innerHTML = `<div class="stage-kicker"><span class="num">5</span><span class="name">논리 그래프 검토</span></div>
+    <h2 class="title serif">주장과 근거 연결을 승인해 주세요</h2>
+    <div class="ehint">분류 <b>${esc(p.classification||"-")}</b>. 각 주장에 evidence·method·data가 연결됐는지 확인하세요. 수정하면 승인은 자동으로 해제됩니다.</div>
+    <div class="revisionbar"><span>Graph revision</span><code>${esc(String(graphRevision || "current"))}</code><span class="spacer"></span>
+      <span class="${graphConfirmed ? "confirmed" : "unconfirmed"}">${graphConfirmed ? "✓ 승인됨" : "검토·승인 필요"}</span></div>
     <div class="planview">
       <div class="plancol">
         <div class="plabel">핵심 기여</div><div class="pcontrib">${esc(p.main_contribution||"")}</div>
@@ -861,13 +1192,38 @@ function renderPlanView() {
       <div class="chatrow">
         <textarea id="chatInput" rows="1" placeholder="수정 요청… 예) Result 소제목을 '검증·선정·민감도'로 바꿔줘"></textarea>
         <button class="send" id="chatSend">보내기</button>
-        <button class="send go" id="startGenBtn">▶ 제작 시작</button>
+        <button class="send go" id="confirmGraphBtn">${graphConfirmed ? "✓ 그래프 승인됨" : "그래프 승인"}</button>
+        <button class="send" id="startGenBtn" ${graphConfirmed ? "" : "disabled"}>문서 생성 →</button>
       </div></div>`;
   $("chatSend").onclick = sendChat;
+  $("confirmGraphBtn").onclick = confirmGraph;
+  $("confirmGraphBtn").disabled = graphConfirmed;
   $("startGenBtn").onclick = startGenerate;
   const ci = $("chatInput");
   ci.onkeydown = (e) => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); sendChat(); } };
   const cl = $("chatlog"); if (cl) cl.scrollTop = cl.scrollHeight;
+}
+async function confirmGraph() {
+  const btn = $("confirmGraphBtn"); if (btn) { btn.disabled = true; btn.textContent = "승인 저장 중…"; }
+  const res = await postJSONMaybe("/api/projects/graph/confirm", {
+    project_dir:projectDir, graph_revision:graphRevision, revision:graphRevision,
+  });
+  if (res && res.error) {
+    graphConfirmed = false;
+    if ((res.pending_questions || []).length) {
+      chatHistory.push({role:"assistant",content:"그래프 감사에서 확인이 필요한 항목이 발견되었습니다. 질문을 먼저 정리해 주세요."});
+      renderQuestions(res);
+      return;
+    }
+    if (res.error === "graph_audit_blocked") {
+      const questions = await getJSONMaybe(`/api/projects/questions?project_dir=${encodeURIComponent(projectDir)}`);
+      if (questions && !questions.error) { renderQuestions(questions); return; }
+    }
+    const findings = (((res.audit || {}).findings) || []).map(f => f.message).filter(Boolean).join(" · ");
+    chatHistory.push({role:"assistant",content:`승인 실패: ${findings || res.error}`});
+  }
+  else { graphConfirmed = true; graphRevision = (res && (res.graph_revision || res.revision)) || graphRevision; }
+  renderPlanView();
 }
 async function sendChat() {
   const ci = $("chatInput"); const msg = (ci.value||"").trim(); if (!msg) return;
@@ -876,59 +1232,81 @@ async function sendChat() {
   try {
     const r = await postJSON("/api/projects/chat", {project_dir: projectDir, message: msg, history: chatHistory});
     if (r.proposal) planProposal = r.proposal;
+    graphRevision = r.graph_revision || r.revision || graphRevision || "modified";
+    graphConfirmed = false;
     chatHistory.push({role:"assistant", content: r.reply || "반영했어요."});
   } catch (e) { chatHistory.push({role:"assistant", content:"오류: " + e}); }
   renderPlanView();
 }
 
 async function startGenerate() {
+  if (!graphConfirmed) { renderPlanView(); return; }
   logLines = [];
-  $("canvas").innerHTML = `<div class="crumb">생성</div>
-    <div class="card"><h3>논문 생성 중… <span class="badge">running</span></h3>
-    <p class="muted">우측 workflow tree에서 현재 단계를 확인하세요.</p>
+  setWorkflowStage("output", "문서 생성 중");
+  $("canvas").innerHTML = `<div class="stage-kicker"><span class="num">6</span><span class="name">문서 생성·다운로드</span></div>
+    <h2 class="title serif">승인된 그래프로 문서를 생성하고 있습니다</h2>
+    <div class="card"><h3>문서 생성 <span class="badge">running</span></h3>
+    <p class="muted">본문 작성·논리 검증·citation·출력 순서로 진행합니다. 실패해도 승인된 그래프는 유지됩니다.</p>
     <div class="log" id="logbox"></div></div>`;
   const res = await postJSON("/api/projects/generate", {project_dir: projectDir});
   if (res.error === "unanswered_questions") {  // hard gate (server-side backstop)
     showStatus("미응답", "생성 차단", `아직 응답하지 않은 질문 ${ (res.pending||[]).length }개가 있어요. 모두 답하거나 '모름'을 눌러주세요.`, "warn");
-    $("dock").style.display = "block"; refreshAnswerGate();
+    loadQuestionsOrPlan();
+    return;
+  }
+  if (res.error) {
+    if (["graph_not_confirmed","stale_or_missing_graph","no_plan"].includes(res.error)) {
+      graphConfirmed = false;
+      chatHistory.push({role:"assistant",content:"서버의 최신 그래프 승인이 필요합니다. 그래프를 다시 확인해 주세요."});
+      await loadGraphOrPlan();
+    } else showGenerationError(res.error, res.retryable !== false);
     return;
   }
   renderPipeline(res.steps);
-  const es = new EventSource(`/api/projects/generate/${res.job_id}/stream`);
-  es.onmessage = (ev) => {
-    const m = JSON.parse(ev.data);
-    if (m.type === "progress") { if (m.step_id && stepIndex[m.step_id]) setStepActive(m.step_id, m.label); logLine(m.raw || m.label); }
-    else if (m.type === "done") {
-      markAllDone(); es.close();
-      paperReady = true; $("paperBtn").style.display = "";
-      showPaper(m);
-    } else if (m.type === "error") { es.close(); showStatus("실패", "오류", m.error, "warn"); }
-  };
-  es.onerror = () => es.close();
+  if (res.job_id) listenToJob(res.stream_url || `/api/projects/generate/${encodeURIComponent(res.job_id)}/stream`, "generate");
+  else if (res.done || res.complete) { paperReady = true; showPaper(res); }
 }
 
 // ---------- generated-paper viewer (center = the produced journal) ----------
 function paperUrl(kind) {
   return `/api/projects/paper?project_dir=${encodeURIComponent(projectDir)}&kind=${kind}&t=${Date.now()}`;
 }
-function showPaper(meta) {
+function downloadUrl(kind) {
+  if (kind === "pdf" || kind === "tex") return paperUrl(kind);
+  return `/api/projects/download?project_dir=${encodeURIComponent(projectDir)}&kind=${encodeURIComponent(kind)}`;
+}
+async function showPaper(meta) {
   meta = meta || {};
+  if (!Array.isArray(meta.outputs)) {
+    const outputState = await getJSONMaybe(`/api/projects/outputs?project_dir=${encodeURIComponent(projectDir)}`);
+    meta.outputs = (outputState && outputState.outputs) || [];
+  }
+  const outputNames = new Set(meta.outputs.map(x => x.name));
+  const hasPdf = meta.pdf_ready === true || outputNames.has("paper.pdf");
+  setWorkflowStage("output", "완료");
   const toks = (meta.input_tokens != null) ? `<div class="toks">
       <span>input <b>${meta.input_tokens.toLocaleString()}</b></span>
       <span>output <b>${meta.output_tokens.toLocaleString()}</b></span>
       <span>cached <b>${meta.cached_tokens.toLocaleString()}</b> (${Math.round((meta.cache_hit_rate||0)*100)}%)</span>
     </div>` : "";
   const cls = meta.classification ? `<span class="muted">분류 <b>${meta.classification}</b></span>` : "";
-  const log = logLines.length ? `<details class="logdetails"><summary>실행 로그</summary><div class="log">${logLines.join("\n")}</div></details>` : "";
-  $("canvas").innerHTML = `<div class="crumb">생성된 논문</div>
-    <h2 class="title serif">${JF.title || wtitleText()}</h2>
+  const log = logLines.length ? `<details class="logdetails"><summary>실행 로그</summary><div class="log">${esc(logLines.join("\n"))}</div></details>` : "";
+  $("canvas").innerHTML = `<div class="stage-kicker"><span class="num">6</span><span class="name">문서 생성·다운로드</span></div>
+    <h2 class="title serif">${esc(JF.title || wtitleText())}</h2>
     <div class="paperbar">
-      <span class="badge ok">PDF</span>${cls}
-      <a class="dl" href="${paperUrl('pdf')}" target="_blank">PDF 새 탭 ↗</a>
-      <a class="dl" href="${paperUrl('tex')}" target="_blank">.tex 소스 ↗</a>
+      <span class="badge ${hasPdf ? "ok" : ""}">${hasPdf ? "PDF" : "LaTeX"}</span>${cls}
+      <span class="muted">Graph revision <b>${esc(String(graphRevision || "saved"))}</b></span>
+    </div>
+    <div class="output-grid">
+      ${hasPdf ? `<a class="output-card" href="${downloadUrl('pdf')}" target="_blank">PDF<small>완성 원고 보기</small></a>` : ""}
+      <a class="output-card" href="${downloadUrl('tex')}" target="_blank">LaTeX<small>편집 가능한 소스</small></a>
+      <a class="output-card" href="${downloadUrl('graph')}" target="_blank">논리 그래프<small>주장·근거 JSON</small></a>
+      <a class="output-card" href="${downloadUrl('audit')}" target="_blank">검증 보고서<small>논리 감사 JSON</small></a>
+      <a class="output-card" href="${downloadUrl('zip')}" target="_blank">전체 ZIP<small>그래프·근거·원고 묶음</small></a>
     </div>${toks}
-    <iframe class="paperframe" src="${paperUrl('pdf')}#view=FitH" title="generated paper"></iframe>
-    ${log}`;
+    ${hasPdf ? `<iframe class="paperframe" src="${paperUrl('pdf')}#view=FitH" title="generated paper"></iframe>` : `<div class="card"><p class="muted">이 배포 환경에는 LaTeX PDF 엔진이 없어 편집 가능한 .tex와 전체 ZIP을 제공합니다.</p></div>`}
+    ${log}<div class="stage-actions"><button class="send secondary" id="returnGraph">그래프로 돌아가기</button></div>`;
+  $("returnGraph").onclick = loadGraphOrPlan;
 }
 function wtitleText() { const el = $("wtitle"); return el ? el.textContent : "Manuscript"; }
 
@@ -951,6 +1329,7 @@ async function uploadFiles(fileList) {
   try {
     const r = await fetch("/api/projects/upload", {method:"POST", body: fd});
     if (!r.ok) throw new Error("HTTP " + r.status);
+    invalidateGraph();
     if (nt) nt.textContent = "✓ 업로드됨";
   } catch (e) { if (nt) nt.textContent = "업로드 실패: " + e; }
   await loadDataFiles();
@@ -958,6 +1337,7 @@ async function uploadFiles(fileList) {
 async function deleteDataFile(rel) {
   if (!projectDir) return;
   await postJSON("/api/projects/files/delete", {project_dir: projectDir, rel});
+  invalidateGraph();
   await loadDataFiles();
 }
 function renderFileList() {
@@ -969,9 +1349,9 @@ function renderFileList() {
     row.className = "frow" + (f.rel === selectedData ? " sel" : "") + (f.note ? " noted" : "");
     row.title = "클릭하면 오른쪽에 설명을 적을 수 있어요";
     const cols = (f.columns && f.columns.length) ? ` · ${f.columns.length} cols` : "";
-    row.innerHTML = `<span class="fkind">${f.kind || "file"}</span>
-      <span class="fname">${f.name}</span>
-      <span class="fmeta">${fmtSize(f.size)}${cols}</span>`;
+    row.innerHTML = `<span class="fkind">${esc(f.kind || "file")}</span>
+      <span class="fname">${esc(f.name)}</span>
+      <span class="fmeta">${esc(fmtSize(f.size) + cols)}</span>`;
     row.onclick = () => selectData(f.rel);
     row.appendChild(mkBtn("✕", "삭제", false,
       (e) => { e.stopPropagation(); deleteDataFile(f.rel); }, true));
@@ -992,9 +1372,9 @@ function renderNotePanel() {
     return;
   }
   const cols = (f.columns && f.columns.length) ? ` · ${f.columns.join(", ")}` : "";
-  box.innerHTML = `<div class="np-head"><span class="fkind">${f.kind || "file"}</span>
-      <span class="np-name">${f.name}</span></div>
-    <div class="np-sub">${f.rel}${cols}</div>
+  box.innerHTML = `<div class="np-head"><span class="fkind">${esc(f.kind || "file")}</span>
+      <span class="np-name">${esc(f.name)}</span></div>
+    <div class="np-sub">${esc(f.rel + cols)}</div>
     <textarea class="np-ta" id="noteTa"
       placeholder="이 파일이 무엇인지 자유롭게 적어주세요.\n예) VI=2 하중조건에서 그룹별 1차/전체 Sobol 민감도.\nResult 섹션의 '물성치가 가장 민감' 주장 근거(Fig 3)."></textarea>`;
   const ta = $("noteTa");
@@ -1004,6 +1384,7 @@ function renderNotePanel() {
 }
 async function saveNote(rel, note) {
   const f = dataFiles.find(x => x.rel === rel); if (f) f.note = note;
+  invalidateGraph();
   renderFileList();  // refresh the "noted" marker
   try {
     await postJSON("/api/projects/files/note", {project_dir: projectDir, rel, note});
@@ -1014,6 +1395,7 @@ async function saveNote(rel, note) {
 // ---------- structured UI state (lossless reopen) ----------
 function uiState() { return {JF, CM, novelty, outlineData}; }
 function resetState() {
+  legacyInterviewMode = false;
   Object.assign(JF, {field:"", title:"", affiliation:"", target:[""], authors:[""], corresponding:[""]});
   Object.assign(CM, {paragraph:"", sentence:"", outscope:""}); CM.keywords = [""];
   novelty = [""];
@@ -1051,12 +1433,12 @@ async function loadProjects() {
   (r.projects || []).forEach(p => {
     const card = document.createElement("div"); card.className = "pcard";
     const dd = ddlInfo(p.deadline);
-    card.innerHTML = `<div class="ptop"><span class="pic">${(p.title || p.name || 'P').trim()[0] || 'P'}</span>
-        <div><h3 class="pt serif">${p.title || p.name}</h3><div class="pmeta">${p.field || p.name}</div></div>
+    card.innerHTML = `<div class="ptop"><span class="pic">${esc((p.title || p.name || 'P').trim()[0] || 'P')}</span>
+        <div><h3 class="pt serif">${esc(p.title || p.name)}</h3><div class="pmeta">${esc(p.field || p.name)}</div></div>
         <span class="ptag ${p.status}">${statusLabel(p.status)}</span></div>
-      <div class="prog"><div class="pl"><span class="pct">${p.progress}%</span><span class="stp">${p.step}</span></div>
+      <div class="prog"><div class="pl"><span class="pct">${Number(p.progress) || 0}%</span><span class="stp">${esc(p.step)}</span></div>
       <div class="bar"><span style="width:${p.progress}%"></span></div></div>
-      <div class="pfoot"><span class="ddl ${dd.cls}">${dd.label}</span><span class="nx">${p.name}</span></div>`;
+      <div class="pfoot"><span class="ddl ${dd.cls}">${esc(dd.label)}</span><span class="nx">${esc(p.name)}</span></div>`;
     card.onclick = () => openExisting(p.project_dir, p.title || p.name);
     g.appendChild(card);
   });
@@ -1078,14 +1460,15 @@ function enterWorkspace(dir, title) {
   $("dock").style.display = "none";
   dataFiles = []; selectedData = null;
   $("paperBtn").style.display = paperReady ? "" : "none";  // show only if a paper exists
+  workflowStage = paperReady ? "output" : "profile";
   renderNav(); renderStep0();
-  if (paperReady) showPaper({}); else openField("journal");  // completed -> show the paper
+  if (paperReady) showPaper({}); else openField("journal");  // workflow state may replace this after load
   loadDataFiles();  // populate the data-panel dot from disk
   if (diskMode) {
-    $("createBtn").disabled = false; $("createBtn").textContent = "진단 시작 (저장된 입력)";
+    $("createBtn").disabled = false; $("createBtn").textContent = "자동 추출 시작 (저장된 입력)";
     showStatus("기존 입력", "기존 프로젝트", "이 프로젝트는 저장된 입력 파일이 있어요. 폼은 비어 보여도 디스크 입력으로 진단/생성합니다.");
   } else {
-    $("createBtn").textContent = "＋ Create Journal";
+    $("createBtn").textContent = "자료 추출 시작 →";
   }
 }
 async function openExisting(dir, title) {
@@ -1094,6 +1477,37 @@ async function openExisting(dir, title) {
   paperReady = !!r.paper_ready;
   restoreState(r.ui_state);
   enterWorkspace(dir, title);
+  await resumeWorkflow();
+}
+async function resumeWorkflow() {
+  const state = await getJSONMaybe(`/api/projects/workflow/state?project_dir=${encodeURIComponent(projectDir)}`);
+  if (!state) return;  // old server: the legacy state/paper flow remains active
+  workflowState = state.workflow ? {...state, ...state.workflow} : state;
+  const stage = stageFor(workflowState.stage || workflowState.status);
+  const rawStatus = String(workflowState.status || workflowState.stage || "").toLowerCase();
+  workflowStage = stage;
+  graphRevision = workflowState.graph_revision || graphRevision;
+  graphConfirmed = !!(workflowState.graph_confirmed || (workflowState.confirmed_graph_revision && workflowState.confirmed_graph_revision === graphRevision));
+  if (workflowState.paper_ready != null) paperReady = !!workflowState.paper_ready;
+  renderWorkflowTree(stage, workflowState.message || workflowState.step_label);
+  if (["failed","interrupted"].includes(rawStatus)) {
+    const msg = workflowState.error || workflowState.last_error || workflowState.message || "이전 작업이 중단되었습니다.";
+    const last = String(workflowState.last_stage || workflowState.failed_stage || "").toLowerCase();
+    if (last.includes("generat") || last.includes("output") || last.includes("write") || workflowState.confirmed_graph_revision) showGenerationError(msg, true);
+    else showExtractionError(msg, true);
+  } else if (["questions","questioning"].includes(stage) || ["questions_pending","waiting_for_user"].includes(workflowState.stage)) {
+    const q = await getJSONMaybe(`/api/projects/questions?project_dir=${encodeURIComponent(projectDir)}`);
+    if (q) renderQuestions(q);
+  } else if (stage === "graph") await loadGraphOrPlan();
+  else if (stage === "extract" && rawStatus === "sources_extracted") await loadQuestionsOrPlan();
+  else if (stage === "upload") openField("data");
+  else if (stage === "output" && paperReady) showPaper(workflowState);
+  else if (["extract","output"].includes(stage) && workflowState.active_job_id) {
+    const eventKind = stage === "output" ? "generate" : "extract";
+    const routeKind = workflowState.job_kind || (stage === "output" ? "generate" : "plan");
+    const stream = workflowState.stream_url || `/api/projects/${routeKind}/${encodeURIComponent(workflowState.active_job_id)}/stream`;
+    listenToJob(stream, eventKind);
+  }
 }
 $("paperBtn").onclick = () => showPaper({});
 function openNewModal() { $("np_name").value = ""; $("np_deadline").value = ""; $("newModal").classList.add("show"); }

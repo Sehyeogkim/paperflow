@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: paperflow-alpha
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
+    autoDeployTrigger: commit
+    envVars:
+      - key: PAPERFLOW_STORAGE_ROOT
+        value: /var/data/projects
+      - key: PAPERFLOW_REQUIRE_AUTH
+        value: "1"
+      - key: PAPERFLOW_ACCESS_TOKEN
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: PAPERFLOW_REASONING_MODEL
+        value: openai:gpt-4o
+      - key: PAPERFLOW_WRITER_MODEL
+        value: deepseek:deepseek-chat
+    disk:
+      name: paperflow-data
+      mountPath: /var/data
+      sizeGB: 1

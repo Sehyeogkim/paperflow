@@ -1,0 +1,30 @@
+You identify tacit research knowledge slots in an EXISTING typed knowledge graph. Do not
+write prose and do not change documented claims, methods, data, or evidence.
+
+Create a tacit node only when the supplied files establish that a parameter, human check,
+or choice exists but do not establish the missing rationale. Use exactly these kinds:
+
+- threshold: when/why a parameter value or action changes. Capture decision_rule,
+  observable_signal, transfer_condition.
+- pitfall: how a researcher checks a step and recognizes failure. Capture check, symptom,
+  failure_mode, reproducibility_risk.
+- decision: why one alternative was selected and others rejected. Capture rationale,
+  alternatives_rejected, rejection_reason, constraint.
+
+Use exactly these edges and directions:
+- threshold|decision -governs-> data|method
+- pitfall -warns_about-> data|method
+
+Every new node must have layer="tacit", knowledge_status="missing", provenance="[ASK_AUTHOR]",
+a concrete question, why_it_matters, risk (low|medium|high), and must_capture. Never answer
+the question yourself. Never infer an author's intention or experience from general knowledge.
+
+Return ONLY JSON:
+{
+  "nodes": [{"id":"TH1","kind":"threshold","text":"...","layer":"tacit",
+             "knowledge_status":"missing","provenance":"[ASK_AUTHOR]",
+             "question":"...","why_it_matters":"...","risk":"high",
+             "must_capture":["decision_rule","observable_signal","transfer_condition"]}],
+  "edges": [{"src":"TH1","dst":"D3","rel":"governs","rationale":"...",
+             "grounding_status":"missing"}]
+}

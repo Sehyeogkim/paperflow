@@ -5,7 +5,9 @@ from pathlib import Path
 
 from .schemas.project_state import ProjectState
 
-_PROMPTS = Path(__file__).resolve().parents[2] / "prompts"
+_PACKAGED_PROMPTS = Path(__file__).resolve().parent / "prompts"
+_DEV_PROMPTS = Path(__file__).resolve().parents[2] / "prompts"
+_PROMPTS = _PACKAGED_PROMPTS if _PACKAGED_PROMPTS.is_dir() else _DEV_PROMPTS
 
 
 def prompt(name: str) -> str:
@@ -31,9 +33,14 @@ def inputs_block(ps: ProjectState) -> str:
         lines += [f"keywords: {', '.join(cm.keywords)}"]
     if cm.out_of_scope:
         lines += ["out_of_scope:", *[f"  - {b}" for b in cm.out_of_scope]]
-    if ps.answers:
+    author_facts = {
+        k: v for k, v in ps.answers.items()
+        if str(v).strip().lower() not in {"모름", "모르겠습니다", "unknown", "i don't know", "n/a"}
+        and not str(v).strip().startswith("[UNKNOWN]")
+    }
+    if author_facts:
         lines += ["", "## AUTHOR ANSWERS (filled gaps — treat as author-provided fact)"]
-        lines += [f"  - {k}: {v}" for k, v in ps.answers.items()]
+        lines += [f"  - {k}: {v}" for k, v in author_facts.items()]
     if ps.style:
         lines += ["", "## AUTHOR STYLE (writing constraints — follow these)", ps.style[:1500]]
     if ps.journal_constraints:
