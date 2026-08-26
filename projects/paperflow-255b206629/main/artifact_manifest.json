@@ -1,0 +1,88 @@
+{
+  "manifest_version": "1.0",
+  "artifacts": [
+    {
+      "logical_id": "data-uploads-a93c1a080b55-sobol-grp-lap-vi2-csv-d9cba9a2cb",
+      "relative_path": "data/uploads/a93c1a080b55_sobol_grp_lap_vi2.csv",
+      "original_name": "a93c1a080b55_sobol_grp_lap_vi2.csv",
+      "sha256": "4d5495a1edb7c3eea4f862fdf367d5367f50b1b81849778b19e758318dfcc3ae",
+      "size_bytes": 163,
+      "mime_type": "text/csv",
+      "extension": ".csv",
+      "classification": "csv",
+      "status": "extracted",
+      "chunks": [
+        {
+          "chunk_id": "data-uploads-a93c1a080b55-sobol-grp-lap-vi2-csv-d9cba9a2cb:c0001",
+          "text": "group,S1,ST\nMorphology,0.07101564000174668,0.13486512424408015\nMaterial,0.7506966098655802,0.7965081701408067\nHemodynamics,0.11006091450192475,0.11720173985933734",
+          "locator": {
+            "relative_path": "data/uploads/a93c1a080b55_sobol_grp_lap_vi2.csv",
+            "locator_type": "csv_rows",
+            "line_start": null,
+            "line_end": null,
+            "row_start": 1,
+            "row_end": 4,
+            "page": null,
+            "sheet": null,
+            "char_start": null,
+            "char_end": null,
+            "json_pointer": null
+          }
+        }
+      ],
+      "metadata": {
+        "header": [
+          "group",
+          "S1",
+          "ST"
+        ],
+        "sample_rows": [
+          [
+            "Morphology",
+            "0.07101564000174668",
+            "0.13486512424408015"
+          ],
+          [
+            "Material",
+            "0.7506966098655802",
+            "0.7965081701408067"
+          ],
+          [
+            "Hemodynamics",
+            "0.11006091450192475",
+            "0.11720173985933734"
+          ]
+        ],
+        "rows_extracted": 4,
+        "columns_extracted": 3,
+        "truncated": false
+      },
+      "error_code": null,
+      "error_message": null
+    }
+  ],
+  "scanned_roots": [
+    "data",
+    "reference"
+  ],
+  "truncated": false,
+  "warnings": [],
+  "limits": {
+    "max_files": 100,
+    "max_total_bytes": 52428800,
+    "max_file_bytes": 10485760,
+    "max_chars_per_artifact": 50000,
+    "max_chunk_chars": 4000,
+    "max_text_lines": 2000,
+    "max_csv_rows": 200,
+    "max_csv_columns": 100,
+    "max_cell_chars": 1000,
+    "max_pdf_pages": 25,
+    "max_pdf_chars_per_page": 10000,
+    "max_xlsx_sheets": 10,
+    "max_xlsx_rows_per_sheet": 50,
+    "max_xlsx_columns": 50,
+    "max_xlsx_members": 2000,
+    "max_xlsx_uncompressed_bytes": 26214400
+  }
+}

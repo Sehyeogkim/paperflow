@@ -1,0 +1,127 @@
+{
+  "stage": "complete",
+  "source_revision": 10,
+  "graph_revision": 16,
+  "confirmed_graph_revision": 16,
+  "active_job_id": null,
+  "last_event_id": 62,
+  "blocking_items": [],
+  "artifacts": [
+    {
+      "name": "Abstract.md",
+      "size": 1532,
+      "sha256": "ca20b14a495e3b4ede42a72fe7d3ce9552d2b95ca232f72cac177e428662c4d1"
+    },
+    {
+      "name": "Conclusion.md",
+      "size": 1307,
+      "sha256": "b398ce5a1f1fc26f0a3d7399f535e53e709f562653c67538a7947964ce828e47"
+    },
+    {
+      "name": "Discussion.md",
+      "size": 4297,
+      "sha256": "e9ff379fdefe160fa2f17764b4507568f897da54fd33c30b37210205bed23c6f"
+    },
+    {
+      "name": "Introduction.md",
+      "size": 3382,
+      "sha256": "eb6b7d19415565f78f53eea4359b6bfc693c57fdf7678cbb5c740bbb6791c9cf"
+    },
+    {
+      "name": "Literature.md",
+      "size": 1941,
+      "sha256": "ffb0abcfb35c969ec1051b71067455b775846f07c8be2c26368cdbe0e5417f73"
+    },
+    {
+      "name": "Method.md",
+      "size": 7837,
+      "sha256": "d54113bde1541bf9cbfdb6904fe822c0df3b3d397b5f05e58f4c7e72f1346946"
+    },
+    {
+      "name": "Result.md",
+      "size": 4278,
+      "sha256": "c7e1391df06e5fcc89dce57af17d396fe94410b1c1e5bd096ceb0174d9d5e0ff"
+    },
+    {
+      "name": "claim_graph.json",
+      "size": 108382,
+      "sha256": "cd807175418c5679e0e5b0e0ad9f20e07c18f8fb63a23300f5be8daf58117e42"
+    },
+    {
+      "name": "contracts.json",
+      "size": 25471,
+      "sha256": "619a20bd472d92da715d7430237fab7b7d08801b186f1473df1bed054ec8fd23"
+    },
+    {
+      "name": "data_artifact_manifest.json",
+      "size": 1807,
+      "sha256": "c79c3aadd0188a8feb0d43d5af3aa72b22352919374a710d363182e270784559"
+    },
+    {
+      "name": "data_tables.tex",
+      "size": 43793,
+      "sha256": "8e0ca408173d533aed1fe9f5fbb3bb5c65e77b1f49710fc79d4afcfe763a202c"
+    },
+    {
+      "name": "figure_spec.json",
+      "size": 9264,
+      "sha256": "542410c3f7c8b77e76782e4dbe095903e724e329bf004bbf89d1f196bf7dcd80"
+    },
+    {
+      "name": "knowledge_graph.json",
+      "size": 108382,
+      "sha256": "cd807175418c5679e0e5b0e0ad9f20e07c18f8fb63a23300f5be8daf58117e42"
+    },
+    {
+      "name": "logic_audit.json",
+      "size": 211,
+      "sha256": "d1fc27dec8d508d72aff9e788f7e0ed845d4e787df430d6cbaafb40bd6c684b0"
+    },
+    {
+      "name": "manuscript_quality.json",
+      "size": 210,
+      "sha256": "087045cae164ff34960eb20bb47583d9937f11321b83f6af20f68a0007cf6f8a"
+    },
+    {
+      "name": "paper.pdf",
+      "size": 162412,
+      "sha256": "0f1a0647035043a9a9733fc541e2862dc09dc6dcebd7c6a6271ce2c41af98690"
+    },
+    {
+      "name": "paper.tex",
+      "size": 69896,
+      "sha256": "d85c5eb36fb7fe2f498afc097f78a57dfa0f1d962a67d8b72a65d768c27f529d"
+    },
+    {
+      "name": "paperflow-output.zip",
+      "size": 254116,
+      "sha256": "f1b0afd6cf680d98c7be0204e1c4cf5b5954c0837edd005f836f2f28490456fe"
+    },
+    {
+      "name": "paperflow_run.json",
+      "size": 163,
+      "sha256": "4c06b377c6aef39d221c7979d6bdd6dd65ee71c0aee705d5a50da9aba34839e4"
+    },
+    {
+      "name": "reference_candidates.json",
+      "size": 9032,
+      "sha256": "b13a9d9149b6862bbac632034d75fb59d476e53a2be52c3eb5f23038c285aab1"
+    },
+    {
+      "name": "requirement_report.json",
+      "size": 7325,
+      "sha256": "3d0433b0ad61c95b2d3f9d119aa59e4ce1133ca143d3d39302d08329aa4231c4"
+    },
+    {
+      "name": "run_manifest.json",
+      "size": 5171,
+      "sha256": "ba8883a51cfc041439ea346885d6d89331c477bdadfacf0eb2892f4db167d81b"
+    },
+    {
+      "name": "validation_report.json",
+      "size": 4812,
+      "sha256": "b780ffbe6660b239820f34547e3253eff8cf8d055425185a25b5893706ab9617"
+    }
+  ],
+  "last_error": null
+}

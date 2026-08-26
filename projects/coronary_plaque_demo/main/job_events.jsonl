@@ -1,0 +1,7 @@
+{"event_id": 1, "type": "progress", "step_id": "ingest", "label": "입력 수집", "raw": "[ingest] 입력 수집"}
+{"event_id": 2, "type": "progress", "step_id": "guideline", "label": "저널 가이드라인 확인", "raw": "[guideline] 저널 가이드라인 확인"}
+{"event_id": 3, "type": "progress", "step_id": "litsearch", "label": "선행연구조사 (OpenAlex)", "raw": "[litsearch] 선행연구조사 (OpenAlex)"}
+{"event_id": 4, "type": "progress", "step_id": "litsearch", "label": "queries", "raw": "[litsearch] queries"}
+{"event_id": 5, "type": "progress", "step_id": "litsearch", "label": "찾은 논문 0편", "raw": "[litsearch] 찾은 논문 0편"}
+{"event_id": 6, "type": "progress", "step_id": "requirement", "label": "진단 결과 재사용", "raw": "[requirement] 진단 결과 재사용"}
+{"event_id": 7, "type": "progress", "step_id": "claim_graph", "label": "Claim graph (typed)", "raw": "[claim_graph] Claim graph (typed)"}

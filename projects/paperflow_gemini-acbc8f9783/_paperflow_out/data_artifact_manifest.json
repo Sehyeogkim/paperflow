@@ -1,0 +1,74 @@
+[
+  {
+    "key": "sobol_group",
+    "kind": "table",
+    "caption": "Group-level Sobol sensitivity indices across lesion models and outcomes.",
+    "label": "tab:sobol-group",
+    "source_paths": [
+      "data/uploads/aa9c1ee72bd9_sobol_grp_lap_vi1.csv",
+      "data/uploads/60b5c35b1d66_sobol_grp_lap_vi2.csv",
+      "data/uploads/a84ee93a92bd_sobol_grp_cp_vi1.csv",
+      "data/uploads/a13de853a5a8_sobol_grp_cp_vi2.csv"
+    ],
+    "schema": [
+      "group",
+      "s1",
+      "st"
+    ],
+    "total_rows": 12,
+    "displayed_rows": 12
+  },
+  {
+    "key": "sobol_individual",
+    "kind": "table",
+    "caption": "Individual-parameter Sobol sensitivity indices across lesion models and outcomes.",
+    "label": "tab:sobol-individual",
+    "source_paths": [
+      "data/uploads/aa1cdfaaaef9_sobol_ind_lap_vi1.csv",
+      "data/uploads/baebf976d5ea_sobol_ind_lap_vi2.csv",
+      "data/uploads/93e88bea705b_sobol_ind_cp_vi1.csv",
+      "data/uploads/5261b4e741fc_sobol_ind_cp_vi2.csv"
+    ],
+    "schema": [
+      "display_name",
+      "parameter",
+      "s1",
+      "st"
+    ],
+    "total_rows": 52,
+    "displayed_rows": 52
+  },
+  {
+    "key": "csv_schema_1",
+    "kind": "table",
+    "caption": "Combined data for CSV schema 1 from 1 source file.",
+    "label": "tab:data-schema-1",
+    "source_paths": [
+      "data/uploads/d6675d16eed1_input.csv"
+    ],
+    "schema": [
+      "alpha",
+      "ca_axial_skewness",
+      "ca_shoulder_skewness",
+      "ca_strength_ratio",
+      "d_fc_ca",
+      "dbp",
+      "dos",
+      "e_cal",
+      "e_fc",
+      "e_lipid",
+      "e_vessel",
+      "fc_av_th",
+      "fraction",
+      "lesion_length",
+      "lipid_length_ratio",
+      "lumen_axial_skewness",
+      "pi",
+      "pp",
+      "sbp",
+      "tau"
+    ],
+    "total_rows": 1000,
+    "displayed_rows": 200
+  }
+]

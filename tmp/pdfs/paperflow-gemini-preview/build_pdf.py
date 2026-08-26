@@ -1,0 +1,292 @@
+from __future__ import annotations
+
+import re
+from pathlib import Path
+from xml.sax.saxutils import escape
+
+from reportlab.lib import colors
+from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.units import mm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.platypus import (
+    BaseDocTemplate,
+    Frame,
+    HRFlowable,
+    KeepTogether,
+    PageBreak,
+    PageTemplate,
+    Paragraph,
+    Spacer,
+    Table,
+    TableStyle,
+)
+
+
+ROOT = Path(__file__).resolve().parents[3]
+OUT = ROOT / "projects/paperflow_gemini-acbc8f9783/_paperflow_out"
+PDF = OUT / "paper.pdf"
+FONT = Path("/System/Library/Fonts/Supplemental/AppleGothic.ttf")
+
+TITLE = (
+    "Global Sensitivity Analysis of Coronary Plaque Vulnerability Indices: "
+    "Dominant Contributions of Material Properties"
+)
+SHORT_TITLE = "Global Sensitivity Analysis of Coronary Plaque Vulnerability Indices"
+
+TERRACOTTA = colors.HexColor("#CC785C")
+CREAM = colors.HexColor("#F0EEE6")
+LIGHT_WARM = colors.HexColor("#E8D5C4")
+TAN = colors.HexColor("#D4C5B0")
+INK = colors.HexColor("#1A1A1A")
+BODY = colors.HexColor("#2D2D2D")
+MUTED = colors.HexColor("#6B5E54")
+OLIVE = colors.HexColor("#7A9A6D")
+
+
+def normalize(text: str) -> str:
+    text = text.strip()
+    replacements = {
+        r"\frac{\Delta\text{PSS}}{S_{\text{fc}}}": "ΔPSS / S_fc",
+        r"\textasciitilde": "~",
+        r"\Delta": "Δ",
+        r"\tau": "τ",
+        r"\alpha": "α",
+        r"\sim": "~",
+        r"\_": "_",
+        r"\textbackslash": "",
+    }
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+    for _ in range(3):
+        text = re.sub(r"\\frac\{([^{}]+)\}\{([^{}]+)\}", r"\1/\2", text)
+        text = re.sub(r"\\(?:text|mathrm)\{([^{}]+)\}", r"\1", text)
+    text = re.sub(r"\\tag\{([^{}]+)\}", r"(\1)", text)
+    text = text.replace("$$", "").replace("$", "")
+    text = text.replace("**", "").replace("__", "").replace("`", "")
+    text = text.replace("{", "").replace("}", "")
+    text = re.sub(r"\\([A-Za-z]+)", r"\1", text)
+    text = re.sub(r"[ \t]+", " ", text)
+    return text.strip()
+
+
+def safe(text: str) -> str:
+    return escape(normalize(text)).replace("\n", "<br/>")
+
+
+pdfmetrics.registerFont(TTFont("PaperKorean", str(FONT)))
+
+styles = getSampleStyleSheet()
+title_style = ParagraphStyle(
+    "PaperTitle",
+    parent=styles["Title"],
+    fontName="PaperKorean",
+    fontSize=21,
+    leading=27,
+    textColor=INK,
+    alignment=TA_LEFT,
+    spaceAfter=8,
+)
+meta_style = ParagraphStyle(
+    "Meta",
+    parent=styles["Normal"],
+    fontName="PaperKorean",
+    fontSize=8.5,
+    leading=12,
+    textColor=MUTED,
+)
+section_style = ParagraphStyle(
+    "Section",
+    parent=styles["Heading1"],
+    fontName="PaperKorean",
+    fontSize=16,
+    leading=21,
+    textColor=INK,
+    spaceBefore=13,
+    spaceAfter=8,
+    keepWithNext=True,
+)
+subsection_style = ParagraphStyle(
+    "Subsection",
+    parent=styles["Heading2"],
+    fontName="PaperKorean",
+    fontSize=11.5,
+    leading=16,
+    textColor=TERRACOTTA,
+    spaceBefore=9,
+    spaceAfter=5,
+    keepWithNext=True,
+)
+body_style = ParagraphStyle(
+    "Body",
+    parent=styles["BodyText"],
+    fontName="PaperKorean",
+    fontSize=9.2,
+    leading=15.2,
+    textColor=BODY,
+    alignment=TA_JUSTIFY,
+    firstLineIndent=4 * mm,
+    spaceAfter=7,
+    splitLongWords=False,
+    wordWrap="CJK",
+)
+abstract_style = ParagraphStyle(
+    "AbstractBody",
+    parent=body_style,
+    fontSize=9,
+    leading=14.5,
+    firstLineIndent=0,
+    spaceAfter=0,
+)
+formula_style = ParagraphStyle(
+    "Formula",
+    parent=body_style,
+    alignment=TA_CENTER,
+    firstLineIndent=0,
+    fontSize=10,
+    textColor=INK,
+    spaceBefore=3,
+    spaceAfter=8,
+)
+bullet_style = ParagraphStyle(
+    "Bullet",
+    parent=body_style,
+    firstLineIndent=0,
+    leftIndent=5 * mm,
+    bulletIndent=1 * mm,
+)
+
+
+def header_footer(canvas, doc):
+    canvas.saveState()
+    width, height = A4
+    if doc.page > 1:
+        canvas.setFont("PaperKorean", 7.5)
+        canvas.setFillColor(MUTED)
+        canvas.drawString(20 * mm, height - 12 * mm, SHORT_TITLE)
+        canvas.setStrokeColor(TAN)
+        canvas.setLineWidth(0.45)
+        canvas.line(20 * mm, height - 15 * mm, width - 20 * mm, height - 15 * mm)
+    canvas.setFont("PaperKorean", 7.5)
+    canvas.setFillColor(MUTED)
+    canvas.drawString(20 * mm, 11 * mm, "PaperFlow manuscript draft · Graph revision 4")
+    canvas.drawRightString(width - 20 * mm, 11 * mm, str(doc.page))
+    canvas.restoreState()
+
+
+class PaperDocTemplate(BaseDocTemplate):
+    pass
+
+
+doc = PaperDocTemplate(
+    str(PDF),
+    pagesize=A4,
+    leftMargin=20 * mm,
+    rightMargin=20 * mm,
+    topMargin=21 * mm,
+    bottomMargin=19 * mm,
+    title=TITLE,
+    author="Anonymous",
+    subject="Computational biomechanics manuscript generated by PaperFlow",
+)
+frame = Frame(
+    doc.leftMargin,
+    doc.bottomMargin,
+    doc.width,
+    doc.height,
+    leftPadding=0,
+    rightPadding=0,
+    topPadding=0,
+    bottomPadding=0,
+)
+doc.addPageTemplates([PageTemplate(id="paper", frames=[frame], onPage=header_footer)])
+
+
+def add_markdown(story: list, path: Path) -> None:
+    text = path.read_text(encoding="utf-8").strip()
+    blocks = re.split(r"\n\s*\n", text)
+    for block in blocks:
+        lines = [line.strip() for line in block.splitlines() if line.strip()]
+        if not lines:
+            continue
+        if lines[0].startswith("### "):
+            story.append(Paragraph(safe(lines[0][4:]), subsection_style))
+            if len(lines) > 1:
+                story.append(Paragraph(safe(" ".join(lines[1:])), body_style))
+        elif lines[0].startswith("## "):
+            story.append(Paragraph(safe(lines[0][3:]), subsection_style))
+            if len(lines) > 1:
+                story.append(Paragraph(safe(" ".join(lines[1:])), body_style))
+        elif lines[0].startswith("# "):
+            story.append(Paragraph(safe(lines[0][2:]), subsection_style))
+            if len(lines) > 1:
+                story.append(Paragraph(safe(" ".join(lines[1:])), body_style))
+        elif all(line.startswith(("- ", "* ")) for line in lines):
+            for line in lines:
+                story.append(Paragraph(safe(line[2:]), bullet_style, bulletText="•"))
+        elif block.strip().startswith("$$"):
+            story.append(Paragraph(safe(block), formula_style))
+        else:
+            story.append(Paragraph(safe(" ".join(lines)), body_style))
+
+
+story = [
+    Spacer(1, 10 * mm),
+    Paragraph(TITLE, title_style),
+    Spacer(1, 2 * mm),
+    Paragraph("Anonymous · Computational biomechanics", meta_style),
+    Paragraph("Target journal: Computers in Biology and Medicine", meta_style),
+    Spacer(1, 7 * mm),
+    HRFlowable(width="100%", thickness=2, color=TERRACOTTA, spaceAfter=8 * mm),
+    Paragraph("Abstract", section_style),
+]
+
+abstract = Paragraph(safe((OUT / "Abstract.md").read_text(encoding="utf-8")), abstract_style)
+abstract_box = Table([[abstract]], colWidths=[doc.width], style=[
+    ("BACKGROUND", (0, 0), (-1, -1), CREAM),
+    ("BOX", (0, 0), (-1, -1), 0.7, TAN),
+    ("LEFTPADDING", (0, 0), (-1, -1), 9 * mm),
+    ("RIGHTPADDING", (0, 0), (-1, -1), 9 * mm),
+    ("TOPPADDING", (0, 0), (-1, -1), 6 * mm),
+    ("BOTTOMPADDING", (0, 0), (-1, -1), 6 * mm),
+])
+story.extend([
+    abstract_box,
+    Spacer(1, 4 * mm),
+    Paragraph("Keywords", subsection_style),
+    Paragraph(
+        "coronary plaque rupture · fluid-structure interaction · Sobol sensitivity "
+        "analysis · Gaussian process regression · vulnerability index",
+        meta_style,
+    ),
+    PageBreak(),
+])
+
+sections = [
+    ("1. Introduction", "Introduction.md"),
+    ("2. Methods", "Method.md"),
+    ("3. Results", "Result.md"),
+    ("4. Discussion", "Discussion.md"),
+    ("5. Conclusion", "Conclusion.md"),
+]
+for index, (heading, filename) in enumerate(sections):
+    story.append(Paragraph(heading, section_style))
+    story.append(HRFlowable(width="100%", thickness=0.65, color=TAN, spaceAfter=4 * mm))
+    add_markdown(story, OUT / filename)
+    if index < len(sections) - 1:
+        story.append(Spacer(1, 3 * mm))
+
+story.extend([
+    Spacer(1, 10 * mm),
+    HRFlowable(width="100%", thickness=0.7, color=TAN, spaceBefore=3 * mm, spaceAfter=4 * mm),
+    Paragraph(
+        "Document status: Generated manuscript draft. Logic audit passed; author confirmation "
+        "is still required for methods marked as missing critical information.",
+        meta_style,
+    ),
+])
+
+doc.build(story)
+print(PDF)

@@ -1,0 +1,2613 @@
+{
+  "sections": [
+    "method",
+    "result",
+    "discussion",
+    "introduction",
+    "conclusion",
+    "abstract"
+  ],
+  "classification": "EXPERT_REVIEW_REQUIRED",
+  "main_contribution": "Sobol global sensitivity analysis revealed the dominant contributions of material properties to coronary plaque vulnerability indices, comparing relative contributions and interactions of material, hemodynamic, and morphological input groups.",
+  "claim_graph": {
+    "schema_version": "1.0",
+    "revision": 16,
+    "built_from_source_revision": 10,
+    "confirmed_revision": null,
+    "main_contribution": "Sobol global sensitivity analysis revealed the dominant contributions of material properties to coronary plaque vulnerability indices, comparing relative contributions and interactions of material, hemodynamic, and morphological input groups.",
+    "nodes": [
+      {
+        "id": "C1",
+        "kind": "claim",
+        "text": "The relative contributions and interactions of material, hemodynamic, and morphological input groups were compared using group-wise Sobol results for coronary plaque vulnerability indices.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "contribution",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null,
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "C1.1",
+        "kind": "claim",
+        "text": "A cost-effective pulsatile FSI method was used as a forward solver to generate input/output datasets for low-attenuation plaque (LAP) and calcified plaque (CP) models.",
+        "parent_id": "C1",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "C1.2",
+        "kind": "claim",
+        "text": "Vulnerability indices (VIs) were defined as the ratio of stress to strength (VI = stress/strength) and selected based on seven established high-risk plaque features.",
+        "parent_id": "C1",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "C1.3",
+        "kind": "claim",
+        "text": "Gaussian Process Regression (GPR) surrogate models were trained for the selected VIs to enable global sensitivity analysis.",
+        "parent_id": "C1",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "C1.4",
+        "kind": "claim",
+        "text": "Sobol variance-based global sensitivity analysis was performed on the GPR surrogate models to quantify the contribution of individual parameters and grouped factors (morphological, hemodynamic, material).",
+        "parent_id": "C1",
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M1",
+        "kind": "method",
+        "text": "Cost-effective pulsatile FSI method",
+        "parent_id": null,
+        "subtype": "simulation",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-682db74f933a-ch2-method1-md-aef9f911d4",
+            "locator": "text_lines:1-72",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M1.1",
+        "kind": "method",
+        "text": "1D pulsatile reduced-order hemodynamics (fluid) simulation to calculate P(t) and Q(t) waveforms and extract boundary conditions at target time points.",
+        "parent_id": "M1",
+        "subtype": "simulation",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-682db74f933a-ch2-method1-md-aef9f911d4",
+            "locator": "text_lines:30-32",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M1.2",
+        "kind": "method",
+        "text": "Steady 3D fluid analysis to calculate wall traction (pressure + viscous shear stress) on the luminal surface.",
+        "parent_id": "M1",
+        "subtype": "simulation",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-682db74f933a-ch2-method1-md-aef9f911d4",
+            "locator": "text_lines:33-35",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M1.3",
+        "kind": "method",
+        "text": "Quasi-static 3D structural analysis to obtain stress field at target time points by applying wall traction as boundary condition.",
+        "parent_id": "M1",
+        "subtype": "simulation",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-682db74f933a-ch2-method1-md-aef9f911d4",
+            "locator": "text_lines:36-38",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M2",
+        "kind": "method",
+        "text": "Generation of input/output datasets for LAP (1,000 samples) and CP (1,300 samples) models using Latin Hypercube Sampling (LHS) for morphological, hemodynamic, and material parameters.",
+        "parent_id": null,
+        "subtype": "preprocessing",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:1-48",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M2.1",
+        "kind": "method",
+        "text": "Idealized coronary artery models (LAP with 3 solid domains, CP with 4 solid domains including calcification) with fixed geometry parameters (length, lumen radius, wall thickness, fibrous cap thickness).",
+        "parent_id": "M2",
+        "subtype": "preprocessing",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:16-22",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M2.2",
+        "kind": "method",
+        "text": "Parametric CAD model generation using Autodesk Inventor and meshing into fluid (linear tetrahedral with prism boundary layers) and solid (quadratic tetrahedral) finite element meshes. Mesh independence confirmed with 0.04 cm element size.",
+        "parent_id": "M2",
+        "subtype": "preprocessing",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:70-84",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M2.3",
+        "kind": "method",
+        "text": "Boundary conditions: physiological pressure waveform at inlet (fitted to RCR Windkessel model), coronary microvascular lumped-parameter boundary conditions at outlets including myocardial pressure P_myo(t). Wall pressure from CFD applied as surface traction, vessel ends fixed support.",
+        "parent_id": "M2",
+        "subtype": "preprocessing",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:86-96",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M3",
+        "kind": "method",
+        "text": "Definition of Vulnerability Indices (VIs) as stress/strength, using PSS (systolic maximum principal stress) or ΔPSS (pulsatile stress amplitude) for stress, and E_FC^α for strength (α=0, 0.5, 1.0).",
+        "parent_id": null,
+        "subtype": "analysis",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:100-123",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M3.1",
+        "kind": "method",
+        "text": "Calculation of maximum principal stress (σ) at systole (t_sys) and end-diastole (t_dia) for each node, defining PSS = σ(t_sys) and ΔPSS = σ(t_sys) - σ(t_dia). Spatial averaging over a 0.01 cm sphere around maximum load node.",
+        "parent_id": "M3",
+        "subtype": "analysis",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:93-96",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M3.2",
+        "kind": "method",
+        "text": "Selection of VI candidates based on seven established high-risk plaque features, evaluating Spearman rank correlation sign between plaque features and VI, and performing additional simulations for fibrous cap thickness criterion.",
+        "parent_id": "M3",
+        "subtype": "validation",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:125-159",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M4",
+        "kind": "method",
+        "text": "Gaussian Process Regression (GPR) surrogate models trained for each VI candidate and phenotype (LAP 784 samples, CP 1075 samples) using scikit-learn's GaussianProcessRegressor with ARD squared-exponential kernel.",
+        "parent_id": null,
+        "subtype": "statistical_analysis",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:162-166",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M4.1",
+        "kind": "method",
+        "text": "Hyperparameter optimization by maximizing marginal log-likelihood. Surrogate accuracy evaluated by leave-one-out cross-validation R^2 (>0.93 for both phenotypes).",
+        "parent_id": "M4",
+        "subtype": "statistical_analysis",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:167-170",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "M5",
+        "kind": "method",
+        "text": "Sobol variance-based global sensitivity analysis performed on trained GPR surrogates using Saltelli quasi-random sampling to estimate first-order (S1) and total-order (ST) indices for individual parameters and grouped factors (Morphology, Material, Hemodynamics).",
+        "parent_id": null,
+        "subtype": "statistical_analysis",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:172-181",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "D1",
+        "kind": "data",
+        "text": "Input/output datasets for LAP and CP models (1,000 and 1,300 samples respectively), generated by FSI simulations.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": "[DATA_NEEDED]",
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "D2",
+        "kind": "data",
+        "text": "Sobol indices (S1, ST) for individual parameters of CP VI2",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/uploads/5261b4e741fc_sobol_ind_cp_vi2.csv",
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-5261b4e741fc-sobol-ind-cp-vi2-csv-fec126d437",
+            "locator": "csv_rows:1-15",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "D3",
+        "kind": "data",
+        "text": "Sobol indices (S1, ST) for grouped parameters of LAP VI2",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/uploads/60b5c35b1d66_sobol_grp_lap_vi2.csv",
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-60b5c35b1d66-sobol-grp-lap-vi2-csv-c509e2b173",
+            "locator": "csv_rows:1-4",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "D4",
+        "kind": "data",
+        "text": "Sobol indices (S1, ST) for individual parameters of CP VI1",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/uploads/93e88bea705b_sobol_ind_cp_vi1.csv",
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-93e88bea705b-sobol-ind-cp-vi1-csv-436c9847bb",
+            "locator": "data/uploads/93e88bea705b_sobol_ind_cp_vi1.csv",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {
+              "sha256": "55e6f25adfd8531e4c0b45612fa9478132399782c217d7af038877fd5123dc15",
+              "classification": "csv"
+            }
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "D5",
+        "kind": "data",
+        "text": "Sobol indices (S1, ST) for grouped parameters of CP VI2",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/uploads/a13de853a5a8_sobol_grp_cp_vi2.csv",
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-a13de853a5a8-sobol-grp-cp-vi2-csv-44591a1ba5",
+            "locator": "data/uploads/a13de853a5a8_sobol_grp_cp_vi2.csv",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {
+              "sha256": "8d5cc75916ad751eb1e68ff60e1cd76f45412b60bdfbed51ed659bff57211e6e",
+              "classification": "csv"
+            }
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "D6",
+        "kind": "data",
+        "text": "Sobol indices (S1, ST) for grouped parameters of CP VI1",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/uploads/a84ee93a92bd_sobol_grp_cp_vi1.csv",
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-a84ee93a92bd-sobol-grp-cp-vi1-csv-bf95d2aeeb",
+            "locator": "data/uploads/a84ee93a92bd_sobol_grp_cp_vi1.csv",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {
+              "sha256": "65d50652d812725811b3ea0ac22d471bbc7c8050c7cf0d40275699557f214753",
+              "classification": "csv"
+            }
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "D7",
+        "kind": "data",
+        "text": "Sobol indices (S1, ST) for individual parameters of LAP VI1",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/uploads/aa1cdfaaaef9_sobol_ind_lap_vi1.csv",
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-aa1cdfaaaef9-sobol-ind-lap-vi1-csv-814861acea",
+            "locator": "data/uploads/aa1cdfaaaef9_sobol_ind_lap_vi1.csv",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {
+              "sha256": "de911da940223a713eeb26e3ac97b33a39e3e8401d253c98e3a85ce2ba72104e",
+              "classification": "csv"
+            }
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "D8",
+        "kind": "data",
+        "text": "Sobol indices (S1, ST) for grouped parameters of LAP VI1",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/uploads/aa9c1ee72bd9_sobol_grp_lap_vi1.csv",
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-aa9c1ee72bd9-sobol-grp-lap-vi1-csv-0a5a651e69",
+            "locator": "data/uploads/aa9c1ee72bd9_sobol_grp_lap_vi1.csv",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {
+              "sha256": "3a65b963417dca1f59545fab6815bc397fa7f188ee284ff0bf85f51eba5a226f",
+              "classification": "csv"
+            }
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "D9",
+        "kind": "data",
+        "text": "Sobol indices (S1, ST) for individual parameters of LAP VI2",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "data/uploads/baebf976d5ea_sobol_ind_lap_vi2.csv",
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-baebf976d5ea-sobol-ind-lap-vi2-csv-7afea8dac2",
+            "locator": "data/uploads/baebf976d5ea_sobol_ind_lap_vi2.csv",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {
+              "sha256": "6caa72bce0d2ca7ab0c32e49e5f9a872b93933760d792eb69b32b5855baeefab",
+              "classification": "csv"
+            }
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "D10",
+        "kind": "data",
+        "text": "Input parameters for LHS sampling, including morphological, hemodynamic, and material properties.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": "data/uploads/d6675d16eed1_input.csv",
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-d6675d16eed1-input-csv-bef2da5ed2",
+            "locator": "data/uploads/d6675d16eed1_input.csv",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {
+              "sha256": "b434f80259d79d61daba4bfb9ab09a0ff8cf4c5543fdec7439da356631263e67",
+              "classification": "csv"
+            }
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "E1",
+        "kind": "evidence",
+        "text": "The cost-effective pulsatile FSI method accurately approximates local vessel wall stress fields at specific time points by decoupling time and spatial components, combining 1D ROM with static 3D fluid and structural analyses.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-682db74f933a-ch2-method1-md-aef9f911d4",
+            "locator": "text_lines:19-26",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "E2",
+        "kind": "evidence",
+        "text": "The GPR surrogate models achieved high predictive accuracy with R^2_LOO > 0.93 for both LAP and CP phenotypes.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:169-170",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "E3",
+        "kind": "evidence",
+        "text": "Grouped Sobol indices for LAP VI2 show Material (S1=0.75, ST=0.79), Hemodynamics (S1=0.11, ST=0.11), and Morphology (S1=0.07, ST=0.13) contributions.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-60b5c35b1d66-sobol-grp-lap-vi2-csv-c509e2b173",
+            "locator": "csv_rows:1-4",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "E4",
+        "kind": "evidence",
+        "text": "Grouped Sobol indices for CP VI2 show Material (S1=0.78, ST=0.81), Hemodynamics (S1=0.12, ST=0.13), and Morphology (S1=0.08, ST=0.15) contributions.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": "[DATA_NEEDED]",
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "E5",
+        "kind": "evidence",
+        "text": "Individual Sobol indices for CP VI2 show E_fc (S1=0.627, ST=0.634) as the most dominant parameter, followed by E_vessel (S1=0.128, ST=0.166) and P_sys (S1=0.095, ST=0.098).",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "result",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-5261b4e741fc-sobol-ind-cp-vi2-csv-fec126d437",
+            "locator": "csv_rows:1-15",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "W1",
+        "kind": "warrant",
+        "text": "Global sensitivity analysis using Sobol indices effectively quantifies the contribution of individual and grouped input parameters to model output variance, including interactions.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "discussion",
+        "provenance": null,
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "W2",
+        "kind": "warrant",
+        "text": "Surrogate models, such as GPR, can accurately approximate complex simulation outputs, enabling computationally expensive analyses like Sobol sensitivity analysis.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "discussion",
+        "provenance": null,
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "W3",
+        "kind": "warrant",
+        "text": "The definition of vulnerability indices as stress/strength is a common approach in biomechanics for assessing failure risk.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "discussion",
+        "provenance": null,
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "W4",
+        "kind": "warrant",
+        "text": "Cost-effective FSI methods are necessary for generating large datasets required for comprehensive parametric and sensitivity analyses in computational biomechanics.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "discussion",
+        "provenance": null,
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "R1",
+        "kind": "source",
+        "text": "Corti2022",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": "Corti2022",
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "R2",
+        "kind": "source",
+        "text": "scikit-learn GaussianProcessRegressor documentation",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": "scikit-learn",
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "R3",
+        "kind": "source",
+        "text": "Saltelli et al. 2008",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": "Saltelli2008",
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "R4",
+        "kind": "source",
+        "text": "Kim et al. snapshot-based FSI",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": "method",
+        "provenance": "kim_snapshot",
+        "provenance_refs": [],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "F1",
+        "kind": "artifact",
+        "text": "Workflow overview: 3 stages (dataset generation, VI selection, surrogate-based global sensitivity analysis)",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": "figure",
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:3-4",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "F2",
+        "kind": "artifact",
+        "text": "Idealized coronary model geometry + morphological parameters",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": "figure",
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:23-24",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "F3",
+        "kind": "artifact",
+        "text": "Boundary conditions: fluid + solid",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": "figure",
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:85",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "T1",
+        "kind": "artifact",
+        "text": "Input variables, symbols, units, sampling ranges, references",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": "table",
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:47-48",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "T2",
+        "kind": "artifact",
+        "text": "Seven established high-risk plaque features",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": "table",
+        "section": "method",
+        "provenance": null,
+        "provenance_refs": [
+          {
+            "source_type": "file",
+            "asset_id": "data-uploads-07d47d2e1723-ch3-method2-md-1db2761bb9",
+            "locator": "text_lines:145-146",
+            "quote": "",
+            "quote_hash": "",
+            "verification_status": "verified",
+            "metadata": {}
+          }
+        ],
+        "knowledge_status": "unverified",
+        "layer": null,
+        "detail": "",
+        "question": "",
+        "why_it_matters": "",
+        "must_capture": [],
+        "risk": "medium",
+        "last_modified_revision": 0
+      },
+      {
+        "id": "TH1",
+        "kind": "threshold",
+        "text": "The decision to use a representative element size of 0.04 cm for box-meshing in the lesion area was based on a mesh independence study, where it was observed that 0.04 cm and 0.03 cm element sizes yielded virtually identical results (relative change < 1%) for systolic fibrous cap maximum principal stress (PSS).",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": null,
+        "provenance": "user_statement",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-TH1:ANS-0004",
+            "quote": "Mesh independence was defined a priori as less than 1% relative change in peak fibrous-cap maximum principal stress between successive refinements. The 0.04 and 0.03 cm meshes met this rule, so 0.04 cm was selected. A finer mesh would be required if the change reached or exceeded 1%, if the peak-stress location shifted materially, or if a new geometry/material range produced sharper stress gradients.\n- decision_rule: Successive mesh refinement must change peak fibrous-cap maximum principal stress by <1%.\n- observable_signal: The 0.04 and 0.03 cm meshes both produced about 1.0e6 dyn/cm2, with <1% relative change.\n- transfer_condition: Refine further if change is >=1%, the peak location moves materially, or a new design range creates sharper gradients.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0004",
+              "question_id": "Q-TH1"
+            }
+          }
+        ],
+        "knowledge_status": "author_attested",
+        "layer": "tacit",
+        "detail": "Mesh independence was defined a priori as less than 1% relative change in peak fibrous-cap maximum principal stress between successive refinements. The 0.04 and 0.03 cm meshes met this rule, so 0.04 cm was selected. A finer mesh would be required if the change reached or exceeded 1%, if the peak-stress location shifted materially, or if a new geometry/material range produced sharper stress gradients.\n- decision_rule: Successive mesh refinement must change peak fibrous-cap maximum principal stress by <1%.\n- observable_signal: The 0.04 and 0.03 cm meshes both produced about 1.0e6 dyn/cm2, with <1% relative change.\n- transfer_condition: Refine further if change is >=1%, the peak location moves materially, or a new design range creates sharper gradients.",
+        "question": "What is the specific decision rule for determining mesh independence based on relative change in maximum principal stress? What observable signal (e.g., a specific percentage threshold) indicates that further mesh refinement is not necessary? What transfer condition would lead to a different mesh size being chosen?",
+        "why_it_matters": "The choice of mesh size directly impacts the accuracy and computational cost of the simulations. An insufficiently fine mesh can lead to inaccurate stress calculations, while an overly fine mesh can lead to prohibitive computational expense. Understanding the decision rule for mesh independence is crucial for reproducibility and for applying this method to new geometries or conditions.",
+        "must_capture": [
+          "decision_rule",
+          "observable_signal",
+          "transfer_condition"
+        ],
+        "risk": "high",
+        "last_modified_revision": 9
+      },
+      {
+        "id": "DE1",
+        "kind": "decision",
+        "text": "The decision to exclude four calcification generation parameters from the final sensitivity analysis inputs, despite varying them during data generation, was made because their contribution to the surrogate model's output was found to be negligible (total-order index ≈ 0) in a separate Sobol analysis.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": null,
+        "provenance": "user_statement",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE1:ANS-0005",
+            "quote": "No preregistered numeric cutoff was preserved. The four calcification-generation parameters were excluded only because their total-order indices were reported as approximately zero. A fixed threshold is not invented for this manuscript; the exclusion is reported as conditional and should be revisited with confidence intervals in a replication.\n- rationale: Observed total-order indices were approximately zero in the stored analysis.\n- alternatives_rejected: Keep all four generator parameters in the final interpretable sensitivity model.\n- rejection_reason: They add non-clinical dimensions without measurable contribution in the stored run.\n- constraint: No confidence intervals or preregistered cutoff were preserved, so the conclusion is conditional.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0005",
+              "question_id": "Q-DE1"
+            }
+          }
+        ],
+        "knowledge_status": "author_attested",
+        "layer": "tacit",
+        "detail": "No preregistered numeric cutoff was preserved. The four calcification-generation parameters were excluded only because their total-order indices were reported as approximately zero. A fixed threshold is not invented for this manuscript; the exclusion is reported as conditional and should be revisited with confidence intervals in a replication.\n- rationale: Observed total-order indices were approximately zero in the stored analysis.\n- alternatives_rejected: Keep all four generator parameters in the final interpretable sensitivity model.\n- rejection_reason: They add non-clinical dimensions without measurable contribution in the stored run.\n- constraint: No confidence intervals or preregistered cutoff were preserved, so the conclusion is conditional.",
+        "question": "What was the specific threshold for the total-order index (ST) that defined a 'negligible' contribution, leading to the exclusion of these parameters from the final sensitivity analysis? What were the specific alternatives considered for handling these parameters (e.g., including them, using a different analysis method)? What was the rejection reason for these alternatives?",
+        "why_it_matters": "Excluding parameters from sensitivity analysis can significantly simplify the model and reduce computational burden. However, the rationale for exclusion must be robust to ensure that no important factors are overlooked. Understanding the threshold for 'negligible' contribution is critical for reproducibility and for justifying the scope of the sensitivity analysis.",
+        "must_capture": [
+          "rationale",
+          "alternatives_rejected",
+          "rejection_reason",
+          "constraint"
+        ],
+        "risk": "medium",
+        "last_modified_revision": 10
+      },
+      {
+        "id": "DE2",
+        "kind": "decision",
+        "text": "The decision to fix the fibrous cap thickness ($t_{FC}$) at 100 µm for all samples in the main dataset was made to simplify the input space, assuming spatial uniformity and aligning with in vivo OCT measurements of rupture-prone plaques. This also aimed to make the overall input space CCTA-only compatible.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": null,
+        "provenance": "user_statement",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE2:ANS-0006",
+            "quote": "Fibrous-cap thickness was fixed at 100 micrometers because the intended input workflow used CCTA-derived variables and CCTA does not resolve cap thickness. Varying it or requiring OCT was rejected for the primary CCTA-only design, at the cost of limiting generalizability to cap-thickness variation.\n- rationale: Maintain a CCTA-only input workflow while using a physiologically plausible 100 micrometer cap.\n- alternatives_rejected: Vary cap thickness in the main LHS; require OCT-derived cap thickness.\n- rejection_reason: CCTA cannot resolve the variable and adding OCT would change the intended non-invasive workflow.\n- constraint: Findings do not quantify sensitivity to cap thickness; separate verified simulations are needed.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0006",
+              "question_id": "Q-DE2"
+            }
+          }
+        ],
+        "knowledge_status": "author_attested",
+        "layer": "tacit",
+        "detail": "Fibrous-cap thickness was fixed at 100 micrometers because the intended input workflow used CCTA-derived variables and CCTA does not resolve cap thickness. Varying it or requiring OCT was rejected for the primary CCTA-only design, at the cost of limiting generalizability to cap-thickness variation.\n- rationale: Maintain a CCTA-only input workflow while using a physiologically plausible 100 micrometer cap.\n- alternatives_rejected: Vary cap thickness in the main LHS; require OCT-derived cap thickness.\n- rejection_reason: CCTA cannot resolve the variable and adding OCT would change the intended non-invasive workflow.\n- constraint: Findings do not quantify sensitivity to cap thickness; separate verified simulations are needed.",
+        "question": "What were the specific alternatives considered for handling fibrous cap thickness (e.g., including it as a variable, using a different fixed value)? What were the rejection reasons for these alternatives, particularly regarding the trade-off between simplifying the input space and potentially limiting the generalizability of the results? What constraints (e.g., computational, data availability) influenced this decision?",
+        "why_it_matters": "Fixing a parameter like fibrous cap thickness, which is known to be a critical factor in plaque vulnerability, can simplify the model but also potentially limit the scope and generalizability of the findings. Understanding the rationale and rejected alternatives is important for assessing the model's limitations and for future research directions.",
+        "must_capture": [
+          "rationale",
+          "alternatives_rejected",
+          "rejection_reason",
+          "constraint"
+        ],
+        "risk": "medium",
+        "last_modified_revision": 11
+      },
+      {
+        "id": "DE3",
+        "kind": "decision",
+        "text": "The decision to assume all tissues (vessel wall, fibrous cap, lipid core, calcification) are linear elastic and isotropic was made because coronary arteries behave within a small deformation range (approx. 3–5% radial wall strain) during the cardiac cycle, which is considered reasonable for this assumption.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": null,
+        "provenance": "user_statement",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE3:ANS-0002",
+            "quote": "The linear-isotropic model was limited to the recorded small-deformation regime, approximately 3-5% radial wall strain. Hyperelastic and anisotropic constitutive models were considered conceptually but were not used because patient-specific parameters were unavailable and they would materially increase the cost of the 1,000/1,300-case design. This assumption must not be generalized beyond the sampled small-strain regime.\n- rationale: Recorded radial wall strain was approximately 3-5%, supporting a small-strain approximation within this design space.\n- alternatives_rejected: Hyperelastic and anisotropic constitutive models.\n- rejection_reason: No patient-specific constitutive parameters were available and the added calibration/computational cost conflicted with the large design.\n- constraint: Validity is restricted to the sampled small-deformation regime and available material data.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0002",
+              "question_id": "Q-DE3"
+            }
+          }
+        ],
+        "knowledge_status": "author_attested",
+        "layer": "tacit",
+        "detail": "The linear-isotropic model was limited to the recorded small-deformation regime, approximately 3-5% radial wall strain. Hyperelastic and anisotropic constitutive models were considered conceptually but were not used because patient-specific parameters were unavailable and they would materially increase the cost of the 1,000/1,300-case design. This assumption must not be generalized beyond the sampled small-strain regime.\n- rationale: Recorded radial wall strain was approximately 3-5%, supporting a small-strain approximation within this design space.\n- alternatives_rejected: Hyperelastic and anisotropic constitutive models.\n- rejection_reason: No patient-specific constitutive parameters were available and the added calibration/computational cost conflicted with the large design.\n- constraint: Validity is restricted to the sampled small-deformation regime and available material data.",
+        "question": "What specific criteria or thresholds for deformation range (e.g., maximum strain percentage) were used to justify the linear elastic and isotropic assumption? What were the alternatives considered (e.g., hyperelastic, anisotropic models), and what were the rejection reasons (e.g., increased computational cost, lack of material data, complexity)? What constraints (e.g., available computational resources, experimental data for material properties) influenced this choice?",
+        "why_it_matters": "Material constitutive models significantly influence stress calculations. While linear elasticity simplifies the problem, real arterial tissues are non-linear and anisotropic. Understanding the justification for this simplification is crucial for evaluating the accuracy and applicability of the simulation results, especially when considering the small deformation range.",
+        "must_capture": [
+          "rationale",
+          "alternatives_rejected",
+          "rejection_reason",
+          "constraint"
+        ],
+        "risk": "high",
+        "last_modified_revision": 7
+      },
+      {
+        "id": "DE4",
+        "kind": "decision",
+        "text": "The decision to use Spearman rank correlation for evaluating the sign of correlation between plaque features and Vulnerability Indices (VIs) was made because the purpose was solely to determine the direction of correlation (positive or negative), and Spearman correlation is robust to non-linear monotonic relationships.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": null,
+        "provenance": "user_statement",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE4:ANS-0011",
+            "quote": "Spearman rank correlation was used because selection depended on the expected monotonic direction rather than linear effect size. Pearson correlation was rejected as less robust to nonlinear monotonic relationships. No absolute-significance threshold was used in the stored rubric; only direction was evaluated, and near-zero correlations should be treated as indeterminate rather than compliant.\n- rationale: The rubric tests monotonic direction across heterogeneous variables.\n- alternatives_rejected: Pearson correlation and a magnitude-based significance rule.\n- rejection_reason: Pearson assumes linear association; no preregistered magnitude threshold was preserved.\n- constraint: Near-zero or unstable signs must be flagged indeterminate and checked with uncertainty analysis.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0011",
+              "question_id": "Q-DE4"
+            }
+          }
+        ],
+        "knowledge_status": "author_attested",
+        "layer": "tacit",
+        "detail": "Spearman rank correlation was used because selection depended on the expected monotonic direction rather than linear effect size. Pearson correlation was rejected as less robust to nonlinear monotonic relationships. No absolute-significance threshold was used in the stored rubric; only direction was evaluated, and near-zero correlations should be treated as indeterminate rather than compliant.\n- rationale: The rubric tests monotonic direction across heterogeneous variables.\n- alternatives_rejected: Pearson correlation and a magnitude-based significance rule.\n- rejection_reason: Pearson assumes linear association; no preregistered magnitude threshold was preserved.\n- constraint: Near-zero or unstable signs must be flagged indeterminate and checked with uncertainty analysis.",
+        "question": "What were the specific alternatives considered for correlation analysis (e.g., Pearson correlation)? What were the rejection reasons for these alternatives, particularly in cases where the relationship might be linear? Was there a specific threshold for the Spearman correlation coefficient (e.g., absolute value) that was considered 'significant' for determining the sign, or was any non-zero value sufficient?",
+        "why_it_matters": "The choice of correlation metric can influence the interpretation of relationships between plaque features and VIs. While Spearman is robust to non-linearity, understanding if Pearson was considered and why it was rejected provides insight into the assumptions about the data's underlying relationships. This impacts the confidence in the VI selection process.",
+        "must_capture": [
+          "rationale",
+          "alternatives_rejected",
+          "rejection_reason",
+          "constraint"
+        ],
+        "risk": "low",
+        "last_modified_revision": 16
+      },
+      {
+        "id": "DE5",
+        "kind": "decision",
+        "text": "The decision to use a sphere-averaging approach with a radius of 0.01 cm around the maximum load node for spatial averaging of stress indicators (PSS, ΔPSS) was made to reduce single-node noise.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": null,
+        "provenance": "user_statement",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE5:ANS-0007",
+            "quote": "The 0.01 cm sphere radius was inherited from the recorded stress post-processing method to reduce single-node peak noise. No independent radius-sensitivity study was preserved, so alternative radii or percentile-based summaries were not rejected empirically and this is reported as a limitation.\n- rationale: Reduce single-node mesh noise while preserving a local peak neighborhood.\n- alternatives_rejected: Other radii, nodal maximum, and percentile-based stress summaries were not independently benchmarked in the retained run.\n- rejection_reason: The stored workflow adopted the referenced 0.01 cm method without a new sensitivity study.\n- constraint: Interpretation is conditional on the selected spatial averaging radius.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0007",
+              "question_id": "Q-DE5"
+            }
+          }
+        ],
+        "knowledge_status": "author_attested",
+        "layer": "tacit",
+        "detail": "The 0.01 cm sphere radius was inherited from the recorded stress post-processing method to reduce single-node peak noise. No independent radius-sensitivity study was preserved, so alternative radii or percentile-based summaries were not rejected empirically and this is reported as a limitation.\n- rationale: Reduce single-node mesh noise while preserving a local peak neighborhood.\n- alternatives_rejected: Other radii, nodal maximum, and percentile-based stress summaries were not independently benchmarked in the retained run.\n- rejection_reason: The stored workflow adopted the referenced 0.01 cm method without a new sensitivity study.\n- constraint: Interpretation is conditional on the selected spatial averaging radius.",
+        "question": "What was the rationale for choosing a 0.01 cm radius for sphere-averaging? Were other radii or averaging methods considered, and what were the rejection reasons? What observable signal (e.g., noise level, convergence of averaged stress) indicated that this specific radius was appropriate?",
+        "why_it_matters": "Spatial averaging can smooth out numerical noise but also potentially obscure localized stress concentrations. The choice of averaging radius is critical for accurately representing the peak stress relevant to plaque rupture. Understanding the rationale for this specific radius is important for reproducibility and for evaluating the impact of this processing step on the results.",
+        "must_capture": [
+          "rationale",
+          "alternatives_rejected",
+          "rejection_reason",
+          "constraint"
+        ],
+        "risk": "medium",
+        "last_modified_revision": 12
+      },
+      {
+        "id": "DE6",
+        "kind": "decision",
+        "text": "The decision to use a 3-element Windkessel (RCR) model for fitting the physiological pressure waveform at the inlet, with a fixed coronary microvascular resistance ratio ($R_p/R_d = 1/10$), was made to determine the inlet pressure waveform's amplitude and shape based on sampled $P_{sys}$, $P_{dia}$, and $\\tau$.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": null,
+        "provenance": "user_statement",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE6:ANS-0008",
+            "quote": "Rp/Rd=1/10 was retained as the documented coronary RCR partition and the remaining parameters were fitted to sampled systolic/diastolic pressures. Alternative resistance splits and higher-order outlet models were not tested in this dataset; changing the ratio would require refitting and validating pressure/flow waveforms.\n- rationale: Use the documented coronary resistance partition while fitting Pd, Rd, and C to each pressure target.\n- alternatives_rejected: Other proximal/distal splits and more complex outlet networks.\n- rejection_reason: They were not calibrated for the available waveform data and would add unidentifiable parameters.\n- constraint: The ratio should be revisited when patient-specific pressure-flow data are available.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0008",
+              "question_id": "Q-DE6"
+            }
+          }
+        ],
+        "knowledge_status": "author_attested",
+        "layer": "tacit",
+        "detail": "Rp/Rd=1/10 was retained as the documented coronary RCR partition and the remaining parameters were fitted to sampled systolic/diastolic pressures. Alternative resistance splits and higher-order outlet models were not tested in this dataset; changing the ratio would require refitting and validating pressure/flow waveforms.\n- rationale: Use the documented coronary resistance partition while fitting Pd, Rd, and C to each pressure target.\n- alternatives_rejected: Other proximal/distal splits and more complex outlet networks.\n- rejection_reason: They were not calibrated for the available waveform data and would add unidentifiable parameters.\n- constraint: The ratio should be revisited when patient-specific pressure-flow data are available.",
+        "question": "What was the rationale for fixing the coronary microvascular resistance ratio ($R_p/R_d$) at 1/10? Were other ratios or more complex Windkessel models considered, and what were the rejection reasons? What observable signal (e.g., physiological accuracy, fitting error) indicated that this specific ratio was appropriate for the given pressure waveforms?",
+        "why_it_matters": "The Windkessel model and its parameters significantly influence the hemodynamic boundary conditions, which in turn affect the calculated stress fields. Fixing a parameter like the resistance ratio without clear justification can impact the physiological realism of the simulations. Understanding this decision is crucial for evaluating the model's accuracy and generalizability.",
+        "must_capture": [
+          "rationale",
+          "alternatives_rejected",
+          "rejection_reason",
+          "constraint"
+        ],
+        "risk": "medium",
+        "last_modified_revision": 13
+      },
+      {
+        "id": "DE7",
+        "kind": "decision",
+        "text": "The decision to use a time-variable elastance-based lumped heart model to calculate myocardial pressure $P_{myo}(t)$ for the coronary microvascular boundary conditions at the outlets was made to reproduce the diastole-dominant nature of coronary flow, which is influenced by myocardial contraction during systole.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": null,
+        "provenance": "user_statement",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE7:ANS-0009",
+            "quote": "A time-varying elastance model was used because coronary outflow must reflect systolic myocardial compression and diastole-dominant perfusion. Fixed myocardial pressure cannot reproduce that phase dependence, while a more complex electromechanical heart model was outside the available data and computational budget.\n- rationale: Represent systolic extravascular compression and diastole-dominant coronary flow.\n- alternatives_rejected: Fixed myocardial pressure; fully coupled electromechanical heart model.\n- rejection_reason: Fixed pressure lacks phase dependence; the coupled model requires unavailable patient data and much higher cost.\n- constraint: Only the available lumped elastance waveform was calibrated.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0009",
+              "question_id": "Q-DE7"
+            }
+          }
+        ],
+        "knowledge_status": "author_attested",
+        "layer": "tacit",
+        "detail": "A time-varying elastance model was used because coronary outflow must reflect systolic myocardial compression and diastole-dominant perfusion. Fixed myocardial pressure cannot reproduce that phase dependence, while a more complex electromechanical heart model was outside the available data and computational budget.\n- rationale: Represent systolic extravascular compression and diastole-dominant coronary flow.\n- alternatives_rejected: Fixed myocardial pressure; fully coupled electromechanical heart model.\n- rejection_reason: Fixed pressure lacks phase dependence; the coupled model requires unavailable patient data and much higher cost.\n- constraint: Only the available lumped elastance waveform was calibrated.",
+        "question": "What was the rationale for choosing a time-variable elastance model for $P_{myo}(t)$ over other potential models (e.g., simpler fixed pressure, more complex physiological models)? What were the alternatives considered, and what were the rejection reasons (e.g., computational cost, data availability, physiological accuracy)? What specific physiological phenomenon or observable signal (e.g., flow pattern, pressure drop) indicated that this model was appropriate for reproducing diastole-dominant coronary flow?",
+        "why_it_matters": "The accurate representation of myocardial pressure is critical for simulating coronary hemodynamics, especially the diastole-dominant flow. The choice of model for $P_{myo}(t)$ can significantly impact the boundary conditions and subsequent stress calculations. Understanding the rationale and rejected alternatives is important for assessing the physiological fidelity of the simulations.",
+        "must_capture": [
+          "rationale",
+          "alternatives_rejected",
+          "rejection_reason",
+          "constraint"
+        ],
+        "risk": "medium",
+        "last_modified_revision": 14
+      },
+      {
+        "id": "DE8",
+        "kind": "decision",
+        "text": "The decision to use a base sample size of $N=1,024$ for Saltelli quasi-random sampling in the Sobol sensitivity analysis was made to estimate first-order (S1) and total-order (ST) indices, resulting in $N(d+2)$ surrogate evaluations for LAP and CP models.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": null,
+        "provenance": "user_statement",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE8:ANS-0010",
+            "quote": "N=1,024 was selected as a power-of-two Saltelli base size, yielding 14,336 LAP and 16,384 CP surrogate evaluations with second-order indices disabled. The retained run does not include an N-doubling convergence trace, so sufficiency is a computational design choice rather than a demonstrated convergence result and must be reported that way.\n- rationale: Power-of-two Saltelli base size with manageable surrogate-evaluation cost.\n- alternatives_rejected: Smaller or larger N values were not documented as a formal convergence series.\n- rejection_reason: No preserved index-stability comparison supports claiming a better alternative.\n- constraint: A replication should compare N=512/1024/2048 with confidence intervals before calling indices converged.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0010",
+              "question_id": "Q-DE8"
+            }
+          }
+        ],
+        "knowledge_status": "author_attested",
+        "layer": "tacit",
+        "detail": "N=1,024 was selected as a power-of-two Saltelli base size, yielding 14,336 LAP and 16,384 CP surrogate evaluations with second-order indices disabled. The retained run does not include an N-doubling convergence trace, so sufficiency is a computational design choice rather than a demonstrated convergence result and must be reported that way.\n- rationale: Power-of-two Saltelli base size with manageable surrogate-evaluation cost.\n- alternatives_rejected: Smaller or larger N values were not documented as a formal convergence series.\n- rejection_reason: No preserved index-stability comparison supports claiming a better alternative.\n- constraint: A replication should compare N=512/1024/2048 with confidence intervals before calling indices converged.",
+        "question": "What was the rationale for choosing $N=1,024$ as the base sample size? Were other sample sizes considered, and what were the rejection reasons (e.g., computational cost, convergence of Sobol indices)? What observable signal (e.g., stability of index estimates, computational budget) indicated that this sample size was sufficient for accurate estimation of Sobol indices?",
+        "why_it_matters": "The sample size for Sobol analysis directly impacts the accuracy and reliability of the sensitivity indices. An insufficient sample size can lead to noisy or inaccurate estimates, while an overly large one can be computationally prohibitive even for surrogate models. Understanding the justification for this choice is crucial for the validity and reproducibility of the sensitivity analysis results.",
+        "must_capture": [
+          "rationale",
+          "alternatives_rejected",
+          "rejection_reason",
+          "constraint"
+        ],
+        "risk": "medium",
+        "last_modified_revision": 15
+      },
+      {
+        "id": "DE9",
+        "kind": "decision",
+        "text": "The decision to use a specific set of 15 additional simulations for LAP (varying $E_{FC}$ and $t_{FC}$) to evaluate criterion 7 (thin fibrous cap) for VI candidate selection was made because $t_{FC}$ was fixed in the main dataset, preventing its evaluation with the primary data.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": null,
+        "provenance": "user_statement",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE9:ANS-0003",
+            "quote": "The preserved source contains an unresolved unit inconsistency for the 15 auxiliary simulations: 12/16/20 MPa conflicts with the main 0.4-2.3 MPa range. Therefore those 15 runs and criterion 7 are excluded as quantitative evidence in this demo manuscript until the original inputs are verified. Keeping them or silently decimal-correcting them was rejected because either would publish unverified values. The manuscript should describe six verified criteria and mark fibrous-cap-thickness validation as pending author verification.\n- rationale: The auxiliary values conflict with the documented main design range, so they cannot be treated as verified evidence.\n- alternatives_rejected: Retain 12/16/20 MPa as written; silently reinterpret them as 1.2/1.6/2.0 MPa.\n- rejection_reason: Both alternatives would publish an unverified unit or decimal assumption.\n- constraint: Original run inputs or author confirmation are required before criterion 7 can be reinstated.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0003",
+              "question_id": "Q-DE9"
+            }
+          }
+        ],
+        "knowledge_status": "author_attested",
+        "layer": "tacit",
+        "detail": "The preserved source contains an unresolved unit inconsistency for the 15 auxiliary simulations: 12/16/20 MPa conflicts with the main 0.4-2.3 MPa range. Therefore those 15 runs and criterion 7 are excluded as quantitative evidence in this demo manuscript until the original inputs are verified. Keeping them or silently decimal-correcting them was rejected because either would publish unverified values. The manuscript should describe six verified criteria and mark fibrous-cap-thickness validation as pending author verification.\n- rationale: The auxiliary values conflict with the documented main design range, so they cannot be treated as verified evidence.\n- alternatives_rejected: Retain 12/16/20 MPa as written; silently reinterpret them as 1.2/1.6/2.0 MPa.\n- rejection_reason: Both alternatives would publish an unverified unit or decimal assumption.\n- constraint: Original run inputs or author confirmation are required before criterion 7 can be reinstated.",
+        "question": "What was the rationale for selecting the specific values for $E_{FC}$ (12, 16, 20 MPa) and $t_{FC}$ (40, 80, 120, 160, 200 µm) in these 15 additional simulations? Were other ranges or increments considered, and what were the rejection reasons? What specific physiological or clinical considerations guided these choices, especially given the discrepancy in $E_{FC}$ units/values noted in the document?",
+        "why_it_matters": "The design of these additional simulations is critical for validating the VIs against a key clinical feature. The choice of parameter ranges and values can influence whether a VI candidate passes or fails this criterion. Understanding the rationale for these specific choices, and addressing any noted discrepancies, is important for the robustness of the VI selection process.",
+        "must_capture": [
+          "rationale",
+          "alternatives_rejected",
+          "rejection_reason",
+          "constraint"
+        ],
+        "risk": "high",
+        "last_modified_revision": 8
+      },
+      {
+        "id": "PI1",
+        "kind": "pitfall",
+        "text": "Some LHS samples failed to converge due to mesh quality issues or non-physical input combinations, resulting in fewer valid samples (LAP 784/1,000, CP 1075/1,300) than initially generated.",
+        "parent_id": null,
+        "subtype": "",
+        "role": "",
+        "represented_as": null,
+        "section": null,
+        "provenance": "user_statement",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-PI1:ANS-0001",
+            "quote": "The retained records do not preserve a trustworthy case-level failure log, so this manuscript does not assign specific causes such as negative volumes or extreme deformation. The reproducible checks available are input-constraint screening, mesh generation success, solver completion, and finite/physical output checks. Failed cases are reported only as excluded cases, and their exclusion is treated as a possible selection-bias risk requiring a future failure audit.\n- check: Input constraints, mesh-generation completion, solver completion, and finite/physical output checks.\n- symptom: A case is marked failed only when it lacks a completed mesh/solver result or produces non-finite/non-physical outputs; finer symptom logs were not preserved.\n- failure_mode: Cause-specific failure modes cannot be asserted from the retained records.\n- reproducibility_risk: Excluding failures may bias surrogate training; future runs must retain case-level logs and compare included versus excluded design-space distributions.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0001",
+              "question_id": "Q-PI1"
+            }
+          }
+        ],
+        "knowledge_status": "author_attested",
+        "layer": "tacit",
+        "detail": "The retained records do not preserve a trustworthy case-level failure log, so this manuscript does not assign specific causes such as negative volumes or extreme deformation. The reproducible checks available are input-constraint screening, mesh generation success, solver completion, and finite/physical output checks. Failed cases are reported only as excluded cases, and their exclusion is treated as a possible selection-bias risk requiring a future failure audit.\n- check: Input constraints, mesh-generation completion, solver completion, and finite/physical output checks.\n- symptom: A case is marked failed only when it lacks a completed mesh/solver result or produces non-finite/non-physical outputs; finer symptom logs were not preserved.\n- failure_mode: Cause-specific failure modes cannot be asserted from the retained records.\n- reproducibility_risk: Excluding failures may bias surrogate training; future runs must retain case-level logs and compare included versus excluded design-space distributions.",
+        "question": "What specific checks were performed to identify mesh quality issues or non-physical input combinations that led to simulation non-convergence? What were the common symptoms of these failures (e.g., solver errors, extreme deformations, negative volumes)? What failure modes were most prevalent, and what reproducibility risks do they pose for future studies or different parameter ranges?",
+        "why_it_matters": "Simulation non-convergence can lead to a reduction in the effective sample size, potentially biasing the surrogate model training and subsequent sensitivity analysis. Understanding the causes and symptoms of these failures is crucial for improving the robustness of the data generation pipeline and for ensuring the reliability of the overall framework.",
+        "must_capture": [
+          "check",
+          "symptom",
+          "failure_mode",
+          "reproducibility_risk"
+        ],
+        "risk": "high",
+        "last_modified_revision": 6
+      }
+    ],
+    "edges": [
+      {
+        "id": "L1",
+        "src": "C1.1",
+        "dst": "C1",
+        "rel": "supports",
+        "rationale": "The FSI method generated the necessary data for the Sobol analysis of plaque vulnerability.",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L2",
+        "src": "C1.2",
+        "dst": "C1",
+        "rel": "supports",
+        "rationale": "The definition and selection of vulnerability indices provided the specific outputs for the sensitivity analysis.",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L3",
+        "src": "C1.3",
+        "dst": "C1",
+        "rel": "supports",
+        "rationale": "GPR surrogate models were essential to perform the computationally intensive Sobol analysis efficiently.",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L4",
+        "src": "C1.4",
+        "dst": "C1",
+        "rel": "supports",
+        "rationale": "The Sobol analysis directly quantified the contributions of the input groups, leading to the main claim's findings.",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L5",
+        "src": "M1.1",
+        "dst": "M1",
+        "rel": "part_of",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L6",
+        "src": "M1.2",
+        "dst": "M1",
+        "rel": "part_of",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L7",
+        "src": "M1.3",
+        "dst": "M1",
+        "rel": "part_of",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L8",
+        "src": "M2.1",
+        "dst": "M2",
+        "rel": "part_of",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L9",
+        "src": "M2.2",
+        "dst": "M2",
+        "rel": "part_of",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L10",
+        "src": "M2.3",
+        "dst": "M2",
+        "rel": "part_of",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L11",
+        "src": "M3.1",
+        "dst": "M3",
+        "rel": "part_of",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L12",
+        "src": "M3.2",
+        "dst": "M3",
+        "rel": "part_of",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L13",
+        "src": "M4.1",
+        "dst": "M4",
+        "rel": "part_of",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L14",
+        "src": "M1",
+        "dst": "D1",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L15",
+        "src": "M2",
+        "dst": "D1",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L16",
+        "src": "M2",
+        "dst": "D10",
+        "rel": "uses",
+        "rationale": "",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L17",
+        "src": "M3",
+        "dst": "D1",
+        "rel": "uses",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L18",
+        "src": "M4",
+        "dst": "D1",
+        "rel": "uses",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L19",
+        "src": "M5",
+        "dst": "D2",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L20",
+        "src": "M5",
+        "dst": "D3",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L21",
+        "src": "M5",
+        "dst": "D4",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L22",
+        "src": "M5",
+        "dst": "D5",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L23",
+        "src": "M5",
+        "dst": "D6",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L24",
+        "src": "M5",
+        "dst": "D7",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L25",
+        "src": "M5",
+        "dst": "D8",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L26",
+        "src": "M5",
+        "dst": "D9",
+        "rel": "produces",
+        "rationale": "",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L27",
+        "src": "E1",
+        "dst": "C1.1",
+        "rel": "supports",
+        "rationale": "The cost-effective FSI method is described as the engine for data generation, enabling the creation of large datasets for parametric analysis.",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L28",
+        "src": "E2",
+        "dst": "C1.3",
+        "rel": "supports",
+        "rationale": "The high predictive accuracy of the GPR models confirms their suitability for enabling global sensitivity analysis.",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L29",
+        "src": "E3",
+        "dst": "C1",
+        "rel": "supports",
+        "rationale": "This evidence provides specific grouped Sobol results for LAP VI2, directly comparing the relative contributions of material, hemodynamic, and morphological input groups.",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L30",
+        "src": "E4",
+        "dst": "C1",
+        "rel": "supports",
+        "rationale": "This evidence provides specific grouped Sobol results for CP VI2, directly comparing the relative contributions of material, hemodynamic, and morphological input groups.",
+        "grounding_status": "missing",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L31",
+        "src": "E5",
+        "dst": "C1",
+        "rel": "supports",
+        "rationale": "This evidence provides individual Sobol indices for CP VI2, which contribute to understanding the relative contributions within the groups.",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L32",
+        "src": "W1",
+        "dst": "C1",
+        "rel": "justifies",
+        "rationale": "Warrant W1 establishes that Sobol indices are an appropriate method for quantifying contributions and interactions of input parameters.",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L33",
+        "src": "W2",
+        "dst": "C1.3",
+        "rel": "justifies",
+        "rationale": "Warrant W2 establishes the validity of using surrogate models like GPR for computationally intensive analyses such as Sobol sensitivity analysis.",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L34",
+        "src": "W3",
+        "dst": "C1.2",
+        "rel": "justifies",
+        "rationale": "Warrant W3 establishes that defining VIs as stress/strength is a valid and common approach in biomechanics.",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L35",
+        "src": "W4",
+        "dst": "C1.1",
+        "rel": "justifies",
+        "rationale": "Warrant W4 establishes the necessity and validity of using cost-effective FSI methods for generating large datasets for sensitivity analysis.",
+        "grounding_status": "grounded",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L36",
+        "src": "R1",
+        "dst": "W3",
+        "rel": "justifies",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L37",
+        "src": "F1",
+        "dst": "M2",
+        "rel": "visualizes",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L38",
+        "src": "F2",
+        "dst": "M2.1",
+        "rel": "visualizes",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L39",
+        "src": "F3",
+        "dst": "M2.3",
+        "rel": "visualizes",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L40",
+        "src": "T1",
+        "dst": "M2",
+        "rel": "visualizes",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L41",
+        "src": "T2",
+        "dst": "M3.2",
+        "rel": "visualizes",
+        "rationale": "",
+        "grounding_status": "unverified",
+        "provenance_refs": [],
+        "last_modified_revision": 0
+      },
+      {
+        "id": "L42",
+        "src": "TH1",
+        "dst": "M2.2",
+        "rel": "governs",
+        "rationale": "The threshold for mesh independence directly governs the element size chosen for meshing the solid domains.",
+        "grounding_status": "grounded",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-TH1:ANS-0004",
+            "quote": "Mesh independence was defined a priori as less than 1% relative change in peak fibrous-cap maximum principal stress between successive refinements. The 0.04 and 0.03 cm meshes met this rule, so 0.04 cm was selected. A finer mesh would be required if the change reached or exceeded 1%, if the peak-stress location shifted materially, or if a new geometry/material range produced sharper stress gradients.\n- decision_rule: Successive mesh refinement must change peak fibrous-cap maximum principal stress by <1%.\n- observable_signal: The 0.04 and 0.03 cm meshes both produced about 1.0e6 dyn/cm2, with <1% relative change.\n- transfer_condition: Refine further if change is >=1%, the peak location moves materially, or a new design range creates sharper gradients.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0004",
+              "question_id": "Q-TH1"
+            }
+          }
+        ],
+        "last_modified_revision": 9
+      },
+      {
+        "id": "L43",
+        "src": "DE1",
+        "dst": "M5",
+        "rel": "governs",
+        "rationale": "The decision to exclude parameters based on negligible Sobol indices directly governs the final set of inputs used for the sensitivity analysis.",
+        "grounding_status": "grounded",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE1:ANS-0005",
+            "quote": "No preregistered numeric cutoff was preserved. The four calcification-generation parameters were excluded only because their total-order indices were reported as approximately zero. A fixed threshold is not invented for this manuscript; the exclusion is reported as conditional and should be revisited with confidence intervals in a replication.\n- rationale: Observed total-order indices were approximately zero in the stored analysis.\n- alternatives_rejected: Keep all four generator parameters in the final interpretable sensitivity model.\n- rejection_reason: They add non-clinical dimensions without measurable contribution in the stored run.\n- constraint: No confidence intervals or preregistered cutoff were preserved, so the conclusion is conditional.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0005",
+              "question_id": "Q-DE1"
+            }
+          }
+        ],
+        "last_modified_revision": 10
+      },
+      {
+        "id": "L44",
+        "src": "DE2",
+        "dst": "M2.1",
+        "rel": "governs",
+        "rationale": "The decision to fix fibrous cap thickness directly governs the geometry parameters used in the idealized coronary artery models.",
+        "grounding_status": "grounded",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE2:ANS-0006",
+            "quote": "Fibrous-cap thickness was fixed at 100 micrometers because the intended input workflow used CCTA-derived variables and CCTA does not resolve cap thickness. Varying it or requiring OCT was rejected for the primary CCTA-only design, at the cost of limiting generalizability to cap-thickness variation.\n- rationale: Maintain a CCTA-only input workflow while using a physiologically plausible 100 micrometer cap.\n- alternatives_rejected: Vary cap thickness in the main LHS; require OCT-derived cap thickness.\n- rejection_reason: CCTA cannot resolve the variable and adding OCT would change the intended non-invasive workflow.\n- constraint: Findings do not quantify sensitivity to cap thickness; separate verified simulations are needed.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0006",
+              "question_id": "Q-DE2"
+            }
+          }
+        ],
+        "last_modified_revision": 11
+      },
+      {
+        "id": "L45",
+        "src": "DE3",
+        "dst": "M2",
+        "rel": "governs",
+        "rationale": "The assumption of linear elastic and isotropic material properties directly governs the material models used in the FSI simulations for data generation.",
+        "grounding_status": "grounded",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE3:ANS-0002",
+            "quote": "The linear-isotropic model was limited to the recorded small-deformation regime, approximately 3-5% radial wall strain. Hyperelastic and anisotropic constitutive models were considered conceptually but were not used because patient-specific parameters were unavailable and they would materially increase the cost of the 1,000/1,300-case design. This assumption must not be generalized beyond the sampled small-strain regime.\n- rationale: Recorded radial wall strain was approximately 3-5%, supporting a small-strain approximation within this design space.\n- alternatives_rejected: Hyperelastic and anisotropic constitutive models.\n- rejection_reason: No patient-specific constitutive parameters were available and the added calibration/computational cost conflicted with the large design.\n- constraint: Validity is restricted to the sampled small-deformation regime and available material data.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0002",
+              "question_id": "Q-DE3"
+            }
+          }
+        ],
+        "last_modified_revision": 7
+      },
+      {
+        "id": "L46",
+        "src": "DE4",
+        "dst": "M3.2",
+        "rel": "governs",
+        "rationale": "The decision to use Spearman rank correlation governs the statistical method applied for VI candidate selection.",
+        "grounding_status": "grounded",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE4:ANS-0011",
+            "quote": "Spearman rank correlation was used because selection depended on the expected monotonic direction rather than linear effect size. Pearson correlation was rejected as less robust to nonlinear monotonic relationships. No absolute-significance threshold was used in the stored rubric; only direction was evaluated, and near-zero correlations should be treated as indeterminate rather than compliant.\n- rationale: The rubric tests monotonic direction across heterogeneous variables.\n- alternatives_rejected: Pearson correlation and a magnitude-based significance rule.\n- rejection_reason: Pearson assumes linear association; no preregistered magnitude threshold was preserved.\n- constraint: Near-zero or unstable signs must be flagged indeterminate and checked with uncertainty analysis.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0011",
+              "question_id": "Q-DE4"
+            }
+          }
+        ],
+        "last_modified_revision": 16
+      },
+      {
+        "id": "L47",
+        "src": "DE5",
+        "dst": "M3.1",
+        "rel": "governs",
+        "rationale": "The decision on sphere-averaging radius directly governs the post-processing of stress fields to obtain representative VI values.",
+        "grounding_status": "grounded",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE5:ANS-0007",
+            "quote": "The 0.01 cm sphere radius was inherited from the recorded stress post-processing method to reduce single-node peak noise. No independent radius-sensitivity study was preserved, so alternative radii or percentile-based summaries were not rejected empirically and this is reported as a limitation.\n- rationale: Reduce single-node mesh noise while preserving a local peak neighborhood.\n- alternatives_rejected: Other radii, nodal maximum, and percentile-based stress summaries were not independently benchmarked in the retained run.\n- rejection_reason: The stored workflow adopted the referenced 0.01 cm method without a new sensitivity study.\n- constraint: Interpretation is conditional on the selected spatial averaging radius.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0007",
+              "question_id": "Q-DE5"
+            }
+          }
+        ],
+        "last_modified_revision": 12
+      },
+      {
+        "id": "L48",
+        "src": "DE6",
+        "dst": "M2.3",
+        "rel": "governs",
+        "rationale": "The decision regarding the Windkessel model and its fixed parameters directly governs the fluid boundary conditions applied at the inlet.",
+        "grounding_status": "grounded",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE6:ANS-0008",
+            "quote": "Rp/Rd=1/10 was retained as the documented coronary RCR partition and the remaining parameters were fitted to sampled systolic/diastolic pressures. Alternative resistance splits and higher-order outlet models were not tested in this dataset; changing the ratio would require refitting and validating pressure/flow waveforms.\n- rationale: Use the documented coronary resistance partition while fitting Pd, Rd, and C to each pressure target.\n- alternatives_rejected: Other proximal/distal splits and more complex outlet networks.\n- rejection_reason: They were not calibrated for the available waveform data and would add unidentifiable parameters.\n- constraint: The ratio should be revisited when patient-specific pressure-flow data are available.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0008",
+              "question_id": "Q-DE6"
+            }
+          }
+        ],
+        "last_modified_revision": 13
+      },
+      {
+        "id": "L49",
+        "src": "DE7",
+        "dst": "M2.3",
+        "rel": "governs",
+        "rationale": "The decision to use a time-variable elastance model for myocardial pressure directly governs the coronary microvascular lumped-parameter boundary conditions at the outlets.",
+        "grounding_status": "grounded",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE7:ANS-0009",
+            "quote": "A time-varying elastance model was used because coronary outflow must reflect systolic myocardial compression and diastole-dominant perfusion. Fixed myocardial pressure cannot reproduce that phase dependence, while a more complex electromechanical heart model was outside the available data and computational budget.\n- rationale: Represent systolic extravascular compression and diastole-dominant coronary flow.\n- alternatives_rejected: Fixed myocardial pressure; fully coupled electromechanical heart model.\n- rejection_reason: Fixed pressure lacks phase dependence; the coupled model requires unavailable patient data and much higher cost.\n- constraint: Only the available lumped elastance waveform was calibrated.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0009",
+              "question_id": "Q-DE7"
+            }
+          }
+        ],
+        "last_modified_revision": 14
+      },
+      {
+        "id": "L50",
+        "src": "DE8",
+        "dst": "M5",
+        "rel": "governs",
+        "rationale": "The decision on the base sample size for Saltelli sampling directly governs the computational effort and accuracy of the Sobol sensitivity analysis.",
+        "grounding_status": "grounded",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE8:ANS-0010",
+            "quote": "N=1,024 was selected as a power-of-two Saltelli base size, yielding 14,336 LAP and 16,384 CP surrogate evaluations with second-order indices disabled. The retained run does not include an N-doubling convergence trace, so sufficiency is a computational design choice rather than a demonstrated convergence result and must be reported that way.\n- rationale: Power-of-two Saltelli base size with manageable surrogate-evaluation cost.\n- alternatives_rejected: Smaller or larger N values were not documented as a formal convergence series.\n- rejection_reason: No preserved index-stability comparison supports claiming a better alternative.\n- constraint: A replication should compare N=512/1024/2048 with confidence intervals before calling indices converged.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0010",
+              "question_id": "Q-DE8"
+            }
+          }
+        ],
+        "last_modified_revision": 15
+      },
+      {
+        "id": "L51",
+        "src": "DE9",
+        "dst": "M3.2",
+        "rel": "governs",
+        "rationale": "The decision to perform additional simulations with specific parameter ranges directly governs the data used for evaluating criterion 7 in VI candidate selection.",
+        "grounding_status": "grounded",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-DE9:ANS-0003",
+            "quote": "The preserved source contains an unresolved unit inconsistency for the 15 auxiliary simulations: 12/16/20 MPa conflicts with the main 0.4-2.3 MPa range. Therefore those 15 runs and criterion 7 are excluded as quantitative evidence in this demo manuscript until the original inputs are verified. Keeping them or silently decimal-correcting them was rejected because either would publish unverified values. The manuscript should describe six verified criteria and mark fibrous-cap-thickness validation as pending author verification.\n- rationale: The auxiliary values conflict with the documented main design range, so they cannot be treated as verified evidence.\n- alternatives_rejected: Retain 12/16/20 MPa as written; silently reinterpret them as 1.2/1.6/2.0 MPa.\n- rejection_reason: Both alternatives would publish an unverified unit or decimal assumption.\n- constraint: Original run inputs or author confirmation are required before criterion 7 can be reinstated.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0003",
+              "question_id": "Q-DE9"
+            }
+          }
+        ],
+        "last_modified_revision": 8
+      },
+      {
+        "id": "L52",
+        "src": "PI1",
+        "dst": "D1",
+        "rel": "warns_about",
+        "rationale": "Non-convergence of simulations directly impacts the completeness and quality of the input/output datasets.",
+        "grounding_status": "grounded",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-PI1:ANS-0001",
+            "quote": "The retained records do not preserve a trustworthy case-level failure log, so this manuscript does not assign specific causes such as negative volumes or extreme deformation. The reproducible checks available are input-constraint screening, mesh generation success, solver completion, and finite/physical output checks. Failed cases are reported only as excluded cases, and their exclusion is treated as a possible selection-bias risk requiring a future failure audit.\n- check: Input constraints, mesh-generation completion, solver completion, and finite/physical output checks.\n- symptom: A case is marked failed only when it lacks a completed mesh/solver result or produces non-finite/non-physical outputs; finer symptom logs were not preserved.\n- failure_mode: Cause-specific failure modes cannot be asserted from the retained records.\n- reproducibility_risk: Excluding failures may bias surrogate training; future runs must retain case-level logs and compare included versus excluded design-space distributions.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0001",
+              "question_id": "Q-PI1"
+            }
+          }
+        ],
+        "last_modified_revision": 6
+      },
+      {
+        "id": "L53",
+        "src": "PI1",
+        "dst": "M2",
+        "rel": "warns_about",
+        "rationale": "Mesh quality issues and non-physical input combinations are pitfalls in the data generation method.",
+        "grounding_status": "grounded",
+        "provenance_refs": [
+          {
+            "source_type": "author",
+            "asset_id": "",
+            "locator": "interview:Q-PI1:ANS-0001",
+            "quote": "The retained records do not preserve a trustworthy case-level failure log, so this manuscript does not assign specific causes such as negative volumes or extreme deformation. The reproducible checks available are input-constraint screening, mesh generation success, solver completion, and finite/physical output checks. Failed cases are reported only as excluded cases, and their exclusion is treated as a possible selection-bias risk requiring a future failure audit.\n- check: Input constraints, mesh-generation completion, solver completion, and finite/physical output checks.\n- symptom: A case is marked failed only when it lacks a completed mesh/solver result or produces non-finite/non-physical outputs; finer symptom logs were not preserved.\n- failure_mode: Cause-specific failure modes cannot be asserted from the retained records.\n- reproducibility_risk: Excluding failures may bias surrogate training; future runs must retain case-level logs and compare included versus excluded design-space distributions.",
+            "quote_hash": "",
+            "verification_status": "author_attested",
+            "metadata": {
+              "answer_id": "ANS-0001",
+              "question_id": "Q-PI1"
+            }
+          }
+        ],
+        "last_modified_revision": 6
+      }
+    ]
+  },
+  "figures": {
+    "generation": "deferred (fal.ai nano-banana pro)",
+    "figures": [
+      {
+        "id": "F1",
+        "kind": "figure",
+        "message": "Workflow overview: 3 stages (dataset generation, VI selection, surrogate-based global sensitivity analysis)",
+        "section": "method",
+        "visualizes": [
+          "M2"
+        ],
+        "status": "planned",
+        "source": "claim_graph",
+        "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"figure sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><line x1=\"20\" y1=\"96\" x2=\"190\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><line x1=\"20\" y1=\"20\" x2=\"20\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><rect x=\"26\" y=\"26\" width=\"20\" height=\"70\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"56\" y=\"50\" width=\"20\" height=\"46\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"86\" y=\"66\" width=\"20\" height=\"30\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"116\" y=\"74\" width=\"20\" height=\"22\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"146\" y=\"82\" width=\"20\" height=\"14\" rx=\"2\" fill=\"#CC785C\"/><text x=\"205\" y=\"40\" font-size=\"9\" fill=\"#6B5E54\">S1 / ST</text><text x=\"205\" y=\"54\" font-size=\"9\" fill=\"#6B5E54\">bar chart</text></svg>"
+      },
+      {
+        "id": "F2",
+        "kind": "figure",
+        "message": "Idealized coronary model geometry + morphological parameters",
+        "section": "method",
+        "visualizes": [
+          "M2.1"
+        ],
+        "status": "planned",
+        "source": "claim_graph",
+        "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"figure sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><line x1=\"20\" y1=\"96\" x2=\"190\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><line x1=\"20\" y1=\"20\" x2=\"20\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><rect x=\"26\" y=\"26\" width=\"20\" height=\"70\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"56\" y=\"50\" width=\"20\" height=\"46\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"86\" y=\"66\" width=\"20\" height=\"30\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"116\" y=\"74\" width=\"20\" height=\"22\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"146\" y=\"82\" width=\"20\" height=\"14\" rx=\"2\" fill=\"#CC785C\"/><text x=\"205\" y=\"40\" font-size=\"9\" fill=\"#6B5E54\">S1 / ST</text><text x=\"205\" y=\"54\" font-size=\"9\" fill=\"#6B5E54\">bar chart</text></svg>"
+      },
+      {
+        "id": "F3",
+        "kind": "figure",
+        "message": "Boundary conditions: fluid + solid",
+        "section": "method",
+        "visualizes": [
+          "M2.3"
+        ],
+        "status": "planned",
+        "source": "claim_graph",
+        "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"figure sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><line x1=\"20\" y1=\"96\" x2=\"190\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><line x1=\"20\" y1=\"20\" x2=\"20\" y2=\"96\" stroke=\"#6B5E54\" stroke-width=\"1\"/><rect x=\"26\" y=\"26\" width=\"20\" height=\"70\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"56\" y=\"50\" width=\"20\" height=\"46\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"86\" y=\"66\" width=\"20\" height=\"30\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"116\" y=\"74\" width=\"20\" height=\"22\" rx=\"2\" fill=\"#CC785C\"/><rect x=\"146\" y=\"82\" width=\"20\" height=\"14\" rx=\"2\" fill=\"#CC785C\"/><text x=\"205\" y=\"40\" font-size=\"9\" fill=\"#6B5E54\">S1 / ST</text><text x=\"205\" y=\"54\" font-size=\"9\" fill=\"#6B5E54\">bar chart</text></svg>"
+      },
+      {
+        "id": "T1",
+        "kind": "table",
+        "message": "Input variables, symbols, units, sampling ranges, references",
+        "section": "method",
+        "visualizes": [
+          "M2"
+        ],
+        "status": "planned",
+        "source": "claim_graph",
+        "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"table sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><rect x=\"16\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"45.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col1</text><rect x=\"74\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"103.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col2</text><rect x=\"132\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"161.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col3</text><rect x=\"190\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"219.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col4</text><rect x=\"16\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"16\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"16\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"140\" y=\"112\" font-size=\"9\" text-anchor=\"middle\" fill=\"#6B5E54\">table</text></svg>"
+      },
+      {
+        "id": "T2",
+        "kind": "table",
+        "message": "Seven established high-risk plaque features",
+        "section": "method",
+        "visualizes": [
+          "M3.2"
+        ],
+        "status": "planned",
+        "source": "claim_graph",
+        "svg": "<svg viewBox=\"0 0 280 120\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"table sketch\"><rect width=\"280\" height=\"120\" rx=\"8\" fill=\"#FAF8F2\" stroke=\"#D4C5B0\"/><rect x=\"16\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"45.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col1</text><rect x=\"74\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"103.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col2</text><rect x=\"132\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"161.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col3</text><rect x=\"190\" y=\"18\" width=\"58\" height=\"20\" fill=\"#E8D5C4\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"219.0\" y=\"31\" font-size=\"8\" text-anchor=\"middle\" fill=\"#1A1A1A\" font-weight=\"700\">col4</text><rect x=\"16\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"38\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"16\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"58\" width=\"58\" height=\"20\" fill=\"#FBF6F0\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"16\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"74\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"132\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><rect x=\"190\" y=\"78\" width=\"58\" height=\"20\" fill=\"#FFFFFF\" stroke=\"#D4C5B0\" stroke-width=\"0.8\"/><text x=\"140\" y=\"112\" font-size=\"9\" text-anchor=\"middle\" fill=\"#6B5E54\">table</text></svg>"
+      }
+    ]
+  },
+  "structure": {
+    "method": {
+      "summary": "This section details the computational framework, including the cost-effective pulsatile FSI method, the design space and sampling strategy for plaque models, and the definition and selection of vulnerability indices for global sensitivity analysis.",
+      "subheadings": [
+        "Cost-effective Pulsatile FSI for Plaque Models",
+        "Design Space and Sampling for Low-Attenuation and Calcified Plaques",
+        "Vulnerability Index Definition and Selection",
+        "Global Sensitivity Analysis Methodology"
+      ]
+    },
+    "result": {
+      "summary": "This section presents the findings from the global sensitivity analysis, comparing the relative contributions and interactions of material, hemodynamic, and morphological input groups to coronary plaque vulnerability indices.",
+      "subheadings": [
+        "Validation of Surrogate Models and Vulnerability Indices",
+        "Grouped Sensitivity Analysis of Plaque Vulnerability",
+        "Individual Parameter Contributions to Vulnerability"
+      ]
+    },
+    "discussion": {
+      "summary": "This section interprets the results of the global sensitivity analysis, highlighting the dominant role of material properties, discussing the implications for understanding plaque rupture, and acknowledging the study's limitations.",
+      "subheadings": [
+        "Dominant Influence of Material Properties on Plaque Vulnerability",
+        "Implications for Plaque Rupture Prediction and Clinical Relevance",
+        "Limitations and Future Directions"
+      ]
+    },
+    "introduction": {
+      "summary": "This section provides background on coronary artery disease and plaque rupture, outlines the current challenges in predicting plaque vulnerability, and states the objectives of using global sensitivity analysis to identify key contributing factors.",
+      "subheadings": [
+        "Coronary Artery Disease and the Challenge of Plaque Rupture",
+        "Biomechanical Factors in Plaque Vulnerability",
+        "Rationale for Global Sensitivity Analysis in Plaque Mechanics"
+      ]
+    },
+    "conclusion": {
+      "summary": "This section summarizes the main findings regarding the dominant contributions of material properties to coronary plaque vulnerability and reiterates the significance of these insights for future research and clinical applications.",
+      "subheadings": []
+    },
+    "abstract": {
+      "summary": "This study employed Sobol global sensitivity analysis to quantify the relative contributions of material, hemodynamic, and morphological factors to coronary plaque vulnerability indices, revealing the dominant influence of material properties in both low-attenuation and calcified plaque models.",
+      "subheadings": []
+    }
+  },
+  "found_references": [
+    {
+      "key": "roffi2015",
+      "title": "2015 ESC Guidelines for the management of acute coronary syndromes in patients presenting without persistent ST-segment elevation",
+      "authors": "Marco Roffi, Carlo Patrono, Jean‐Philippe Collet, Christian Mueller, Marco Valgimigli, Felicita Andreotti, Jeroen J. Bax, Michael A. Borger, Carlos Brotons, Derek P. Chew, Bariş Gencer, Gerd Hasenfuß, Keld Kjeldsen, Patrizio Lancellotti, Ulf Landmesser, Julinda Mehilli, Debabrata Mukherjee, Robert F. Storey, Stephan Windecker, ESC Scientific Document Group, Helmut Baumgartner, Oliver Gaemperli, Stephan Achenbach, Stefan Agewall, Lina Badimon, Colin Baigent, Héctor Bueno, Raffaele Bugiardini, Scipione Carerj, Filip Casselman, Thomas Cuisset, Çetin Erol, Donna Fitzsimons, Martin Halle, Christian Hamm, David Hildick-Smith, Kurt Huber, Efstathios Iliodromitis, Stefan James, Basil S. Lewis, Gregory Y. H. Lip, Massimo F. Piepoli, Dimitrios Richter, Thomas Rosemann, Udo Sechtem, Ph. Gabriel Steg, Christian Vrints, Jose Luis Zamorano, Jose Luis Zamorano, Victor Aboyans, Stephan Achenbach, Stefan Agewall, Lina Badimon, Gonzalo Barón-Esquivias, Helmut Baumgartner, Jeroen J. Bax, Héctor Bueno, Scipione Carerj, Veronica Dean, Çetin Erol, Donna Fitzsimons, Oliver Gaemperli, Paulus Kirchhof, Philippe Kolh, Patrizio Lancellotti, Gregory YH Lip, Petros Nihoyannopoulos, Massimo F Piepoli, Piotr Ponikowski, Marco Roffi, Adam Torbicki, Antonio Vaz Carneiro, Stephan Windecker, Aram Chilingaryan, Franz Weidinger, Ruslan Najafov, Peter R Sinnaeve, Ibrahim Terzic, Arman Postadzhiyan, Davor Milicic, Christos Eftychiou, Petr Widimsky, Lia Bang, Adel El Etriby, Toomas Marandi, Mikko Pietilä, Sasko Kedev, René Koning, Alexander Aladashvili, Franz-Josef Neumann, Kostantinos Tsioufis, Dávid Becker, Thorarinn Guðnason, Shlomi Matetzky, Leonardo Bolognese, Aisulu Mussagaliyeva, Medet Beishenkulov, Gustavs Latkovskis, Pranas Serpytis, Bruno Pereira",
+      "year": 2015,
+      "doi": "10.1093/eurheartj/ehv320",
+      "abstract": "International audience",
+      "topic": "clinical guidelines for acute coronary syndromes"
+    },
+    {
+      "key": "stone2011",
+      "title": "A Prospective Natural-History Study of Coronary Atherosclerosis",
+      "authors": "Gregg W. Stone, Akiko Maehara, Alexandra J. Lansky, Bernard De Bruyne, Ecaterina Cristea, Gary S. Mintz, Roxana Mehran, John McPherson, Naim Farhat, Steven P. Marso, Helen Parise, Barry Templin, Roseann White, Zhen Zhang, Patrick W. Serruys",
+      "year": 2011,
+      "doi": "10.1056/nejmoa1002358",
+      "abstract": "BACKGROUND: Atherosclerotic plaques that lead to acute coronary syndromes often occur at sites of angiographically mild coronary-artery stenosis. Lesion-related risk factors for such events are poorly understood. METHODS: In a prospective study, 697 patients with acute coronary syndromes underwent three-vessel coronary angiography and gray-scale and radiofrequency intravascular ultrasonographic imaging after percutaneous coronary intervention. Subsequent major adverse cardiovascular events (death from cardiac causes, cardiac arrest, myocardial infarction, or rehospitalization due to unstable o",
+      "topic": "clinical evidence on natural history and risk factors of coronary atherosclerosis"
+    },
+    {
+      "key": "naghavi2003",
+      "title": "From Vulnerable Plaque to Vulnerable Patient",
+      "authors": "Morteza Naghavi, Peter Libby, Erling Falk, S. Ward Casscells, Silvio Litovsky, John A. Rumberger, Juan J. Badimón, Christodoulos Stefanadis, Pedro Moreno, Gerard Pasterkamp, Zahi A. Fayad, Peter H. Stone, Sergio Waxman, Paolo Raggi, Mohammad Madjid, Alireza Zarrabi, Allen Burke, Chun Yuan, Peter J. Fitzgerald, David S. Siscovick, Chris L. de Korte, Masanori Aikawa, Juhani Airaksinen, Gerd Assmann, Christoph R. Becker, James H. Chesebro, Andrew Farb, Zorina S. Galis, Chris Jackson, Ik‐Kyung Jang, Wolfgang Köenig, Robert A. Lodder, Keith L. March, Jasenka Demirovic, Mohamad Navab, Silvia G. Priori, Mark D. Rekhter, Raymond D. Bahr, Scott M. Grundy, Roxana Mehran, Antonio Colombo, Eric Boerwinkle, Christie M. Ballantyne, William Insull, Robert S. Schwartz, Robert A. Vogel, Patrick W. Serruys, Göran K. Hansson, David P. Faxon, Sanjay Kaul, Helmut Drexler, Philip Greenland, James E. Muller, Renu Virmani, Paul M. Ridker, Douglas P. Zipes, Prediman K. Shah, James T. Willerson",
+      "year": 2003,
+      "doi": "10.1161/01.cir.0000087480.94275.97",
+      "abstract": "Atherosclerotic cardiovascular disease results in >19 million deaths annually, and coronary heart disease accounts for the majority of this toll. Despite major advances in treatment of coronary heart disease patients, a large number of victims of the disease who are apparently healthy die suddenly without prior symptoms. Available screening and diagnostic methods are insufficient to identify the victims before the event occurs. The recognition of the role of the vulnerable plaque has opened new avenues of opportunity in the field of cardiovascular medicine. This consensus document concludes th",
+      "topic": "conceptual framework for vulnerable plaque and patient"
+    },
+    {
+      "key": "burke1997",
+      "title": "Coronary Risk Factors and Plaque Morphology in Men with Coronary Disease Who Died Suddenly",
+      "authors": "Allen Burke, Andrew Farb, Gray T. Malcom, You-hui Liang, John E. Smialek, Renu Virmani",
+      "year": 1997,
+      "doi": "10.1056/nejm199705013361802",
+      "abstract": "BACKGROUND: Cigarette smoking and abnormal serum cholesterol concentrations are risk factors for acute coronary syndromes, but the underlying mechanisms are poorly understood. We studied whether cigarette smoking and abnormal cholesterol values may precipitate acute coronary thrombosis and sudden death resulting from either rupture of vulnerable coronary plaques or erosion of plaques. METHODS: We examined the hearts of 113 men with coronary disease who had died suddenly and also analyzed their coronary risk factors. We found an acute coronary thrombus in each of 59 men, and severe narrowing of",
+      "topic": "clinical evidence on risk factors and plaque morphology in sudden death"
+    },
+    {
+      "key": "motoyama2009",
+      "title": "Computed Tomographic Angiography Characteristics of Atherosclerotic Plaques Subsequently Resulting in Acute Coronary Syndrome",
+      "authors": "Sadako Motoyama, Masayoshi Sarai, Hiroto Harigaya, Hirofumi Anno, Kaori Inoue, Tomonori Hara, Hiroyuki Naruse, Junichi Ishii, Hitoshi Hishida, Nathan D. Wong, Renu Virmani, Takeshi Kondo, Yukio Ozaki, Jagat Narula",
+      "year": 2009,
+      "doi": "10.1016/j.jacc.2009.02.068",
+      "abstract": "",
+      "topic": "imaging characteristics of plaques leading to acute coronary syndrome"
+    },
+    {
+      "key": "virmani2005",
+      "title": "Atherosclerotic Plaque Progression and Vulnerability to Rupture",
+      "authors": "Renu Virmani, Frank D. Kolodgie, Allen Burke, Aloke V. Finn, Herman K. Gold, Thomas N. Tulenko, Steven P. Wrenn, Jagat Narula",
+      "year": 2005,
+      "doi": "10.1161/01.atv.0000178991.71605.18",
+      "abstract": "Observational studies of necrotic core progression identify intraplaque hemorrhage as a critical factor in atherosclerotic plaque growth and destabilization. The rapid accumulation of erythrocyte membranes causes an abrupt change in plaque substrate characterized by increased free cholesterol within the lipid core and excessive macrophage infiltration. Neoangiogenesis is associated closely with plaque progression, and microvascular incompetence is a likely source of intraplaque hemorrhage. Intimal neovascularization is predominantly thought to arise from the adventitia, where there are a pleth",
+      "topic": "pathological mechanisms of plaque progression and vulnerability"
+    },
+    {
+      "key": "cheng1993",
+      "title": "Distribution of circumferential stress in ruptured and stable atherosclerotic lesions. A structural analysis with histopathological correlation.",
+      "authors": "Guijuan Cheng, Howard M. Loree, Roger D. Kamm, Michael C. Fishbein, R T Lee",
+      "year": 1993,
+      "doi": "10.1161/01.cir.87.4.1179",
+      "abstract": "BACKGROUND: Although rupture of an atherosclerotic plaque is considered to be the cause of most acute coronary syndromes, the mechanism of plaque rupture is controversial. METHODS AND RESULTS: To test the hypothesis that plaque rupture occurs at sites of high circumferential stress in the diseased vessel, the distribution of stress was analyzed in 24 coronary artery lesions. Histological specimens from 12 coronary artery lesions that caused lethal myocardial infarction were compared with those from 12 stable control lesions. A finite element model was used to calculate the stress distributions",
+      "topic": "biomechanical analysis of stress distribution in ruptured and stable lesions"
+    },
+    {
+      "key": "fernndezortz1994",
+      "title": "Characterization of the relative thrombogenicity of atherosclerotic plaque components: Implications for consequences of plaque rupture",
+      "authors": "Antonio Fernández‐Ortíz, Juan J. Badimon, Erling Falk, Valentı́n Fuster, Beat J. Meyer, Alessandra Mailhac, Dan Weng, Prediman K. Shah, Lina Badimón",
+      "year": 1994,
+      "doi": "10.1016/0735-1097(94)90657-2",
+      "abstract": "",
+      "topic": "characterization of thrombogenicity of plaque components"
+    },
+    {
+      "key": "shah2003",
+      "title": "Mechanisms of plaque vulnerability and rupture",
+      "authors": "Prediman K. Shah",
+      "year": 2003,
+      "doi": "10.1016/s0735-1097(02)02834-6",
+      "abstract": "",
+      "topic": "mechanisms of plaque vulnerability and rupture"
+    },
+    {
+      "key": "wal1999",
+      "title": "Atherosclerotic plaque rupture – pathologic basis of plaque stability and instability",
+      "authors": "Allard C. van der Wal",
+      "year": 1999,
+      "doi": "10.1016/s0008-6363(98)00276-4",
+      "abstract": "Time for primary reveiw 27 days Atherosclerosis continues to be one of the main subjects in pathology research. The intriguing complexity of its pathogenesis as well as the importance of its clinical sequelae provide a rationale for this [1]. A large number of diseases with totally different clinical presentations are basically atherosclerosis related, and among these, myocardial infarction, stroke, abdominal aneurysms and lower limb ischemia determine to a large extent the morbidity and mortality in Western style populations. But, despite this broad spectrum of clinical disease, most of the a",
+      "topic": "pathological basis of plaque stability and instability"
+    }
+  ],
+  "literature_md": "Acute coronary syndromes (ACS) are frequently caused by the rupture of atherosclerotic plaques, particularly those with specific morphological characteristics [cite:naghavi2003, cite:shah2003, cite:wal1999]. Research has identified several features associated with vulnerable plaques, including a large necrotic core, thin fibrous cap, and positive remodeling [cite:virmani2005, cite:motoyama2009]. Histopathological studies have shown that plaque rupture often occurs at sites of high circumferential stress [cite:cheng1993]. Clinical guidelines emphasize the management of ACS in patients without persistent ST-segment elevation [cite:roffi2015], and prospective studies have investigated the natural history of coronary atherosclerosis to better understand lesion-related risk factors [cite:stone2011].\n\nFurther studies have explored the role of various factors in plaque vulnerability. For instance, cigarette smoking and abnormal serum cholesterol concentrations have been linked to acute coronary thrombosis and sudden death, potentially through plaque rupture or erosion [cite:burke1997]. The thrombogenicity of different atherosclerotic plaque components has also been characterized, providing insights into the consequences of plaque rupture [cite:fernndezortz1994]. Despite these advances, identifying vulnerable plaques before an event remains a significant challenge [cite:naghavi2003].\n\nThis paper aims to build upon this body of work by integrating detailed plaque morphology with advanced biomechanical modeling to predict plaque rupture risk. While previous studies have highlighted the importance of stress distribution [cite:cheng1993], our approach incorporates a more comprehensive set of patient-specific and plaque-specific parameters, leveraging computational methods to explore the interplay of these factors. This work contributes to the ongoing effort to better understand and predict the mechanisms underlying ACS.",
+  "plan_tokens": {
+    "input": 79791,
+    "output": 22759,
+    "cached": 0
+  }
+}

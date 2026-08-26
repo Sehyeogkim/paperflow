@@ -22,6 +22,7 @@ _PREAMBLE = r"""\documentclass[preprint,12pt]{elsarticle}
 \usepackage{booktabs}
 \usepackage{makecell}
 \usepackage{multirow}
+\usepackage{longtable}
 \usepackage{kotex}            % Korean draft — compile with XeLaTeX or LuaLaTeX"""
 
 _MATH = re.compile(r"(\$\$.*?\$\$|\$[^$]*?\$)", re.DOTALL)
@@ -123,7 +124,7 @@ def _frontmatter(meta: dict, sections: dict[str, str]) -> str:
 
 
 def assemble(sections: dict[str, str], reference_table=None, found_references=None,
-             meta: dict | None = None) -> str:
+             meta: dict | None = None, data_artifacts: str = "") -> str:
     """Build the full elsarticle paper.tex from the section markdown + all cited references."""
     meta = meta or {}
     journal = _esc(meta.get("journal") or "")
@@ -132,6 +133,11 @@ def assemble(sections: dict[str, str], reference_table=None, found_references=No
     for sec in _BODY_ORDER:  # body sections flow continuously (no \clearpage)
         if sections.get(sec, "").strip():
             parts += [f"\\section{{{_TITLE[sec]}}}", _body(sections[sec])]
+            # Tables are numbered in one deterministic block immediately after Results.
+            # This makes literal "Table 1/2" references resolve without trusting an LLM
+            # to reproduce source data or decide float order.
+            if sec == "result" and data_artifacts.strip():
+                parts.append(data_artifacts.strip())
     bib = _bibliography(reference_table, found_references)
     if bib:
         parts.append(bib)

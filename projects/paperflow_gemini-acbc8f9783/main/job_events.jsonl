@@ -1,0 +1,63 @@
+{"event_id": 1, "type": "progress", "step_id": "ingest", "label": "입력 수집", "raw": "[ingest] 입력 수집"}
+{"event_id": 2, "type": "progress", "step_id": "guideline", "label": "저널 가이드라인 확인", "raw": "[guideline] 저널 가이드라인 확인"}
+{"event_id": 3, "type": "progress", "step_id": "requirement", "label": "누락정보 진단 (완성가능성 분류)", "raw": "[requirement] 누락정보 진단 (완성가능성 분류)"}
+{"event_id": 4, "type": "progress", "step_id": "claim_graph", "label": "Claim graph (typed)", "raw": "[claim_graph] Claim graph (typed)"}
+{"event_id": 5, "type": "progress", "step_id": "ingest", "label": "입력 수집", "raw": "[ingest] 입력 수집"}
+{"event_id": 6, "type": "progress", "step_id": "guideline", "label": "저널 가이드라인 확인", "raw": "[guideline] 저널 가이드라인 확인"}
+{"event_id": 7, "type": "progress", "step_id": "requirement", "label": "진단 결과 재사용", "raw": "[requirement] 진단 결과 재사용"}
+{"event_id": 8, "type": "progress", "step_id": "claim_graph", "label": "Claim graph (typed)", "raw": "[claim_graph] Claim graph (typed)"}
+{"event_id": 9, "type": "progress", "step_id": "ingest", "label": "입력 수집", "raw": "[ingest] 입력 수집"}
+{"event_id": 10, "type": "progress", "step_id": "guideline", "label": "저널 가이드라인 확인", "raw": "[guideline] 저널 가이드라인 확인"}
+{"event_id": 11, "type": "progress", "step_id": "requirement", "label": "진단 결과 재사용", "raw": "[requirement] 진단 결과 재사용"}
+{"event_id": 12, "type": "progress", "step_id": "claim_graph", "label": "Claim graph (typed)", "raw": "[claim_graph] Claim graph (typed)"}
+{"event_id": 13, "type": "progress", "step_id": "ingest", "label": "입력 수집", "raw": "[ingest] 입력 수집"}
+{"event_id": 14, "type": "progress", "step_id": "guideline", "label": "저널 가이드라인 확인", "raw": "[guideline] 저널 가이드라인 확인"}
+{"event_id": 15, "type": "progress", "step_id": "requirement", "label": "진단 결과 재사용", "raw": "[requirement] 진단 결과 재사용"}
+{"event_id": 16, "type": "progress", "step_id": "claim_graph", "label": "Claim graph (typed)", "raw": "[claim_graph] Claim graph (typed)"}
+{"event_id": 17, "type": "progress", "step_id": "figure_plan", "label": "Figure 설계 (figure-first)", "raw": "[figure_plan] Figure 설계 (figure-first)"}
+{"event_id": 18, "type": "progress", "step_id": "structure", "label": "섹션 구조·소제목 제안", "raw": "[structure] 섹션 구조·소제목 제안"}
+{"event_id": 19, "type": "progress", "step_id": "write", "label": "method", "raw": "[write] method"}
+{"event_id": 20, "type": "progress", "step_id": "write", "label": "result", "raw": "[write] result"}
+{"event_id": 21, "type": "progress", "step_id": "write", "label": "discussion", "raw": "[write] discussion"}
+{"event_id": 22, "type": "progress", "step_id": "write", "label": "introduction", "raw": "[write] introduction"}
+{"event_id": 23, "type": "progress", "step_id": "write", "label": "conclusion", "raw": "[write] conclusion"}
+{"event_id": 24, "type": "progress", "step_id": "write", "label": "abstract", "raw": "[write] abstract"}
+{"event_id": 25, "type": "progress", "step_id": "validate", "label": "섹션별 논리 검증", "raw": "[validate] 섹션별 논리 검증"}
+{"event_id": 26, "type": "progress", "step_id": "validate", "label": "섹션 6개 병렬 검증", "raw": "[validate] 섹션 6개 병렬 검증"}
+{"event_id": 27, "type": "progress", "step_id": "validate", "label": "validate: discussion", "raw": "[validate] validate: discussion"}
+{"event_id": 27, "type": "progress", "step_id": "validate", "label": "validate: abstract", "raw": "[validate] validate: abstract"}
+{"event_id": 28, "type": "progress", "step_id": "validate", "label": "validate: conclusion", "raw": "[validate] validate: conclusion"}
+{"event_id": 29, "type": "progress", "step_id": "validate", "label": "validate: method", "raw": "[validate] validate: method"}
+{"event_id": 30, "type": "progress", "step_id": "validate", "label": "validate: introduction", "raw": "[validate] validate: introduction"}
+{"event_id": 31, "type": "progress", "step_id": "validate", "label": "validate: result", "raw": "[validate] validate: result"}
+{"event_id": 32, "type": "progress", "step_id": "citation", "label": "누락 citation 채우기 (reference-hunter)", "raw": "[citation] 누락 citation 채우기 (reference-hunter)"}
+{"event_id": 33, "type": "progress", "step_id": "output", "label": "출력 기록", "raw": "[output] 출력 기록"}
+{"event_id": 34, "type": "progress", "step_id": "ingest", "label": "입력 수집", "raw": "[ingest] 입력 수집"}
+{"event_id": 35, "type": "progress", "step_id": "guideline", "label": "저널 가이드라인 확인", "raw": "[guideline] 저널 가이드라인 확인"}
+{"event_id": 36, "type": "progress", "step_id": "litsearch", "label": "선행연구조사 (OpenAlex)", "raw": "[litsearch] 선행연구조사 (OpenAlex)"}
+{"event_id": 37, "type": "progress", "step_id": "litsearch", "label": "queries", "raw": "[litsearch] queries"}
+{"event_id": 38, "type": "progress", "step_id": "litsearch", "label": "OpenAlex 검색 (6 queries)", "raw": "[litsearch] OpenAlex 검색 (6 queries)"}
+{"event_id": 39, "type": "progress", "step_id": "litsearch", "label": "survey 합성", "raw": "[litsearch] survey 합성"}
+{"event_id": 40, "type": "progress", "step_id": "litsearch", "label": "찾은 논문 10편", "raw": "[litsearch] 찾은 논문 10편"}
+{"event_id": 41, "type": "progress", "step_id": "requirement", "label": "진단 결과 재사용", "raw": "[requirement] 진단 결과 재사용"}
+{"event_id": 42, "type": "progress", "step_id": "claim_graph", "label": "Claim graph (typed)", "raw": "[claim_graph] Claim graph (typed)"}
+{"event_id": 43, "type": "progress", "step_id": "figure_plan", "label": "Figure 설계 (figure-first)", "raw": "[figure_plan] Figure 설계 (figure-first)"}
+{"event_id": 44, "type": "progress", "step_id": "structure", "label": "섹션 구조·소제목 제안", "raw": "[structure] 섹션 구조·소제목 제안"}
+{"event_id": 45, "type": "progress", "step_id": "write", "label": "method", "raw": "[write] method"}
+{"event_id": 46, "type": "progress", "step_id": "write", "label": "result", "raw": "[write] result"}
+{"event_id": 47, "type": "progress", "step_id": "write", "label": "discussion", "raw": "[write] discussion"}
+{"event_id": 48, "type": "progress", "step_id": "write", "label": "introduction", "raw": "[write] introduction"}
+{"event_id": 49, "type": "progress", "step_id": "write", "label": "conclusion", "raw": "[write] conclusion"}
+{"event_id": 50, "type": "progress", "step_id": "write", "label": "abstract", "raw": "[write] abstract"}
+{"event_id": 51, "type": "progress", "step_id": "validate", "label": "섹션별 논리 검증", "raw": "[validate] 섹션별 논리 검증"}
+{"event_id": 52, "type": "progress", "step_id": "validate", "label": "섹션 6개 병렬 검증", "raw": "[validate] 섹션 6개 병렬 검증"}
+{"event_id": 53, "type": "progress", "step_id": "validate", "label": "validate: conclusion", "raw": "[validate] validate: conclusion"}
+{"event_id": 54, "type": "progress", "step_id": "validate", "label": "validate: abstract", "raw": "[validate] validate: abstract"}
+{"event_id": 55, "type": "progress", "step_id": "validate", "label": "validate: introduction", "raw": "[validate] validate: introduction"}
+{"event_id": 56, "type": "progress", "step_id": "validate", "label": "validate: discussion", "raw": "[validate] validate: discussion"}
+{"event_id": 57, "type": "progress", "step_id": "validate", "label": "validate: result", "raw": "[validate] validate: result"}
+{"event_id": 58, "type": "progress", "step_id": "validate", "label": "validate: method", "raw": "[validate] validate: method"}
+{"event_id": 59, "type": "progress", "step_id": "citation", "label": "누락 citation 채우기 (reference-hunter)", "raw": "[citation] 누락 citation 채우기 (reference-hunter)"}
+{"event_id": 60, "type": "progress", "step_id": "citation", "label": "hunt: kim2010coronary", "raw": "[citation] hunt: kim2010coronary"}
+{"event_id": 61, "type": "progress", "step_id": "citation", "label": "hunt: cite:virmani2005, cite:motoyama2009, cite:burke1", "raw": "[citation] hunt: cite:virmani2005, cite:motoyama2009, cite:burke1"}
+{"event_id": 62, "type": "progress", "step_id": "output", "label": "출력 기록", "raw": "[output] 출력 기록"}

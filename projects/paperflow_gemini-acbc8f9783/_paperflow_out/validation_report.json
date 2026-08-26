@@ -1,0 +1,79 @@
+{
+  "mode": "section",
+  "sections": {
+    "method": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "coverage",
+          "detail": "Claim M5 is not explicitly asserted in paragraph M-11. The paragraph describes the Sobol analysis but does not explicitly state that it was performed on 'trained GPR surrogates using Saltelli quasi-random sampling to estimate first-order (S1) and total-order (ST) indices for individual parameters and grouped factors (Morphology, Material, Hemodynamics)'.",
+          "paragraph": "M-11"
+        },
+        {
+          "type": "grounding",
+          "detail": "The statement '메시 독립성 연구는 병변 영역 대표 요소 크기 0.05, 0.04, 0.03 cm를 비교하여 수행되었으며, 대표 case 0의 수축기 섬유막 최대 주응력은 각각 1.1, 1.0, 1.0 x 10^6 dyn/cm$^2$였다. 0.04 cm와 0.03 cm 사이의 상대 변화가 1% 미만이어서 0.04 cm가 채택되었다.' contains quantitative data (0.05, 0.04, 0.03 cm, 1.1, 1.0, 1.0 x 10^6 dyn/cm$^2$, 1%) that is not cited or supported by any provided evidence (e.g., [DATA_NEEDED:...] or a specific figure/table).",
+          "paragraph": "M-05"
+        }
+      ]
+    },
+    "result": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "grounding",
+          "detail": "The paragraph states 'LAP VI2 모델에서도 섬유막 탄성 계수($E_{fc}$)가 S1 0.5503, ST 0.5751로 가장 지배적이었고, 혈관 벽 탄성 계수($E_{vessel}$) S1 0.1459, ST 0.1957, 수축기 혈압($P_{sys}$) S1 0.0786, ST 0.0815 순으로 나타났다(Table 2).' but this specific data for LAP VI2 individual parameters is not supported by any provided evidence (E5 only covers CP VI2).",
+          "paragraph": "R-03"
+        },
+        {
+          "type": "coverage",
+          "detail": "Claim C1 is not fully covered in paragraph R-03. The claim states 'The relative contributions and interactions of material, hemodynamic, and morphological input groups were compared using group-wise Sobol results for coronary plaque vulnerability indices.' while R-03 focuses on individual parameter contributions.",
+          "paragraph": "R-03"
+        }
+      ]
+    },
+    "discussion": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "coverage",
+          "detail": "Paragraph D-01 is missing claim C1: 'The relative contributions and interactions of material, hemodynamic, and morphological input groups were compared using group-wise Sobol results for coronary plaque vulnerability indices.'",
+          "paragraph": "D-01"
+        },
+        {
+          "type": "grounding",
+          "detail": "Paragraph D-02 states '현재 임상에서는 주로 플라크의 형태학적 특징(예: 섬유막 두께, 지질 핵 크기, 석회화 유무)과 혈류역학적 요인(예: 전단 응력)에 초점을 맞추고 있지만 [cite:motoyama2009] [cite:what_I_need — cite:naghavi2003, cite:virmani2005]', but the citation [cite:what_I_need — cite:naghavi2003, cite:virmani2005] is a placeholder and not a valid citation. It should be replaced with actual citations or [DATA_NEEDED:...] if the information is not available.",
+          "paragraph": "D-02"
+        }
+      ]
+    },
+    "introduction": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "violation",
+          "detail": "Paragraph I-06 includes specific methodological details (cost-effective pulsatile FSI method, definition of VIs, GPR surrogate models) which are explicitly forbidden by the `must_not_claim` rule for this paragraph's purpose, which is to state the objective.",
+          "paragraph": "I-06"
+        },
+        {
+          "type": "grounding",
+          "detail": "The claim '본 연구의 목적은 Sobol GSA를 적용하여 관상동맥 플라크 취약성 지수에 대한 재료 물성, 혈류역학, 그리고 형태학적 인자들의 지배적인 기여도를 식별하고, 이들의 상대적 중요성 및 상호작용을 비교하는 것이다' is not adequately grounded. The citation '[cite:what_I_need — Corti2022]' is a placeholder and does not provide a valid reference for the study's objective.",
+          "paragraph": "I-06"
+        }
+      ]
+    },
+    "conclusion": {
+      "ok": true,
+      "issues": []
+    },
+    "abstract": {
+      "ok": false,
+      "issues": [
+        {
+          "type": "coverage",
+          "detail": "Claim C1 is not explicitly asserted in the section. The section describes the methods and findings but does not explicitly state that 'The relative contributions and interactions of material, hemodynamic, and morphological input groups were compared using group-wise Sobol results for coronary plaque vulnerability indices.' as a main overarching statement.",
+          "paragraph": "A-01"
+        }
+      ]
+    }
+  }
+}

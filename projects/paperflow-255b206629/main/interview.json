@@ -1,0 +1,350 @@
+{
+  "schema_version": "1.0",
+  "graph_revision": 11,
+  "questions": [
+    {
+      "id": "Q-DC1",
+      "target_node_id": "DC1",
+      "kind": "decision",
+      "text": "학습 데이터는 FFT / 100 iteration / oversampling 2 / radius 0.3으로, 실험 데이터는 DFT / 1000 iteration / oversampling 4 / radius 0.1로 재구성하셨습니다. 왜 다릅니까? 학습·실험 조건을 굳이 다르게 두어도 되는 이유가 무엇입니까?",
+      "why_it_matters": "네트워크는 '학습 때 본 인공물'을 지우도록 학습됩니다. 재구성 설정이 다르면 인공물 성격도 달라지는데, 논문은 두 설정을 각각 적어놓기만 하고 대조조차 하지 않습니다. 리뷰어가 파고들 지점이자, 후배가 그대로 따라 하다 틀리기 쉬운 지점입니다.",
+      "risk": "high",
+      "must_capture": [
+        "rationale",
+        "alternatives_rejected",
+        "rejection_reason",
+        "constraint"
+      ],
+      "priority": 360,
+      "created_revision": 1,
+      "followup_of": null
+    },
+    {
+      "id": "Q-PF1",
+      "target_node_id": "PF1",
+      "kind": "pitfall",
+      "text": "수동 보정에서 원자를 추가하거나 제거할 때, '물리적으로 타당하지 않다'를 실제로 무엇을 보고 판단하십니까? 후배가 같은 tomogram을 받으면 같은 8개를 추가하고 같은 9개를 제거할 수 있습니까?",
+      "why_it_matters": "논문 전체에서 유일하게 사람 손이 들어가는 단계인데, 판단 기준이 한 줄도 없습니다. 재현성이 여기서 끊깁니다. 그리고 이건 코드에도 절대 남지 않습니다.",
+      "risk": "high",
+      "must_capture": [
+        "check",
+        "symptom",
+        "failure_mode",
+        "reproducibility_risk"
+      ],
+      "priority": 360,
+      "created_revision": 1,
+      "followup_of": null
+    },
+    {
+      "id": "Q-PF2",
+      "target_node_id": "PF2",
+      "kind": "pitfall",
+      "text": "DL augmentation이 실제로는 없는 원자를 만들어내는(환각) 경우는 언제 생깁니까? 그런 일이 벌어졌다는 걸 무엇을 보고 알아채십니까?",
+      "why_it_matters": "이 방법론에 대한 리뷰어의 첫 번째 공격 지점입니다. 논문은 강건성 검증 결과만 제시하고, 실패 양상 자체는 다루지 않습니다.",
+      "risk": "high",
+      "must_capture": [
+        "check",
+        "symptom",
+        "failure_mode",
+        "reproducibility_risk"
+      ],
+      "priority": 360,
+      "created_revision": 1,
+      "followup_of": null
+    },
+    {
+      "id": "Q-TH1",
+      "target_node_id": "TH1",
+      "kind": "threshold",
+      "text": "B-factor를 5 Å²로 확정하신 근거가 무엇입니까? 이 값이 예를 들어 7 Å²로 어긋나면 결과에서 무엇이 가장 먼저 무너집니까?",
+      "why_it_matters": "B-factor는 학습 데이터와 실험 데이터의 분포를 맞추는 유일한 손잡이입니다. 여기가 어긋나면 네트워크가 실험 tomogram을 학습 분포 밖 입력으로 받게 되는데, 논문에는 '가장 잘 맞았다'는 결과만 있고 어긋났을 때의 증상이 없습니다.",
+      "risk": "high",
+      "must_capture": [
+        "decision_rule",
+        "observable_signal",
+        "transfer_condition"
+      ],
+      "priority": 360,
+      "created_revision": 1,
+      "followup_of": null
+    },
+    {
+      "id": "Q-TH3",
+      "target_node_id": "TH3",
+      "kind": "threshold",
+      "text": "어떤 시료를 만나면 tilt를 21장/±65°에서 27장/±75°로 올리십니까? 판단 기준이 되는 구조적 특징이 무엇입니까?",
+      "why_it_matters": "측정 시간과 빔 데미지가 직결되는 결정입니다. 논문은 decahedral 한 경우에만 '더 높은 품질이 필요했다'고 적었을 뿐, 언제 그 판단을 내리는지는 없습니다.",
+      "risk": "high",
+      "must_capture": [
+        "decision_rule",
+        "observable_signal",
+        "transfer_condition"
+      ],
+      "priority": 360,
+      "created_revision": 1,
+      "followup_of": null
+    },
+    {
+      "id": "Q-TH4",
+      "target_node_id": "TH4",
+      "kind": "threshold",
+      "text": "총 조사량 1.86×10⁵ e/Å²는 어떻게 정하신 값입니까? Pt 나노입자에서 빔 데미지가 시작됐다고 판단하는 신호가 무엇입니까?",
+      "why_it_matters": "조사량은 신호 대 잡음과 시료 손상 사이의 트레이드오프이고, 물질이 바뀌면 반드시 다시 정해야 하는 값입니다. 논문에는 사용한 값만 있고 상한의 근거가 없습니다.",
+      "risk": "high",
+      "must_capture": [
+        "decision_rule",
+        "observable_signal",
+        "transfer_condition"
+      ],
+      "priority": 360,
+      "created_revision": 1,
+      "followup_of": null
+    },
+    {
+      "id": "Q-DC2",
+      "target_node_id": "DC2",
+      "kind": "decision",
+      "text": "구조로 3D-Unet을 고르신 이유가 무엇입니까? 검토했다가 버린 대안이 있었습니까? 있었다면 왜 버리셨습니까?",
+      "why_it_matters": "버려진 대안은 논문에 절대 실리지 않지만, 다음 사람이 같은 길을 다시 걷지 않게 해주는 가장 값비싼 정보입니다.",
+      "risk": "medium",
+      "must_capture": [
+        "rationale",
+        "alternatives_rejected",
+        "rejection_reason",
+        "constraint"
+      ],
+      "priority": 260,
+      "created_revision": 1,
+      "followup_of": null
+    },
+    {
+      "id": "Q-DC3",
+      "target_node_id": "DC3",
+      "kind": "decision",
+      "text": "강건성 검증 대조군으로 하필 amorphous 모델과 B-factor 3.2 Å²를 고르신 이유가 무엇입니까? 3.2라는 숫자는 어디서 나왔습니까?",
+      "why_it_matters": "대조군 선택이 곧 '무엇을 반증하려 했는가'입니다. 그 의도를 알아야 다음 연구에서 같은 검증을 설계할 수 있습니다.",
+      "risk": "medium",
+      "must_capture": [
+        "rationale",
+        "alternatives_rejected",
+        "rejection_reason",
+        "constraint"
+      ],
+      "priority": 260,
+      "created_revision": 1,
+      "followup_of": null
+    },
+    {
+      "id": "Q-PF3",
+      "target_node_id": "PF3",
+      "kind": "pitfall",
+      "text": "atom tracing에서는 1.8 Å, 수동 보정에서는 1.6 Å을 쓰셨습니다. 왜 다릅니까? 이 값을 잘못 잡으면 결과에 어떤 증상이 나타납니까?",
+      "why_it_matters": "두 값이 논문에 나란히 나오는데 다른 이유가 없습니다. 값 하나로 원자를 놓치거나 중복 검출하게 되는 민감한 손잡이입니다.",
+      "risk": "medium",
+      "must_capture": [
+        "check",
+        "symptom",
+        "failure_mode",
+        "reproducibility_risk"
+      ],
+      "priority": 260,
+      "created_revision": 1,
+      "followup_of": null
+    },
+    {
+      "id": "Q-TH2",
+      "target_node_id": "TH2",
+      "kind": "threshold",
+      "text": "학습 볼륨이 5,000개를 넘으면 충분하다고 판단하신 기준은 무엇입니까? validation loss 말고 실제로 무엇을 보고 '이제 됐다'고 결정하십니까?",
+      "why_it_matters": "새 시료·새 물질계로 옮길 때 데이터를 얼마나 만들어야 하는지가 여기서 결정됩니다. 논문의 '충분하다'는 서술만으로는 다른 조건에서 재현할 수 없습니다.",
+      "risk": "medium",
+      "must_capture": [
+        "decision_rule",
+        "observable_signal",
+        "transfer_condition"
+      ],
+      "priority": 260,
+      "created_revision": 1,
+      "followup_of": null
+    }
+  ],
+  "answers": [
+    {
+      "id": "ANS-0001",
+      "question_id": "Q-DC1",
+      "target_node_id": "DC1",
+      "text": "데모 가정: 학습은 빠른 대량 생성, 실험은 최대 정밀도를 우선해 설정을 달리했다. 동일 설정 대안은 계산비용 때문에 제외했고, 두 재구성의 해상도 및 원자 위치 오차가 허용 범위 안인지 확인한다.",
+      "completion": "complete",
+      "captured_fields": {
+        "rationale": "데모 가정: 학습 데이터 생성 속도와 실험 정밀도의 목적이 다름",
+        "alternatives_rejected": "데모 가정: 양쪽에 동일한 고정밀 설정",
+        "rejection_reason": "데모 가정: 학습 볼륨 대량 생성 비용이 과도함",
+        "constraint": "데모 가정: 해상도와 원자 위치 오차가 허용 범위 이내여야 함"
+      },
+      "source": "author",
+      "created_at": "2026-08-14T04:40:50.011076Z",
+      "base_graph_revision": 1,
+      "resulting_graph_revision": 2,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0002",
+      "question_id": "Q-PF1",
+      "target_node_id": "PF1",
+      "text": "데모 가정: 국소 최대값, 최근접 원자 거리, 배위수와 원본 투영 영상의 잔차를 함께 본다. 두 명이 독립 판정하고 불일치는 재검토한다.",
+      "completion": "complete",
+      "captured_fields": {
+        "check": "데모 가정: 국소 최대값·최근접 거리·배위수·투영 잔차 교차 확인",
+        "symptom": "데모 가정: 비정상적으로 짧은 원자 거리 또는 투영 잔차 증가",
+        "failure_mode": "데모 가정: 약한 원자 누락 또는 잡음 피크의 원자 오인",
+        "reproducibility_risk": "데모 가정: 판정자 간 불일치율을 기록하고 합의 절차를 사용"
+      },
+      "source": "author",
+      "created_at": "2026-08-14T04:40:50.016401Z",
+      "base_graph_revision": 2,
+      "resulting_graph_revision": 3,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0003",
+      "question_id": "Q-PF2",
+      "target_node_id": "PF2",
+      "text": "데모 가정: 입력 SNR이 학습 범위를 벗어나거나 missing wedge가 클 때 허위 원자가 생길 수 있다. 원본 투영 재현 오차와 비물리적 배위수를 경보로 사용한다.",
+      "completion": "complete",
+      "captured_fields": {
+        "check": "데모 가정: 원본 투영 재현과 배위수 검사",
+        "symptom": "데모 가정: 재현 오차 증가와 고립된 고강도 피크",
+        "failure_mode": "데모 가정: 학습 분포 밖 입력에서 허위 원자 생성",
+        "reproducibility_risk": "데모 가정: SNR·tilt 범위를 기록하지 않으면 전이 실패를 재현하기 어려움"
+      },
+      "source": "author",
+      "created_at": "2026-08-14T04:40:50.021289Z",
+      "base_graph_revision": 3,
+      "resulting_graph_revision": 4,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0004",
+      "question_id": "Q-TH1",
+      "target_node_id": "TH1",
+      "text": "데모 가정: 후보 B-factor별 FRC와 원자 위치 오차를 함께 비교해 5 Å²를 선택했다. 7 Å²로 벗어나면 표면 원자 검출률과 투영 일치도가 먼저 저하된다.",
+      "completion": "complete",
+      "captured_fields": {
+        "decision_rule": "데모 가정: FRC 최대화와 원자 위치 오차 최소화의 공동 기준",
+        "observable_signal": "데모 가정: 표면 원자 검출률 및 투영 일치도 저하",
+        "transfer_condition": "데모 가정: 새 물질에서는 후보값 스윕으로 재보정"
+      },
+      "source": "author",
+      "created_at": "2026-08-14T04:40:50.026033Z",
+      "base_graph_revision": 4,
+      "resulting_graph_revision": 5,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0005",
+      "question_id": "Q-TH3",
+      "target_node_id": "TH3",
+      "text": "데모 가정: 쌍정 경계나 표면 facet이 기본 각도 범위에서 분리되지 않을 때 27장/±75°로 올린다. 추가 조사량이 손상 한도 안일 때만 적용한다.",
+      "completion": "complete",
+      "captured_fields": {
+        "decision_rule": "데모 가정: 관심 구조가 기본 범위에서 분리되지 않으면 확대",
+        "observable_signal": "데모 가정: 쌍정 경계·facet의 방향성 흐림",
+        "transfer_condition": "데모 가정: 추가 조사량이 시료 손상 한도 이내"
+      },
+      "source": "author",
+      "created_at": "2026-08-14T04:40:50.030265Z",
+      "base_graph_revision": 5,
+      "resulting_graph_revision": 6,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0006",
+      "question_id": "Q-TH4",
+      "target_node_id": "TH4",
+      "text": "데모 가정: 누적 조사량 스윕에서 원자 위치 드리프트와 강도 감쇠가 시작되기 직전을 상한으로 잡았다. 새 재료에서는 동일 스윕을 다시 수행한다.",
+      "completion": "complete",
+      "captured_fields": {
+        "decision_rule": "데모 가정: 드리프트·강도 감쇠 시작 직전의 최대 조사량",
+        "observable_signal": "데모 가정: 원자 위치 드리프트와 고주파 정보 감소",
+        "transfer_condition": "데모 가정: 재료·크기별 조사량 스윕 재수행"
+      },
+      "source": "author",
+      "created_at": "2026-08-14T04:40:50.034373Z",
+      "base_graph_revision": 6,
+      "resulting_graph_revision": 7,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0007",
+      "question_id": "Q-DC2",
+      "target_node_id": "DC2",
+      "text": "데모 가정: 3D 문맥을 보존하면서 제한된 학습 데이터에서도 안정적인 구조라 3D-Unet을 선택했다. 더 깊은 residual 모델은 메모리 비용과 과적합 때문에 제외했다.",
+      "completion": "complete",
+      "captured_fields": {
+        "rationale": "데모 가정: 다중 스케일 3D 문맥과 제한 데이터 안정성",
+        "alternatives_rejected": "데모 가정: 더 깊은 3D residual 네트워크",
+        "rejection_reason": "데모 가정: GPU 메모리 비용과 과적합",
+        "constraint": "데모 가정: 단일 GPU 메모리와 학습 데이터 규모"
+      },
+      "source": "author",
+      "created_at": "2026-08-14T04:40:50.038993Z",
+      "base_graph_revision": 7,
+      "resulting_graph_revision": 8,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0008",
+      "question_id": "Q-DC3",
+      "target_node_id": "DC3",
+      "text": "데모 가정: 비결정질 모델은 결정 규칙의 암기를 반증하고, 3.2 Å²는 독립 보정 데이터의 하한에서 정했다. 무작위 잡음 대조군은 구조적 반증력이 약해 제외했다.",
+      "completion": "complete",
+      "captured_fields": {
+        "rationale": "데모 가정: 결정 구조 암기 여부와 B-factor 변화 강건성 검증",
+        "alternatives_rejected": "데모 가정: 단순 무작위 잡음 대조군",
+        "rejection_reason": "데모 가정: 구조적 일반화에 대한 반증력이 약함",
+        "constraint": "데모 가정: 독립 보정 데이터가 제공하는 B-factor 범위"
+      },
+      "source": "author",
+      "created_at": "2026-08-14T04:40:50.043290Z",
+      "base_graph_revision": 8,
+      "resulting_graph_revision": 9,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0009",
+      "question_id": "Q-PF3",
+      "target_node_id": "PF3",
+      "text": "데모 가정: 1.8 Å은 자동 후보의 중복을 억제하고 1.6 Å은 수동 검토에서 경계 원자 누락을 줄이기 위한 값이다. 너무 작으면 중복, 너무 크면 누락이 증가한다.",
+      "completion": "complete",
+      "captured_fields": {
+        "check": "데모 가정: 최근접 거리 분포와 투영 잔차",
+        "symptom": "데모 가정: 짧은 거리 쌍 증가 또는 표면 원자 공백",
+        "failure_mode": "데모 가정: 작은 값은 중복 검출, 큰 값은 누락",
+        "reproducibility_risk": "데모 가정: 단계별 거리 기준을 구분해 기록해야 함"
+      },
+      "source": "author",
+      "created_at": "2026-08-14T04:40:50.047799Z",
+      "base_graph_revision": 9,
+      "resulting_graph_revision": 10,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0010",
+      "question_id": "Q-TH2",
+      "target_node_id": "TH2",
+      "text": "데모 가정: validation loss뿐 아니라 독립 시뮬레이션의 원자 검출 F1과 위치 오차가 연속 세 구간에서 더 이상 개선되지 않을 때 충분하다고 판정했다.",
+      "completion": "complete",
+      "captured_fields": {
+        "decision_rule": "데모 가정: 독립 검증 F1·위치 오차가 연속 세 구간 정체",
+        "observable_signal": "데모 가정: 추가 데이터에도 F1 향상 0.5% 미만",
+        "transfer_condition": "데모 가정: 새 물질·새 SNR 범위에서는 학습량 곡선을 다시 확인"
+      },
+      "source": "author",
+      "created_at": "2026-08-14T04:40:50.052152Z",
+      "base_graph_revision": 10,
+      "resulting_graph_revision": 11,
+      "supersedes_answer_id": null
+    }
+  ]
+}

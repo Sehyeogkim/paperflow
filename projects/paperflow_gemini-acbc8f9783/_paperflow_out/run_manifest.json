@@ -1,0 +1,232 @@
+{
+  "project_dir": "/Users/jeff/paperflow/projects/paperflow_gemini-acbc8f9783",
+  "sections": [
+    "method",
+    "result",
+    "discussion",
+    "introduction",
+    "conclusion",
+    "abstract"
+  ],
+  "classification": "EXPERT_REVIEW_REQUIRED",
+  "calls": [
+    {
+      "step": "contracts.method",
+      "tier": "reasoning",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 33919,
+      "output_tokens": 1648,
+      "cached_tokens": 0
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 21517,
+      "output_tokens": 2202,
+      "cached_tokens": 0
+    },
+    {
+      "step": "contracts.result",
+      "tier": "reasoning",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 33906,
+      "output_tokens": 556,
+      "cached_tokens": 33708
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 16371,
+      "output_tokens": 1237,
+      "cached_tokens": 0
+    },
+    {
+      "step": "contracts.discussion",
+      "tier": "reasoning",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 33908,
+      "output_tokens": 576,
+      "cached_tokens": 0
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 5735,
+      "output_tokens": 1205,
+      "cached_tokens": 0
+    },
+    {
+      "step": "contracts.introduction",
+      "tier": "reasoning",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 33914,
+      "output_tokens": 1013,
+      "cached_tokens": 0
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 6274,
+      "output_tokens": 983,
+      "cached_tokens": 0
+    },
+    {
+      "step": "contracts.conclusion",
+      "tier": "reasoning",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 33837,
+      "output_tokens": 151,
+      "cached_tokens": 0
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 5268,
+      "output_tokens": 441,
+      "cached_tokens": 0
+    },
+    {
+      "step": "contracts.abstract",
+      "tier": "reasoning",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 33837,
+      "output_tokens": 263,
+      "cached_tokens": 33708
+    },
+    {
+      "step": "writer",
+      "tier": "writer",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 5619,
+      "output_tokens": 371,
+      "cached_tokens": 3064
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 2498,
+      "output_tokens": 23,
+      "cached_tokens": 0
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 2736,
+      "output_tokens": 499,
+      "cached_tokens": 0
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 3992,
+      "output_tokens": 1130,
+      "cached_tokens": 0
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 3722,
+      "output_tokens": 1535,
+      "cached_tokens": 0
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 4268,
+      "output_tokens": 1572,
+      "cached_tokens": 0
+    },
+    {
+      "step": "validator",
+      "tier": "reasoning",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 9912,
+      "output_tokens": 2717,
+      "cached_tokens": 0
+    }
+  ],
+  "totals": {
+    "input_tokens": 291233,
+    "output_tokens": 18122,
+    "cached_tokens": 70480,
+    "cache_hit_rate": 0.242
+  },
+  "by_step": {
+    "contracts.method": {
+      "input": 33919,
+      "output": 1648,
+      "cached": 0,
+      "calls": 1
+    },
+    "writer": {
+      "input": 60784,
+      "output": 6439,
+      "cached": 3064,
+      "calls": 6
+    },
+    "contracts.result": {
+      "input": 33906,
+      "output": 556,
+      "cached": 33708,
+      "calls": 1
+    },
+    "contracts.discussion": {
+      "input": 33908,
+      "output": 576,
+      "cached": 0,
+      "calls": 1
+    },
+    "contracts.introduction": {
+      "input": 33914,
+      "output": 1013,
+      "cached": 0,
+      "calls": 1
+    },
+    "contracts.conclusion": {
+      "input": 33837,
+      "output": 151,
+      "cached": 0,
+      "calls": 1
+    },
+    "contracts.abstract": {
+      "input": 33837,
+      "output": 263,
+      "cached": 33708,
+      "calls": 1
+    },
+    "validator": {
+      "input": 27128,
+      "output": 7476,
+      "cached": 0,
+      "calls": 6
+    }
+  }
+}

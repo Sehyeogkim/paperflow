@@ -1,0 +1,79 @@
+{
+  "study_type": "computational_biomechanics",
+  "classification": "EXPERT_REVIEW_REQUIRED",
+  "present": [
+    "research_objective",
+    "geometry_definition",
+    "governing_equations",
+    "material_properties",
+    "validation",
+    "sensitivity_method"
+  ],
+  "missing": [
+    {
+      "field": "boundary_conditions",
+      "why_it_matters": "Boundary conditions are fundamental for defining the physical problem and ensuring the simulation is well-posed. Without them, the simulation results are uninterpretable.",
+      "reviewer_risk": "high",
+      "question": "Please specify the boundary conditions applied to the FSI model, including inlet/outlet flow conditions (e.g., flow rate, pressure waveform), wall conditions (e.g., no-slip, fixed), and any external loads.",
+      "example": "Inlet: Womersley flow profile with a mean flow rate of 5 mL/s and a pulsatile waveform (e.g., physiological coronary flow). Outlet: Zero-traction outflow. Vessel outer wall: Fixed displacement (zero displacement) or traction-free.",
+      "priority": 3.0
+    },
+    {
+      "field": "sample_definition",
+      "why_it_matters": "A clear definition of the sample space and how samples were generated is critical for understanding the scope and generalizability of the sensitivity analysis.",
+      "reviewer_risk": "high",
+      "question": "Please describe how the input parameter samples for the sensitivity analysis were generated (e.g., sampling method like Latin Hypercube Sampling, number of samples, range of each parameter).",
+      "example": "A total of 500 samples were generated using Latin Hypercube Sampling (LHS) across the defined ranges for each input parameter. The ranges for E_vessel, E_fc, E_lipid, E_cal were [0.5, 2.0] MPa, [1.0, 5.0] MPa, [0.01, 0.1] MPa, and [5.0, 20.0] MPa, respectively.",
+      "priority": 3.0
+    },
+    {
+      "field": "outcome_metric",
+      "why_it_matters": "The outcome metrics (vulnerability indices) are the core outputs of the study. Their precise definition is necessary for understanding what is being analyzed and for reproducibility.",
+      "reviewer_risk": "high",
+      "question": "Please provide a precise definition of the ΔPSS and strength vulnerability indices, including their mathematical formulation and how they are derived from the FSI results.",
+      "example": "ΔPSS is defined as the difference between the peak systolic pressure drop across the stenosis and the mean pressure drop. Strength vulnerability index is defined as the ratio of the maximum principal stress in the fibrous cap to its yield strength, where a value >1 indicates rupture risk.",
+      "priority": 3.0
+    },
+    {
+      "field": "mesh_independence",
+      "why_it_matters": "Given the claims about peak stress and pressure drop (implied by ΔPSS), mesh independence is crucial to ensure that the results are not artifacts of the mesh resolution.",
+      "reviewer_risk": "high",
+      "question": "Please describe the mesh independence study performed, including the number of mesh resolutions tested, the chosen convergence metric (e.g., peak stress, pressure drop), and the final element count for the simulations.",
+      "example": "A mesh independence study was conducted using three different mesh densities (coarse: 500k elements, medium: 1.5M elements, fine: 3M elements). Peak wall shear stress and pressure drop were monitored. A medium mesh with 1.5 million elements was selected as it showed less than 5% deviation in these metrics compared to the fine mesh.",
+      "priority": 3.0
+    },
+    {
+      "field": "numerical_solver",
+      "why_it_matters": "Details of the numerical solver are crucial for reproducibility and assessing the computational methodology's robustness and accuracy. This includes software, versions, and key numerical schemes.",
+      "reviewer_risk": "medium",
+      "question": "Please specify the numerical solver software and version used for the FSI simulations, including details on the time integration scheme, spatial discretization, and any specific FSI coupling algorithms (e.g., partitioned, monolithic, ALE formulation).",
+      "example": "Simulations were performed using ANSYS Fluent (v2023 R1) for CFD and ANSYS Mechanical (v2023 R1) for structural mechanics, coupled via a system coupling module. A second-order implicit scheme was used for time integration, and spatial discretization employed finite volume for fluid and finite element for solid.",
+      "priority": 2.0
+    },
+    {
+      "field": "convergence_criteria",
+      "why_it_matters": "Convergence criteria are essential to demonstrate that the numerical solution has reached a stable and accurate state, ensuring the reliability of the simulation results.",
+      "reviewer_risk": "medium",
+      "question": "What convergence criteria were used for the FSI simulations (e.g., residual norms for fluid/solid solvers, interface displacement/force tolerance, number of iterations)?",
+      "example": "Fluid solver residuals were set to 1e-4 for continuity and momentum. Solid solver convergence was achieved when the energy norm of the displacement increment fell below 1e-5. FSI coupling iterations converged when the relative change in interface displacement was less than 1e-3.",
+      "priority": 2.0
+    },
+    {
+      "field": "timestep_independence",
+      "why_it_matters": "The study involves pulsatile FSI simulations, making timestep independence essential to ensure the accuracy of transient results.",
+      "reviewer_risk": "medium",
+      "question": "Please describe the timestep independence study performed for the pulsatile FSI simulations, including the range of timesteps tested, the chosen convergence metric (e.g., peak flow rate, pressure waveform), and the final timestep size.",
+      "example": "A timestep independence study was performed using timesteps of 0.001s, 0.0005s, and 0.00025s. The peak systolic pressure and flow rate at the outlet were monitored. A timestep of 0.0005s was chosen as it resulted in less than 2% difference in these values compared to the smaller timestep.",
+      "priority": 2.0
+    },
+    {
+      "field": "statistical_analysis",
+      "why_it_matters": "The core message involves comparing relative contributions and interactions between groups of parameters, which necessitates a clear description of the statistical methods used for the Sobol analysis.",
+      "reviewer_risk": "medium",
+      "question": "Please describe the statistical methods used for the Sobol sensitivity analysis, including the specific algorithm or software used to compute the first-order and total-order indices, and how the confidence intervals (if any) were estimated.",
+      "example": "Sobol indices were computed using the SALib Python library (v1.4.5) with the Saltelli sampler for generating input samples. First-order and total-order indices were calculated using the Jansen estimator. Confidence intervals were estimated using bootstrapping with 1000 resamples.",
+      "priority": 2.0
+    }
+  ],
+  "notes": "The core message and outline are clear, and the provided data files directly support the Sobol analysis results. However, several critical methodological details for the FSI simulations and the sensitivity analysis setup are missing, which are essential for reproducibility and reviewer confidence."
+}

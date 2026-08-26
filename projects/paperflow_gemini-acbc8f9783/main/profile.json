@@ -1,0 +1,9 @@
+{
+  "name": "Global Sensitivity Analysis of Coronary Plaque Vulnerability Indices: Dominant Contributions of Material Properties",
+  "field": "Computational biomechanics",
+  "document_type": "journal_paper",
+  "target_journal": "Computers in Biology and Medicine",
+  "objective": "관상동맥 플라크 파열 취약성 지수에서 재료물성·혈류역학·형태 인자군의 상대 기여도를 Sobol 전역 민감도 분석으로 규명하고, 재현 가능한 논리 구조와 논문 초안을 작성한다.",
+  "methods_summary": "저감쇠 및 석회화 플라크 모델의 FSI 결과를 바탕으로 ΔPSS/strength 취약성 지수를 정의하고, GPR 대리모델과 Sobol 1차·전차 지수를 사용한다.",
+  "results_summary": "그룹별 Sobol 결과에서 material, hemodynamic, morphology 입력군의 상대 기여도와 상호작용을 비교한다."
+}

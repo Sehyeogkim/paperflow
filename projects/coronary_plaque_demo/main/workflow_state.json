@@ -1,0 +1,11 @@
+{
+  "stage": "failed",
+  "source_revision": 2,
+  "graph_revision": 0,
+  "confirmed_graph_revision": null,
+  "active_job_id": null,
+  "last_event_id": 7,
+  "blocking_items": [],
+  "artifacts": [],
+  "last_error": "No API key for any provider (tier=reasoning). Add keys to engine/.env (OPENAI_API_KEY / DEEPSEEK_API_KEY / GEMINI_API_KEY / ANTHROPIC_API_KEY)."
+}

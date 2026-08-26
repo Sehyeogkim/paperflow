@@ -1,0 +1,1091 @@
+{
+  "schema_version": "1.0",
+  "revision": 11,
+  "built_from_source_revision": 2,
+  "confirmed_revision": null,
+  "main_contribution": "",
+  "nodes": [
+    {
+      "id": "CL1",
+      "kind": "claim",
+      "text": "원자성(atomicity) 기반 DL augmentation이 missing wedge를 보완해 표면 원자구조를 15 pm 정밀도로 결정한다",
+      "parent_id": null,
+      "subtype": "",
+      "role": "contribution",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Abstract, Discussion",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "논문의 main contribution. Pt 나노입자를 모델 시스템으로, 개별 원자 수준의 3D 표면 구조를 재현성 있게 결정.",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "M1",
+      "kind": "method",
+      "text": "3D-Unet DL augmentation",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Results — Deep learning approach, Fig.1",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "GENFIRE 재구성 뒤에 후처리 단계로 삽입되는 3D-Unet. 인공물(missing wedge, 투영 부족, 노이즈)이 있는 tomogram을 입력으로, 순수한 3D 원자 퍼텐셜을 출력하도록 학습.",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "M2",
+      "kind": "method",
+      "text": "학습데이터 생성 4단계",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Methods — Generation of input and target data sets",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "(1) 무작위 형상 fcc 원자모델 생성 (2) 전자산란인자 푸리에변환으로 원자 퍼텐셜 3D 볼륨 계산 후 Gaussian 컨볼루션 (3) 각 tilt 각도에서 선형투영해 tilt series 생성 + Poisson 노이즈 (4) GENFIRE로 3D tomogram 재구성",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "M3",
+      "kind": "method",
+      "text": "GENFIRE 재구성",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Methods — Image post-processing, GENFIRE reconstruction",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "실험 데이터는 GENFIRE 기반 angular refinement와 spatial re-alignment를 먼저 수행한 뒤 최종 재구성. 이후 upsampling/binning으로 salt-pepper 노이즈 제거, 학습 tomogram과 강도 스케일을 맞추는 scale factor 적용.",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "M4",
+      "kind": "method",
+      "text": "Atom tracing",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Methods — Identification of 3D atomic coordinates",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "3D tomogram의 모든 국소 최대값을 강도 내림차순 정렬 → 각 점 중심 5×5×5 voxel crop → 3D Gaussian fit → 이미 채택된 원자들과의 거리가 모두 1.8 Å보다 클 때만 원자로 채택. 이후 비편향 분류로 실제 Pt 원자와 인공물 구분.",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "M5",
+      "kind": "method",
+      "text": "수동 보정",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Methods — Identification of 3D atomic coordinates",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "물리적으로 타당하지 않은 원자 후보를 사람이 직접 추가/제거. 이 과정에서 최소거리 제약 1.6 Å 사용. 주 네트워크 결과에서 8개 추가, 9개 제거.",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "M6",
+      "kind": "method",
+      "text": "PRISM STEM 검증",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Methods — PRISM STEM simulation for the test data set",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "PRISM 시뮬레이션으로 1,000개 test tilt series 생성 (300 keV, convergence semi-angle 25.1 mrad, detector inner/outer 40/200 mrad, interpolation factor 8, slice thickness 2 Å). 각 tilt 이미지에 B-factor 5 Å² 가우시안 컨볼루션, ±0.3° 무작위 각도 오차 추가. 동일 GENFIRE 파라미터로 재구성해 원자 식별 정확도·정밀도 측정.",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "D1",
+      "kind": "data",
+      "text": "학습셋 12,000개",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Methods",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "train 10,000 / validation 1,000 / test 1,000. 각 볼륨 17,000–27,000 Å³. 논문은 '5,000개 이상이면 일관된 출력을 얻기에 충분'하다고 기술.",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "D2",
+      "kind": "data",
+      "text": "fcc 원자모델 파라미터",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Methods",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "격자상수 3.912 Å, 무작위 방향. 결함 모사를 위해 0–0.5% 원자를 무작위 제거. 각 원자에 ~22 pm RMSD 무작위 변위 적용. (대조군: amorphous 모델은 볼륨 23,000–34,000 Å³, 최소거리 2.0 Å, fcc 대비 99% 밀도)",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "D3",
+      "kind": "data",
+      "text": "B-factor 5 Å²",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Methods — Bfactor optimization",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "입력 데이터: 평균 5 Å², 표준편차 1 Å²의 가우시안 분포에서 샘플링. 타깃 데이터: 4 Å². 강건성 확인용 대조군: 3.2 Å². 5 Å²는 실험 tomogram 국소최대 주변 11×11×11 voxel 평균에 3D Gaussian을 피팅해 결정.",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "D4",
+      "kind": "data",
+      "text": "시뮬레이션 tilt 조건",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Methods",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "tilt series 21장, −65°~+65°. 투영 크기 144×144 px, pixel size 0.357 Å. 스테이지 불안정성 모사를 위해 각 tilt에 최대 ±0.3° 무작위 각도 오차 추가. (예외: decahedral 모델만 27장, −75°~+75°)",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "D5",
+      "kind": "data",
+      "text": "실험 STEM 조건",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Methods — STEM data acquisition",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "Titan cubed G2 60-300 (double Cs corrected), 300 kV, ADF-STEM. Detector inner/outer semi-angle 40/200 mrad, convergence semi-angle 25.1 mrad. tilt 21장, −71.6°~+71.6°. 각 각도마다 1024×1024 이미지 3장, beam current 15.1 pA, pixel size 0.357 Å. 전체 tilt series 총 전자 조사량 1.86×10⁵ e/Å².",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "D6",
+      "kind": "data",
+      "text": "GENFIRE 파라미터 (두 벌)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Methods (2곳)",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "학습데이터 재구성: FFT interpolation, iteration 100, oversampling 2, interpolation radius 0.3.\n실험데이터 최종 재구성: DFT interpolation, iteration 1000, oversampling 4, interpolation radius 0.1.\n두 설정이 서로 다르다는 사실 자체는 논문에 언급되지 않음.",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "D7",
+      "kind": "data",
+      "text": "네트워크 · 학습 설정",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Methods — DL augmentation architecture and training",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "입출력 144×144×144 voxel. Encoder: 3×3×3 conv stride 2 ×2 + 2×2×2 maxpool ×2. Bridge: 3×3×3 conv stride 1. Decoder: 3×3×3 transposed conv stride 2 ×4 + 3×3×3 conv stride 1 ×2. 활성함수 LReLU(계수 0.2), 최종 출력단만 ReLU. Dropout은 1·5·9번째 층. Loss = MSE, Adam optimizer, learning rate 2×10⁻⁴. 총 100 epoch (실제로는 ~50–70 epoch에서 수렴, 과적합 징후 없음).",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "E1",
+      "kind": "evidence",
+      "text": "R-factor 0.192 → 0.174 · 정확도 98.8% · 정밀도 15.1 pm",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Results",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "DL augmentation 후 실험 tilt series와의 R-factor가 0.192에서 0.174로 개선. PRISM 시뮬레이션 검증에서 원자 식별 정확도 98.8%, 원자 좌표 정밀도 15.1 pm.",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "E2",
+      "kind": "evidence",
+      "text": "표면 원자 251개 회복",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Results",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "DL augmentation 전후 원자 구조가 373개(25.4%) 차이. 그중 약 60%(251개)가 표면 원자 — missing wedge로 인한 강도 저하 때문에 식별되지 않던 표면 원자들이 추적됨.",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    },
+    {
+      "id": "TH1",
+      "kind": "threshold",
+      "text": "B-factor를 5 Å²로 정한 근거",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "user_statement",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-TH1:ANS-0004",
+          "quote": "데모 가정: 후보 B-factor별 FRC와 원자 위치 오차를 함께 비교해 5 Å²를 선택했다. 7 Å²로 벗어나면 표면 원자 검출률과 투영 일치도가 먼저 저하된다.\n- decision_rule: 데모 가정: FRC 최대화와 원자 위치 오차 최소화의 공동 기준\n- observable_signal: 데모 가정: 표면 원자 검출률 및 투영 일치도 저하\n- transfer_condition: 데모 가정: 새 물질에서는 후보값 스윕으로 재보정",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0004",
+            "question_id": "Q-TH1"
+          }
+        }
+      ],
+      "knowledge_status": "author_attested",
+      "layer": "tacit",
+      "detail": "데모 가정: 후보 B-factor별 FRC와 원자 위치 오차를 함께 비교해 5 Å²를 선택했다. 7 Å²로 벗어나면 표면 원자 검출률과 투영 일치도가 먼저 저하된다.\n- decision_rule: 데모 가정: FRC 최대화와 원자 위치 오차 최소화의 공동 기준\n- observable_signal: 데모 가정: 표면 원자 검출률 및 투영 일치도 저하\n- transfer_condition: 데모 가정: 새 물질에서는 후보값 스윕으로 재보정",
+      "question": "B-factor를 5 Å²로 확정하신 근거가 무엇입니까? 이 값이 예를 들어 7 Å²로 어긋나면 결과에서 무엇이 가장 먼저 무너집니까?",
+      "why_it_matters": "B-factor는 학습 데이터와 실험 데이터의 분포를 맞추는 유일한 손잡이입니다. 여기가 어긋나면 네트워크가 실험 tomogram을 학습 분포 밖 입력으로 받게 되는데, 논문에는 '가장 잘 맞았다'는 결과만 있고 어긋났을 때의 증상이 없습니다.",
+      "must_capture": [],
+      "risk": "high",
+      "last_modified_revision": 5
+    },
+    {
+      "id": "TH2",
+      "kind": "threshold",
+      "text": "학습 볼륨 '5,000개면 충분'의 판정 기준",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "user_statement",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-TH2:ANS-0010",
+          "quote": "데모 가정: validation loss뿐 아니라 독립 시뮬레이션의 원자 검출 F1과 위치 오차가 연속 세 구간에서 더 이상 개선되지 않을 때 충분하다고 판정했다.\n- decision_rule: 데모 가정: 독립 검증 F1·위치 오차가 연속 세 구간 정체\n- observable_signal: 데모 가정: 추가 데이터에도 F1 향상 0.5% 미만\n- transfer_condition: 데모 가정: 새 물질·새 SNR 범위에서는 학습량 곡선을 다시 확인",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0010",
+            "question_id": "Q-TH2"
+          }
+        }
+      ],
+      "knowledge_status": "author_attested",
+      "layer": "tacit",
+      "detail": "데모 가정: validation loss뿐 아니라 독립 시뮬레이션의 원자 검출 F1과 위치 오차가 연속 세 구간에서 더 이상 개선되지 않을 때 충분하다고 판정했다.\n- decision_rule: 데모 가정: 독립 검증 F1·위치 오차가 연속 세 구간 정체\n- observable_signal: 데모 가정: 추가 데이터에도 F1 향상 0.5% 미만\n- transfer_condition: 데모 가정: 새 물질·새 SNR 범위에서는 학습량 곡선을 다시 확인",
+      "question": "학습 볼륨이 5,000개를 넘으면 충분하다고 판단하신 기준은 무엇입니까? validation loss 말고 실제로 무엇을 보고 '이제 됐다'고 결정하십니까?",
+      "why_it_matters": "새 시료·새 물질계로 옮길 때 데이터를 얼마나 만들어야 하는지가 여기서 결정됩니다. 논문의 '충분하다'는 서술만으로는 다른 조건에서 재현할 수 없습니다.",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 11
+    },
+    {
+      "id": "TH3",
+      "kind": "threshold",
+      "text": "tilt 21장 → 27장으로 올려야 하는 시점",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "user_statement",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-TH3:ANS-0005",
+          "quote": "데모 가정: 쌍정 경계나 표면 facet이 기본 각도 범위에서 분리되지 않을 때 27장/±75°로 올린다. 추가 조사량이 손상 한도 안일 때만 적용한다.\n- decision_rule: 데모 가정: 관심 구조가 기본 범위에서 분리되지 않으면 확대\n- observable_signal: 데모 가정: 쌍정 경계·facet의 방향성 흐림\n- transfer_condition: 데모 가정: 추가 조사량이 시료 손상 한도 이내",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0005",
+            "question_id": "Q-TH3"
+          }
+        }
+      ],
+      "knowledge_status": "author_attested",
+      "layer": "tacit",
+      "detail": "데모 가정: 쌍정 경계나 표면 facet이 기본 각도 범위에서 분리되지 않을 때 27장/±75°로 올린다. 추가 조사량이 손상 한도 안일 때만 적용한다.\n- decision_rule: 데모 가정: 관심 구조가 기본 범위에서 분리되지 않으면 확대\n- observable_signal: 데모 가정: 쌍정 경계·facet의 방향성 흐림\n- transfer_condition: 데모 가정: 추가 조사량이 시료 손상 한도 이내",
+      "question": "어떤 시료를 만나면 tilt를 21장/±65°에서 27장/±75°로 올리십니까? 판단 기준이 되는 구조적 특징이 무엇입니까?",
+      "why_it_matters": "측정 시간과 빔 데미지가 직결되는 결정입니다. 논문은 decahedral 한 경우에만 '더 높은 품질이 필요했다'고 적었을 뿐, 언제 그 판단을 내리는지는 없습니다.",
+      "must_capture": [],
+      "risk": "high",
+      "last_modified_revision": 6
+    },
+    {
+      "id": "TH4",
+      "kind": "threshold",
+      "text": "전자 조사량 1.86×10⁵ e/Å²의 상한 근거",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "user_statement",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-TH4:ANS-0006",
+          "quote": "데모 가정: 누적 조사량 스윕에서 원자 위치 드리프트와 강도 감쇠가 시작되기 직전을 상한으로 잡았다. 새 재료에서는 동일 스윕을 다시 수행한다.\n- decision_rule: 데모 가정: 드리프트·강도 감쇠 시작 직전의 최대 조사량\n- observable_signal: 데모 가정: 원자 위치 드리프트와 고주파 정보 감소\n- transfer_condition: 데모 가정: 재료·크기별 조사량 스윕 재수행",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0006",
+            "question_id": "Q-TH4"
+          }
+        }
+      ],
+      "knowledge_status": "author_attested",
+      "layer": "tacit",
+      "detail": "데모 가정: 누적 조사량 스윕에서 원자 위치 드리프트와 강도 감쇠가 시작되기 직전을 상한으로 잡았다. 새 재료에서는 동일 스윕을 다시 수행한다.\n- decision_rule: 데모 가정: 드리프트·강도 감쇠 시작 직전의 최대 조사량\n- observable_signal: 데모 가정: 원자 위치 드리프트와 고주파 정보 감소\n- transfer_condition: 데모 가정: 재료·크기별 조사량 스윕 재수행",
+      "question": "총 조사량 1.86×10⁵ e/Å²는 어떻게 정하신 값입니까? Pt 나노입자에서 빔 데미지가 시작됐다고 판단하는 신호가 무엇입니까?",
+      "why_it_matters": "조사량은 신호 대 잡음과 시료 손상 사이의 트레이드오프이고, 물질이 바뀌면 반드시 다시 정해야 하는 값입니다. 논문에는 사용한 값만 있고 상한의 근거가 없습니다.",
+      "must_capture": [],
+      "risk": "high",
+      "last_modified_revision": 7
+    },
+    {
+      "id": "PF1",
+      "kind": "pitfall",
+      "text": "'물리적으로 타당하지 않은' 원자의 판단 기준",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "user_statement",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-PF1:ANS-0002",
+          "quote": "데모 가정: 국소 최대값, 최근접 원자 거리, 배위수와 원본 투영 영상의 잔차를 함께 본다. 두 명이 독립 판정하고 불일치는 재검토한다.\n- check: 데모 가정: 국소 최대값·최근접 거리·배위수·투영 잔차 교차 확인\n- symptom: 데모 가정: 비정상적으로 짧은 원자 거리 또는 투영 잔차 증가\n- failure_mode: 데모 가정: 약한 원자 누락 또는 잡음 피크의 원자 오인\n- reproducibility_risk: 데모 가정: 판정자 간 불일치율을 기록하고 합의 절차를 사용",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0002",
+            "question_id": "Q-PF1"
+          }
+        }
+      ],
+      "knowledge_status": "author_attested",
+      "layer": "tacit",
+      "detail": "데모 가정: 국소 최대값, 최근접 원자 거리, 배위수와 원본 투영 영상의 잔차를 함께 본다. 두 명이 독립 판정하고 불일치는 재검토한다.\n- check: 데모 가정: 국소 최대값·최근접 거리·배위수·투영 잔차 교차 확인\n- symptom: 데모 가정: 비정상적으로 짧은 원자 거리 또는 투영 잔차 증가\n- failure_mode: 데모 가정: 약한 원자 누락 또는 잡음 피크의 원자 오인\n- reproducibility_risk: 데모 가정: 판정자 간 불일치율을 기록하고 합의 절차를 사용",
+      "question": "수동 보정에서 원자를 추가하거나 제거할 때, '물리적으로 타당하지 않다'를 실제로 무엇을 보고 판단하십니까? 후배가 같은 tomogram을 받으면 같은 8개를 추가하고 같은 9개를 제거할 수 있습니까?",
+      "why_it_matters": "논문 전체에서 유일하게 사람 손이 들어가는 단계인데, 판단 기준이 한 줄도 없습니다. 재현성이 여기서 끊깁니다. 그리고 이건 코드에도 절대 남지 않습니다.",
+      "must_capture": [],
+      "risk": "high",
+      "last_modified_revision": 3
+    },
+    {
+      "id": "PF2",
+      "kind": "pitfall",
+      "text": "DL이 없는 원자를 만들어내는 조건",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "user_statement",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-PF2:ANS-0003",
+          "quote": "데모 가정: 입력 SNR이 학습 범위를 벗어나거나 missing wedge가 클 때 허위 원자가 생길 수 있다. 원본 투영 재현 오차와 비물리적 배위수를 경보로 사용한다.\n- check: 데모 가정: 원본 투영 재현과 배위수 검사\n- symptom: 데모 가정: 재현 오차 증가와 고립된 고강도 피크\n- failure_mode: 데모 가정: 학습 분포 밖 입력에서 허위 원자 생성\n- reproducibility_risk: 데모 가정: SNR·tilt 범위를 기록하지 않으면 전이 실패를 재현하기 어려움",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0003",
+            "question_id": "Q-PF2"
+          }
+        }
+      ],
+      "knowledge_status": "author_attested",
+      "layer": "tacit",
+      "detail": "데모 가정: 입력 SNR이 학습 범위를 벗어나거나 missing wedge가 클 때 허위 원자가 생길 수 있다. 원본 투영 재현 오차와 비물리적 배위수를 경보로 사용한다.\n- check: 데모 가정: 원본 투영 재현과 배위수 검사\n- symptom: 데모 가정: 재현 오차 증가와 고립된 고강도 피크\n- failure_mode: 데모 가정: 학습 분포 밖 입력에서 허위 원자 생성\n- reproducibility_risk: 데모 가정: SNR·tilt 범위를 기록하지 않으면 전이 실패를 재현하기 어려움",
+      "question": "DL augmentation이 실제로는 없는 원자를 만들어내는(환각) 경우는 언제 생깁니까? 그런 일이 벌어졌다는 걸 무엇을 보고 알아채십니까?",
+      "why_it_matters": "이 방법론에 대한 리뷰어의 첫 번째 공격 지점입니다. 논문은 강건성 검증 결과만 제시하고, 실패 양상 자체는 다루지 않습니다.",
+      "must_capture": [],
+      "risk": "high",
+      "last_modified_revision": 4
+    },
+    {
+      "id": "PF3",
+      "kind": "pitfall",
+      "text": "최소거리 1.8 Å vs 1.6 Å",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "user_statement",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-PF3:ANS-0009",
+          "quote": "데모 가정: 1.8 Å은 자동 후보의 중복을 억제하고 1.6 Å은 수동 검토에서 경계 원자 누락을 줄이기 위한 값이다. 너무 작으면 중복, 너무 크면 누락이 증가한다.\n- check: 데모 가정: 최근접 거리 분포와 투영 잔차\n- symptom: 데모 가정: 짧은 거리 쌍 증가 또는 표면 원자 공백\n- failure_mode: 데모 가정: 작은 값은 중복 검출, 큰 값은 누락\n- reproducibility_risk: 데모 가정: 단계별 거리 기준을 구분해 기록해야 함",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0009",
+            "question_id": "Q-PF3"
+          }
+        }
+      ],
+      "knowledge_status": "author_attested",
+      "layer": "tacit",
+      "detail": "데모 가정: 1.8 Å은 자동 후보의 중복을 억제하고 1.6 Å은 수동 검토에서 경계 원자 누락을 줄이기 위한 값이다. 너무 작으면 중복, 너무 크면 누락이 증가한다.\n- check: 데모 가정: 최근접 거리 분포와 투영 잔차\n- symptom: 데모 가정: 짧은 거리 쌍 증가 또는 표면 원자 공백\n- failure_mode: 데모 가정: 작은 값은 중복 검출, 큰 값은 누락\n- reproducibility_risk: 데모 가정: 단계별 거리 기준을 구분해 기록해야 함",
+      "question": "atom tracing에서는 1.8 Å, 수동 보정에서는 1.6 Å을 쓰셨습니다. 왜 다릅니까? 이 값을 잘못 잡으면 결과에 어떤 증상이 나타납니까?",
+      "why_it_matters": "두 값이 논문에 나란히 나오는데 다른 이유가 없습니다. 값 하나로 원자를 놓치거나 중복 검출하게 되는 민감한 손잡이입니다.",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 10
+    },
+    {
+      "id": "DC1",
+      "kind": "decision",
+      "text": "학습용·실험용 GENFIRE 파라미터가 다른 이유",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "user_statement",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-DC1:ANS-0001",
+          "quote": "데모 가정: 학습은 빠른 대량 생성, 실험은 최대 정밀도를 우선해 설정을 달리했다. 동일 설정 대안은 계산비용 때문에 제외했고, 두 재구성의 해상도 및 원자 위치 오차가 허용 범위 안인지 확인한다.\n- rationale: 데모 가정: 학습 데이터 생성 속도와 실험 정밀도의 목적이 다름\n- alternatives_rejected: 데모 가정: 양쪽에 동일한 고정밀 설정\n- rejection_reason: 데모 가정: 학습 볼륨 대량 생성 비용이 과도함\n- constraint: 데모 가정: 해상도와 원자 위치 오차가 허용 범위 이내여야 함",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0001",
+            "question_id": "Q-DC1"
+          }
+        }
+      ],
+      "knowledge_status": "author_attested",
+      "layer": "tacit",
+      "detail": "데모 가정: 학습은 빠른 대량 생성, 실험은 최대 정밀도를 우선해 설정을 달리했다. 동일 설정 대안은 계산비용 때문에 제외했고, 두 재구성의 해상도 및 원자 위치 오차가 허용 범위 안인지 확인한다.\n- rationale: 데모 가정: 학습 데이터 생성 속도와 실험 정밀도의 목적이 다름\n- alternatives_rejected: 데모 가정: 양쪽에 동일한 고정밀 설정\n- rejection_reason: 데모 가정: 학습 볼륨 대량 생성 비용이 과도함\n- constraint: 데모 가정: 해상도와 원자 위치 오차가 허용 범위 이내여야 함",
+      "question": "학습 데이터는 FFT / 100 iteration / oversampling 2 / radius 0.3으로, 실험 데이터는 DFT / 1000 iteration / oversampling 4 / radius 0.1로 재구성하셨습니다. 왜 다릅니까? 학습·실험 조건을 굳이 다르게 두어도 되는 이유가 무엇입니까?",
+      "why_it_matters": "네트워크는 '학습 때 본 인공물'을 지우도록 학습됩니다. 재구성 설정이 다르면 인공물 성격도 달라지는데, 논문은 두 설정을 각각 적어놓기만 하고 대조조차 하지 않습니다. 리뷰어가 파고들 지점이자, 후배가 그대로 따라 하다 틀리기 쉬운 지점입니다.",
+      "must_capture": [],
+      "risk": "high",
+      "last_modified_revision": 2
+    },
+    {
+      "id": "DC2",
+      "kind": "decision",
+      "text": "왜 3D-Unet인가",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "user_statement",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-DC2:ANS-0007",
+          "quote": "데모 가정: 3D 문맥을 보존하면서 제한된 학습 데이터에서도 안정적인 구조라 3D-Unet을 선택했다. 더 깊은 residual 모델은 메모리 비용과 과적합 때문에 제외했다.\n- rationale: 데모 가정: 다중 스케일 3D 문맥과 제한 데이터 안정성\n- alternatives_rejected: 데모 가정: 더 깊은 3D residual 네트워크\n- rejection_reason: 데모 가정: GPU 메모리 비용과 과적합\n- constraint: 데모 가정: 단일 GPU 메모리와 학습 데이터 규모",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0007",
+            "question_id": "Q-DC2"
+          }
+        }
+      ],
+      "knowledge_status": "author_attested",
+      "layer": "tacit",
+      "detail": "데모 가정: 3D 문맥을 보존하면서 제한된 학습 데이터에서도 안정적인 구조라 3D-Unet을 선택했다. 더 깊은 residual 모델은 메모리 비용과 과적합 때문에 제외했다.\n- rationale: 데모 가정: 다중 스케일 3D 문맥과 제한 데이터 안정성\n- alternatives_rejected: 데모 가정: 더 깊은 3D residual 네트워크\n- rejection_reason: 데모 가정: GPU 메모리 비용과 과적합\n- constraint: 데모 가정: 단일 GPU 메모리와 학습 데이터 규모",
+      "question": "구조로 3D-Unet을 고르신 이유가 무엇입니까? 검토했다가 버린 대안이 있었습니까? 있었다면 왜 버리셨습니까?",
+      "why_it_matters": "버려진 대안은 논문에 절대 실리지 않지만, 다음 사람이 같은 길을 다시 걷지 않게 해주는 가장 값비싼 정보입니다.",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 8
+    },
+    {
+      "id": "DC3",
+      "kind": "decision",
+      "text": "대조군을 amorphous·3.2 Å²로 고른 이유",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "user_statement",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-DC3:ANS-0008",
+          "quote": "데모 가정: 비결정질 모델은 결정 규칙의 암기를 반증하고, 3.2 Å²는 독립 보정 데이터의 하한에서 정했다. 무작위 잡음 대조군은 구조적 반증력이 약해 제외했다.\n- rationale: 데모 가정: 결정 구조 암기 여부와 B-factor 변화 강건성 검증\n- alternatives_rejected: 데모 가정: 단순 무작위 잡음 대조군\n- rejection_reason: 데모 가정: 구조적 일반화에 대한 반증력이 약함\n- constraint: 데모 가정: 독립 보정 데이터가 제공하는 B-factor 범위",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0008",
+            "question_id": "Q-DC3"
+          }
+        }
+      ],
+      "knowledge_status": "author_attested",
+      "layer": "tacit",
+      "detail": "데모 가정: 비결정질 모델은 결정 규칙의 암기를 반증하고, 3.2 Å²는 독립 보정 데이터의 하한에서 정했다. 무작위 잡음 대조군은 구조적 반증력이 약해 제외했다.\n- rationale: 데모 가정: 결정 구조 암기 여부와 B-factor 변화 강건성 검증\n- alternatives_rejected: 데모 가정: 단순 무작위 잡음 대조군\n- rejection_reason: 데모 가정: 구조적 일반화에 대한 반증력이 약함\n- constraint: 데모 가정: 독립 보정 데이터가 제공하는 B-factor 범위",
+      "question": "강건성 검증 대조군으로 하필 amorphous 모델과 B-factor 3.2 Å²를 고르신 이유가 무엇입니까? 3.2라는 숫자는 어디서 나왔습니까?",
+      "why_it_matters": "대조군 선택이 곧 '무엇을 반증하려 했는가'입니다. 그 의도를 알아야 다음 연구에서 같은 검증을 설계할 수 있습니다.",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 9
+    },
+    {
+      "id": "K1",
+      "kind": "data",
+      "text": "공개 코드 · 데이터 (mdail.kaist.ac.kr)",
+      "parent_id": null,
+      "subtype": "",
+      "role": "",
+      "represented_as": null,
+      "section": null,
+      "provenance": "paper:Code availability + 실제 페이지 확인",
+      "provenance_refs": [],
+      "knowledge_status": "unverified",
+      "layer": "documented",
+      "detail": "논문의 Code/Data availability에 명시된 공개처. denoised tilt series와 tilt 각도(MATLAB), DL 전/후 3D 재구성 볼륨, 최종 Pt 원자좌표, 신경망·데이터생성 소스(GitHub 링크), 그리고 다른 원자모델·B-factor로 학습한 변형 결과까지 전부 공개돼 있음. 확인 결과: 데이터와 코드는 다 있으나 파라미터를 왜 그 값으로 골랐는지에 대한 설명은 없음.",
+      "question": "",
+      "why_it_matters": "",
+      "must_capture": [],
+      "risk": "medium",
+      "last_modified_revision": 0
+    }
+  ],
+  "edges": [
+    {
+      "id": "L1",
+      "src": "M2",
+      "dst": "M1",
+      "rel": "feeds",
+      "rationale": "시뮬레이션 학습셋이 네트워크 학습 입력이 된다",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L2",
+      "src": "M3",
+      "dst": "M1",
+      "rel": "feeds",
+      "rationale": "GENFIRE 재구성 tomogram이 augmentation의 입력",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L3",
+      "src": "M1",
+      "dst": "M4",
+      "rel": "feeds",
+      "rationale": "augmented tomogram에서 원자 좌표를 추출",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L4",
+      "src": "M4",
+      "dst": "M5",
+      "rel": "feeds",
+      "rationale": "자동 추적 결과를 사람이 보정",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L5",
+      "src": "M2",
+      "dst": "D2",
+      "rel": "uses",
+      "rationale": "fcc 원자모델 파라미터로 볼륨 생성",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L6",
+      "src": "M2",
+      "dst": "D3",
+      "rel": "uses",
+      "rationale": "B-factor로 가우시안 브로드닝 결정",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L7",
+      "src": "M2",
+      "dst": "D4",
+      "rel": "uses",
+      "rationale": "tilt 조건대로 투영 생성",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L8",
+      "src": "M2",
+      "dst": "D1",
+      "rel": "produces",
+      "rationale": "4단계 절차의 산출물이 학습셋",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L9",
+      "src": "M3",
+      "dst": "D5",
+      "rel": "uses",
+      "rationale": "실험 tilt series를 재구성",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L10",
+      "src": "M3",
+      "dst": "D6",
+      "rel": "uses",
+      "rationale": "재구성 파라미터",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L11",
+      "src": "M1",
+      "dst": "D7",
+      "rel": "uses",
+      "rationale": "네트워크 구조·학습 하이퍼파라미터",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L12",
+      "src": "M1",
+      "dst": "D1",
+      "rel": "uses",
+      "rationale": "학습셋 10,000개로 학습",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L13",
+      "src": "M5",
+      "dst": "E1",
+      "rel": "produces",
+      "rationale": "최종 원자모델로 R-factor·정밀도 산출",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L14",
+      "src": "M5",
+      "dst": "E2",
+      "rel": "produces",
+      "rationale": "DL 전후 원자 비교",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L15",
+      "src": "M6",
+      "dst": "E1",
+      "rel": "produces",
+      "rationale": "PRISM 시뮬레이션이 정확도·정밀도를 검증",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L16",
+      "src": "E1",
+      "dst": "CL1",
+      "rel": "supports",
+      "rationale": "정량 지표가 핵심 주장을 뒷받침",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L17",
+      "src": "E2",
+      "dst": "CL1",
+      "rel": "supports",
+      "rationale": "표면 원자 회복이 주장의 핵심 근거",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    },
+    {
+      "id": "L18",
+      "src": "TH1",
+      "dst": "D3",
+      "rel": "governs",
+      "rationale": "B-factor 값 선택을 지배하는 규칙",
+      "grounding_status": "grounded",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-TH1:ANS-0004",
+          "quote": "데모 가정: 후보 B-factor별 FRC와 원자 위치 오차를 함께 비교해 5 Å²를 선택했다. 7 Å²로 벗어나면 표면 원자 검출률과 투영 일치도가 먼저 저하된다.\n- decision_rule: 데모 가정: FRC 최대화와 원자 위치 오차 최소화의 공동 기준\n- observable_signal: 데모 가정: 표면 원자 검출률 및 투영 일치도 저하\n- transfer_condition: 데모 가정: 새 물질에서는 후보값 스윕으로 재보정",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0004",
+            "question_id": "Q-TH1"
+          }
+        }
+      ],
+      "last_modified_revision": 5
+    },
+    {
+      "id": "L19",
+      "src": "TH2",
+      "dst": "D1",
+      "rel": "governs",
+      "rationale": "학습셋 규모 결정을 지배하는 규칙",
+      "grounding_status": "grounded",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-TH2:ANS-0010",
+          "quote": "데모 가정: validation loss뿐 아니라 독립 시뮬레이션의 원자 검출 F1과 위치 오차가 연속 세 구간에서 더 이상 개선되지 않을 때 충분하다고 판정했다.\n- decision_rule: 데모 가정: 독립 검증 F1·위치 오차가 연속 세 구간 정체\n- observable_signal: 데모 가정: 추가 데이터에도 F1 향상 0.5% 미만\n- transfer_condition: 데모 가정: 새 물질·새 SNR 범위에서는 학습량 곡선을 다시 확인",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0010",
+            "question_id": "Q-TH2"
+          }
+        }
+      ],
+      "last_modified_revision": 11
+    },
+    {
+      "id": "L20",
+      "src": "TH3",
+      "dst": "D4",
+      "rel": "governs",
+      "rationale": "tilt 개수·범위 결정을 지배하는 규칙",
+      "grounding_status": "grounded",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-TH3:ANS-0005",
+          "quote": "데모 가정: 쌍정 경계나 표면 facet이 기본 각도 범위에서 분리되지 않을 때 27장/±75°로 올린다. 추가 조사량이 손상 한도 안일 때만 적용한다.\n- decision_rule: 데모 가정: 관심 구조가 기본 범위에서 분리되지 않으면 확대\n- observable_signal: 데모 가정: 쌍정 경계·facet의 방향성 흐림\n- transfer_condition: 데모 가정: 추가 조사량이 시료 손상 한도 이내",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0005",
+            "question_id": "Q-TH3"
+          }
+        }
+      ],
+      "last_modified_revision": 6
+    },
+    {
+      "id": "L21",
+      "src": "TH4",
+      "dst": "D5",
+      "rel": "governs",
+      "rationale": "조사량 상한을 지배하는 규칙",
+      "grounding_status": "grounded",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-TH4:ANS-0006",
+          "quote": "데모 가정: 누적 조사량 스윕에서 원자 위치 드리프트와 강도 감쇠가 시작되기 직전을 상한으로 잡았다. 새 재료에서는 동일 스윕을 다시 수행한다.\n- decision_rule: 데모 가정: 드리프트·강도 감쇠 시작 직전의 최대 조사량\n- observable_signal: 데모 가정: 원자 위치 드리프트와 고주파 정보 감소\n- transfer_condition: 데모 가정: 재료·크기별 조사량 스윕 재수행",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0006",
+            "question_id": "Q-TH4"
+          }
+        }
+      ],
+      "last_modified_revision": 7
+    },
+    {
+      "id": "L22",
+      "src": "PF1",
+      "dst": "M5",
+      "rel": "warns_about",
+      "rationale": "수동 보정의 재현성 위험",
+      "grounding_status": "grounded",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-PF1:ANS-0002",
+          "quote": "데모 가정: 국소 최대값, 최근접 원자 거리, 배위수와 원본 투영 영상의 잔차를 함께 본다. 두 명이 독립 판정하고 불일치는 재검토한다.\n- check: 데모 가정: 국소 최대값·최근접 거리·배위수·투영 잔차 교차 확인\n- symptom: 데모 가정: 비정상적으로 짧은 원자 거리 또는 투영 잔차 증가\n- failure_mode: 데모 가정: 약한 원자 누락 또는 잡음 피크의 원자 오인\n- reproducibility_risk: 데모 가정: 판정자 간 불일치율을 기록하고 합의 절차를 사용",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0002",
+            "question_id": "Q-PF1"
+          }
+        }
+      ],
+      "last_modified_revision": 3
+    },
+    {
+      "id": "L23",
+      "src": "PF2",
+      "dst": "M1",
+      "rel": "warns_about",
+      "rationale": "DL augmentation의 환각 위험",
+      "grounding_status": "grounded",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-PF2:ANS-0003",
+          "quote": "데모 가정: 입력 SNR이 학습 범위를 벗어나거나 missing wedge가 클 때 허위 원자가 생길 수 있다. 원본 투영 재현 오차와 비물리적 배위수를 경보로 사용한다.\n- check: 데모 가정: 원본 투영 재현과 배위수 검사\n- symptom: 데모 가정: 재현 오차 증가와 고립된 고강도 피크\n- failure_mode: 데모 가정: 학습 분포 밖 입력에서 허위 원자 생성\n- reproducibility_risk: 데모 가정: SNR·tilt 범위를 기록하지 않으면 전이 실패를 재현하기 어려움",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0003",
+            "question_id": "Q-PF2"
+          }
+        }
+      ],
+      "last_modified_revision": 4
+    },
+    {
+      "id": "L24",
+      "src": "PF3",
+      "dst": "M4",
+      "rel": "warns_about",
+      "rationale": "최소거리 임계값 오설정 위험",
+      "grounding_status": "grounded",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-PF3:ANS-0009",
+          "quote": "데모 가정: 1.8 Å은 자동 후보의 중복을 억제하고 1.6 Å은 수동 검토에서 경계 원자 누락을 줄이기 위한 값이다. 너무 작으면 중복, 너무 크면 누락이 증가한다.\n- check: 데모 가정: 최근접 거리 분포와 투영 잔차\n- symptom: 데모 가정: 짧은 거리 쌍 증가 또는 표면 원자 공백\n- failure_mode: 데모 가정: 작은 값은 중복 검출, 큰 값은 누락\n- reproducibility_risk: 데모 가정: 단계별 거리 기준을 구분해 기록해야 함",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0009",
+            "question_id": "Q-PF3"
+          }
+        }
+      ],
+      "last_modified_revision": 10
+    },
+    {
+      "id": "L25",
+      "src": "DC1",
+      "dst": "D6",
+      "rel": "governs",
+      "rationale": "두 벌의 재구성 설정을 가른 판단",
+      "grounding_status": "grounded",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-DC1:ANS-0001",
+          "quote": "데모 가정: 학습은 빠른 대량 생성, 실험은 최대 정밀도를 우선해 설정을 달리했다. 동일 설정 대안은 계산비용 때문에 제외했고, 두 재구성의 해상도 및 원자 위치 오차가 허용 범위 안인지 확인한다.\n- rationale: 데모 가정: 학습 데이터 생성 속도와 실험 정밀도의 목적이 다름\n- alternatives_rejected: 데모 가정: 양쪽에 동일한 고정밀 설정\n- rejection_reason: 데모 가정: 학습 볼륨 대량 생성 비용이 과도함\n- constraint: 데모 가정: 해상도와 원자 위치 오차가 허용 범위 이내여야 함",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0001",
+            "question_id": "Q-DC1"
+          }
+        }
+      ],
+      "last_modified_revision": 2
+    },
+    {
+      "id": "L26",
+      "src": "DC2",
+      "dst": "M1",
+      "rel": "governs",
+      "rationale": "아키텍처 선택 판단",
+      "grounding_status": "grounded",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-DC2:ANS-0007",
+          "quote": "데모 가정: 3D 문맥을 보존하면서 제한된 학습 데이터에서도 안정적인 구조라 3D-Unet을 선택했다. 더 깊은 residual 모델은 메모리 비용과 과적합 때문에 제외했다.\n- rationale: 데모 가정: 다중 스케일 3D 문맥과 제한 데이터 안정성\n- alternatives_rejected: 데모 가정: 더 깊은 3D residual 네트워크\n- rejection_reason: 데모 가정: GPU 메모리 비용과 과적합\n- constraint: 데모 가정: 단일 GPU 메모리와 학습 데이터 규모",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0007",
+            "question_id": "Q-DC2"
+          }
+        }
+      ],
+      "last_modified_revision": 8
+    },
+    {
+      "id": "L27",
+      "src": "DC3",
+      "dst": "D3",
+      "rel": "governs",
+      "rationale": "대조군 설계 판단",
+      "grounding_status": "grounded",
+      "provenance_refs": [
+        {
+          "source_type": "author",
+          "asset_id": "",
+          "locator": "interview:Q-DC3:ANS-0008",
+          "quote": "데모 가정: 비결정질 모델은 결정 규칙의 암기를 반증하고, 3.2 Å²는 독립 보정 데이터의 하한에서 정했다. 무작위 잡음 대조군은 구조적 반증력이 약해 제외했다.\n- rationale: 데모 가정: 결정 구조 암기 여부와 B-factor 변화 강건성 검증\n- alternatives_rejected: 데모 가정: 단순 무작위 잡음 대조군\n- rejection_reason: 데모 가정: 구조적 일반화에 대한 반증력이 약함\n- constraint: 데모 가정: 독립 보정 데이터가 제공하는 B-factor 범위",
+          "quote_hash": "",
+          "verification_status": "author_attested",
+          "metadata": {
+            "answer_id": "ANS-0008",
+            "question_id": "Q-DC3"
+          }
+        }
+      ],
+      "last_modified_revision": 9
+    },
+    {
+      "id": "L28",
+      "src": "M1",
+      "dst": "K1",
+      "rel": "uses",
+      "rationale": "신경망·데이터생성 소스가 이 저장소에 공개돼 있음",
+      "grounding_status": "grounded",
+      "provenance_refs": [],
+      "last_modified_revision": 0
+    }
+  ]
+}

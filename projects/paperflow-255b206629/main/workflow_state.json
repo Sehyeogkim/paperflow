@@ -1,0 +1,11 @@
+{
+  "stage": "graph_review",
+  "source_revision": 2,
+  "graph_revision": 11,
+  "confirmed_graph_revision": null,
+  "active_job_id": null,
+  "last_event_id": 0,
+  "blocking_items": [],
+  "artifacts": [],
+  "last_error": null
+}

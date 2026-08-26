@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "blocking_count": 0,
+  "findings": [],
+  "metrics": {
+    "sections": 6,
+    "materialized_tables": 3,
+    "materialized_figures": 0,
+    "citations": 11,
+    "bibliography_entries": 11
+  }
+}

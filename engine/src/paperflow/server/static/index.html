@@ -789,6 +789,7 @@ $("openBtn").onclick = () => {
 };
 
 async function runDiagnose() {
+  legacyInterviewMode = true;
   setWorkflowStage("extract", "입력 진단");
   showStatus("추출 중…", "자동 추출", "자료에서 주장·근거·누락 정보를 찾고 있습니다.");
   markStep0Done();
@@ -846,7 +847,11 @@ function listenToJob(url, kind) {
       else await loadQuestionsOrPlan(m);
     } else if (["done","job_completed"].includes(type)) {
       es.close(); activeEventSource = null;
-      if (kind === "generate") { paperReady = true; $("paperBtn").style.display = ""; markAllDone(); showPaper(m); }
+      if (kind === "generate") {
+        paperReady = true; $("paperBtn").style.display = "";
+        if (m.quality_ready !== false) markAllDone();
+        showPaper(m);
+      }
       else await loadQuestionsOrPlan(m);
     } else if (["error","job_failed"].includes(type)) {
       es.close(); activeEventSource = null;
@@ -1070,10 +1075,18 @@ async function startPlan() {
     <p class="muted">claim graph · 섹션 구조 · figure를 설계하고 있어요. 우측 트리 참고.</p>
     <div class="log" id="logbox"></div></div>`;
   const res = await postJSON("/api/projects/plan", {project_dir: projectDir});
+  if (res.error === "requirement_report_missing") {
+    await runDiagnose();
+    return;
+  }
   if (res.error === "unanswered_questions") {
     legacyInterviewMode = true;
-    showStatus("미응답", "계획 차단", `미응답 질문 ${(res.pending||[]).length}개. 답하거나 '모름'을 눌러주세요.`, "warn");
-    await loadQuestionsOrPlan({questions:(res.pending||[]).map((id,i)=>({id,field:id,question:`${id} 항목을 확인해 주세요.`,risk:"high"}))}); return;
+    showStatus("필수 정보 누락", "계획 차단", `고위험 필수 질문 ${(res.questions||[]).length || (res.pending||[]).length}개에 구체적인 답변이 필요합니다. '모름/나중에'는 초안에 명시되지만 완성 문서 생성은 차단됩니다.`, "warn");
+    const questions = (res.questions && res.questions.length)
+      ? res.questions
+      : (res.pending||[]).map(id=>({id,field:id,question:`${id} 항목을 확인해 주세요.`,risk:"high"}));
+    renderQuestions({...res, questions});
+    return;
   }
   if (res.error) { showExtractionError(res.error, res.retryable !== false); return; }
   renderPipeline(res.steps);
@@ -1250,8 +1263,9 @@ async function startGenerate() {
     <div class="log" id="logbox"></div></div>`;
   const res = await postJSON("/api/projects/generate", {project_dir: projectDir});
   if (res.error === "unanswered_questions") {  // hard gate (server-side backstop)
-    showStatus("미응답", "생성 차단", `아직 응답하지 않은 질문 ${ (res.pending||[]).length }개가 있어요. 모두 답하거나 '모름'을 눌러주세요.`, "warn");
-    loadQuestionsOrPlan();
+    legacyInterviewMode = true;
+    showStatus("필수 정보 누락", "생성 차단", `고위험 정보 ${ (res.pending||[]).length }개가 미해결 상태입니다. 실제 방법·검증 정보를 입력해야 완성 문서를 생성합니다.`, "warn");
+    renderQuestions(res.questions && res.questions.length ? res : {questions:(res.pending||[]).map(id=>({id,field:id,question:`${id} 항목을 확인해 주세요.`,risk:"high"}))});
     return;
   }
   if (res.error) {
@@ -1283,7 +1297,9 @@ async function showPaper(meta) {
   }
   const outputNames = new Set(meta.outputs.map(x => x.name));
   const hasPdf = meta.pdf_ready === true || outputNames.has("paper.pdf");
-  setWorkflowStage("output", "완료");
+  const qualityReady = meta.quality_ready !== false;
+  const qualityFindings = (meta.quality && meta.quality.findings) || [];
+  setWorkflowStage("output", qualityReady ? "완료" : "정보 보완 필요");
   const toks = (meta.input_tokens != null) ? `<div class="toks">
       <span>input <b>${meta.input_tokens.toLocaleString()}</b></span>
       <span>output <b>${meta.output_tokens.toLocaleString()}</b></span>
@@ -1291,9 +1307,13 @@ async function showPaper(meta) {
     </div>` : "";
   const cls = meta.classification ? `<span class="muted">분류 <b>${meta.classification}</b></span>` : "";
   const log = logLines.length ? `<details class="logdetails"><summary>실행 로그</summary><div class="log">${esc(logLines.join("\n"))}</div></details>` : "";
+  const qualityNotice = qualityReady ? "" : `<div class="card"><h3>정보 보완이 필요한 초안 <span class="badge warn">${qualityFindings.length} blocking</span></h3>
+    <p class="muted">파일은 검토할 수 있지만 완성 원고로 판정하지 않았습니다. 누락된 근거·인용·표/그림 참조 또는 내부 메타데이터를 해결한 뒤 다시 생성하세요.</p>
+    ${qualityFindings.length ? `<ul>${qualityFindings.slice(0,8).map(f=>`<li>${esc(f.message || f.code)}</li>`).join("")}</ul>` : ""}</div>`;
   $("canvas").innerHTML = `<div class="stage-kicker"><span class="num">6</span><span class="name">문서 생성·다운로드</span></div>
     <h2 class="title serif">${esc(JF.title || wtitleText())}</h2>
     <div class="paperbar">
+      <span class="badge ${qualityReady ? "ok" : "warn"}">${qualityReady ? "완성 판정" : "검토용 초안"}</span>
       <span class="badge ${hasPdf ? "ok" : ""}">${hasPdf ? "PDF" : "LaTeX"}</span>${cls}
       <span class="muted">Graph revision <b>${esc(String(graphRevision || "saved"))}</b></span>
     </div>
@@ -1303,7 +1323,7 @@ async function showPaper(meta) {
       <a class="output-card" href="${downloadUrl('graph')}" target="_blank">논리 그래프<small>주장·근거 JSON</small></a>
       <a class="output-card" href="${downloadUrl('audit')}" target="_blank">검증 보고서<small>논리 감사 JSON</small></a>
       <a class="output-card" href="${downloadUrl('zip')}" target="_blank">전체 ZIP<small>그래프·근거·원고 묶음</small></a>
-    </div>${toks}
+    </div>${qualityNotice}${toks}
     ${hasPdf ? `<iframe class="paperframe" src="${paperUrl('pdf')}#view=FitH" title="generated paper"></iframe>` : `<div class="card"><p class="muted">이 배포 환경에는 LaTeX PDF 엔진이 없어 편집 가능한 .tex와 전체 ZIP을 제공합니다.</p></div>`}
     ${log}<div class="stage-actions"><button class="send secondary" id="returnGraph">그래프로 돌아가기</button></div>`;
   $("returnGraph").onclick = loadGraphOrPlan;

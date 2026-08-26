@@ -40,7 +40,7 @@ class LLMError(RuntimeError):
 
 
 def call(tier: str, system: str, user: str, *, step: str = "", max_tokens: int = 4096,
-         temperature: float = 0.3) -> LLMResult:
+         temperature: float = 0.3, json_mode: bool = False) -> LLMResult:
     ref = config.pick_available(tier)
     key = config.api_key(ref.provider)
     if not key:
@@ -54,7 +54,8 @@ def call(tier: str, system: str, user: str, *, step: str = "", max_tokens: int =
     elif ref.provider == "anthropic":
         res = _anthropic(ref.model, key, system, user, max_tokens, temperature)
     elif ref.provider == "gemini":
-        res = _gemini(ref.model, key, system, user, max_tokens, temperature)
+        res = _gemini(ref.model, key, system, user, max_tokens, temperature,
+                      json_mode=json_mode)
     else:
         raise LLMError(f"Unsupported provider: {ref.provider}")
 
@@ -74,7 +75,8 @@ def call_json(tier: str, system: str, user: str, *, step: str = "", max_tokens: 
     sys2 = system + "\n\nReturn ONLY a single valid JSON object. No prose, no markdown fences."
     last: Exception | None = None
     for _ in range(2):
-        r = call(tier, sys2, user, step=step, max_tokens=max_tokens, temperature=0.1)
+        r = call(tier, sys2, user, step=step, max_tokens=max_tokens, temperature=0.1,
+                 json_mode=True)
         try:
             return _extract_json(r.text)
         except LLMError as e:
@@ -134,15 +136,30 @@ def _anthropic(model, key, system, user, max_tokens, temperature) -> LLMResult:
                      cached_tokens=cache_read)
 
 
-def _gemini(model, key, system, user, max_tokens, temperature) -> LLMResult:
+def _gemini(model, key, system, user, max_tokens, temperature, *, json_mode=False) -> LLMResult:
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+    # Gemini 2.5 uses token budgets while Gemini 3 uses named thinking levels.
+    # PaperFlow defaults to the cheapest deterministic setting for both families so
+    # internal reasoning does not consume the manuscript/JSON output budget.
+    thinking_config = (
+        {"thinkingBudget": 0}
+        if model.startswith("gemini-2.5-")
+        else {"thinkingLevel": "minimal"}
+    )
+    generation_config = {
+        "maxOutputTokens": max_tokens,
+        "temperature": temperature,
+        "thinkingConfig": thinking_config,
+    }
+    if json_mode:
+        generation_config["responseMimeType"] = "application/json"
     with httpx.Client(timeout=_TIMEOUT) as c:
         r = c.post(
             url, params={"key": key},
             json={
                 "systemInstruction": {"parts": [{"text": system}]},
                 "contents": [{"role": "user", "parts": [{"text": user}]}],
-                "generationConfig": {"maxOutputTokens": max_tokens, "temperature": temperature},
+                "generationConfig": generation_config,
             },
         )
     _raise_for(r, "gemini")

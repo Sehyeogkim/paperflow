@@ -1,9 +1,11 @@
 import base64
+import json
 
 from fastapi.testclient import TestClient
 
 from paperflow.server import app as server_app
 from paperflow.server import storage
+from paperflow.schemas.requirement import CompletionClass, MissingItem, RequirementReport
 
 
 def _client(tmp_path, monkeypatch):
@@ -35,6 +37,84 @@ def test_create_profile_and_reopen(tmp_path, monkeypatch):
 
     state = client.get("/api/projects/state", params={"project_id": project_id}).json()
     assert state["workflow"]["stage"] == "sources_ready"
+
+
+def _requirement_report(project, *, classification=CompletionClass.MISSING_CRITICAL_INFORMATION):
+    report = RequirementReport(
+        study_type="computational_biomechanics",
+        classification=classification,
+        missing=[MissingItem(
+            field="validation", reviewer_risk="high",
+            question="How was the model validated?", example="Report R² and RMSE.",
+        )],
+    )
+    (project / "main" / "requirement_report.json").write_text(
+        report.model_dump_json(indent=2))
+
+
+def test_plan_fails_closed_without_requirement_report(tmp_path, monkeypatch):
+    client = _client(tmp_path, monkeypatch)
+    project_id = client.post("/api/projects/create", json={"name": "No Report"}).json()[
+        "project_id"]
+
+    payload = client.post("/api/projects/plan", json={"project_id": project_id}).json()
+
+    assert payload == {
+        "allowed": False,
+        "classification": None,
+        "questions": [],
+        "pending": [],
+        "error": "requirement_report_missing",
+    }
+
+
+def test_unknown_high_risk_answer_blocks_confirm_and_generate(tmp_path, monkeypatch):
+    client = _client(tmp_path, monkeypatch)
+    project_id = client.post("/api/projects/create", json={"name": "Blocked"}).json()[
+        "project_id"]
+    project = tmp_path / project_id
+    _requirement_report(project)
+    saved = client.post("/api/projects/answers", json={
+        "project_id": project_id, "answers": {"validation": "(모름 — 나중에 보완)"},
+    }).json()
+    assert saved["preflight"]["allowed"] is False
+    assert saved["preflight"]["classification"] == "MISSING_CRITICAL_INFORMATION"
+    assert saved["preflight"]["questions"][0]["field"] == "validation"
+
+    graph = {
+        "revision": 1,
+        "built_from_source_revision": 0,
+        "nodes": [{"id": "C1", "kind": "claim", "text": "Claim"}],
+        "edges": [],
+    }
+    storage.write_json(project / "main" / "knowledge_graph.json", graph)
+    storage.update_workflow(project, graph_revision=1)
+    confirmed = client.post("/api/projects/graph/confirm", json={
+        "project_id": project_id, "graph_revision": 1,
+    }).json()
+    assert confirmed["error"] == "unanswered_questions"
+    assert confirmed["classification"] == "MISSING_CRITICAL_INFORMATION"
+    assert confirmed["questions"][0]["field"] == "validation"
+
+    (project / "main" / "_plan.json").write_text(json.dumps({"sections": ["method"]}))
+    generated = client.post("/api/projects/generate", json={"project_id": project_id}).json()
+    assert generated["error"] == "unanswered_questions"
+    assert generated["classification"] == "MISSING_CRITICAL_INFORMATION"
+    assert generated["questions"][0]["field"] == "validation"
+
+
+def test_insufficient_evidence_plan_error_is_structured(tmp_path, monkeypatch):
+    client = _client(tmp_path, monkeypatch)
+    project_id = client.post("/api/projects/create", json={"name": "No Evidence"}).json()[
+        "project_id"]
+    _requirement_report(
+        tmp_path / project_id, classification=CompletionClass.INSUFFICIENT_EVIDENCE)
+
+    payload = client.post("/api/projects/plan", json={"project_id": project_id}).json()
+
+    assert payload["error"] == "insufficient_evidence"
+    assert payload["classification"] == "INSUFFICIENT_EVIDENCE"
+    assert payload["questions"][0]["field"] == "validation"
 
 
 def test_upload_is_renamed_and_constrained_to_project(tmp_path, monkeypatch):

@@ -77,6 +77,29 @@ def test_compatibility_validate_returns_clean_dict_and_unique_generated_edge_ids
     assert [edge["id"] for edge in clean["edges"]] == ["L1", "L2"]
 
 
+def test_structured_provenance_locator_is_preserved_as_json_text():
+    raw = {
+        "nodes": [{
+            "id": "D1", "kind": "data", "text": "Sobol table",
+            "provenance_refs": [{
+                "source_type": "file", "asset_id": "sobol-lap-vi2",
+                "locator": {"relative_path": "data/sobol.csv", "row_start": 1, "row_end": 4},
+            }],
+        }],
+        "edges": [],
+    }
+
+    result = validate_strict(raw)
+    graph = ClaimGraph.model_validate(result.graph)
+
+    assert result.ok is True
+    assert json.loads(graph.node("D1").provenance_refs[0].locator) == {
+        "relative_path": "data/sobol.csv", "row_start": 1, "row_end": 4,
+    }
+    assert [issue.code for issue in result.issues] == ["provenance_ref.locator_encoded"]
+    assert isinstance(raw["nodes"][0]["provenance_refs"][0]["locator"], dict)
+
+
 def test_demo_tacit_graph_is_preserved_by_unified_schema():
     path = Path(__file__).resolve().parents[2] / "demo_interview" / "graph.json"
     raw = json.loads(path.read_text())

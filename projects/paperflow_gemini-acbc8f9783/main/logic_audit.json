@@ -1,0 +1,13 @@
+{
+  "graph_revision": 16,
+  "ok": true,
+  "findings": [],
+  "metrics": {
+    "nodes": 58,
+    "edges": 53,
+    "main_claims": 1,
+    "tacit_slots": 11,
+    "unresolved_tacit": 0,
+    "blocking_findings": 0
+  }
+}

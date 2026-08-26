@@ -1,0 +1,9 @@
+{
+  "name": "PaperFlow 자율 데모",
+  "field": "Computational biomechanics",
+  "document_type": "journal_paper",
+  "target_journal": "",
+  "objective": "관상동맥 플라크 시뮬레이션 결과에서 어떤 입력군이 파열 위험 지표를 지배하는지 확인하고, 그 결론을 재현 가능한 논리 구조와 논문 초안으로 정리한다.",
+  "methods_summary": "Sobol 전역 민감도 분석으로 입력군별 기여도를 비교한다.",
+  "results_summary": "LAP VI2 결과에서 재료·혈류역학·형상 입력군의 상대 기여도를 평가한다."
+}

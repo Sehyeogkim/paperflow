@@ -23,7 +23,7 @@ from ..ingest import journal_guideline
 from ..ingest.parse_inputs import ingest
 from ..llm import client
 from ..output.write_fs import write_all
-from ..requirement import detect
+from ..requirement import detect, preflight
 from ..schemas.claim import ClaimGraph, SectionContract
 from ..schemas.eval import RunManifest
 from ..schemas.project_state import FoundRef, ProjectState
@@ -91,6 +91,9 @@ def plan(project_dir: str, sections: list[str], progress=lambda m: None,
          litsearch: bool = True) -> dict:
     """Phase 1 — build the structure the user confirms: claim graph + figures + per-section
     contracts (with inferred subheadings). Persists main/_plan.json and returns it."""
+    # Planning must follow an explicit diagnose/answer pass.  Keeping this check in
+    # the flow (not only the API) closes CLI and internal-call bypasses.
+    preflight.require_allowed(project_dir)
     sections = _order(sections)
     manifest = RunManifest(project_dir=project_dir, sections=sections)
     client.set_manifest(manifest)
@@ -147,6 +150,9 @@ def generate_from_plan(project_dir: str, out_dir: Path, progress=lambda m: None)
     pl = load_plan(project_dir)
     if pl is None:
         raise RuntimeError("no confirmed plan — run plan() first")
+    # Re-check at execution time: answers/report may have changed after the plan was
+    # saved, and callers can invoke this function without going through FastAPI.
+    preflight.require_allowed(project_dir)
     sections = pl["sections"]
     manifest = RunManifest(project_dir=project_dir, sections=sections)
     client.set_manifest(manifest)

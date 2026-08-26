@@ -1,0 +1,391 @@
+{
+  "schema_version": "1.0",
+  "graph_revision": 16,
+  "questions": [
+    {
+      "id": "Q-PI1",
+      "target_node_id": "PI1",
+      "kind": "pitfall",
+      "text": "What specific checks were performed to identify mesh quality issues or non-physical input combinations that led to simulation non-convergence? What were the common symptoms of these failures (e.g., solver errors, extreme deformations, negative volumes)? What failure modes were most prevalent, and what reproducibility risks do they pose for future studies or different parameter ranges?",
+      "why_it_matters": "Simulation non-convergence can lead to a reduction in the effective sample size, potentially biasing the surrogate model training and subsequent sensitivity analysis. Understanding the causes and symptoms of these failures is crucial for improving the robustness of the data generation pipeline and for ensuring the reliability of the overall framework.",
+      "risk": "high",
+      "must_capture": [
+        "check",
+        "symptom",
+        "failure_mode",
+        "reproducibility_risk"
+      ],
+      "priority": 320,
+      "created_revision": 5,
+      "followup_of": null
+    },
+    {
+      "id": "Q-DE3",
+      "target_node_id": "DE3",
+      "kind": "decision",
+      "text": "What specific criteria or thresholds for deformation range (e.g., maximum strain percentage) were used to justify the linear elastic and isotropic assumption? What were the alternatives considered (e.g., hyperelastic, anisotropic models), and what were the rejection reasons (e.g., increased computational cost, lack of material data, complexity)? What constraints (e.g., available computational resources, experimental data for material properties) influenced this choice?",
+      "why_it_matters": "Material constitutive models significantly influence stress calculations. While linear elasticity simplifies the problem, real arterial tissues are non-linear and anisotropic. Understanding the justification for this simplification is crucial for evaluating the accuracy and applicability of the simulation results, especially when considering the small deformation range.",
+      "risk": "high",
+      "must_capture": [
+        "rationale",
+        "alternatives_rejected",
+        "rejection_reason",
+        "constraint"
+      ],
+      "priority": 310,
+      "created_revision": 5,
+      "followup_of": null
+    },
+    {
+      "id": "Q-DE9",
+      "target_node_id": "DE9",
+      "kind": "decision",
+      "text": "What was the rationale for selecting the specific values for $E_{FC}$ (12, 16, 20 MPa) and $t_{FC}$ (40, 80, 120, 160, 200 µm) in these 15 additional simulations? Were other ranges or increments considered, and what were the rejection reasons? What specific physiological or clinical considerations guided these choices, especially given the discrepancy in $E_{FC}$ units/values noted in the document?",
+      "why_it_matters": "The design of these additional simulations is critical for validating the VIs against a key clinical feature. The choice of parameter ranges and values can influence whether a VI candidate passes or fails this criterion. Understanding the rationale for these specific choices, and addressing any noted discrepancies, is important for the robustness of the VI selection process.",
+      "risk": "high",
+      "must_capture": [
+        "rationale",
+        "alternatives_rejected",
+        "rejection_reason",
+        "constraint"
+      ],
+      "priority": 310,
+      "created_revision": 5,
+      "followup_of": null
+    },
+    {
+      "id": "Q-TH1",
+      "target_node_id": "TH1",
+      "kind": "threshold",
+      "text": "What is the specific decision rule for determining mesh independence based on relative change in maximum principal stress? What observable signal (e.g., a specific percentage threshold) indicates that further mesh refinement is not necessary? What transfer condition would lead to a different mesh size being chosen?",
+      "why_it_matters": "The choice of mesh size directly impacts the accuracy and computational cost of the simulations. An insufficiently fine mesh can lead to inaccurate stress calculations, while an overly fine mesh can lead to prohibitive computational expense. Understanding the decision rule for mesh independence is crucial for reproducibility and for applying this method to new geometries or conditions.",
+      "risk": "high",
+      "must_capture": [
+        "decision_rule",
+        "observable_signal",
+        "transfer_condition"
+      ],
+      "priority": 310,
+      "created_revision": 5,
+      "followup_of": null
+    },
+    {
+      "id": "Q-DE1",
+      "target_node_id": "DE1",
+      "kind": "decision",
+      "text": "What was the specific threshold for the total-order index (ST) that defined a 'negligible' contribution, leading to the exclusion of these parameters from the final sensitivity analysis? What were the specific alternatives considered for handling these parameters (e.g., including them, using a different analysis method)? What was the rejection reason for these alternatives?",
+      "why_it_matters": "Excluding parameters from sensitivity analysis can significantly simplify the model and reduce computational burden. However, the rationale for exclusion must be robust to ensure that no important factors are overlooked. Understanding the threshold for 'negligible' contribution is critical for reproducibility and for justifying the scope of the sensitivity analysis.",
+      "risk": "medium",
+      "must_capture": [
+        "rationale",
+        "alternatives_rejected",
+        "rejection_reason",
+        "constraint"
+      ],
+      "priority": 210,
+      "created_revision": 5,
+      "followup_of": null
+    },
+    {
+      "id": "Q-DE2",
+      "target_node_id": "DE2",
+      "kind": "decision",
+      "text": "What were the specific alternatives considered for handling fibrous cap thickness (e.g., including it as a variable, using a different fixed value)? What were the rejection reasons for these alternatives, particularly regarding the trade-off between simplifying the input space and potentially limiting the generalizability of the results? What constraints (e.g., computational, data availability) influenced this decision?",
+      "why_it_matters": "Fixing a parameter like fibrous cap thickness, which is known to be a critical factor in plaque vulnerability, can simplify the model but also potentially limit the scope and generalizability of the findings. Understanding the rationale and rejected alternatives is important for assessing the model's limitations and for future research directions.",
+      "risk": "medium",
+      "must_capture": [
+        "rationale",
+        "alternatives_rejected",
+        "rejection_reason",
+        "constraint"
+      ],
+      "priority": 210,
+      "created_revision": 5,
+      "followup_of": null
+    },
+    {
+      "id": "Q-DE5",
+      "target_node_id": "DE5",
+      "kind": "decision",
+      "text": "What was the rationale for choosing a 0.01 cm radius for sphere-averaging? Were other radii or averaging methods considered, and what were the rejection reasons? What observable signal (e.g., noise level, convergence of averaged stress) indicated that this specific radius was appropriate?",
+      "why_it_matters": "Spatial averaging can smooth out numerical noise but also potentially obscure localized stress concentrations. The choice of averaging radius is critical for accurately representing the peak stress relevant to plaque rupture. Understanding the rationale for this specific radius is important for reproducibility and for evaluating the impact of this processing step on the results.",
+      "risk": "medium",
+      "must_capture": [
+        "rationale",
+        "alternatives_rejected",
+        "rejection_reason",
+        "constraint"
+      ],
+      "priority": 210,
+      "created_revision": 5,
+      "followup_of": null
+    },
+    {
+      "id": "Q-DE6",
+      "target_node_id": "DE6",
+      "kind": "decision",
+      "text": "What was the rationale for fixing the coronary microvascular resistance ratio ($R_p/R_d$) at 1/10? Were other ratios or more complex Windkessel models considered, and what were the rejection reasons? What observable signal (e.g., physiological accuracy, fitting error) indicated that this specific ratio was appropriate for the given pressure waveforms?",
+      "why_it_matters": "The Windkessel model and its parameters significantly influence the hemodynamic boundary conditions, which in turn affect the calculated stress fields. Fixing a parameter like the resistance ratio without clear justification can impact the physiological realism of the simulations. Understanding this decision is crucial for evaluating the model's accuracy and generalizability.",
+      "risk": "medium",
+      "must_capture": [
+        "rationale",
+        "alternatives_rejected",
+        "rejection_reason",
+        "constraint"
+      ],
+      "priority": 210,
+      "created_revision": 5,
+      "followup_of": null
+    },
+    {
+      "id": "Q-DE7",
+      "target_node_id": "DE7",
+      "kind": "decision",
+      "text": "What was the rationale for choosing a time-variable elastance model for $P_{myo}(t)$ over other potential models (e.g., simpler fixed pressure, more complex physiological models)? What were the alternatives considered, and what were the rejection reasons (e.g., computational cost, data availability, physiological accuracy)? What specific physiological phenomenon or observable signal (e.g., flow pattern, pressure drop) indicated that this model was appropriate for reproducing diastole-dominant coronary flow?",
+      "why_it_matters": "The accurate representation of myocardial pressure is critical for simulating coronary hemodynamics, especially the diastole-dominant flow. The choice of model for $P_{myo}(t)$ can significantly impact the boundary conditions and subsequent stress calculations. Understanding the rationale and rejected alternatives is important for assessing the physiological fidelity of the simulations.",
+      "risk": "medium",
+      "must_capture": [
+        "rationale",
+        "alternatives_rejected",
+        "rejection_reason",
+        "constraint"
+      ],
+      "priority": 210,
+      "created_revision": 5,
+      "followup_of": null
+    },
+    {
+      "id": "Q-DE8",
+      "target_node_id": "DE8",
+      "kind": "decision",
+      "text": "What was the rationale for choosing $N=1,024$ as the base sample size? Were other sample sizes considered, and what were the rejection reasons (e.g., computational cost, convergence of Sobol indices)? What observable signal (e.g., stability of index estimates, computational budget) indicated that this sample size was sufficient for accurate estimation of Sobol indices?",
+      "why_it_matters": "The sample size for Sobol analysis directly impacts the accuracy and reliability of the sensitivity indices. An insufficient sample size can lead to noisy or inaccurate estimates, while an overly large one can be computationally prohibitive even for surrogate models. Understanding the justification for this choice is crucial for the validity and reproducibility of the sensitivity analysis results.",
+      "risk": "medium",
+      "must_capture": [
+        "rationale",
+        "alternatives_rejected",
+        "rejection_reason",
+        "constraint"
+      ],
+      "priority": 210,
+      "created_revision": 5,
+      "followup_of": null
+    },
+    {
+      "id": "Q-DE4",
+      "target_node_id": "DE4",
+      "kind": "decision",
+      "text": "What were the specific alternatives considered for correlation analysis (e.g., Pearson correlation)? What were the rejection reasons for these alternatives, particularly in cases where the relationship might be linear? Was there a specific threshold for the Spearman correlation coefficient (e.g., absolute value) that was considered 'significant' for determining the sign, or was any non-zero value sufficient?",
+      "why_it_matters": "The choice of correlation metric can influence the interpretation of relationships between plaque features and VIs. While Spearman is robust to non-linearity, understanding if Pearson was considered and why it was rejected provides insight into the assumptions about the data's underlying relationships. This impacts the confidence in the VI selection process.",
+      "risk": "low",
+      "must_capture": [
+        "rationale",
+        "alternatives_rejected",
+        "rejection_reason",
+        "constraint"
+      ],
+      "priority": 110,
+      "created_revision": 5,
+      "followup_of": null
+    }
+  ],
+  "answers": [
+    {
+      "id": "ANS-0001",
+      "question_id": "Q-PI1",
+      "target_node_id": "PI1",
+      "text": "The retained records do not preserve a trustworthy case-level failure log, so this manuscript does not assign specific causes such as negative volumes or extreme deformation. The reproducible checks available are input-constraint screening, mesh generation success, solver completion, and finite/physical output checks. Failed cases are reported only as excluded cases, and their exclusion is treated as a possible selection-bias risk requiring a future failure audit.",
+      "completion": "complete",
+      "captured_fields": {
+        "check": "Input constraints, mesh-generation completion, solver completion, and finite/physical output checks.",
+        "symptom": "A case is marked failed only when it lacks a completed mesh/solver result or produces non-finite/non-physical outputs; finer symptom logs were not preserved.",
+        "failure_mode": "Cause-specific failure modes cannot be asserted from the retained records.",
+        "reproducibility_risk": "Excluding failures may bias surrogate training; future runs must retain case-level logs and compare included versus excluded design-space distributions."
+      },
+      "source": "author",
+      "created_at": "2026-08-26T23:31:07.294803Z",
+      "base_graph_revision": 5,
+      "resulting_graph_revision": 6,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0002",
+      "question_id": "Q-DE3",
+      "target_node_id": "DE3",
+      "text": "The linear-isotropic model was limited to the recorded small-deformation regime, approximately 3-5% radial wall strain. Hyperelastic and anisotropic constitutive models were considered conceptually but were not used because patient-specific parameters were unavailable and they would materially increase the cost of the 1,000/1,300-case design. This assumption must not be generalized beyond the sampled small-strain regime.",
+      "completion": "complete",
+      "captured_fields": {
+        "rationale": "Recorded radial wall strain was approximately 3-5%, supporting a small-strain approximation within this design space.",
+        "alternatives_rejected": "Hyperelastic and anisotropic constitutive models.",
+        "rejection_reason": "No patient-specific constitutive parameters were available and the added calibration/computational cost conflicted with the large design.",
+        "constraint": "Validity is restricted to the sampled small-deformation regime and available material data."
+      },
+      "source": "author",
+      "created_at": "2026-08-26T23:31:07.307297Z",
+      "base_graph_revision": 6,
+      "resulting_graph_revision": 7,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0003",
+      "question_id": "Q-DE9",
+      "target_node_id": "DE9",
+      "text": "The preserved source contains an unresolved unit inconsistency for the 15 auxiliary simulations: 12/16/20 MPa conflicts with the main 0.4-2.3 MPa range. Therefore those 15 runs and criterion 7 are excluded as quantitative evidence in this demo manuscript until the original inputs are verified. Keeping them or silently decimal-correcting them was rejected because either would publish unverified values. The manuscript should describe six verified criteria and mark fibrous-cap-thickness validation as pending author verification.",
+      "completion": "complete",
+      "captured_fields": {
+        "rationale": "The auxiliary values conflict with the documented main design range, so they cannot be treated as verified evidence.",
+        "alternatives_rejected": "Retain 12/16/20 MPa as written; silently reinterpret them as 1.2/1.6/2.0 MPa.",
+        "rejection_reason": "Both alternatives would publish an unverified unit or decimal assumption.",
+        "constraint": "Original run inputs or author confirmation are required before criterion 7 can be reinstated."
+      },
+      "source": "author",
+      "created_at": "2026-08-26T23:31:07.319219Z",
+      "base_graph_revision": 7,
+      "resulting_graph_revision": 8,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0004",
+      "question_id": "Q-TH1",
+      "target_node_id": "TH1",
+      "text": "Mesh independence was defined a priori as less than 1% relative change in peak fibrous-cap maximum principal stress between successive refinements. The 0.04 and 0.03 cm meshes met this rule, so 0.04 cm was selected. A finer mesh would be required if the change reached or exceeded 1%, if the peak-stress location shifted materially, or if a new geometry/material range produced sharper stress gradients.",
+      "completion": "complete",
+      "captured_fields": {
+        "decision_rule": "Successive mesh refinement must change peak fibrous-cap maximum principal stress by <1%.",
+        "observable_signal": "The 0.04 and 0.03 cm meshes both produced about 1.0e6 dyn/cm2, with <1% relative change.",
+        "transfer_condition": "Refine further if change is >=1%, the peak location moves materially, or a new design range creates sharper gradients."
+      },
+      "source": "author",
+      "created_at": "2026-08-26T23:31:07.330894Z",
+      "base_graph_revision": 8,
+      "resulting_graph_revision": 9,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0005",
+      "question_id": "Q-DE1",
+      "target_node_id": "DE1",
+      "text": "No preregistered numeric cutoff was preserved. The four calcification-generation parameters were excluded only because their total-order indices were reported as approximately zero. A fixed threshold is not invented for this manuscript; the exclusion is reported as conditional and should be revisited with confidence intervals in a replication.",
+      "completion": "complete",
+      "captured_fields": {
+        "rationale": "Observed total-order indices were approximately zero in the stored analysis.",
+        "alternatives_rejected": "Keep all four generator parameters in the final interpretable sensitivity model.",
+        "rejection_reason": "They add non-clinical dimensions without measurable contribution in the stored run.",
+        "constraint": "No confidence intervals or preregistered cutoff were preserved, so the conclusion is conditional."
+      },
+      "source": "author",
+      "created_at": "2026-08-26T23:31:07.343247Z",
+      "base_graph_revision": 9,
+      "resulting_graph_revision": 10,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0006",
+      "question_id": "Q-DE2",
+      "target_node_id": "DE2",
+      "text": "Fibrous-cap thickness was fixed at 100 micrometers because the intended input workflow used CCTA-derived variables and CCTA does not resolve cap thickness. Varying it or requiring OCT was rejected for the primary CCTA-only design, at the cost of limiting generalizability to cap-thickness variation.",
+      "completion": "complete",
+      "captured_fields": {
+        "rationale": "Maintain a CCTA-only input workflow while using a physiologically plausible 100 micrometer cap.",
+        "alternatives_rejected": "Vary cap thickness in the main LHS; require OCT-derived cap thickness.",
+        "rejection_reason": "CCTA cannot resolve the variable and adding OCT would change the intended non-invasive workflow.",
+        "constraint": "Findings do not quantify sensitivity to cap thickness; separate verified simulations are needed."
+      },
+      "source": "author",
+      "created_at": "2026-08-26T23:31:07.355178Z",
+      "base_graph_revision": 10,
+      "resulting_graph_revision": 11,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0007",
+      "question_id": "Q-DE5",
+      "target_node_id": "DE5",
+      "text": "The 0.01 cm sphere radius was inherited from the recorded stress post-processing method to reduce single-node peak noise. No independent radius-sensitivity study was preserved, so alternative radii or percentile-based summaries were not rejected empirically and this is reported as a limitation.",
+      "completion": "complete",
+      "captured_fields": {
+        "rationale": "Reduce single-node mesh noise while preserving a local peak neighborhood.",
+        "alternatives_rejected": "Other radii, nodal maximum, and percentile-based stress summaries were not independently benchmarked in the retained run.",
+        "rejection_reason": "The stored workflow adopted the referenced 0.01 cm method without a new sensitivity study.",
+        "constraint": "Interpretation is conditional on the selected spatial averaging radius."
+      },
+      "source": "author",
+      "created_at": "2026-08-26T23:31:07.366680Z",
+      "base_graph_revision": 11,
+      "resulting_graph_revision": 12,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0008",
+      "question_id": "Q-DE6",
+      "target_node_id": "DE6",
+      "text": "Rp/Rd=1/10 was retained as the documented coronary RCR partition and the remaining parameters were fitted to sampled systolic/diastolic pressures. Alternative resistance splits and higher-order outlet models were not tested in this dataset; changing the ratio would require refitting and validating pressure/flow waveforms.",
+      "completion": "complete",
+      "captured_fields": {
+        "rationale": "Use the documented coronary resistance partition while fitting Pd, Rd, and C to each pressure target.",
+        "alternatives_rejected": "Other proximal/distal splits and more complex outlet networks.",
+        "rejection_reason": "They were not calibrated for the available waveform data and would add unidentifiable parameters.",
+        "constraint": "The ratio should be revisited when patient-specific pressure-flow data are available."
+      },
+      "source": "author",
+      "created_at": "2026-08-26T23:31:07.378967Z",
+      "base_graph_revision": 12,
+      "resulting_graph_revision": 13,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0009",
+      "question_id": "Q-DE7",
+      "target_node_id": "DE7",
+      "text": "A time-varying elastance model was used because coronary outflow must reflect systolic myocardial compression and diastole-dominant perfusion. Fixed myocardial pressure cannot reproduce that phase dependence, while a more complex electromechanical heart model was outside the available data and computational budget.",
+      "completion": "complete",
+      "captured_fields": {
+        "rationale": "Represent systolic extravascular compression and diastole-dominant coronary flow.",
+        "alternatives_rejected": "Fixed myocardial pressure; fully coupled electromechanical heart model.",
+        "rejection_reason": "Fixed pressure lacks phase dependence; the coupled model requires unavailable patient data and much higher cost.",
+        "constraint": "Only the available lumped elastance waveform was calibrated."
+      },
+      "source": "author",
+      "created_at": "2026-08-26T23:31:07.390862Z",
+      "base_graph_revision": 13,
+      "resulting_graph_revision": 14,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0010",
+      "question_id": "Q-DE8",
+      "target_node_id": "DE8",
+      "text": "N=1,024 was selected as a power-of-two Saltelli base size, yielding 14,336 LAP and 16,384 CP surrogate evaluations with second-order indices disabled. The retained run does not include an N-doubling convergence trace, so sufficiency is a computational design choice rather than a demonstrated convergence result and must be reported that way.",
+      "completion": "complete",
+      "captured_fields": {
+        "rationale": "Power-of-two Saltelli base size with manageable surrogate-evaluation cost.",
+        "alternatives_rejected": "Smaller or larger N values were not documented as a formal convergence series.",
+        "rejection_reason": "No preserved index-stability comparison supports claiming a better alternative.",
+        "constraint": "A replication should compare N=512/1024/2048 with confidence intervals before calling indices converged."
+      },
+      "source": "author",
+      "created_at": "2026-08-26T23:31:07.402179Z",
+      "base_graph_revision": 14,
+      "resulting_graph_revision": 15,
+      "supersedes_answer_id": null
+    },
+    {
+      "id": "ANS-0011",
+      "question_id": "Q-DE4",
+      "target_node_id": "DE4",
+      "text": "Spearman rank correlation was used because selection depended on the expected monotonic direction rather than linear effect size. Pearson correlation was rejected as less robust to nonlinear monotonic relationships. No absolute-significance threshold was used in the stored rubric; only direction was evaluated, and near-zero correlations should be treated as indeterminate rather than compliant.",
+      "completion": "complete",
+      "captured_fields": {
+        "rationale": "The rubric tests monotonic direction across heterogeneous variables.",
+        "alternatives_rejected": "Pearson correlation and a magnitude-based significance rule.",
+        "rejection_reason": "Pearson assumes linear association; no preregistered magnitude threshold was preserved.",
+        "constraint": "Near-zero or unstable signs must be flagged indeterminate and checked with uncertainty analysis."
+      },
+      "source": "author",
+      "created_at": "2026-08-26T23:31:07.425339Z",
+      "base_graph_revision": 15,
+      "resulting_graph_revision": 16,
+      "supersedes_answer_id": null
+    }
+  ]
+}

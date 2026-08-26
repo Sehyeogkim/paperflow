@@ -60,6 +60,29 @@ def _strip_data_paths(text: str) -> str:
     return re.sub(r"\s+([,.;)）])", r"\1", text)
 
 
+def _strip_internal_graph_ids(text: str, graph: ClaimGraph) -> str:
+    """Remove exact graph node identifiers from publishable prose.
+
+    The writer necessarily sees stable IDs in its contract, but those IDs are workflow
+    metadata rather than manuscript content.  Match only IDs that actually exist in the
+    supplied graph so domain abbreviations such as VI1, FSI, and GPR remain untouched.
+    """
+    ids = sorted({node.id for node in graph.nodes if node.id}, key=len, reverse=True)
+    if not ids:
+        return text
+    token = re.compile(
+        r"(?<![A-Za-z0-9_.])(?:" + "|".join(re.escape(i) for i in ids) +
+        r")(?![A-Za-z0-9_.])"
+    )
+    cleaned = token.sub("", text)
+    cleaned = re.sub(r"[（(]\s*(?:[,;/]\s*)*[)）]", "", cleaned)
+    cleaned = re.sub(r"[（(]\s*[,;/]\s*", "(", cleaned)
+    cleaned = re.sub(r"\s*[,;/]\s*[)）]", ")", cleaned)
+    cleaned = re.sub(r"[,;/]\s*[,;/]+", ",", cleaned)
+    cleaned = re.sub(r"[ \t]{2,}", " ", cleaned)
+    return re.sub(r"\s+([,.;:])", r"\1", cleaned)
+
+
 def _node_refs(graph: ClaimGraph, ids: list[str]) -> list[dict]:
     """Resolve contract node ids to typed nodes. A paragraph may reference claims,
     evidence, or artifacts — surface kind + how an artifact is displayed."""
@@ -116,5 +139,7 @@ def write_section(ps: ProjectState, graph: ClaimGraph, contract: SectionContract
         max_tokens=max_tokens, temperature=0.4,
     ).text.strip()
     draft = _guard_citations(draft, allowed)      # never let invented keys survive
-    draft = _strip_data_paths(_round_decimals(draft))  # enforce the publishing rules deterministically
+    draft = _strip_internal_graph_ids(
+        _strip_data_paths(_round_decimals(draft)), graph
+    )  # enforce publishing rules deterministically
     return draft.strip() + "\n"

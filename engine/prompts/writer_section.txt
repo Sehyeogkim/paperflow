@@ -18,12 +18,22 @@ NUMBERS & DATA ATTRIBUTION (this is a published paper — write like one):
   Use the provided values, just rounded — never invent or alter the actual magnitude.
 - Attribute results to a FIGURE or TABLE, not a file: "(Table 2)" / "(Fig 3)". The
   data file is the source of record but stays out of the prose.
+- Refer to a figure or table ONLY when an artifact node with represented_as=figure/table
+  is present in the supplied contract/graph context. Never invent a display number.
+
+INTERNAL METADATA (never publish):
+- Node and edge identifiers such as C1, C1.1, M1, W1, F1, DEC_*, TH_*, and PIT_* are
+  workflow metadata. NEVER reproduce them in the manuscript, including in parentheses.
+- Express the underlying scientific claim in natural prose without its internal ID.
 
 CRITICAL — anti-hallucination:
 - Use ONLY information present in the contracts, the claims, and the provided data summary.
 - If a numeric value the paragraph needs is NOT provided, write a visible placeholder:
   [DATA_NEEDED: <what value, from which data file>]. Do NOT make up numbers, p-values,
   errors, or experimental details.
+- Never replace an unknown definition with a symbolic shell such as `f(...)`, "correction
+  factor", or an unnamed function. Emit [DATA_NEEDED: exact definition and variables]
+  instead so the manuscript readiness gate can stop the draft.
 - For each paragraph, realize exactly its claim_ids and do NOT assert anything in its
   must_not_claim.
 

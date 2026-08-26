@@ -39,7 +39,7 @@ from ..interview import (
     start_interview,
 )
 from ..llm import client as llm_client
-from ..requirement import detect
+from ..requirement import detect, preflight
 from ..schemas.claim import ClaimGraph
 from ..util import prompt
 from . import storage
@@ -428,8 +428,17 @@ def save_answers(body: dict) -> dict:
     main.mkdir(parents=True, exist_ok=True)
     answers = body.get("answers", {})
     storage.write_json(main / "answer.json", answers)
-    storage.invalidate_graph_confirmation(project, stage="questioning")
-    return {"ok": True, "count": len(answers), **storage.public_ref(project)}
+    gate = preflight.evaluate(project_dir=str(project), require_report=True)
+    current = storage.read_workflow(project)
+    next_stage = "questioning"
+    if gate.allowed:
+        next_stage = "graph_review" if int(current.get("graph_revision") or 0) else "sources_ready"
+    storage.update_workflow(
+        project, stage=next_stage, confirmed_graph_revision=None,
+        blocking_items=gate.questions, last_error=gate.error,
+    )
+    return {"ok": True, "count": len(answers), "preflight": gate.payload(),
+            **storage.public_ref(project)}
 
 
 # --- data files (experiment data / references the writer grounds claims on) ---
@@ -820,6 +829,13 @@ def _plan_job(job_id: str, project_dir: str, sections: list[str], litsearch: boo
             ),
             "audit": audit.model_dump(mode="json"),
         })
+    except preflight.PreflightBlocked as e:
+        payload = e.result.payload()
+        storage.update_workflow(
+            project, stage="questioning", active_job_id=None,
+            blocking_items=e.result.questions, last_error=e.result.error,
+        )
+        q.put({"type": "error", **payload})
     except Exception as e:
         storage.update_workflow(project, stage="failed", active_job_id=None, last_error=str(e)[:400])
         q.put({"type": "error", "error": str(e)[:400]})
@@ -854,8 +870,19 @@ def _run_job(job_id: str, project_dir: str) -> None:
              "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
             for p in sorted(out_dir.iterdir()) if p.is_file()
         ] if out_dir.is_dir() else []
+        quality = storage.read_json(out_dir / "manuscript_quality.json", {
+            "ok": False,
+            "findings": [{
+                "code": "quality_report_missing", "severity": "blocking",
+                "message": "Deterministic manuscript quality report was not produced.",
+            }],
+        })
+        quality_ready = bool(quality.get("ok"))
         storage.update_workflow(
-            project, stage="complete", active_job_id=None, artifacts=output_files, last_error=None,
+            project, stage="complete" if quality_ready else "incomplete_draft",
+            active_job_id=None, artifacts=output_files,
+            blocking_items=[] if quality_ready else quality.get("findings", []),
+            last_error=None if quality_ready else "manuscript_quality_blocked",
         )
         q.put({"type": "done",
                "classification": manifest.classification.value if manifest.classification else None,
@@ -864,7 +891,16 @@ def _run_job(job_id: str, project_dir: str) -> None:
                "cache_hit_rate": round(manifest.cache_hit_rate, 4),
                "outputs": output_files,
                "pdf_ready": any(item["name"] == "paper.pdf" for item in output_files),
+               "quality_ready": quality_ready,
+               "quality": quality,
                "out_dir": str(out_dir)})
+    except preflight.PreflightBlocked as e:
+        payload = e.result.payload()
+        storage.update_workflow(
+            project, stage="questioning", active_job_id=None,
+            blocking_items=e.result.questions, last_error=e.result.error,
+        )
+        q.put({"type": "error", **payload})
     except Exception as e:  # surface the failure to the client instead of hanging
         storage.update_workflow(project, stage="failed", active_job_id=None, last_error=str(e)[:400])
         q.put({"type": "error", "error": str(e)[:400]})
@@ -873,21 +909,9 @@ def _run_job(job_id: str, project_dir: str) -> None:
         q.put(None)  # sentinel: stream ends
 
 
-def _unanswered(project_dir: str) -> list[str]:
-    """Hard gate: every diagnosed question must have a response (an answer or an
-    explicit '모름'). Returns the question fields still missing a response."""
-    report = detect.load_report(project_dir)
-    if report is None:
-        return []  # no diagnose on record (e.g. CLI) -> nothing to gate
-    answered = set()
-    ap = Path(project_dir) / "main" / "answer.json"
-    if ap.is_file():
-        try:
-            data = json.loads(ap.read_text())
-            answered = {k for k, v in data.items() if str(v).strip()}
-        except Exception:
-            answered = set()
-    return [m.field for m in report.missing if m.question and m.field not in answered]
+def _preflight_error(project_dir: str, *, require_report: bool = True) -> dict | None:
+    gate = preflight.evaluate(project_dir, require_report=require_report)
+    return None if gate.allowed else gate.payload()
 
 
 _DEFAULT_SECTIONS = ["method", "result", "discussion", "introduction", "conclusion", "abstract"]
@@ -898,9 +922,9 @@ def start_plan(body: dict) -> dict:
     """Phase 1 — build the plan (claim graph + structure + figures) for the user to confirm."""
     project = _project(body)
     project_dir = str(project)
-    pending = _unanswered(project_dir)
-    if pending:  # hard gate — must answer the questions before planning
-        return {"error": "unanswered_questions", "pending": pending}
+    blocked = _preflight_error(project_dir)
+    if blocked:
+        return blocked
     sections = body.get("sections") or _DEFAULT_SECTIONS
     litsearch = bool(body.get("litsearch", True))
     job_id = uuid.uuid4().hex[:12]
@@ -1111,6 +1135,9 @@ def confirm_graph(body: dict) -> dict:
     if graph.built_from_source_revision != int(state.get("source_revision") or 0):
         return {"error": "source_revision_changed", "graph_revision": revision,
                 "source_revision": state.get("source_revision")}
+    blocked = _preflight_error(str(project), require_report=False)
+    if blocked:
+        return {**blocked, "graph_revision": revision}
     audit = audit_graph(graph)
     interview = _load_interview(project, graph)
     _persist_interview(project, interview, audit)
@@ -1144,11 +1171,11 @@ def generate(body: dict) -> dict:
     storage_used = sum(p.stat().st_size for p in _WORKSPACE.rglob("*") if p.is_file())
     if storage_used >= _MAX_STORAGE_BYTES:
         return {"error": "storage_full"}
-    pending = _unanswered(project_dir)
-    if pending:
-        return {"error": "unanswered_questions", "pending": pending}
     if mr.load_plan(project_dir) is None:  # must plan + confirm first
         return {"error": "no_plan"}
+    blocked = _preflight_error(project_dir)
+    if blocked:
+        return blocked
     state = storage.read_workflow(project)
     graph = _load_graph(project)
     if graph is None or graph.built_from_source_revision != int(state.get("source_revision") or 0):

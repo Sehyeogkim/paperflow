@@ -101,6 +101,39 @@ def _issue(code: str, message: str, *, location: str = "", item_id: str = "",
                                 item_id=item_id, severity=severity, value=value)
 
 
+def _normalize_provenance_refs(item: dict, *, location: str, item_id: str,
+                               issues: list[GraphValidationIssue]) -> None:
+    """Preserve structured model locators while satisfying the string contract.
+
+    Artifact manifests expose locators as objects (for example a relative path plus
+    row range), and Gemini can faithfully echo that object. The public graph schema
+    intentionally keeps ``locator`` portable as a string, so encode structured
+    values deterministically instead of rejecting an otherwise valid graph.
+    """
+    refs = item.get("provenance_refs")
+    if refs is None:
+        return
+    if not isinstance(refs, list):
+        issues.append(_issue(
+            "provenance_refs.not_array", "provenance_refs must be an array",
+            location=f"{location}.provenance_refs", item_id=item_id, value=refs,
+        ))
+        item["provenance_refs"] = []
+        return
+    for ref_idx, ref in enumerate(refs):
+        if not isinstance(ref, dict):
+            continue
+        locator = ref.get("locator")
+        if locator is not None and not isinstance(locator, str):
+            ref["locator"] = json.dumps(locator, ensure_ascii=False, sort_keys=True)
+            issues.append(_issue(
+                "provenance_ref.locator_encoded",
+                "Encoded a structured provenance locator as JSON text",
+                location=f"{location}.provenance_refs[{ref_idx}].locator",
+                item_id=item_id, severity="warning", value=locator,
+            ))
+
+
 def validate_strict(raw: dict) -> GraphValidationResult:
     """Validate raw graph data without silently inventing semantics.
 
@@ -168,6 +201,7 @@ def validate_strict(raw: dict) -> GraphValidationResult:
             issues.append(_issue("node.invalid_layer", f"Unknown knowledge layer: {raw_layer!r}",
                                  location=f"{loc}.layer", item_id=nid, value=raw_layer))
             node.pop("layer", None)
+        _normalize_provenance_refs(node, location=loc, item_id=nid, issues=issues)
         if kind in {"threshold", "pitfall", "decision"}:
             node.setdefault("layer", "tacit")
             node.setdefault("knowledge_status", "missing")
@@ -244,6 +278,7 @@ def validate_strict(raw: dict) -> GraphValidationResult:
             eid = generated_edge_id()
         used_edge_ids.add(eid)
         edge.update({"id": eid, "src": src, "dst": dst, "rel": rel})
+        _normalize_provenance_refs(edge, location=loc, item_id=eid, issues=issues)
         edges.append(edge)
     clean["edges"] = edges
 
@@ -301,6 +336,42 @@ def _attach_file_provenance(graph: ClaimGraph, project_dir: str) -> ClaimGraph:
             metadata={"sha256": artifact.get("sha256", ""),
                       "classification": artifact.get("classification", "")},
         ))
+    return ground_verified_file_paths(graph)
+
+
+def ground_verified_file_paths(graph: ClaimGraph) -> ClaimGraph:
+    """Mark only deterministic file-backed origin links as grounded.
+
+    The grounding prompt historically required an explicit status only for
+    ``supports``/``justifies`` links, while the audit also requires origin links such
+    as ``derived_from`` and ``produces`` to be grounded. A verified artifact proves
+    the target data object exists; from there a method that produced that data can
+    ground evidence produced by the same method. Missing/partial links are never
+    promoted.
+    """
+    verified_data = {
+        node.id for node in graph.nodes
+        if node.kind == "data" and (
+            str(node.provenance or "").strip() not in {"", "[DATA_NEEDED]", "[ASK_AUTHOR]"}
+            or any(ref.source_type == "file" and ref.verification_status == "verified"
+                   for ref in node.provenance_refs)
+        )
+    }
+    for edge in graph.edges:
+        if edge.grounding_status == "unverified" and edge.dst in verified_data \
+                and edge.rel in {"derived_from", "uses", "produces"}:
+            edge.grounding_status = "grounded"
+
+    grounded_methods = {
+        edge.src for edge in graph.edges
+        if edge.grounding_status == "grounded" and edge.dst in verified_data
+        and edge.rel in {"uses", "produces"}
+    }
+    for edge in graph.edges:
+        target = graph.node(edge.dst)
+        if edge.grounding_status == "unverified" and edge.rel == "produces" \
+                and edge.src in grounded_methods and target and target.kind == "evidence":
+            edge.grounding_status = "grounded"
     return graph
 
 
@@ -308,7 +379,7 @@ def build(ps: ProjectState) -> ClaimGraph:
     source_context = _artifact_context(ps.project_dir)
     ib = inputs_block(ps) + "\n\n## EXTRACTED SOURCE CHUNKS\n" + source_context
     # Pass A — claim skeleton
-    a = client.call_json("reasoning", prompt("claim_graph_a"), ib, step="claim_graph.a", max_tokens=2500)
+    a = client.call_json("reasoning", prompt("claim_graph_a"), ib, step="claim_graph.a", max_tokens=4096)
     claims = [c for c in (a.get("claims") or []) if isinstance(c, dict) and c.get("id")]
     for c in claims:
         c["kind"] = "claim"
@@ -317,7 +388,7 @@ def build(ps: ProjectState) -> ClaimGraph:
     # Pass B — grounding for the given claims
     b = client.call_json("reasoning", prompt("claim_graph_b"),
                          f"{ib}\n\n## CLAIM SKELETON (do not restate these)\n{claim_block}",
-                         step="claim_graph.b", max_tokens=4096)
+                         step="claim_graph.b", max_tokens=8192)
 
     merged = {
         "main_contribution": a.get("main_contribution", ""),
@@ -332,7 +403,7 @@ def build(ps: ProjectState) -> ClaimGraph:
         "reasoning", prompt("tacit_questions"),
         "## DOCUMENTED GRAPH\n" + documented.model_dump_json() +
         "\n\n## EXTRACTED SOURCE CHUNKS\n" + source_context,
-        step="claim_graph.tacit", max_tokens=3000,
+        step="claim_graph.tacit", max_tokens=6000,
     )
     enriched = documented.model_dump()
     enriched["nodes"] += [n for n in (tacit.get("nodes") or []) if isinstance(n, dict)]

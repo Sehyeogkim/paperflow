@@ -52,3 +52,25 @@ def test_build_uses_extracted_chunks_and_creates_tacit_questions(tmp_path, monke
     assert any("cutoff,result" in user for _, user in seen_users[:2])
     assert graph.node("TH1").question == "How is the cutoff selected?"
     assert graph.node("D1").provenance_refs[0].asset_id == "result-abc"
+    derived = next(edge for edge in graph.edges if edge.rel == "derived_from")
+    assert derived.grounding_status == "grounded"
+
+
+def test_verified_output_grounds_method_produced_evidence():
+    graph = claim_graph.ClaimGraph.model_validate({
+        "nodes": [
+            {"id": "M1", "kind": "method", "text": "Sobol analysis"},
+            {"id": "D1", "kind": "data", "text": "Sobol CSV",
+             "provenance_refs": [{"source_type": "file", "asset_id": "sobol-csv",
+                                  "verification_status": "verified"}]},
+            {"id": "E1", "kind": "evidence", "text": "Material dominates"},
+        ],
+        "edges": [
+            {"id": "L1", "src": "M1", "dst": "D1", "rel": "produces"},
+            {"id": "L2", "src": "M1", "dst": "E1", "rel": "produces"},
+        ],
+    })
+
+    grounded = claim_graph.ground_verified_file_paths(graph)
+
+    assert [edge.grounding_status for edge in grounded.edges] == ["grounded", "grounded"]
